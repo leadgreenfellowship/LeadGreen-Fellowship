@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadGreen - Review Application</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-green: #138A56;
+            --light-green: #E8F5EE;
+            --hover-green: #F0F9F4;
+            --text-main: #111827;
+            --text-muted: #4B5563;
+            --text-light: #9CA3AF;
+            --border-color: #F3F4F6;
+            --card-border: #E5E7EB;
+            --bg-body: #FAFAFA;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* Sidebar Copy */
+        .sidebar {
+            width: 260px;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            background-color: #FFFFFF;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .sidebar-logo {
+            margin-bottom: 40px;
+            padding-left: 10px;
+        }
+
+        .sidebar-logo img {
+            height: 55px;
+            object-fit: contain;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .nav-item i {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-item:hover {
+            background-color: var(--hover-green);
+            color: var(--text-main);
+        }
+
+        .nav-item.active {
+            background-color: var(--light-green);
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
+        .nav-item.logout {
+            color: #EF4444;
+        }
+
+        /* Main Content */
+        .content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 40px;
+            max-width: 1400px;
+        }
+
+        .header-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: var(--primary-green);
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+
+        .btn-select {
+            background-color: #16A34A;
+            color: white;
+        }
+
+        .btn-select:hover {
+            background-color: #15803D;
+        }
+
+        .btn-reject {
+            background-color: #EF4444;
+            color: white;
+        }
+
+        .btn-reject:hover {
+            background-color: #DC2626;
+        }
+
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid rgba(229, 231, 235, 0.5);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--primary-green);
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .info-block {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .info-block.full {
+            grid-column: span 2;
+        }
+
+        .label {
+            font-size: 13px;
+            color: var(--text-light);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .value {
+            font-size: 15px;
+            color: var(--text-main);
+            line-height: 1.6;
+            background-color: #FFFFFF;
+            padding: 16px 20px;
+            border-radius: 4px;
+            /* More rectangular style */
+            border: 1px solid #D1D5DB;
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.01);
+            transition: all 0.2s;
+        }
+
+        .value:hover {
+            border-color: #D1D5DB;
+        }
+
+        .status-badge {
+            display: inline-block;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.pending {
+            background-color: #FDF4FF;
+            color: #C026D3;
+            border: 1px solid #F0ABFC;
+        }
+
+        .status-badge.selected {
+            background-color: #F0FDF4;
+            color: #15803D;
+            border: 1px solid #BBF7D0;
+        }
+
+        .status-badge.not_selected {
+            background-color: #FEF2F2;
+            color: #B91C1C;
+            border: 1px solid #FECACA;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="../Frontend/Logo name green.png" alt="Leadgreen Logo">
+            </div>
+            <nav class="sidebar-nav">
+                <a href="AdminDashboard.html" class="nav-item active"><i class="fa-solid fa-users"></i>
+                    <span>Applications</span></a>
+                <a href="AdminAlumniImport.html" class="nav-item"><i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>Import Alumni</span></a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="#" id="logout-btn" class="nav-item logout"><i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <span>Logout</span></a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content" id="appDetailsRoot">
+            <div style="text-align:center; padding: 50px;">
+                <i class="fa-solid fa-spinner fa-spin" style="font-size: 32px; color: var(--primary-green);"></i>
+                <p style="margin-top: 15px;">Loading Application...</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Firebase Integration -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, updateDoc, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+
+        // Setup
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5lPT8Fyp265fvebWq4BelNE0dYxuWvCE",
+            authDomain: "leadgreen-fellowship.firebaseapp.com",
+            projectId: "leadgreen-fellowship",
+            storageBucket: "leadgreen-fellowship.firebasestorage.app",
+            messagingSenderId: "639331926711",
+            appId: "1:639331926711:web:03d9d47c8b33cef84a0332"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        let currentUser = null;
+
+        // Security Guard
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+            } else {
+                window.location.href = "AdminLogin.html";
+            }
+        });
+
+        // Logout logic
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            signOut(auth).then(() => {
+                window.location.href = "AdminLogin.html";
+            });
+        });
+
+        // Get ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const appId = urlParams.get('id');
+        const root = document.getElementById('appDetailsRoot');
+
+        async function fetchApplication() {
+            if (!appId) {
+                root.innerHTML = '<div style="color:#D97706; padding: 30px;">Error: No Application ID provided in URL.</div>';
+                return;
+            }
+
+            try {
+                const docRef = doc(db, "applications", appId);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    renderApplication(docSnap.data(), docSnap.id);
+                } else {
+                    root.innerHTML = '<div style="color:#D97706; padding: 30px;">Error: Application not found.</div>';
+                }
+            } catch (error) {
+                console.error("Error drawing application:", error);
+                root.innerHTML = `<div style="color:#D97706; padding: 30px;">Error retrieving data: ${error.message}</div>`;
+            }
+        }
+
+        function renderApplication(data, id) {
+            const statusStr = data.applicationStatus || 'pending';
+            let statusLabel = 'Submitted (Pending Review)';
+            if (statusStr === 'selected') statusLabel = 'Selected';
+            if (statusStr === 'not_selected') statusLabel = 'Not Selected';
+
+            let html = `
+                <div class="header-toolbar">
+                    <a href="AdminDashboard.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+                </div>
+
+                <div class="card">
+                    <h2 style="font-size: 24px; margin-bottom: 5px;">${data.firstName || ''} ${data.lastName || ''}</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 15px;">Application ID: ${id}</p>
+                    <div class="status-badge ${statusStr}">${statusLabel}</div>
+                    
+                    <h3 class="section-title">Personal Information</h3>
+                    <div class="info-grid" style="margin-bottom: 30px;">
+                        <div class="info-block"><span class="label">Email</span><span class="value">${data.email || 'N/A'}</span></div>
+                        <div class="info-block"><span class="label">WhatsApp Number</span><span class="value">${data.whatsapp || 'N/A'}</span></div>
+                        <div class="info-block"><span class="label">Country / City</span><span class="value">${data.country || 'N/A'}, ${data.city || 'N/A'}</span></div>
+                        <div class="info-block"><span class="label">Age / Gender</span><span class="value">${data.age || 'N/A'} - ${data.gender || 'N/A'}</span></div>
+                        <div class="info-block full"><span class="label">How did you hear about us?</span><span class="value">${data.referralSource || 'N/A'}</span></div>
+                    </div>
+
+                    <h3 class="section-title">Background</h3>
+                    <div class="info-grid" style="margin-bottom: 30px;">
+                        <div class="info-block full"><span class="label">Education / Profession</span><span class="value">${data.education || 'N/A'}</span></div>
+                        <div class="info-block full"><span class="label">Impact Experience</span><span class="value">${data.impactExperience || 'N/A'}</span></div>
+                        <div class="info-block full"><span class="label">Leadership Experience</span><span class="value">${data.leadershipExperience || 'N/A'}</span></div>
+                    </div>
+
+                    <h3 class="section-title">Motivation</h3>
+                    <div class="info-grid" style="margin-bottom: 30px;">
+                        <div class="info-block full"><span class="label">Why LeadGreen?</span><span class="value">${data.whyLeadGreen || 'N/A'}</span></div>
+                        <div class="info-block full"><span class="label">Environmental Problem</span><span class="value">${data.environmentalProblem || 'N/A'}</span></div>
+                        <div class="info-block full"><span class="label">Desired Change</span><span class="value">${data.desiredChange || 'N/A'}</span></div>
+                    </div>
+
+                    <h3 class="section-title">Action & Leadership</h3>
+                    <div class="info-grid" style="margin-bottom: 30px;">
+                        <div class="info-block"><span class="label">Preferred Climate Area</span><span class="value">${data.climateArea || 'N/A'}</span></div>
+                        <div class="info-block"><span class="label">Interested in Leading?</span><span class="value">${data.leadInterest || 'N/A'}</span></div>
+                        <div class="info-block full"><span class="label">Proposed Project / Action</span><span class="value">${data.proposedProject || 'N/A'}</span></div>
+                        <div class="info-block full"><span class="label">Leadership / Teamwork Style</span><span class="value">${data.leadershipStyle || 'N/A'}</span></div>
+                    </div>
+
+                    <h3 class="section-title">Commitment</h3>
+                    <div class="info-grid" style="margin-bottom: 30px;">
+                        <div class="info-block full"><span class="label">Weekly Availability</span><span class="value">${data.availabilityOverview || 'N/A'}</span></div>
+                    </div>
+
+                    <h3 class="section-title">Admin Notes</h3>
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <textarea id="adminNotesInput" rows="4" style="width: 100%; padding: 15px; border-radius: 4px; border: 1px solid #D1D5DB; font-family: 'Inter', sans-serif; resize: vertical;" placeholder="Add internal review notes here...">${data.adminNote || ''}</textarea>
+                        <button class="btn btn-select" id="btnSaveNotes" style="align-self: flex-start; background-color: #374151;">
+                            <i class="fa-solid fa-save"></i> Save Notes
+                        </button>
+                    </div>
+                    
+                    <hr style="border: 0; border-top: 2px solid var(--border-color); margin: 40px 0 30px 0;">
+                    
+                    <!-- Action Buttons -->
+                    <div class="actions" style="display: flex; gap: 20px; justify-content: stretch;">
+                        <button class="btn btn-select" id="btnSelect" style="flex: 1; justify-content: center; padding: 18px; font-size: 16px;"><i class="fa-solid fa-check"></i> Select for Fellowship</button>
+                        <button class="btn btn-reject" id="btnReject" style="flex: 1; justify-content: center; padding: 18px; font-size: 16px;"><i class="fa-solid fa-xmark"></i> Mark Not Selected</button>
+                    </div>
+                </div>
+            `;
+            root.innerHTML = html;
+
+            document.getElementById('btnSelect').addEventListener('click', () => updateStatus(id, 'selected', data));
+            document.getElementById('btnReject').addEventListener('click', () => updateStatus(id, 'not_selected', data));
+
+            document.getElementById('btnSaveNotes').addEventListener('click', async () => {
+                const note = document.getElementById('adminNotesInput').value;
+                try {
+                    const docRef = doc(db, "applications", id);
+                    await updateDoc(docRef, { adminNote: note });
+                    alert("Admin notes saved successfully.");
+                } catch (error) {
+                    alert("Error saving notes: " + error.message);
+                }
+            });
+        }
+
+        async function updateStatus(id, newStatus, data = null) {
+            try {
+                const conf = confirm(`Are you sure you want to mark this applicant as ${newStatus.replace('_', ' ').toUpperCase()}?`);
+                if (!conf) return;
+
+                const docRef = doc(db, "applications", id);
+                await updateDoc(docRef, {
+                    applicationStatus: newStatus,
+                    decision: newStatus,
+                    reviewedAt: new Date().toISOString(),
+                    reviewedBy: currentUser ? currentUser.uid : 'Unknown'
+                });
+
+                // Automate appending to the Alumni database if selected
+                if (newStatus === 'selected' && data) {
+                    try {
+                        const alumniRef = collection(db, "alumni");
+                        await addDoc(alumniRef, {
+                            name: `${data.firstName || ''} ${data.lastName || ''}`.trim(),
+                            cohort: data.cohort || "Cohort 4",
+                            country: data.country || "",
+                            email: data.email || "",
+                            originalAppId: id,
+                            createdAt: new Date().toISOString()
+                        });
+                        alert("Decision recorded. Applicant automatically added to Alumni Database!");
+                    } catch (dbErr) {
+                        alert("Decision recorded, but failed to auto-add to Alumni Database: " + dbErr.message);
+                    }
+                } else {
+                    alert("Decision recorded successfully.");
+                }
+
+                window.location.reload();
+            } catch (error) {
+                alert("Error updating status: " + error.message);
+            }
+        }
+
+        // Init
+        fetchApplication();
+    </script>
+</body>
+
+</html>

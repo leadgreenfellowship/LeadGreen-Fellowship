@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadGreen - Meet Our Alumni</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-green: #0D643E;
+            --light-green: #E8F5EE;
+            --text-main: #111827;
+            --text-muted: #4B5563;
+            --text-light: #9CA3AF;
+            --border-color: #E5E7EB;
+            --bg-body: #FAFAFA;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* Global Header from Homepage */
+        header {
+            background-color: #ffffff;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 25px;
+        }
+
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #333333;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-green);
+        }
+
+        .btn-apply-main {
+            background-color: var(--primary-green);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.2s, transform 0.1s;
+            margin-left: 10px;
+        }
+
+        .btn-apply-main:hover {
+            background-color: #09472b;
+            transform: translateY(-1px);
+        }
+
+        /* Hero Section */
+        .hero {
+            background-color: #11141A;
+            background-image: linear-gradient(rgba(17, 20, 26, 0.7), rgba(17, 20, 26, 0.7)), url('0258801603edef4d1517cf00c8a171de.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #ffffff;
+            padding: 120px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #E5E7EB;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Directory Section */
+        .directory-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 20px;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .search-wrapper {
+            position: relative;
+            flex: 1;
+            min-width: 250px;
+            max-width: 400px;
+        }
+
+        .search-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .search-wrapper input {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .search-wrapper input:focus {
+            border-color: var(--primary-green);
+        }
+
+        .filter-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-wrapper select {
+            padding: 12px 30px 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 15px;
+            background: white;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .btn-search {
+            padding: 12px 24px;
+            background-color: var(--primary-green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-search:hover {
+            background-color: #09472b;
+        }
+
+        /* Grid */
+        .alumni-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        /* Card */
+        .alumni-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .alumni-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .alumni-avatar {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            background-color: var(--light-green);
+            color: var(--primary-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 700;
+            overflow: hidden;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .alumni-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .alumni-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .alumni-cohort {
+            display: inline-block;
+            background-color: #F3F4F6;
+            color: var(--text-muted);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        #loading-state {
+            text-align: center;
+            padding: 50px;
+            color: var(--text-muted);
+            grid-column: 1 / -1;
+        }
+
+        #no-results {
+            text-align: center;
+            padding: 50px;
+            color: var(--text-muted);
+            grid-column: 1 / -1;
+            display: none;
+        }
+
+        .pagination-container {
+            text-align: center;
+            margin-top: 40px;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn-load {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: 0.2s;
+        }
+
+        .btn-load:hover {
+            background: #F9FAFB;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Main Global Header from Homepage -->
+    <header>
+        <a href="Homepage.html" class="logo">
+            <img src="Logo name green.png" alt="Leadgreen Fellowship Logo"
+                style="height: 65px; width: auto; display: block; object-fit: contain;">
+        </a>
+        <div class="header-right">
+            <nav class="main-nav">
+                <a href="Homepage.html" class="nav-link">Home</a>
+                <a href="About.html" class="nav-link">About</a>
+                <a href="Fellowspage.html" class="nav-link">Meet Fellows</a>
+                <a href="Homepage.html#impact" class="nav-link">Impact</a>
+                <a href="Homepage.html#faq" class="nav-link">FAQ</a>
+                <a href="Apply.html" class="btn-apply-main">Apply</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <h1>Meet Our Alumni</h1>
+        <p>Discover the incredible leaders driving environmental change in Africa.</p>
+    </div>
+
+    <main class="directory-container">
+
+        <div class="toolbar">
+            <div class="search-wrapper">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search by name...">
+            </div>
+
+            <div class="filter-wrapper">
+                <select id="cohortFilter">
+                    <option value="">All Cohorts</option>
+                    <!-- Populated dynamically -->
+                </select>
+                <button class="btn-search" id="btnFilter">Apply</button>
+            </div>
+        </div>
+
+        <div class="alumni-grid" id="alumniGrid">
+            <div id="loading-state">
+                <i class="fa-solid fa-spinner fa-spin"
+                    style="font-size: 32px; color: var(--primary-green); margin-bottom: 15px;"></i>
+                <p>Loading alumni directory...</p>
+            </div>
+            <div id="no-results">
+                <i class="fa-regular fa-face-frown"
+                    style="font-size: 32px; color: var(--text-light); margin-bottom: 15px;"></i>
+                <p>No alumni matched your search criteria.</p>
+            </div>
+        </div>
+
+        <div class="pagination-container" id="paginationContainer">
+            <button class="btn-load" id="btnPrev" disabled><i class="fa-solid fa-chevron-left"></i> Previous</button>
+            <span id="pageIndicator" style="font-weight: 600; color: var(--text-muted);">Page 1</span>
+            <button class="btn-load" id="btnNext">Next <i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+
+    </main>
+
+    <!-- Footer Section (Redesigned Edition) -->
+    <footer
+        style="background-color: #0c1824; color: #ffffff; padding: 80px 5% 40px; font-family: 'Inter', sans-serif; border-top: 4px solid var(--primary-green); margin-top: auto;">
+        <div
+            style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 60px;">
+            <!-- Brand Column -->
+            <div style="flex: 2; min-width: 300px;">
+                <h2
+                    style="font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 800; color: #6EE7B7; margin-bottom: 12px; letter-spacing: 1px;">
+                    LEADGREEN</h2>
+                <h4
+                    style="font-size: 13px; font-weight: 700; color: #34D399; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 2px;">
+                    Learn. Act. Measure. Lead.</h4>
+                <p style="color: #9CA3AF; font-size: 15px; line-height: 1.7; max-width: 350px;">
+                    Building a network of young African changemakers taking measurable action for a greener Africa.
+                </p>
+            </div>
+
+            <!-- Links Column -->
+            <div style="flex: 1;">
+                <h4
+                    style="font-size: 16px; font-weight: 700; color: #ffffff; margin-bottom: 25px; letter-spacing: 0.5px;">
+                    Navigation</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <a href="Homepage.html"
+                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Home</a>
+                    <a href="About.html"
+                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">About</a>
+                    <a href="#" style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Fellowship</a>
+                    <a href="Fellowspage.html"
+                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Meet
+                        Fellows</a>
+                    <a href="Homepage.html#impact"
+                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Impact</a>
+                    <a href="Homepage.html#faq"
+                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">FAQ</a>
+                    <a href="Apply.html"
+                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Apply</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Base Copyright Row -->
+        <div
+            style="max-width: 1200px; margin: 60px auto 0; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+            <div style="color: #9CA3AF; font-size: 14px;">
+                &copy; 2026 LeadGreen. All rights reserved.
+            </div>
+            <div class="social-icons" style="display: flex; gap: 18px;">
+                <a href="#" style="color: #9CA3AF; font-size: 18px; transition: 0.2s;"
+                    onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i
+                        class="fa-brands fa-twitter"></i></a>
+                <a href="#" style="color: #9CA3AF; font-size: 18px; transition: 0.2s;"
+                    onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i
+                        class="fa-brands fa-instagram"></i></a>
+                <a href="#" style="color: #9CA3AF; font-size: 18px; transition: 0.2s;"
+                    onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i
+                        class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase Integration -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+        import { getFirestore, collection, query, orderBy, limit, startAfter, startAt, getDocs, where } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5lPT8Fyp265fvebWq4BelNE0dYxuWvCE",
+            authDomain: "leadgreen-fellowship.firebaseapp.com",
+            projectId: "leadgreen-fellowship",
+            storageBucket: "leadgreen-fellowship.firebasestorage.app",
+            messagingSenderId: "639331926711",
+            appId: "1:639331926711:web:03d9d47c8b33cef84a0332"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const grid = document.getElementById('alumniGrid');
+        const loadingState = document.getElementById('loading-state');
+        const noResults = document.getElementById('no-results');
+        const cohortFilter = document.getElementById('cohortFilter');
+        const searchInput = document.getElementById('searchInput');
+        const btnFilter = document.getElementById('btnFilter');
+        const paginationContainer = document.getElementById('paginationContainer');
+        const btnPrev = document.getElementById('btnPrev');
+        const btnNext = document.getElementById('btnNext');
+        const pageIndicator = document.getElementById('pageIndicator');
+
+        let lastVisibleDoc = null;
+        let pageCursors = [];
+        let currentPage = 1;
+        const LIMIT_SIZE = 24;
+        let cohortsPopulated = false;
+
+        async function loadInitialData() {
+            grid.innerHTML = '';
+            grid.appendChild(loadingState);
+            loadingState.style.display = 'block';
+            noResults.style.display = 'none';
+            paginationContainer.style.display = 'none';
+
+            currentPage = 1;
+            pageCursors = [];
+            lastVisibleDoc = null;
+
+            populateCohortFilter();
+            await fetchPage(true, 'next');
+        }
+
+        async function fetchPage(isInitial = false, direction = 'next') {
+            try {
+                grid.innerHTML = '';
+                grid.appendChild(loadingState);
+                loadingState.style.display = 'block';
+                noResults.style.display = 'none';
+                paginationContainer.style.display = 'none';
+
+                let qRef;
+                const colRef = collection(db, "alumni");
+                const selectedCohort = cohortFilter.value;
+                const searchTerm = searchInput.value.trim().toLowerCase();
+
+                let queryConstraints = [orderBy("name")];
+
+                if (selectedCohort) {
+                    queryConstraints.push(where("cohort", "==", selectedCohort));
+                }
+
+                if (direction === 'next' && !isInitial && lastVisibleDoc) {
+                    queryConstraints.push(startAfter(lastVisibleDoc));
+                } else if (direction === 'prev') {
+                    // the first document of the target page is at index (currentPage - 1)
+                    if (currentPage >= 1 && pageCursors[currentPage - 1]) {
+                        queryConstraints.push(startAt(pageCursors[currentPage - 1]));
+                    }
+                }
+
+                queryConstraints.push(limit(LIMIT_SIZE));
+                qRef = query(colRef, ...queryConstraints);
+
+                const snap = await getDocs(qRef);
+                loadingState.style.display = 'none';
+
+                if (isInitial && snap.empty) {
+                    noResults.style.display = 'block';
+                    return;
+                }
+
+                if (direction === 'next' || isInitial) {
+                    if (isInitial) {
+                        if (snap.docs.length > 0) pageCursors = [snap.docs[0]];
+                    } else if (currentPage === pageCursors.length + 1) {
+                        if (snap.docs.length > 0) pageCursors.push(snap.docs[0]);
+                    }
+                }
+
+                // Append Data
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    const matchesName = !searchTerm || (data.name && data.name.toLowerCase().includes(searchTerm));
+                    if (matchesName) {
+                        grid.appendChild(buildCard(data));
+                    }
+                });
+
+                if (snap.docs.length > 0) {
+                    lastVisibleDoc = snap.docs[snap.docs.length - 1];
+                }
+
+                paginationContainer.style.display = 'flex';
+                pageIndicator.innerText = `Page ${currentPage}`;
+
+                btnPrev.disabled = currentPage === 1;
+                btnNext.disabled = snap.docs.length < LIMIT_SIZE;
+
+            } catch (err) {
+                console.error("Error fetching alumni: ", err);
+                loadingState.innerHTML = `<p style="color:#D97706">Failed to load directory: ${err.message}</p>`;
+            }
+        }
+
+        function buildCard(data) {
+            const div = document.createElement('div');
+            div.className = 'alumni-card';
+
+            let photoURL = data.photoURL || '';
+            let photoHtml = '';
+
+            // Google Drive Link Converter
+            if (photoURL.includes('drive.google.com')) {
+                const match = photoURL.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || photoURL.match(/id=([a-zA-Z0-9_-]+)/);
+                if (match && match[1]) {
+                    photoURL = `https://drive.google.com/thumbnail?id=${match[1]}&sz=w400`;
+                }
+            }
+
+            const initials = data.name ? data.name.substring(0, 2).toUpperCase() : 'LG';
+            if (photoURL && photoURL.trim() !== '') {
+                photoHtml = `<img src="${photoURL}" alt="${data.name}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                             <span style="display: none; width:100%; height:100%; align-items:center; justify-content:center;">${initials}</span>`;
+            } else {
+                photoHtml = `<span style="width:100%; height:100%; display:flex; align-items:center; justify-content:center;">${initials}</span>`;
+            }
+
+            div.innerHTML = `
+                <div class="alumni-avatar">
+                    ${photoHtml}
+                </div>
+                <h3 class="alumni-name">${data.name || 'Unknown'}</h3>
+                <span class="alumni-cohort">${data.cohort || 'Fellow'}</span>
+            `;
+            return div;
+        }
+
+        function populateCohortFilter() {
+            if (cohortsPopulated) return;
+            // Hardcode common cohorts to prevent full collection reads which severely slowed down load times
+            const cohorts = ["Cohort 1", "Cohort 2", "Cohort 3", "Cohort 4", "Cohort 5", "Cohort 6"];
+            cohorts.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c;
+                opt.textContent = c;
+                cohortFilter.appendChild(opt);
+            });
+            cohortsPopulated = true;
+        }
+
+        btnFilter.addEventListener('click', () => { loadInitialData(); });
+        searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { loadInitialData(); } });
+
+        btnNext.addEventListener('click', () => {
+            currentPage++;
+            fetchPage(false, 'next');
+        });
+
+        btnPrev.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                fetchPage(false, 'prev');
+            }
+        });
+
+        // Build grid from Firebase
+        loadInitialData();
+    </script>
+</body>
+
+</html>

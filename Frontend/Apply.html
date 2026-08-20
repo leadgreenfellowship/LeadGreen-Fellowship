@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply - LeadGreen Fellowship</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f6f4;
+            color: #111827;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+
+
+        .apply-wrapper {
+            max-width: 1000px;
+            width: 100%;
+            margin: -60px auto 50px;
+            padding: 0 20px;
+            flex: 1;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Global Header from Homepage */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: 20;
+        }
+
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 25px;
+        }
+
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #333333;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #10b981;
+        }
+
+        .btn-apply-main {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-left: 10px;
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-apply-main:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Simple Hero */
+        .dark-hero {
+            background-color: #0c1824;
+            color: #ffffff;
+            padding: 80px 0 140px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 40px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: #ffffff;
+            letter-spacing: -2px;
+            line-height: 1.1;
+        }
+
+        .breadcrumb {
+            font-size: 16px;
+            color: #94a3b8;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .breadcrumb a {
+            color: #34d399;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: #6ee7b7;
+        }
+
+        /* Form Card - Simplification */
+        .form-card {
+            background: #ffffff;
+            border: 1px solid #eaeaec;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        /* Modern Stepper */
+        .stepper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 40px;
+            background: #ffffff;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none;
+        }
+
+        .stepper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .stepper::before {
+            content: '';
+            position: absolute;
+            top: 42px;
+            left: 50px;
+            right: 50px;
+            height: 2px;
+            background: #e5e7eb;
+            z-index: 0;
+        }
+
+        .step-item {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 120px;
+        }
+
+        .step-lbl {
+            font-size: 12px;
+            font-weight: 700;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        .step-circle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 2px solid #e5e7eb;
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .step-item.active .step-circle {
+            border-color: #10b981;
+            background: #10b981;
+            color: #ffffff;
+            transform: scale(1.15);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .step-item.active .step-lbl {
+            color: #10b981;
+        }
+
+        .step-item.completed .step-circle {
+            background: #10b981;
+            border-color: #10b981;
+            color: #ffffff;
+        }
+
+        .step-item.completed .step-circle::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 14px;
+        }
+
+        .step-item.completed .step-circle text {
+            display: none;
+        }
+
+        /* hide number */
+        .step-item.completed .step-lbl {
+            color: #10b981;
+        }
+
+        .step-separator {
+            display: none !important;
+        }
+
+        .form-content {
+            padding: 40px;
+        }
+
+        /* Transitions */
+        .step-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .step-section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .step-section h3 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #111827;
+            margin-bottom: 25px;
+            letter-spacing: -0.5px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #4b5563;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-label span {
+            color: #ef4444;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid #eaeaec;
+            border-radius: 12px;
+            font-size: 15px;
+            color: #1f2937;
+            background-color: #f9fafb;
+            font-family: inherit;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: #9ca3af;
+        }
+
+        .form-input:hover,
+        .form-select:hover,
+        .form-textarea:hover {
+            background-color: #ffffff;
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #10b981;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+        }
+
+        .file-upload-wrapper {
+            position: relative;
+            border: 2px dashed rgba(16, 185, 129, 0.4);
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            background-color: #f9fafb;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .file-upload-wrapper:hover {
+            border-color: #10b981;
+            background-color: #f0fdf4;
+            transform: translateY(-2px);
+        }
+
+        .file-upload-wrapper i {
+            font-size: 40px;
+            color: #10b981;
+            margin-bottom: 15px;
+            transition: transform 0.3s;
+        }
+
+        .file-upload-wrapper:hover i {
+            transform: scale(1.1);
+        }
+
+        .file-upload-wrapper p {
+            margin: 0;
+            font-size: 15px;
+            color: #4b5563;
+        }
+
+        .file-upload-wrapper p span {
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        .form-file {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-name-display {
+            font-size: 14px;
+            color: #10b981;
+            margin-top: 15px;
+            font-weight: 700;
+            display: none;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid #d1d5db;
+            background-color: #ffffff;
+            color: #374151;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn:hover {
+            background-color: #f9fafb;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+            color: #ffffff;
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-primary:hover {
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px -5px rgba(16, 185, 129, 0.4);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            padding-top: 30px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 15px;
+            color: #4b5563;
+            margin-bottom: 16px;
+            cursor: pointer;
+            line-height: 1.5;
+        }
+
+        .checkbox-label input {
+            flex-shrink: 0;
+            margin-top: 4px;
+            width: 18px;
+            height: 18px;
+            accent-color: #10b981;
+        }
+
+        .checkbox-label span b {
+            color: #ef4444;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Main Global Header from Homepage -->
+    <header>
+        <a href="Homepage.html" class="logo">
+            <img src="Logo name green.png" alt="Leadgreen Fellowship Logo"
+                style="height: 65px; width: auto; display: block; object-fit: contain;">
+        </a>
+        <div class="header-right">
+            <nav class="main-nav">
+                <a href="Homepage.html" class="nav-link">Home</a>
+                <a href="About.html" class="nav-link">About</a>
+                <a href="Fellowspage.html" class="nav-link">Meet Fellows</a>
+                <a href="Homepage.html#impact" class="nav-link">Impact</a>
+                <a href="Homepage.html#faq" class="nav-link">FAQ</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dark Hero Title Overlay -->
+    <div class="dark-hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Join the Network of Change Makers</h1>
+            <div class="breadcrumb">
+                Application portal
+            </div>
+        </div>
+    </div>
+
+    <main class="apply-wrapper">
+        <div class="form-card">
+
+            <div class="stepper" id="stepper-nav">
+                <!-- Javascript builds stepper -->
+            </div>
+
+            <div class="form-content">
+                <!-- Validate native HTML5 form features -->
+                <form id="applyForm" onsubmit="return false;">
+
+                    <!-- Step 1: Personal Info -->
+                    <div class="step-section active" data-step="1">
+                        <h3 style="margin-bottom: 20px; font-size: 18px; color: #111;">Personal Information</h3>
+                        <div class="form-row">
+                            <div class="form-group"><label class="form-label">First Name <span>*</span></label><input
+                                    type="text" class="form-input" id="firstName" name="firstName" required></div>
+                            <div class="form-group"><label class="form-label">Last Name <span>*</span></label><input
+                                    type="text" class="form-input" id="lastName" name="lastName" required></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label class="form-label">Email Address <span>*</span></label><input
+                                    type="email" class="form-input" id="email" name="email" required></div>
+                            <div class="form-group"><label class="form-label">WhatsApp Number(with country code)
+                                    <span>*</span></label><input type="tel" class="form-input" id="whatsapp"
+                                    name="whatsapp" required></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label class="form-label">Country <span>*</span></label><input
+                                    type="text" class="form-input" id="country" name="country" required></div>
+                            <div class="form-group"><label class="form-label">City <span>*</span></label><input
+                                    type="text" class="form-input" id="city" name="city" required></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label class="form-label">Age <span>*</span></label><input
+                                    type="number" class="form-input" id="age" name="age" min="16" max="99" required>
+                            </div>
+                            <div class="form-group"><label class="form-label">Gender <span>*</span></label>
+                                <select class="form-select" id="gender" name="gender" required>
+                                    <option value="">Select gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                    <option value="Prefer not to say">Prefer not to say</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Headshot Upload <span>*</span></label>
+                            <div class="file-upload-wrapper" id="headshot-dropzone">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <p><span>Click to upload</span> or drag and drop</p>
+                                <p style="font-size: 12px; color: #9CA3AF; margin-top: 5px;">SVG, PNG, JPG or GIF (max.
+                                    5MB)</p>
+                                <input type="file" id="headshot-upload" name="headshotUpload" class="form-file"
+                                    accept="image/*" required>
+                                <div class="file-name-display" id="file-name-display"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Background -->
+                    <div class="step-section" data-step="2">
+                        <h3 style="margin-bottom: 20px; font-size: 18px; color: #111;">Background</h3>
+                        <div class="form-group">
+                            <label class="form-label">Education / Profession <span>*</span></label>
+                            <input type="text" class="form-input" id="education" name="education"
+                                placeholder="E.g. BSc Environmental Science or Marketing Manager" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Climate/Social Impact Experience <span>*</span></label>
+                            <textarea class="form-textarea" id="impactExperience" name="impactExperience"
+                                placeholder="Detail any past volunteer work, climate action, or social impact projects..."
+                                required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Leadership Experience</label>
+                            <textarea class="form-textarea" id="leadershipExperience" name="leadershipExperience"
+                                placeholder="Describe any past leadership roles..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Motivation -->
+                    <div class="step-section" data-step="3">
+                        <h3 style="margin-bottom: 20px; font-size: 18px; color: #111;">Motivation</h3>
+                        <div class="form-group">
+                            <label class="form-label">Why LeadGreen? <span>*</span></label>
+                            <textarea class="form-textarea" id="whyLeadGreen" name="whyLeadGreen"
+                                placeholder="Why do you want to join this fellowship?" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">What environmental problem do you care about?
+                                <span>*</span></label>
+                            <textarea class="form-textarea" id="environmentalProblem" name="environmentalProblem"
+                                required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">What change do you want to see? <span>*</span></label>
+                            <textarea class="form-textarea" id="desiredChange" name="desiredChange" required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Action & Leadership -->
+                    <div class="step-section" data-step="4">
+                        <h3 style="margin-bottom: 20px; font-size: 18px; color: #111;">Action & Leadership</h3>
+                        <div class="form-group">
+                            <label class="form-label">Preferred Climate Area <span>*</span></label>
+                            <select class="form-select" id="climateArea" name="climateArea" required>
+                                <option value="">Select an area</option>
+                                <option value="Energy">Clean Energy</option>
+                                <option value="Waste">Waste Management</option>
+                                <option value="Advocacy">Policy & Advocacy</option>
+                                <option value="Education">Climate Education</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Proposed Project / Action <span>*</span></label>
+                            <textarea class="form-textarea" id="proposedProject" name="proposedProject"
+                                placeholder="What impact project do you want to build during this fellowship?"
+                                required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Leadership / Teamwork</label>
+                            <textarea class="form-textarea" id="leadershipStyle" name="leadershipStyle"
+                                placeholder="How do you collaborate with others?"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Interest in Team Lead/Co-Lead? <span>*</span></label>
+                            <select class="form-select" id="leadInterest" name="leadInterest" required>
+                                <option value="">Select option</option>
+                                <option value="Yes">Yes, I want to lead</option>
+                                <option value="No">No, I prefer being a team member</option>
+                                <option value="Maybe">Open to it depending on the project</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Commitment & Access -->
+                    <div class="step-section" data-step="5">
+                        <h3 style="margin-bottom: 20px; font-size: 18px; color: #111;">Commitment & Access</h3>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="commitHours" name="commitHours" required>
+                                <span>I commit to dedicating 5-10 Weekly Hours to the fellowship. <b>*</b></span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="commitDuration" name="commitDuration" required>
+                                <span>I commit to staying involved for the full 4-month duration. <b>*</b></span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="commitTech" name="commitTech" required>
+                                <span>I have reliable internet and device access to attend virtual sessions.
+                                    <b>*</b></span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="commitPlatforms" name="commitPlatforms" required>
+                                <span>I am able to access virtual platforms (Zoom, Google Meet, Slack, etc).
+                                    <b>*</b></span>
+                            </label>
+                        </div>
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label class="form-label">Provide a brief overview of your general weekly availability
+                                <span>*</span></label>
+                            <input type="text" class="form-input" id="availabilityOverview" name="availabilityOverview"
+                                placeholder="e.g. Weekends only, Weekday evenings" required>
+                        </div>
+                    </div>
+
+                    <!-- Step 6: Final -->
+                    <div class="step-section" data-step="6">
+                        <h3 style="margin-bottom: 20px; font-size: 18px; color: #111;">Final Confirmation</h3>
+                        <div class="form-group">
+                            <label class="form-label">How did you hear about us? <span>*</span></label>
+                            <select class="form-select" id="referralSource" name="referralSource" required>
+                                <option value="">Select Option</option>
+                                <option value="LinkedIn">LinkedIn</option>
+                                <option value="Twitter/X">Twitter/X</option>
+                                <option value="Friend/Alumni">Friend / Alumni</option>
+                                <option value="Search">Search Engine</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group"
+                            style="margin-top:25px; padding:20px; background:#F9FAFB; border:1px solid #E5E7EB; border-radius:8px;">
+                            <label class="form-label">Applicant Declaration <span>*</span></label>
+                            <label class="checkbox-label" style="margin-bottom:0;">
+                                <input type="checkbox" id="declarationSigned" name="declarationSigned" required>
+                                <span>I confirm that all the information provided above is accurate and entirely my own.
+                                    I understand that any false information may lead to disqualification from the
+                                    LeadGreen Fellowship.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                </form>
+
+                <div id="success-screen" style="display:none; padding:60px 40px; text-align:center;">
+                    <i class="fa-solid fa-circle-check" style="font-size:64px; color:#0e8549; margin-bottom:20px;"></i>
+                    <h2 style="font-size:24px; font-weight:700; color:#111827; margin-bottom:10px;">Application
+                        Submitted!</h2>
+                    <p style="color:#6B7280; font-size:15px; margin-bottom:30px;">Thank you for applying. We will review
+                        your submission and contact you shortly.</p>
+                </div>
+
+                <div class="form-actions" id="actions-row">
+                    <button type="button" class="btn" id="btn-back" style="visibility:hidden;"><i
+                            class="fa-solid fa-arrow-left"></i> Back</button>
+                    <button type="button" class="btn btn-primary" id="btn-next" style="margin-left: auto;">Proceed to
+                        Step 2 <i class="fa-solid fa-arrow-right"></i></button>
+                    <button type="button" class="btn btn-primary" id="btn-submit"
+                        style="display:none; margin-left: auto;">Submit Application <i
+                            class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5lPT8Fyp265fvebWq4BelNE0dYxuWvCE",
+            authDomain: "leadgreen-fellowship.firebaseapp.com",
+            projectId: "leadgreen-fellowship",
+            storageBucket: "leadgreen-fellowship.firebasestorage.app",
+            messagingSenderId: "639331926711",
+            appId: "1:639331926711:web:03d9d47c8b33cef84a0332"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const steps = ['Personal Info', 'Background', 'Motivation', 'Action', 'Commitment', 'Final'];
+        const totalSteps = steps.length;
+        let currentStep = 1;
+        let draftId = null;
+
+        const stepperNav = document.getElementById('stepper-nav');
+
+        // Dynamically build the responsive stepper
+        let stepperHTML = '';
+        steps.forEach((lbl, idx) => {
+            const num = idx + 1;
+            stepperHTML += `
+                <div class="step-item ${num === 1 ? 'active' : ''}" id="nav-item-${num}">
+                    <div class="step-circle"><text>${num}</text></div> <span class="step-lbl" style="white-space: nowrap;">${lbl}</span>
+                </div>
+            `;
+        });
+        stepperNav.innerHTML = stepperHTML;
+
+        const sections = document.querySelectorAll('.step-section');
+        const btnNext = document.getElementById('btn-next');
+        const btnPrev = document.getElementById('btn-back');
+        const btnSubmit = document.getElementById('btn-submit');
+
+        function updateUI() {
+            sections.forEach(sec => sec.classList.remove('active'));
+            document.querySelector(`.step-section[data-step="${currentStep}"]`).classList.add('active');
+
+            for (let i = 1; i <= totalSteps; i++) {
+                const item = document.getElementById(`nav-item-${i}`);
+                item.classList.remove('active', 'completed');
+
+                if (i < currentStep) {
+                    item.classList.add('completed');
+                } else if (i === currentStep) {
+                    item.classList.add('active');
+                }
+            }
+
+            btnPrev.style.visibility = currentStep === 1 ? 'hidden' : 'visible';
+
+            if (currentStep === totalSteps) {
+                btnNext.style.display = 'none';
+                btnSubmit.style.display = 'inline-flex';
+            } else {
+                btnNext.style.display = 'inline-flex';
+                btnNext.innerHTML = `Proceed to Step ${currentStep + 1} <i class="fa-solid fa-arrow-right"></i>`;
+                btnSubmit.style.display = 'none';
+            }
+        }
+
+        const fileInput = document.getElementById('headshot-upload');
+        const fileNameDisplay = document.getElementById('file-name-display');
+        const dropzone = document.getElementById('headshot-dropzone');
+
+        if (fileInput) {
+            fileInput.addEventListener('change', function () {
+                if (this.files && this.files.length > 0) {
+                    fileNameDisplay.textContent = 'Selected: ' + this.files[0].name;
+                    fileNameDisplay.style.display = 'block';
+                    dropzone.style.borderColor = '#0e8549';
+                    dropzone.style.backgroundColor = '#F0FDF4';
+                }
+            });
+        }
+
+        btnNext.addEventListener('click', () => {
+            const currentSection = document.querySelector(`.step-section[data-step="${currentStep}"]`);
+            const inputs = currentSection.querySelectorAll('input, select, textarea');
+            let allValid = true;
+            for (let input of inputs) {
+                if (!input.checkValidity()) {
+                    input.reportValidity();
+                    allValid = false;
+                    break;
+                }
+            }
+            if (allValid && currentStep < totalSteps) {
+                // Auto-capture abandoned draft when completing Step 1
+                if (currentStep === 1 && !draftId) {
+                    const userEmail = document.getElementById('email')?.value;
+                    if (userEmail) {
+                        addDoc(collection(db, "abandoned_applications"), {
+                            firstName: document.getElementById('firstName')?.value || '',
+                            lastName: document.getElementById('lastName')?.value || '',
+                            email: userEmail,
+                            abandonedAt: serverTimestamp()
+                        }).then(docRef => draftId = docRef.id).catch(e => console.log("Draft error: ", e));
+                    }
+                }
+                currentStep++;
+                updateUI();
+                window.scrollTo(0, 0);
+            }
+        });
+        btnPrev.addEventListener('click', () => {
+            if (currentStep > 1) { currentStep--; updateUI(); window.scrollTo(0, 0); }
+        });
+
+        btnSubmit.addEventListener('click', async () => {
+            const activeForm = document.getElementById('applyForm');
+            if (activeForm.checkValidity()) {
+                const originalText = btnSubmit.innerHTML;
+                btnSubmit.innerHTML = 'Submitting... <i class="fa-solid fa-spinner fa-spin"></i>';
+                btnSubmit.disabled = true;
+
+                try {
+                    const payload = {
+                        firstName: document.getElementById('firstName').value,
+                        lastName: document.getElementById('lastName').value,
+                        email: document.getElementById('email').value,
+                        whatsapp: document.getElementById('whatsapp').value,
+                        country: document.getElementById('country').value,
+                        city: document.getElementById('city').value,
+                        age: document.getElementById('age').value,
+                        gender: document.getElementById('gender').value,
+                        education: document.getElementById('education').value,
+                        impactExperience: document.getElementById('impactExperience').value,
+                        leadershipExperience: document.getElementById('leadershipExperience').value,
+                        whyLeadGreen: document.getElementById('whyLeadGreen').value,
+                        environmentalProblem: document.getElementById('environmentalProblem').value,
+                        desiredChange: document.getElementById('desiredChange').value,
+                        climateArea: document.getElementById('climateArea').value,
+                        proposedProject: document.getElementById('proposedProject').value,
+                        leadershipStyle: document.getElementById('leadershipStyle').value,
+                        leadInterest: document.getElementById('leadInterest').value,
+                        availabilityOverview: document.getElementById('availabilityOverview').value,
+                        referralSource: document.getElementById('referralSource').value,
+
+                        commitHours: document.getElementById('commitHours').checked,
+                        commitDuration: document.getElementById('commitDuration').checked,
+                        commitTech: document.getElementById('commitTech').checked,
+                        commitPlatforms: document.getElementById('commitPlatforms').checked,
+                        declarationSigned: document.getElementById('declarationSigned').checked,
+
+                        submittedAt: serverTimestamp(),
+                        applicationStatus: "pending"
+                    };
+
+                    await addDoc(collection(db, "applications"), payload);
+
+                    if (draftId) {
+                        try {
+                            await deleteDoc(doc(db, "abandoned_applications", draftId));
+                        } catch (e) { console.log(e); }
+                    }
+
+                    window.location.href = 'AppicationReceived.html';
+                } catch (e) {
+                    alert("Error submitting application: " + e.message);
+                    btnSubmit.innerHTML = originalText;
+                    btnSubmit.disabled = false;
+                }
+            } else {
+                activeForm.reportValidity();
+            }
+        });
+    </script>
+
+    <!-- Footer Section (Redesigned Edition) -->
+    <footer
+        style="background-color: #0c1824; color: #ffffff; padding: 80px 5% 40px; font-family: 'Inter', sans-serif; border-top: 4px solid var(--primary-green); margin-top: 60px;">
+        <div
+            style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 60px;">
+            <!-- Brand Column -->
+            <div style="flex: 2; min-width: 300px;">
+                <h2
+                    style="font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 800; color: #6EE7B7; margin-bottom: 12px; letter-spacing: 1px;">
+                    LEADGREEN</h2>
+                <h4
+                    style="font-size: 13px; font-weight: 700; color: #34D399; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 2px;">
+                    Learn. Act. Measure. Lead.</h4>
+                <p style="color: #9CA3AF; font-size: 15px; line-height: 1.7; max-width: 350px;">
+                    Building a network of young African changemakers taking measurable action for a greener Africa.
+                </p>
+            </div>
+
+            <!-- Links Column -->
+            <div style="flex: 1;">
+                <h4
+                    style="font-size: 16px; font-weight: 700; color: #ffffff; margin-bottom: 25px; letter-spacing: 0.5px;">
+                    Navigation</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <a href="Homepage.html"
+                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Home</a>
+                    <a href="About.html"
+                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">About</a>
+                    <a href="#" style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Fellowship</a>
+                    <a href="Fellowspage.html"
+                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Meet
+                        Fellows</a>
+                    <a href="Homepage.html#impact"
+                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Impact</a>
+                    <a href="Homepage.html#faq"
+                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">FAQ</a>
+                    <a href="Apply.html"
+                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Apply</a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Base Copyright Row -->
+        <div
+            style="max-width: 1200px; margin: 60px auto 0; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+            <div style="color: #9CA3AF; font-size: 14px;">
+                &copy; 2026 LeadGreen. All rights reserved.
+            </div>
+            <div class="social-icons" style="display: flex; gap: 18px;">
+                <a href="#" style="color: #9CA3AF; font-size: 18px; transition: 0.2s;"
+                    onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i
+                        class="fa-brands fa-twitter"></i></a>
+                <a href="#" style="color: #9CA3AF; font-size: 18px; transition: 0.2s;"
+                    onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i
+                        class="fa-brands fa-instagram"></i></a>
+                <a href="#" style="color: #9CA3AF; font-size: 18px; transition: 0.2s;"
+                    onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i
+                        class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

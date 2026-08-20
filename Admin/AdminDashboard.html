@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadGreen - V1 Admin Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Branding colors */
+            --primary-green: #138A56;
+            --light-green: #E8F5EE;
+            --hover-green: #F0F9F4;
+            --text-main: #111827;
+            --text-muted: #4B5563;
+            --text-light: #9CA3AF;
+            --border-color: #F3F4F6;
+            --card-border: #E5E7EB;
+            --bg-body: #FAFAFA;
+
+            /* Badges */
+            --badge-review-bg: #FEF3C7;
+            --badge-review-text: #B45309;
+            --badge-revision-bg: #E0E7FF;
+            --badge-revision-text: #3730A3;
+            --badge-approved-bg: #DCFCE7;
+            --badge-approved-text: #15803D;
+            --badge-rejected-bg: #FEE2E2;
+            --badge-rejected-text: #B91C1C;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* Layout */
+        .layout {
+            display: flex;
+            width: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            background-color: #FFFFFF;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .sidebar-logo {
+            margin-bottom: 40px;
+            padding-left: 10px;
+        }
+
+        .sidebar-logo img {
+            height: 55px;
+            object-fit: contain;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .nav-item i {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-item:hover {
+            background-color: var(--hover-green);
+            color: var(--text-main);
+        }
+
+        .nav-item.active {
+            background-color: var(--light-green);
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
+        .nav-item.logout {
+            color: #EF4444;
+        }
+
+        .nav-item.logout:hover {
+            background-color: #FEF2F2;
+        }
+
+        /* Main Content */
+        .content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            max-width: 1400px;
+        }
+
+        /* Top Header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .header-title h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .header-title p {
+            font-size: 15px;
+            color: var(--text-main);
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .header-title .subtitle {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        /* Cards Base */
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+            margin-bottom: 25px;
+        }
+
+        /* Stats Row */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 0px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-main);
+            margin-bottom: 15px;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+
+        #stat-total {
+            color: #111827;
+        }
+
+        #stat-submitted {
+            color: #3730A3;
+        }
+
+        #stat-selected {
+            color: #15803D;
+        }
+
+        #stat-not-selected {
+            color: #B91C1C;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .toolbar-left,
+        .toolbar-right {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .search-box {
+            position: relative;
+            width: 250px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 10px 10px 35px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+        }
+
+        .filter-select {
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--text-main);
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary-green);
+        }
+
+        /* Table */
+        .table-responsive {
+            overflow-x: auto;
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            min-width: 900px;
+        }
+
+        th,
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            background-color: #F9FAFB;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            font-size: 14px;
+            color: var(--text-main);
+        }
+
+        tbody tr {
+            transition: background-color 0.1s;
+        }
+
+        tbody tr:hover {
+            background-color: #F9FAFB;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .table-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: var(--primary-green);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .table-name {
+            font-weight: 500;
+        }
+
+        .table-email {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .badge {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .badge.pending {
+            background-color: var(--badge-revision-bg);
+            color: var(--badge-revision-text);
+        }
+
+        .badge.under_review {
+            background-color: var(--badge-review-bg);
+            color: var(--badge-review-text);
+        }
+
+        .badge.selected {
+            background-color: var(--badge-approved-bg);
+            color: var(--badge-approved-text);
+        }
+
+        .badge.not_selected {
+            background-color: var(--badge-rejected-bg);
+            color: var(--badge-rejected-text);
+        }
+
+        .btn-view {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--primary-green);
+            background-color: var(--light-green);
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-view:hover {
+            background-color: #D1EADE;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <!-- Using placeholder path from previous setup -->
+                <img src="../Frontend/Logo name green.png" alt="Leadgreen Logo">
+            </div>
+            <nav class="sidebar-nav">
+                <a href="AdminDashboard.html" class="nav-item active"><i class="fa-solid fa-users"></i>
+                    <span>Applications</span></a>
+                <a href="AdminAlumniImport.html" class="nav-item"><i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>Import Alumni</span></a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="#" id="logout-btn" class="nav-item logout"><i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <span>Logout</span></a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <div class="page-header">
+                <div class="header-title">
+                    <h1>Applications Dashboard</h1>
+                    <p>Welcome back, Admin 👋</p>
+                    <p class="subtitle">Review and manage fellowship applications.</p>
+                </div>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="stats-grid">
+                <div class="card stat-card">
+                    <div class="stat-label">Total Applications</div>
+                    <div class="stat-number" id="stat-total">0</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-label">Submitted</div>
+                    <div class="stat-number" id="stat-submitted">0</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-label">Under Review</div>
+                    <div class="stat-number" id="stat-reviewing" style="color: #D97706;">0</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-label">Selected</div>
+                    <div class="stat-number" id="stat-selected">0</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-label">Not Selected</div>
+                    <div class="stat-number" id="stat-not-selected">0</div>
+                </div>
+            </div>
+
+            <!-- Application List Table -->
+            <div class="card">
+                <div class="toolbar">
+                    <div class="toolbar-left">
+                        <div class="search-box">
+                            <i class="fa-solid fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="Search name, email, or ID">
+                        </div>
+                    </div>
+                    <div class="toolbar-right">
+                        <select class="filter-select" id="cohortFilter">
+                            <option value="">All Cohorts</option>
+                            <option value="Cohort 1">Cohort 1</option>
+                            <option value="Cohort 2">Cohort 2</option>
+                            <option value="Cohort 3">Cohort 3</option>
+                            <option value="Cohort 4">Cohort 4</option>
+                        </select>
+                        <select class="filter-select" id="statusFilter">
+                            <option value="">All Statuses</option>
+                            <option value="pending">Submitted (Pending)</option>
+                            <option value="under_review">Under Review</option>
+                            <option value="selected">Selected</option>
+                            <option value="not_selected">Not Selected</option>
+                        </select>
+                        <button id="btnExportCSV"
+                            style="padding: 10px 16px; background: #0c1824; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px;"><i
+                                class="fa-solid fa-file-csv"></i> Export Selected</button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table id="applicationsTable">
+                        <thead>
+                            <tr>
+                                <th>Applicant Name</th>
+                                <th>Country / City</th>
+                                <th>Gender</th>
+                                <th>Climate Area</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- Populated via Javascript -->
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 30px;">Loading applications...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Firebase Integration -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, limit, orderBy } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5lPT8Fyp265fvebWq4BelNE0dYxuWvCE",
+            authDomain: "leadgreen-fellowship.firebaseapp.com",
+            projectId: "leadgreen-fellowship",
+            storageBucket: "leadgreen-fellowship.firebasestorage.app",
+            messagingSenderId: "639331926711",
+            appId: "1:639331926711:web:03d9d47c8b33cef84a0332"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Security Guard
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "AdminLogin.html";
+            }
+        });
+
+        // Logout logic
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            signOut(auth).then(() => {
+                window.location.href = "AdminLogin.html";
+            });
+        });
+
+        let applications = [];
+
+        async function fetchApplications() {
+            try {
+                // Fetch up to 1000 records to prevent browser crashing while maintaining large set
+                const appsQuery = query(collection(db, "applications"), orderBy("submittedAt", "desc"), limit(1000));
+                const querySnapshot = await getDocs(appsQuery);
+                applications = [];
+                let total = 0, submitted = 0, reviewing = 0, selected = 0, notSelected = 0;
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    data.id = doc.id;
+
+                    const stat = data.applicationStatus || 'pending';
+                    total++;
+                    if (stat === 'pending') submitted++;
+                    else if (stat === 'under_review') reviewing++;
+                    else if (stat === 'selected') selected++;
+                    else if (stat === 'not_selected') notSelected++;
+
+                    applications.push(data);
+                });
+
+                document.getElementById('stat-total').innerText = total;
+                document.getElementById('stat-submitted').innerText = submitted;
+                document.getElementById('stat-reviewing').innerText = reviewing;
+                document.getElementById('stat-selected').innerText = selected;
+                document.getElementById('stat-not-selected').innerText = notSelected;
+
+                renderTable();
+            } catch (e) {
+                console.error("Error loading application states: ", e);
+                document.getElementById('tableBody').innerHTML = '<tr><td colspan="6" style="text-align:center;color:#D97706;">Error loading data</td></tr>';
+            }
+        }
+
+        function renderTable() {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            const cohortFilter = document.getElementById('cohortFilter').value;
+
+            const filteredApps = applications.filter(app => {
+                const fullName = `${app.firstName || ''} ${app.lastName || ''}`.toLowerCase();
+                const email = (app.email || '').toLowerCase();
+                const appId = (app.id || '').toLowerCase();
+                const matchesSearch = fullName.includes(searchTerm) || email.includes(searchTerm) || appId.includes(searchTerm);
+
+                const stat = app.applicationStatus || 'pending';
+                const matchesStatus = statusFilter === '' || stat === statusFilter;
+
+                const matchesCohort = cohortFilter === '' || app.cohort === cohortFilter;
+
+                return matchesSearch && matchesStatus && matchesCohort;
+            });
+
+            if (filteredApps.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 30px;">No applications found matching criteria.</td></tr>';
+                return;
+            }
+
+            filteredApps.forEach(app => {
+                const tr = document.createElement('tr');
+
+                const initials = ((app.firstName || 'A')[0] + (app.lastName || 'A')[0]).toUpperCase();
+                const statusStr = app.applicationStatus || 'pending';
+                let statusLabel = 'Submitted';
+                if (statusStr === 'under_review') statusLabel = 'Under Review';
+                if (statusStr === 'selected') statusLabel = 'Selected';
+                if (statusStr === 'not_selected') statusLabel = 'Not Selected';
+
+                tr.innerHTML = `
+                    <td>
+                        <div class="table-user">
+                            <div class="table-avatar">${initials}</div>
+                            <div>
+                                <div class="table-name">${app.firstName} ${app.lastName}</div>
+                                <div class="table-email">${app.email}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${app.country || '-'} / ${app.city || '-'}</td>
+                    <td>${app.gender || '-'}</td>
+                    <td>${app.climateArea || '-'}</td>
+                    <td><span class="badge ${statusStr}">${statusLabel}</span></td>
+                    <td><a href="AdminApplicationDetails.html?id=${app.id}" class="btn-view">Review Application</a></td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        document.getElementById('searchInput').addEventListener('input', renderTable);
+        document.getElementById('statusFilter').addEventListener('change', renderTable);
+        document.getElementById('cohortFilter').addEventListener('change', renderTable);
+
+        document.getElementById('btnExportCSV').addEventListener('click', () => {
+            const selectedApps = applications.filter(app => app.applicationStatus === 'selected');
+            if (selectedApps.length === 0) {
+                alert('No selected applications to export.');
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "First Name,Last Name,Email,WhatsApp,Country,City,Cohort,Status\n";
+
+            selectedApps.forEach(app => {
+                const row = [
+                    (app.firstName || "").replace(/,/g, ""),
+                    (app.lastName || "").replace(/,/g, ""),
+                    app.email || "",
+                    app.whatsapp || "",
+                    (app.country || "").replace(/,/g, ""),
+                    (app.city || "").replace(/,/g, ""),
+                    app.cohort || "",
+                    app.applicationStatus || "selected"
+                ].join(",");
+                csvContent += row + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "LeadGreen_Selected_Fellows.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        // Initialization
+        fetchApplications();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Received - LeadGreen Fellowship</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #0D643E;
+            --success-green: #37B868;
+            --light-green: #E8F5E9;
+            --gray-100: #F3F4F6;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-900: #111827;
+            --border-color: #F1F1F1;
+            --white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FAFAFA;
+            color: var(--gray-900);
+            line-height: 1.5;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Subtle Leaf Background Patterns */
+        body::before,
+        body::after {
+            content: "";
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background-image: url('data:image/svg+xml;utf8,<svg width="200" height="200" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z" fill="%23e8f5e9" opacity="0.3"/></svg>');
+            background-repeat: no-repeat;
+            background-size: cover;
+            z-index: -1;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        body::before {
+            top: -50px;
+            left: -150px;
+            transform: rotate(-30deg);
+        }
+
+        body::after {
+            top: 200px;
+            right: -200px;
+            transform: rotate(45deg);
+        }
+
+        /* Header block */
+        header {
+            background-color: var(--white);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #333333;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-green);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-profile i {
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Success Hero */
+        .success-hero {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .check-circle {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 25px;
+            box-shadow: 0 8px 24px rgba(76, 175, 80, 0.3);
+            position: relative;
+        }
+
+        .check-circle i {
+            color: var(--white);
+            font-size: 44px;
+        }
+
+        /* Particles / Confetti */
+        .particle {
+            position: absolute;
+            background-color: var(--success-green);
+            opacity: 0.6;
+        }
+
+        .particle-1 {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            top: -10px;
+            left: -20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .particle-2 {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            top: 10px;
+            right: -30px;
+            transform: rotate(45deg);
+            opacity: 0.4;
+        }
+
+        .particle-3 {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            bottom: -10px;
+            left: 20px;
+        }
+
+        .particle-4 {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            bottom: 10px;
+            right: 10px;
+            opacity: 0.8;
+        }
+
+        .particle-5 {
+            width: 6px;
+            height: 6px;
+            border-radius: 2px;
+            transform: rotate(15deg);
+            top: 30px;
+            left: -40px;
+        }
+
+        .particle-6 {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            top: -20px;
+            right: 10px;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--gray-500);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Card Component */
+        .card {
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            width: 100%;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .card-header-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--light-green);
+            color: var(--primary-green);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Application Details Grid */
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 25px 40px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .detail-label {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-weight: 500;
+        }
+
+        .detail-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .detail-value.app-id {
+            color: #10B981;
+        }
+
+        .detail-value i {
+            color: var(--gray-500);
+            cursor: pointer;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .detail-value i:hover {
+            color: var(--primary-green);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background-color: var(--light-green);
+            color: var(--primary-green);
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .status-badge i {
+            color: var(--primary-green);
+        }
+
+        .status-note {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+
+        /* Vertical dividers in details grid */
+        @media (min-width: 768px) {
+            .detail-item.col-2 {
+                border-left: 1px solid #F3F4F6;
+                padding-left: 40px;
+            }
+
+            .detail-item.col-3 {
+                border-left: 1px solid #F3F4F6;
+                padding-left: 40px;
+            }
+        }
+
+        /* Timeline Section */
+        .timeline-section {
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .timeline-container {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* The connecting dashed line */
+        .timeline-container::before {
+            content: "";
+            position: absolute;
+            top: 30px;
+            left: 50px;
+            right: 50px;
+            height: 1px;
+            border-top: 2px dashed #D1D5DB;
+            z-index: 0;
+        }
+
+        /* The green connecting line up to the first step */
+        .timeline-container::after {
+            content: "";
+            position: absolute;
+            top: 30px;
+            left: 50px;
+            width: 0%;
+            /* Fills based on progress */
+            height: 1px;
+            border-top: 2px dashed var(--primary-green);
+            z-index: 0;
+        }
+
+        .timeline-step {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 150px;
+        }
+
+        .timeline-icon {
+            width: 60px;
+            height: 60px;
+            background-color: var(--white);
+            border: 2px solid var(--light-green);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: var(--primary-green);
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .timeline-step:nth-child(2) .timeline-icon i,
+        .timeline-step:nth-child(3) .timeline-icon i,
+        .timeline-step:nth-child(4) .timeline-icon i {
+            color: var(--primary-green);
+        }
+
+        .timeline-step:nth-child(1) .timeline-icon i {
+            color: var(--primary-green);
+        }
+
+        .timeline-number {
+            position: absolute;
+            top: 50px;
+            width: 20px;
+            height: 20px;
+            background-color: var(--primary-green);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 11px;
+            font-weight: 700;
+            border: 2px solid var(--white);
+        }
+
+        .timeline-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--gray-900);
+        }
+
+        .timeline-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            line-height: 1.4;
+        }
+
+        /* The connecting dashed segments between specific nodes */
+        .timeline-dashed-green {
+            position: absolute;
+            top: 29px;
+            left: 95px;
+            right: -95px;
+            height: 2px;
+            background-image: linear-gradient(to right, #A7F3D0 50%, transparent 50%);
+            background-size: 10px 10px;
+            background-repeat: repeat-x;
+            z-index: -1;
+        }
+
+        /* Inbox Card */
+        .inbox-card {
+            background-color: #F8FAF9;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .inbox-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .inbox-icon {
+            width: 50px;
+            height: 50px;
+            border: 1.5px solid #D1D5DB;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            color: var(--primary-green);
+            background-color: var(--white);
+        }
+
+        .inbox-text h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .inbox-text p {
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        .mailbox-img {
+            width: 80px;
+            height: auto;
+            position: relative;
+        }
+
+        .mailbox-svg {
+            font-size: 60px;
+            color: #2E7D32;
+        }
+
+        hr {
+            width: 100%;
+            border: 0;
+            border-top: 1px solid var(--border-color);
+            margin-bottom: 40px;
+        }
+
+        /* Footer CTA */
+        .footer-cta {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .footer-cta h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .footer-cta p {
+            font-size: 14px;
+            color: var(--gray-500);
+            margin-bottom: 25px;
+        }
+
+        .footer-cta p a {
+            color: var(--primary-green);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-green);
+            color: var(--white);
+            border: 1px solid var(--primary-green);
+        }
+
+        .btn-primary:hover {
+            background-color: #0c5737;
+        }
+
+        .btn-outline {
+            background-color: var(--white);
+            color: var(--gray-900);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-outline:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .timeline-container {
+                flex-direction: column;
+                align-items: flex-start;
+                padding-left: 30px;
+            }
+
+            .timeline-container::before {
+                top: 0;
+                bottom: 0;
+                left: 60px;
+                width: 1px;
+                height: auto;
+                border-top: none;
+                border-left: 2px dashed #D1D5DB;
+            }
+
+            .timeline-container::after {
+                display: none;
+            }
+
+            .timeline-dashed-green {
+                display: none;
+            }
+
+            .timeline-step {
+                flex-direction: row;
+                width: 100%;
+                text-align: left;
+                margin-bottom: 30px;
+            }
+
+            .timeline-icon {
+                margin-bottom: 0;
+                margin-right: 20px;
+            }
+
+            .timeline-number {
+                top: 40px;
+                left: 45px;
+            }
+
+            .inbox-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .mailbox-img {
+                align-self: flex-end;
+                margin-top: -40px;
+            }
+
+            header {
+                padding: 15px 20px;
+            }
+
+            .main-nav {
+                display: none;
+                /* simple mobile nav hide */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <a href="Homepage.html" class="logo">
+            <img src="Logo name green.png" alt="Leadgreen Fellowship Logo"
+                style="height: 65px; width: auto; display: block; object-fit: contain;">
+        </a>
+        <nav class="main-nav">
+            <a href="Homepage.html" class="nav-link">HOME</a>
+            <a href="About.html" class="nav-link">ABOUT</a>
+            <a href="Fellowspage.html" class="nav-link">MEET FELLOWS</a>
+            <a href="Homepage.html#impact" class="nav-link">IMPACT</a>
+            <a href="Homepage.html#faq" class="nav-link">FAQ</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="success-hero">
+            <div class="check-circle">
+                <i class="fa-solid fa-check"></i>
+                <div class="particle particle-1"></div>
+                <div class="particle particle-2"></div>
+                <div class="particle particle-3"></div>
+                <div class="particle particle-4"></div>
+                <div class="particle particle-5"></div>
+                <div class="particle particle-6"></div>
+            </div>
+            <h1>Application has been received!</h1>
+            <p class="subtitle">Thank you for applying to the LeadGreen Fellowship. We have successfully received your
+                application and our team will review it carefully.</p>
+        </div>
+
+
+
+        <!-- Timeline Section -->
+        <div class="timeline-section">
+            <h3 class="section-title">What happens next?</h3>
+            <div class="timeline-container">
+                <div class="timeline-dashed-green" style="right: auto; width: 33%;"></div>
+
+                <div class="timeline-step">
+                    <div class="timeline-icon">
+                        <i class="fa-solid fa-file-magnifying-glass"></i>
+                    </div>
+                    <div class="timeline-number">1</div>
+                    <div class="timeline-title">Application Review</div>
+                    <div class="timeline-desc">Our team will review your application carefully.</div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="timeline-icon"
+                        style="background-color: var(--white); border-color: var(--light-green);">
+                        <i class="fa-solid fa-users" style="color: var(--primary-green);"></i>
+                    </div>
+                    <div class="timeline-number">2</div>
+                    <div class="timeline-title">Shortlisting</div>
+                    <div class="timeline-desc">Shortlisted applicants will be contacted via email.</div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="timeline-icon"
+                        style="background-color: var(--white); border-color: var(--light-green);">
+                        <i class="fa-regular fa-envelope" style="color: var(--primary-green);"></i>
+                    </div>
+                    <div class="timeline-number">3</div>
+                    <div class="timeline-title">Interview (If applicable)</div>
+                    <div class="timeline-desc">You may be invited for a conversation.</div>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="timeline-icon"
+                        style="background-color: var(--white); border-color: var(--light-green);">
+                        <i class="fa-solid fa-party-horn" style="color: var(--primary-green);"></i>
+                        <!-- Fallback icon if party-horn is pro only -->
+                        <!-- <i class="fa-solid fa-wand-magic-sparkles"></i> -->
+                    </div>
+                    <div class="timeline-number">4</div>
+                    <div class="timeline-title">Final Decision</div>
+                    <div class="timeline-desc">Successful applicants will be notified.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inbox Card -->
+        <div class="inbox-card">
+            <div class="inbox-content">
+                <div class="inbox-icon">
+                    <i class="fa-regular fa-envelope"></i>
+                </div>
+                <div class="inbox-text">
+                    <h4>Keep an eye on your inbox!</h4>
+                </div>
+            </div>
+            <div class="mailbox-img">
+                <!-- Using an SVG that resembles the mailbox in the mockup -->
+                <svg viewBox="0 0 100 100" width="80" height="80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 70 L20 40 Q20 20 50 20 Q80 20 80 40 L80 70 Z" fill="#1B5E20" />
+                    <path d="M20 70 L80 70 L80 80 L20 80 Z" fill="#D8E8D5" />
+                    <path d="M47 80 L47 100 L53 100 L53 80 Z" fill="#5D4037" />
+                    <circle cx="50" cy="50" r="15" fill="#FFFFFF" />
+                    <path d="M45 50 L65 50 M45 45 L65 45 M45 55 L65 55" stroke="#A5D6A7" stroke-width="2" />
+                    <!-- Mail flag -->
+                    <path d="M70 20 L75 20 L75 -5 L85 -5 L85 10 L75 10" fill="#FFCA28" />
+                    <path d="M70 5 L85 5" stroke="#FFCA28" stroke-width="2" />
+                    <!-- Leaf decoration -->
+                    <path d="M80 85 Q95 85 95 70 Q90 90 80 85" fill="#4CAF50" />
+                    <path d="M85 95 Q100 95 100 80 Q95 100 85 95" fill="#4CAF50" />
+                </svg>
+            </div>
+        </div>
+
+
+
+        <!-- Footer Section (Redesigned Edition) -->
+        <footer
+            style="background-color: #0c1824; color: #ffffff; padding: 80px 5% 40px; font-family: 'Inter', sans-serif; border-top: 4px solid var(--primary-green); margin-top: 60px;">
+            <div
+                style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 60px;">
+                <!-- Brand Column -->
+                <div style="flex: 2; min-width: 300px;">
+                    <h2
+                        style="font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 800; color: #6EE7B7; margin-bottom: 12px; letter-spacing: 1px;">
+                        LEADGREEN</h2>
+                    <h4
+                        style="font-size: 13px; font-weight: 700; color: #34D399; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 2px;">
+                        Learn. Act. Measure. Lead.</h4>
+                    <p style="color: #9CA3AF; font-size: 15px; line-height: 1.7; max-width: 350px;">
+                        Building a network of young African changemakers taking measurable action for a greener Africa.
+                    </p>
+                </div>
+
+                <!-- Links Column -->
+                <div style="flex: 1;">
+                    <h4
+                        style="font-size: 16px; font-weight: 700; color: #ffffff; margin-bottom: 25px; letter-spacing: 0.5px;">
+                        Navigation</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <a href="Homepage.html"
+                            style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                            onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Home</a>
+                        <a href="About.html"
+                            style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                            onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">About</a>
+                        <a href="#" style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                            onmouseover="this.style.color='#6EE7B7'"
+                            onmouseout="this.style.color='#D1D5DB'">Fellowship</a>
+                        <a href="Fellowspage.html"
+                            style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                            onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Meet
+                            Fellows</a>
+                        <a href="Homepage.html#impact"
+                            style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                            onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Impact</a>
+                        <a href="Homepage.html#faq"
+                            style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                            onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">FAQ</a>
+                        <a href="Apply.html"
+                            style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                            onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Apply</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Base Copyright Row -->
+            <div
+                style="max-width: 1200px; margin: 60px auto 0; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+                <div style="color: #9CA3AF; font-size: 14px;">
+                    &copy; 2026 LeadGreen. All rights reserved.
+                </div>
+                <div class="social-icons" style="display: flex; gap: 18px;">
+                    <a href="#" style="color: #9CA3AF; font-size: 18px; transition: 0.2s;"
+                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i
+                            class="fa-brands fa-twitter"></i></a>
+                    <a href="#" style="color: #9CA3AF; font-size: 18px; transition: 0.2s;"
+                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i
+                            class="fa-brands fa-instagram"></i></a>
+                    <a href="#" style="color: #9CA3AF; font-size: 18px; transition: 0.2s;"
+                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i
+                            class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </footer>
+
+        <script>
+            // Check for font awesome pro icons fallback
+            document.addEventListener("DOMContentLoaded", () => {
+                const partyHorn = document.querySelector('.fa-party-horn');
+                if (partyHorn) {
+                    // simple layout adjustment if needed
+                }
+            });
+        </script>
+</body>
+
+</html>
