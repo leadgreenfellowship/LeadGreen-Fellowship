@@ -480,21 +480,61 @@
             color: #ef4444;
         }
 
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #10b981;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
         @media (max-width: 992px) {
-            .header-right {
-                align-items: center;
+            header {
+                padding: 15px 20px;
+                flex-direction: row;
+                justify-content: space-between;
+                position: relative;
             }
 
-            header {
-                flex-direction: column;
-                gap: 20px;
-                padding: 20px;
+            .menu-toggle {
+                display: block;
+            }
+
+            .header-right {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                max-width: 400px;
+                height: 100vh;
+                background-color: #ffffff;
+                padding: 80px 30px 40px;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                transition: right 0.3s ease-in-out;
+                z-index: 999;
+                align-items: flex-start;
+                justify-content: flex-start;
+            }
+
+            .header-right.active {
+                right: 0;
             }
 
             .main-nav {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 20px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 25px;
+                width: 100%;
+            }
+
+            .nav-link {
+                font-size: 18px;
+                display: block;
+                width: 100%;
+                border-bottom: 1px solid #f0f0f0;
+                padding-bottom: 10px;
             }
 
             .hero-title {
@@ -507,6 +547,33 @@
 
             .apply-wrapper {
                 margin: -40px auto 50px;
+                padding: 0 10px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 30px;
+                letter-spacing: -0.5px;
+            }
+
+            .form-content {
+                padding: 25px 20px;
+            }
+
+            .apply-wrapper {
+                margin: -30px auto 40px;
+                padding: 0 5px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .btn {
+                width: 100%;
+                margin: 0 !important;
             }
         }
     </style>
@@ -515,17 +582,18 @@
 <body>
     <!-- Main Global Header from Homepage -->
     <header>
-        <a href="Homepage.html" class="logo">
+        <a href="index.html" class="logo">
             <img src="Logo name green.png" alt="Leadgreen Fellowship Logo"
                 style="height: 65px; width: auto; display: block; object-fit: contain;">
         </a>
-        <div class="header-right">
+        <button class="menu-toggle" aria-label="Toggle navigation">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="header-right" id="navMenu">
             <nav class="main-nav">
-                <a href="Homepage.html" class="nav-link">Home</a>
+                <a href="index.html" class="nav-link">Home</a>
                 <a href="About.html" class="nav-link">About</a>
                 <a href="Fellowspage.html" class="nav-link">Meet Fellows</a>
-                <a href="Homepage.html#impact" class="nav-link">Impact</a>
-                <a href="Homepage.html#faq" class="nav-link">FAQ</a>
             </nav>
         </div>
     </header>
@@ -929,6 +997,24 @@
                 activeForm.reportValidity();
             }
         });
+
+        // Mobile Navigation Toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const headerRight = document.getElementById('navMenu');
+
+        if (menuToggle && headerRight) {
+            menuToggle.addEventListener('click', () => {
+                headerRight.classList.toggle('active');
+                const icon = menuToggle.querySelector('i');
+                if (headerRight.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                } else {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
     </script>
 
     <!-- Footer Section (Redesigned Edition) -->
@@ -955,7 +1041,7 @@
                     style="font-size: 16px; font-weight: 700; color: #ffffff; margin-bottom: 25px; letter-spacing: 0.5px;">
                     Navigation</h4>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <a href="Homepage.html"
+                    <a href="index.html"
                         style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
                         onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Home</a>
                     <a href="About.html"
@@ -967,10 +1053,10 @@
                         style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
                         onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Meet
                         Fellows</a>
-                    <a href="Homepage.html#impact"
+                    <a href="index.html#impact"
                         style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
                         onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Impact</a>
-                    <a href="Homepage.html#faq"
+                    <a href="index.html#faq"
                         style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
                         onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">FAQ</a>
                     <a href="Apply.html"
