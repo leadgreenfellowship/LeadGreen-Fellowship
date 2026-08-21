@@ -9,8 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="global.css">
     <style>
         :root {
             --primary-green: #0D643E;
@@ -39,65 +39,6 @@
 
         a {
             text-decoration: none;
-        }
-
-        /* Global Header from Homepage */
-        header {
-            background-color: #ffffff;
-            padding: 15px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
-
-        .header-right {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 25px;
-        }
-
-        .main-nav {
-            display: flex;
-            align-items: center;
-            gap: 32px;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: #333333;
-            font-size: 14px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: color 0.2s;
-        }
-
-        .nav-link:hover {
-            color: var(--primary-green);
-        }
-
-        .btn-apply-main {
-            background-color: var(--primary-green);
-            color: #ffffff;
-            text-decoration: none;
-            padding: 10px 24px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: background-color 0.2s, transform 0.1s;
-            margin-left: 10px;
-        }
-
-        .btn-apply-main:hover {
-            background-color: #09472b;
-            transform: translateY(-1px);
         }
 
         /* Hero Section */
@@ -315,71 +256,7 @@
             background: #F9FAFB;
         }
 
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 28px;
-            color: var(--primary-green);
-            cursor: pointer;
-            z-index: 1000;
-        }
-
         @media (max-width: 992px) {
-            header {
-                padding: 15px 20px;
-                flex-direction: row;
-                justify-content: space-between;
-                position: relative;
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
-            .header-right {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 80%;
-                max-width: 400px;
-                height: 100vh;
-                background-color: #ffffff;
-                padding: 80px 30px 40px;
-                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-                transition: right 0.3s ease-in-out;
-                z-index: 999;
-                align-items: flex-start;
-                justify-content: flex-start;
-            }
-
-            .header-right.active {
-                right: 0;
-            }
-
-            .main-nav {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 25px;
-                width: 100%;
-            }
-
-            .nav-link {
-                font-size: 18px;
-                display: block;
-                width: 100%;
-                border-bottom: 1px solid #f0f0f0;
-                padding-bottom: 10px;
-            }
-
-            .btn-apply-main {
-                margin-left: 0;
-                width: 100%;
-                text-align: center;
-                margin-top: 10px;
-            }
-
-
             .hero {
                 padding: 80px 20px;
             }

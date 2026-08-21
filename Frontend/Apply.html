@@ -7,6 +7,7 @@
     <title>Apply - LeadGreen Fellowship</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="global.css">
     <style>
         * {
             margin: 0;
@@ -35,67 +36,6 @@
             flex: 1;
             position: relative;
             z-index: 10;
-        }
-
-        /* Global Header from Homepage */
-        header {
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 15px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            position: relative;
-            z-index: 20;
-        }
-
-        .header-right {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 25px;
-        }
-
-        .main-nav {
-            display: flex;
-            align-items: center;
-            gap: 32px;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: #333333;
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: color 0.2s;
-        }
-
-        .nav-link:hover {
-            color: #10b981;
-        }
-
-        .btn-apply-main {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: #ffffff;
-            text-decoration: none;
-            padding: 10px 24px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin-left: 10px;
-            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
-        }
-
-        .btn-apply-main:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(16, 185, 129, 0.3);
         }
 
         /* Simple Hero */
@@ -480,63 +420,7 @@
             color: #ef4444;
         }
 
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 28px;
-            color: #10b981;
-            cursor: pointer;
-            z-index: 1000;
-        }
-
         @media (max-width: 992px) {
-            header {
-                padding: 15px 20px;
-                flex-direction: row;
-                justify-content: space-between;
-                position: relative;
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
-            .header-right {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 80%;
-                max-width: 400px;
-                height: 100vh;
-                background-color: #ffffff;
-                padding: 80px 30px 40px;
-                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-                transition: right 0.3s ease-in-out;
-                z-index: 999;
-                align-items: flex-start;
-                justify-content: flex-start;
-            }
-
-            .header-right.active {
-                right: 0;
-            }
-
-            .main-nav {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 25px;
-                width: 100%;
-            }
-
-            .nav-link {
-                font-size: 18px;
-                display: block;
-                width: 100%;
-                border-bottom: 1px solid #f0f0f0;
-                padding-bottom: 10px;
-            }
-
             .hero-title {
                 font-size: 38px;
             }
@@ -779,6 +663,30 @@
                     <!-- Step 6: Final -->
                     <div class="step-section" data-step="6">
                         <h3 style="margin-bottom: 20px; font-size: 18px; color: #111;">Final Confirmation</h3>
+
+                        <div class="form-group"
+                            style="padding: 15px; background: #f0fdf4; border-radius: 8px; border: 1px solid #10b981; margin-bottom: 30px;">
+                            <label class="form-label" style="font-size: 14px; margin-bottom: 12px;">Certificate Issuance
+                                <span>*</span></label>
+                            <p style="font-size: 13px; color: #4b5563; margin-bottom: 15px; line-height: 1.5;">
+                                Participants who successfully complete the fellowship will be eligible to receive a
+                                digital certificate. A small fee may apply for certificate issuance. Would you be
+                                willing to pay a small fee to receive your certificate?</p>
+
+                            <div style="display: flex; gap: 30px;">
+                                <label class="checkbox-label" style="margin-bottom: 0;">
+                                    <input type="radio" name="certificateFee" value="Yes" required
+                                        style="border-radius: 50%;">
+                                    <span>Yes</span>
+                                </label>
+                                <label class="checkbox-label" style="margin-bottom: 0;">
+                                    <input type="radio" name="certificateFee" value="No" required
+                                        style="border-radius: 50%;">
+                                    <span>No</span>
+                                </label>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label class="form-label">How did you hear about us? <span>*</span></label>
                             <select class="form-select" id="referralSource" name="referralSource" required>
