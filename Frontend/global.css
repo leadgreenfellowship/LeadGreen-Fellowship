@@ -228,15 +228,18 @@ header {
 /* Responsive */
 @media (max-width: 992px) {
     header {
-        padding: 15px 20px;
+        padding: 12px 15px;
         flex-direction: row;
         justify-content: space-between;
+        align-items: center;
         position: relative;
     }
 
     .logo img,
     .logo-img {
-        height: 40px !important;
+        height: 44px !important;
+        max-width: 170px;
+        object-fit: contain;
     }
 
     .menu-toggle {
@@ -283,8 +286,8 @@ header {
         width: auto;
         text-align: center;
         margin-top: 0;
-        padding: 8px 14px;
-        font-size: 12px;
+        padding: 7px 12px;
+        font-size: 11px;
     }
 
     .btn-login-main {
