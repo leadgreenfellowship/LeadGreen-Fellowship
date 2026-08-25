@@ -211,11 +211,11 @@
                 <img src="../Frontend/Logo name green.png" alt="Leadgreen Logo">
             </div>
             <nav class="sidebar-nav">
-                <a href="index" class="nav-item"><i class="fa-solid fa-users"></i>
+                <a href="index.html" class="nav-item"><i class="fa-solid fa-users"></i>
                     <span>Applications</span></a>
-                <a href="AdminAnalytics" class="nav-item active"><i class="fa-solid fa-chart-pie"></i>
+                <a href="AdminAnalytics.html" class="nav-item active"><i class="fa-solid fa-chart-pie"></i>
                     <span>Analytics</span></a>
-                <a href="AdminAlumniImport" class="nav-item"><i class="fa-solid fa-cloud-arrow-up"></i>
+                <a href="AdminAlumniImport.html" class="nav-item"><i class="fa-solid fa-cloud-arrow-up"></i>
                     <span>Import Alumni</span></a>
             </nav>
             <div class="sidebar-footer">
@@ -339,14 +339,14 @@
         // Security
         onAuthStateChanged(auth, (user) => {
             if (!user) {
-                window.location.href = "AdminLogin";
+                window.location.href = "AdminLogin.html";
             }
         });
 
         document.getElementById('logout-btn').addEventListener('click', (e) => {
             e.preventDefault();
             signOut(auth).then(() => {
-                window.location.href = "AdminLogin";
+                window.location.href = "AdminLogin.html";
             });
         });
 

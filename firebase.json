@@ -1,11 +1,1 @@
-{
-    "hosting": {
-        "public": "Frontend",
-        "ignore": [
-            "firebase.json",
-            "**/.*",
-            "**/node_modules/**"
-        ],
-        "cleanUrls": true
-    }
-}
+{}
