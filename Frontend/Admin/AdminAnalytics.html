@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadGreen - Application Analytics</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            /* Branding colors */
+            --primary-green: #138A56;
+            --light-green: #E8F5EE;
+            --hover-green: #F0F9F4;
+            --text-main: #111827;
+            --text-muted: #4B5563;
+            --text-light: #9CA3AF;
+            --border-color: #F3F4F6;
+            --card-border: #E5E7EB;
+            --bg-body: #FAFAFA;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* Layout */
+        .layout {
+            display: flex;
+            width: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            background-color: #FFFFFF;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .sidebar-logo {
+            margin-bottom: 40px;
+            padding-left: 10px;
+        }
+
+        .sidebar-logo img {
+            height: 55px;
+            object-fit: contain;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .nav-item i {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-item:hover {
+            background-color: var(--hover-green);
+            color: var(--text-main);
+        }
+
+        .nav-item.active {
+            background-color: var(--light-green);
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
+        .nav-item.logout {
+            color: #EF4444;
+        }
+
+        .nav-item.logout:hover {
+            background-color: #FEF2F2;
+        }
+
+        /* Main Content */
+        .content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            max-width: 1400px;
+        }
+
+        /* Top Header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .header-title h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .header-title p {
+            font-size: 15px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Analytics Grid */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .chart-card {
+            background-color: #FFFFFF;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-header {
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        .chart-header h3 {
+            font-size: 16px;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 60px;
+            color: var(--text-muted);
+            font-size: 15px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="../Frontend/Logo name green.png" alt="Leadgreen Logo">
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item"><i class="fa-solid fa-users"></i>
+                    <span>Applications</span></a>
+                <a href="AdminAnalytics.html" class="nav-item active"><i class="fa-solid fa-chart-pie"></i>
+                    <span>Analytics</span></a>
+                <a href="AdminAlumniImport.html" class="nav-item"><i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>Import Alumni</span></a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="#" id="logout-btn" class="nav-item logout"><i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <span>Logout</span></a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <div class="page-header">
+                <div class="header-title">
+                    <h1>Application Analytics Overview</h1>
+                    <p>Visualizing applicant data across all form questions.</p>
+                </div>
+            </div>
+
+            <div id="loading" class="loading-state">
+                <i class="fa-solid fa-spinner fa-spin"
+                    style="font-size: 24px; color: var(--primary-green); margin-bottom: 10px;"></i>
+                <p>Crunching the numbers...</p>
+            </div>
+
+            <!-- Charts Grid -->
+            <div class="charts-grid" id="analytics-content" style="display: none;">
+
+                <!-- Gender Distribution -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Gender Distribution</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="genderChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Climate Interest Area -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Preferred Climate Area</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="climateAreaChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Referral Source -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>How did they hear about us?</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="referralChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Leadership Interest -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Interest in Team Lead/Co-Lead?</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="leadershipChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Willingness to Pay for Certificate -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Certificate Fee Willingness</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="certificateChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Top 5 Countries -->
+                <div class="chart-card" style="grid-column: span 1;">
+                    <div class="chart-header">
+                        <h3>Top Applicant Countries</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="countryChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, limit } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+
+        // Global Chart.js configuration
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = "#4B5563";
+
+        const colors = {
+            primary: ['#138A56', '#34D399', '#059669', '#6EE7B7', '#064E3B'],
+            secondary: ['#3B82F6', '#60A5FA', '#93C5FD', '#1D4ED8', '#BFDBFE'],
+            warm: ['#F59E0B', '#FBBF24', '#FCD34D', '#D97706', '#FEF3C7'],
+            binary: ['#10B981', '#EF4444']
+        };
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5lPT8Fyp265fvebWq4BelNE0dYxuWvCE",
+            authDomain: "leadgreen-fellowship.firebaseapp.com",
+            projectId: "leadgreen-fellowship",
+            storageBucket: "leadgreen-fellowship.firebasestorage.app",
+            messagingSenderId: "639331926711",
+            appId: "1:639331926711:web:03d9d47c8b33cef84a0332"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Security
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "AdminLogin.html";
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            signOut(auth).then(() => {
+                window.location.href = "AdminLogin.html";
+            });
+        });
+
+        // Tally variables
+        const metrics = {
+            gender: {},
+            climateArea: {},
+            referral: {},
+            leadership: {},
+            certificate: {},
+            country: {}
+        };
+
+        function incrementMetric(category, key) {
+            const cleanKey = key ? String(key).trim() : 'Unknown';
+            if (cleanKey === '') return;
+            if (!metrics[category][cleanKey]) metrics[category][cleanKey] = 0;
+            metrics[category][cleanKey]++;
+        }
+
+        async function fetchAnalytics() {
+            try {
+                const appsQuery = query(collection(db, "applications"), limit(5000));
+                const snapshot = await getDocs(appsQuery);
+
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+
+                    incrementMetric('gender', data.gender);
+                    incrementMetric('climateArea', data.climateArea);
+                    incrementMetric('referral', data.referralSource);
+                    incrementMetric('leadership', data.leadInterest);
+                    incrementMetric('certificate', data.certificateFee);
+
+                    // Standardize country casing for cleaner graphs
+                    const rawCountry = data.country ? data.country.trim() : '';
+                    if (rawCountry) {
+                        const polishedGrp = rawCountry.charAt(0).toUpperCase() + rawCountry.slice(1).toLowerCase();
+                        incrementMetric('country', polishedGrp);
+                    }
+                });
+
+                renderCharts();
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('analytics-content').style.display = 'grid';
+
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                document.getElementById('loading').innerHTML = '<p style="color:#DC2626;">Error loading analytics data. Check console for details.</p>';
+            }
+        }
+
+        function createPieChart(ctxId, dataObj, colorPalette) {
+            const labels = Object.keys(dataObj);
+            const data = Object.values(dataObj);
+
+            new Chart(document.getElementById(ctxId), {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colorPalette,
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right' }
+                    }
+                }
+            });
+        }
+
+        function createDoughnutChart(ctxId, dataObj, colorPalette) {
+            const labels = Object.keys(dataObj);
+            const data = Object.values(dataObj);
+
+            new Chart(document.getElementById(ctxId), {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colorPalette,
+                        borderWidth: 1,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: {
+                        legend: { position: 'right' }
+                    }
+                }
+            });
+        }
+
+        function createBarChart(ctxId, dataObj, color) {
+            // Sort to get top results
+            const sortedEntries = Object.entries(dataObj).sort((a, b) => b[1] - a[1]).slice(0, 7); // max 7 bars
+            const labels = sortedEntries.map(e => e[0]);
+            const data = sortedEntries.map(e => e[1]);
+
+            new Chart(document.getElementById(ctxId), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Applicants',
+                        data: data,
+                        backgroundColor: color,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { precision: 0 } }
+                    }
+                }
+            });
+        }
+
+        function renderCharts() {
+            createPieChart('genderChart', metrics.gender, colors.primary);
+            createDoughnutChart('climateAreaChart', metrics.climateArea, colors.secondary);
+            createBarChart('referralChart', metrics.referral, '#138A56');
+            createPieChart('leadershipChart', metrics.leadership, colors.warm);
+
+            // For Certificate Fee we can just use binary colors Yes/No
+            const certLabels = Object.keys(metrics.certificate);
+            const certColors = certLabels.map(l => l.toLowerCase() === 'yes' ? '#10B981' : (l.toLowerCase() === 'no' ? '#EF4444' : '#9CA3AF'));
+            createDoughnutChart('certificateChart', metrics.certificate, certColors);
+
+            createBarChart('countryChart', metrics.country, '#3B82F6');
+        }
+
+        // Init
+        fetchAnalytics();
+    </script>
+</body>
+
+</html>
