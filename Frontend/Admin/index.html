@@ -419,11 +419,11 @@
                 <img src="../Frontend/Logo name green.png" alt="Leadgreen Logo">
             </div>
             <nav class="sidebar-nav">
-                <a href="index.html" class="nav-item active"><i class="fa-solid fa-users"></i>
+                <a href="index" class="nav-item active"><i class="fa-solid fa-users"></i>
                     <span>Applications</span></a>
-                <a href="AdminAnalytics.html" class="nav-item"><i class="fa-solid fa-chart-pie"></i>
+                <a href="AdminAnalytics" class="nav-item"><i class="fa-solid fa-chart-pie"></i>
                     <span>Analytics</span></a>
-                <a href="AdminAlumniImport.html" class="nav-item"><i class="fa-solid fa-cloud-arrow-up"></i>
+                <a href="AdminAlumniImport" class="nav-item"><i class="fa-solid fa-cloud-arrow-up"></i>
                     <span>Import Alumni</span></a>
             </nav>
             <div class="sidebar-footer">
@@ -642,7 +642,7 @@
                     <td>${app.gender || '-'}</td>
                     <td>${app.climateArea || '-'}</td>
                     <td><span class="badge ${statusStr}">${statusLabel}</span></td>
-                    <td><a href="AdminApplicationDetails.html?id=${app.id}" class="btn-view">Review Application</a></td>
+                    <td><a href="AdminApplicationDetails?id=${app.id}" class="btn-view">Review Application</a></td>
                 `;
                 tableBody.appendChild(tr);
             });
