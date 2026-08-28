@@ -407,6 +407,59 @@
         .btn-view:hover {
             background-color: #D1EADE;
         }
+
+        /* Pagination Styles */
+        .pagination-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-top: 1px solid var(--border-color);
+            background: #fff;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+
+        .pagination-info {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .pagination-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn-pagination {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: white;
+            color: var(--text-main);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-pagination:disabled {
+            background: #F3F4F6;
+            color: var(--text-light);
+            cursor: not-allowed;
+            border-color: #E5E7EB;
+        }
+
+        .btn-pagination:not(:disabled):hover {
+            background: #F9FAFB;
+            border-color: #D1D5DB;
+        }
+
+        .btn-pagination.active {
+            background: var(--primary-green);
+            color: white;
+            border-color: var(--primary-green);
+        }
     </style>
 </head>
 
@@ -516,6 +569,16 @@
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Pagination Controls -->
+                <div class="pagination-controls" id="paginationControls">
+                    <div class="pagination-info" id="paginationInfo">Showing 0 to 0 of 0 entries</div>
+                    <div class="pagination-actions">
+                        <button id="btnPrevPage" class="btn-pagination" disabled>Previous</button>
+                        <div id="pageNumbers" style="display: flex; gap: 4px;"></div>
+                        <button id="btnNextPage" class="btn-pagination" disabled>Next</button>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
@@ -555,6 +618,9 @@
         });
 
         let applications = [];
+        let filteredApps = [];
+        let currentPage = 1;
+        const itemsPerPage = 10;
 
         async function fetchApplications() {
             try {
@@ -584,22 +650,21 @@
                 document.getElementById('stat-selected').innerText = selected;
                 document.getElementById('stat-not-selected').innerText = notSelected;
 
-                renderTable();
+                renderTable(true);
             } catch (e) {
                 console.error("Error loading application states: ", e);
                 document.getElementById('tableBody').innerHTML = '<tr><td colspan="6" style="text-align:center;color:#D97706;">Error loading data</td></tr>';
             }
         }
 
-        function renderTable() {
-            const tableBody = document.getElementById('tableBody');
-            tableBody.innerHTML = '';
+        function renderTable(resetPage = true) {
+            if (resetPage) currentPage = 1;
 
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const statusFilter = document.getElementById('statusFilter').value;
             const cohortFilter = document.getElementById('cohortFilter').value;
 
-            const filteredApps = applications.filter(app => {
+            filteredApps = applications.filter(app => {
                 const fullName = `${app.firstName || ''} ${app.lastName || ''}`.toLowerCase();
                 const email = (app.email || '').toLowerCase();
                 const appId = (app.id || '').toLowerCase();
@@ -613,12 +678,29 @@
                 return matchesSearch && matchesStatus && matchesCohort;
             });
 
+            renderPagination();
+        }
+
+        function renderPagination() {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+
             if (filteredApps.length === 0) {
                 tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 30px;">No applications found matching criteria.</td></tr>';
+                updatePaginationControls(0, 0, 0, 0);
                 return;
             }
 
-            filteredApps.forEach(app => {
+            const totalPages = Math.ceil(filteredApps.length / itemsPerPage);
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, filteredApps.length);
+
+            const pageApps = filteredApps.slice(startIndex, endIndex);
+
+            pageApps.forEach(app => {
                 const tr = document.createElement('tr');
 
                 const initials = ((app.firstName || 'A')[0] + (app.lastName || 'A')[0]).toUpperCase();
@@ -646,11 +728,63 @@
                 `;
                 tableBody.appendChild(tr);
             });
+
+            updatePaginationControls(startIndex + 1, endIndex, filteredApps.length, totalPages);
         }
 
-        document.getElementById('searchInput').addEventListener('input', renderTable);
-        document.getElementById('statusFilter').addEventListener('change', renderTable);
-        document.getElementById('cohortFilter').addEventListener('change', renderTable);
+        function updatePaginationControls(start, end, total, totalPages) {
+            const info = document.getElementById('paginationInfo');
+            const btnPrev = document.getElementById('btnPrevPage');
+            const btnNext = document.getElementById('btnNextPage');
+            const pageNumbers = document.getElementById('pageNumbers');
+
+            if (total === 0) {
+                info.innerText = 'Showing 0 to 0 of 0 entries';
+                btnPrev.disabled = true;
+                btnNext.disabled = true;
+                pageNumbers.innerHTML = '';
+                return;
+            }
+
+            info.innerText = `Showing ${start} to ${end} of ${total} entries`;
+            btnPrev.disabled = currentPage === 1;
+            btnNext.disabled = currentPage === totalPages;
+
+            pageNumbers.innerHTML = '';
+
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, currentPage + 2);
+
+            for (let i = startPage; i <= endPage; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'btn-pagination' + (i === currentPage ? ' active' : '');
+                btn.innerText = i;
+                btn.addEventListener('click', () => {
+                    currentPage = i;
+                    renderPagination();
+                });
+                pageNumbers.appendChild(btn);
+            }
+        }
+
+        document.getElementById('searchInput').addEventListener('input', () => renderTable(true));
+        document.getElementById('statusFilter').addEventListener('change', () => renderTable(true));
+        document.getElementById('cohortFilter').addEventListener('change', () => renderTable(true));
+
+        document.getElementById('btnPrevPage').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderPagination();
+            }
+        });
+
+        document.getElementById('btnNextPage').addEventListener('click', () => {
+            const totalPages = Math.ceil(filteredApps.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderPagination();
+            }
+        });
 
         document.getElementById('btnExportCSV').addEventListener('click', () => {
             const selectedApps = applications.filter(app => app.applicationStatus === 'selected');
