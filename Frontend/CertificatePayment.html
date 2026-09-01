@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadGreen - Official Certificate Registration</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-green: #138A56;
+            --light-green: #E8F5EE;
+            --hover-green: #F0F9F4;
+            --text-main: #111827;
+            --text-muted: #4B5563;
+            --text-light: #9CA3AF;
+            --border-color: #E5E7EB;
+            --bg-body: #F3F4F6;
+            --accent: #22c55e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+        }
+
+        .container {
+            background-color: #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            background-color: var(--primary-green);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header img {
+            height: 40px;
+            margin-bottom: 15px;
+            filter: brightness(0) invert(1);
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .benefits-list {
+            margin-bottom: 25px;
+            background: var(--hover-green);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--light-green);
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-muted);
+        }
+
+        .benefit-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .benefit-item i {
+            color: var(--primary-green);
+            margin-top: 3px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 15px;
+            color: var(--text-main);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(19, 138, 86, 0.1);
+        }
+
+        .form-group .hint {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        .price-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: #F9FAFB;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 25px;
+        }
+
+        .price-label {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .price-amount {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-green);
+        }
+
+        .btn-pay {
+            width: 100%;
+            background-color: var(--primary-green);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-pay:hover {
+            background-color: #0f6c44;
+        }
+
+        .btn-pay:active {
+            transform: scale(0.98);
+        }
+
+        .btn-pay:disabled {
+            background-color: var(--text-light);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 15px;
+            font-size: 12px;
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        .secure-badge i {
+            color: var(--text-light);
+        }
+
+        /* Success screen */
+        #success-screen {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--light-green);
+            color: var(--primary-green);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 36px;
+            margin: 0 auto 20px;
+        }
+
+        #success-screen h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        #success-screen p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        /* Loader */
+        .loader {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid #fff;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container" id="main-container">
+        <!-- Main Form Screen -->
+        <div id="form-screen">
+            <div class="header">
+                <img src="Logo name green.png" alt="LeadGreen Logo" onerror="this.style.display='none'">
+                <h1>Make Your LeadGreen Journey Official</h1>
+                <p>Claim Your Verified Certificate</p>
+            </div>
+
+            <div class="content">
+                <div class="benefits-list">
+                    <div class="benefit-item">
+                        <i class="fa-solid fa-briefcase"></i>
+                        <div><strong>Boost Your Professional Profile:</strong> Perfect for LinkedIn & CVs. Stand out to
+                            employers looking for committed climate talent.</div>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fa-solid fa-certificate"></i>
+                        <div><strong>Verified Credibility:</strong> A globally recognized proof of your environmental
+                            leadership training.</div>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fa-solid fa-rocket"></i>
+                        <div><strong>Unlock Opportunities:</strong> Stand out from the crowd for green jobs, grants, and
+                            scholarships.</div>
+                    </div>
+                </div>
+
+                <form id="paymentForm">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" placeholder="e.g. John Doe" required>
+                        <div class="hint">Exactly how you want it to appear on your certificate.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="emailAddress">Email Address</label>
+                        <input type="email" id="emailAddress" placeholder="e.g. john@example.com" required>
+                        <div class="hint">Where we will send updates regarding your certificate.</div>
+                    </div>
+
+                    <div class="price-box">
+                        <div class="price-label">Certificate Generation Fee</div>
+                        <div class="price-amount">$1.99</div>
+                    </div>
+
+                    <button type="submit" class="btn-pay" id="payBtn">
+                        <span id="payText">Pay $1.99</span>
+                        <div class="loader" id="payLoader"></div>
+                    </button>
+
+                    <div class="secure-badge">
+                        <i class="fa-solid fa-lock"></i> Secured by Paystack
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Success Screen -->
+        <div id="success-screen">
+            <div class="success-icon">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h2>Payment Successful!</h2>
+            <p>Thank you for claiming your official certificate, <strong id="successName"></strong>.</p>
+            <p>Your details have been securely logged. Your personalized certificate will be generated and sent to
+                <strong><span id="successEmail"></span></strong> shortly.</p>
+        </div>
+    </div>
+
+    <!-- Paystack Inline JS -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5lPT8Fyp265fvebWq4BelNE0dYxuWvCE",
+            authDomain: "leadgreen-fellowship.firebaseapp.com",
+            projectId: "leadgreen-fellowship",
+            storageBucket: "leadgreen-fellowship.firebasestorage.app",
+            messagingSenderId: "639331926711",
+            appId: "1:639331926711:web:03d9d47c8b33cef84a0332"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // UI Elements
+        const paymentForm = document.getElementById('paymentForm');
+        const payBtn = document.getElementById('payBtn');
+        const payText = document.getElementById('payText');
+        const payLoader = document.getElementById('payLoader');
+        const formScreen = document.getElementById('form-screen');
+        const successScreen = document.getElementById('success-screen');
+        const successName = document.getElementById('successName');
+        const successEmail = document.getElementById('successEmail');
+
+        // Note: Change this to your live paystack public key when deploying
+        const PAYSTACK_PUBLIC_KEY = 'pk_test_XXXXXXXXXX';
+
+        // 1.99 USD in cents is 199 
+        // Note: Paystack might process in local currency (NGN) primarily if using a Nigerian account, 
+        // to process USD you need to pass currency: 'USD'. Ensure your Paystack accepts USD. 
+        const AMOUNT_IN_CENTS = 199;
+
+        paymentForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const fullName = document.getElementById('fullName').value.trim();
+            const emailAddress = document.getElementById('emailAddress').value.trim();
+
+            if (!fullName || !emailAddress) return;
+
+            init_payment(fullName, emailAddress);
+        });
+
+        function init_payment(fullName, emailAddress) {
+            // Check if key is updated
+            if (PAYSTACK_PUBLIC_KEY === 'pk_test_XXXXXXXXXX') {
+                alert("Please replace PAYSTACK_PUBLIC_KEY in the code with your actual Paystack public key before testing.");
+                return;
+            }
+
+            var handler = PaystackPop.setup({
+                key: PAYSTACK_PUBLIC_KEY,
+                email: emailAddress,
+                amount: AMOUNT_IN_CENTS,
+                currency: 'USD', // Ensure you have USD enabled on Paystack, else change to NGN and update amount
+                metadata: {
+                    custom_fields: [
+                        {
+                            display_name: "Full Name",
+                            variable_name: "full_name",
+                            value: fullName
+                        }
+                    ]
+                },
+                callback: function (response) {
+                    // This runs after successful payment
+                    const reference = response.reference;
+                    saveToFirebase(fullName, emailAddress, reference);
+                },
+                onClose: function () {
+                    // User closed the popup
+                    console.log('Payment window closed.');
+                }
+            });
+
+            handler.openIframe();
+        }
+
+        async function saveToFirebase(fullName, email, reference) {
+            // Show loading on button while saving just in case
+            payText.style.display = 'none';
+            payLoader.style.display = 'block';
+            payBtn.disabled = true;
+
+            try {
+                // Add to 'certificate_payments' collection in Firestore
+                await addDoc(collection(db, "certificate_payments"), {
+                    fullName: fullName,
+                    email: email,
+                    paymentReference: reference,
+                    amount: AMOUNT_IN_CENTS / 100,
+                    currency: 'USD',
+                    status: 'paid',
+                    paidAt: serverTimestamp()
+                });
+
+                // Show Success Screen
+                successName.innerText = fullName;
+                successEmail.innerText = email;
+                formScreen.style.display = 'none';
+                successScreen.style.display = 'block';
+
+            } catch (error) {
+                console.error("Error saving document: ", error);
+                alert("Payment was successful but we couldn't log your details. Please contact support with reference: " + reference);
+                // Reset button
+                payText.style.display = 'block';
+                payLoader.style.display = 'none';
+                payBtn.disabled = false;
+            }
+        }
+    </script>
+</body>
+
+</html>
