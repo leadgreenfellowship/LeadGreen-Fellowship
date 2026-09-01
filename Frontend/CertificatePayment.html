@@ -376,8 +376,8 @@
         // Note: Change this to your live paystack public key when deploying
         const PAYSTACK_PUBLIC_KEY = 'pk_live_2cf3580bba9fe1d6144007724ecb1fe1f50ff1b0';
 
-        // 3000 NGN in kobo is 300000 (roughly equivalent to $1.99)
-        const AMOUNT_IN_CENTS = 300000;
+        // 1.99 USD in cents is 199 
+        const AMOUNT_IN_CENTS = 199;
 
         paymentForm.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -395,7 +395,7 @@
                 key: PAYSTACK_PUBLIC_KEY,
                 email: emailAddress,
                 amount: AMOUNT_IN_CENTS,
-                currency: 'NGN', // Using NGN to avoid Paystack USD account requirement; international cards will auto-convert
+                currency: 'USD', // Require USD checkout
                 metadata: {
                     custom_fields: [
                         {
@@ -432,7 +432,7 @@
                     email: email,
                     paymentReference: reference,
                     amount: AMOUNT_IN_CENTS / 100,
-                    currency: 'NGN',
+                    currency: 'USD',
                     status: 'paid',
                     paidAt: serverTimestamp()
                 });
