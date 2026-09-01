@@ -337,7 +337,8 @@
             <h2>Payment Successful!</h2>
             <p>Thank you for claiming your official certificate, <strong id="successName"></strong>.</p>
             <p>Your details have been securely logged. Your personalized certificate will be generated and sent to
-                <strong><span id="successEmail"></span></strong> shortly.</p>
+                <strong><span id="successEmail"></span></strong> shortly.
+            </p>
         </div>
     </div>
 
@@ -373,11 +374,9 @@
         const successEmail = document.getElementById('successEmail');
 
         // Note: Change this to your live paystack public key when deploying
-        const PAYSTACK_PUBLIC_KEY = 'pk_test_XXXXXXXXXX';
+        const PAYSTACK_PUBLIC_KEY = 'pk_live_2cf3580bba9fe1d6144007724ecb1fe1f50ff1b0';
 
         // 1.99 USD in cents is 199 
-        // Note: Paystack might process in local currency (NGN) primarily if using a Nigerian account, 
-        // to process USD you need to pass currency: 'USD'. Ensure your Paystack accepts USD. 
         const AMOUNT_IN_CENTS = 199;
 
         paymentForm.addEventListener('submit', function (e) {
@@ -392,12 +391,6 @@
         });
 
         function init_payment(fullName, emailAddress) {
-            // Check if key is updated
-            if (PAYSTACK_PUBLIC_KEY === 'pk_test_XXXXXXXXXX') {
-                alert("Please replace PAYSTACK_PUBLIC_KEY in the code with your actual Paystack public key before testing.");
-                return;
-            }
-
             var handler = PaystackPop.setup({
                 key: PAYSTACK_PUBLIC_KEY,
                 email: emailAddress,
