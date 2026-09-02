@@ -580,6 +580,51 @@
                     </div>
                 </div>
             </div>
+
+            <!-- ------------- CERTIFICATE PAYMENTS SECTION ------------- -->
+            <div class="page-header" style="margin-top: 50px;">
+                <div class="header-title">
+                    <h1>Certificate Payments</h1>
+                    <p class="subtitle">Track generated payments and revenue.</p>
+                </div>
+            </div>
+
+            <!-- Cert Stats Row -->
+            <div class="stats-grid">
+                <div class="card stat-card" style="margin-bottom:0;">
+                    <div class="stat-label">Total Payments</div>
+                    <div class="stat-number" id="cert-stat-total">0</div>
+                </div>
+                <div class="card stat-card" style="margin-bottom:0;">
+                    <div class="stat-label">Total Revenue Generated</div>
+                    <div class="stat-number" id="cert-stat-revenue" style="color: var(--primary-green);">₦0</div>
+                </div>
+            </div>
+
+            <!-- Cert Table -->
+            <div class="card" style="margin-top: 25px;">
+                <div class="table-responsive">
+                    <table id="certTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Reference</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="certTableBody">
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 30px;">Loading payments...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- ---------------------------------------------------- -->
+
         </main>
     </div>
 
@@ -819,8 +864,75 @@
             document.body.removeChild(link);
         });
 
+        // FETCH CERTIFICATE PAYMENTS
+        async function fetchCertPayments() {
+            try {
+                const q = query(collection(db, "certificate_payments"), orderBy("paidAt", "desc"));
+                const querySnapshot = await getDocs(q);
+
+                let totalAmount = 0;
+                let rows = '';
+                let count = 0;
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    count++;
+
+                    if (data.amount && !isNaN(data.amount)) {
+                        totalAmount += parseFloat(data.amount);
+                    }
+
+                    let dateStr = 'Unknown Date';
+                    // Checking for Firebase Timestamp
+                    if (data.paidAt && typeof data.paidAt.toDate === 'function') {
+                        dateStr = data.paidAt.toDate().toLocaleDateString('en-GB', {
+                            day: 'numeric', month: 'short', year: 'numeric'
+                        });
+                    } else if (data.paidAt && data.paidAt.seconds) { // Fallback if toDate prototype is lost
+                        dateStr = new Date(data.paidAt.seconds * 1000).toLocaleDateString('en-GB', {
+                            day: 'numeric', month: 'short', year: 'numeric'
+                        });
+                    }
+
+                    const amt = data.amount ? parseFloat(data.amount).toLocaleString() : '0';
+
+                    rows += `
+                        <tr>
+                            <td>
+                                <div class="table-user">
+                                    <div class="table-avatar" style="background-color:#138A56;">
+                                        <i class="fa-solid fa-certificate" style="color:white; font-size:14px;"></i>
+                                    </div>
+                                    <div style="font-weight:500;">${data.fullName || 'N/A'}</div>
+                                </div>
+                            </td>
+                            <td style="color: var(--text-muted);">${data.email || 'N/A'}</td>
+                            <td style="font-family: monospace; font-size: 12px; color: var(--text-muted);">${data.paymentReference || 'N/A'}</td>
+                            <td style="font-weight: 600;">${data.currency || 'USD'} ${amt}</td>
+                            <td>${dateStr}</td>
+                            <td><span class="badge selected" style="background-color: #DCFCE7; color: #15803D;">Paid</span></td>
+                        </tr>
+                    `;
+                });
+
+                document.getElementById('cert-stat-total').innerText = count;
+                document.getElementById('cert-stat-revenue').innerText = "₦" + totalAmount.toLocaleString();
+
+                const tbody = document.getElementById('certTableBody');
+                if (count === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 30px;">No payments found.</td></tr>';
+                } else {
+                    tbody.innerHTML = rows;
+                }
+            } catch (e) {
+                console.error("Error loading payments: ", e);
+                document.getElementById('certTableBody').innerHTML = '<tr><td colspan="6" style="text-align:center;color:red;">Failed to load certificate data.</td></tr>';
+            }
+        }
+
         // Initialization
         fetchApplications();
+        fetchCertPayments();
     </script>
 </body>
 
