@@ -626,8 +626,7 @@
 
         async function fetchApplications() {
             try {
-                // Fetch up to 1000 records to prevent browser crashing while maintaining large set
-                const appsQuery = query(collection(db, "applications"), orderBy("submittedAt", "desc"), limit(1000));
+                const appsQuery = query(collection(db, "applications"), orderBy("submittedAt", "desc"));
                 const querySnapshot = await getDocs(appsQuery);
                 applications = [];
                 let total = 0, submitted = 0, reviewing = 0, selected = 0, notSelected = 0;
