@@ -545,6 +545,9 @@
                             <option value="selected">Selected</option>
                             <option value="not_selected">Not Selected</option>
                         </select>
+                        <button id="btnExportAllCSV"
+                            style="padding: 10px 16px; background: #138A56; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px;"><i
+                                class="fa-solid fa-file-csv"></i> Export All</button>
                         <button id="btnExportCSV"
                             style="padding: 10px 16px; background: #0c1824; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px;"><i
                                 class="fa-solid fa-file-csv"></i> Export Selected</button>
@@ -785,6 +788,38 @@
                 currentPage++;
                 renderPagination();
             }
+        });
+
+        document.getElementById('btnExportAllCSV').addEventListener('click', () => {
+            if (applications.length === 0) {
+                alert('No applications to export.');
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "First Name,Last Name,Email,WhatsApp,Country,City,Cohort,Status\n";
+
+            applications.forEach(app => {
+                const row = [
+                    (app.firstName || "").replace(/,/g, ""),
+                    (app.lastName || "").replace(/,/g, ""),
+                    app.email || "",
+                    (app.whatsapp || "").replace(/,/g, ""),
+                    (app.country || "").replace(/,/g, ""),
+                    (app.city || "").replace(/,/g, ""),
+                    (app.cohort || "").replace(/,/g, ""),
+                    (app.applicationStatus || "pending")
+                ].join(",");
+                csvContent += row + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "LeadGreen_All_Applications.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         });
 
         document.getElementById('btnExportCSV').addEventListener('click', () => {
