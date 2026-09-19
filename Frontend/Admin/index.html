@@ -797,18 +797,38 @@
             }
 
             let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "First Name,Last Name,Email,WhatsApp,Country,City,Cohort,Status\n";
+            csvContent += "First Name,Last Name,Email,WhatsApp,Country,City,Age,Gender,Referral Source,Education,Impact Experience,Leadership Experience,Why LeadGreen,Environmental Problem,Desired Change,Climate Area,Lead Interest,Proposed Project,Leadership Style,Availability,Admin Notes,Cohort,Status\n";
 
             applications.forEach(app => {
+                const escapeCsv = (str) => {
+                    if (str == null) return "";
+                    let cleaned = String(str).replace(/"/g, '""');
+                    return `"${cleaned}"`;
+                };
                 const row = [
-                    (app.firstName || "").replace(/,/g, ""),
-                    (app.lastName || "").replace(/,/g, ""),
-                    app.email || "",
-                    (app.whatsapp || "").replace(/,/g, ""),
-                    (app.country || "").replace(/,/g, ""),
-                    (app.city || "").replace(/,/g, ""),
-                    (app.cohort || "").replace(/,/g, ""),
-                    (app.applicationStatus || "pending")
+                    escapeCsv(app.firstName),
+                    escapeCsv(app.lastName),
+                    escapeCsv(app.email),
+                    escapeCsv(app.whatsapp),
+                    escapeCsv(app.country),
+                    escapeCsv(app.city),
+                    escapeCsv(app.age),
+                    escapeCsv(app.gender),
+                    escapeCsv(app.referralSource),
+                    escapeCsv(app.education),
+                    escapeCsv(app.impactExperience),
+                    escapeCsv(app.leadershipExperience),
+                    escapeCsv(app.whyLeadGreen),
+                    escapeCsv(app.environmentalProblem),
+                    escapeCsv(app.desiredChange),
+                    escapeCsv(app.climateArea),
+                    escapeCsv(app.leadInterest),
+                    escapeCsv(app.proposedProject),
+                    escapeCsv(app.leadershipStyle),
+                    escapeCsv(app.availabilityOverview),
+                    escapeCsv(app.adminNote),
+                    escapeCsv(app.cohort),
+                    escapeCsv(app.applicationStatus || "pending")
                 ].join(",");
                 csvContent += row + "\n";
             });
@@ -830,18 +850,38 @@
             }
 
             let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "First Name,Last Name,Email,WhatsApp,Country,City,Cohort,Status\n";
+            csvContent += "First Name,Last Name,Email,WhatsApp,Country,City,Age,Gender,Referral Source,Education,Impact Experience,Leadership Experience,Why LeadGreen,Environmental Problem,Desired Change,Climate Area,Lead Interest,Proposed Project,Leadership Style,Availability,Admin Notes,Cohort,Status\n";
 
             selectedApps.forEach(app => {
+                const escapeCsv = (str) => {
+                    if (str == null) return "";
+                    let cleaned = String(str).replace(/"/g, '""');
+                    return `"${cleaned}"`;
+                };
                 const row = [
-                    (app.firstName || "").replace(/,/g, ""),
-                    (app.lastName || "").replace(/,/g, ""),
-                    app.email || "",
-                    app.whatsapp || "",
-                    (app.country || "").replace(/,/g, ""),
-                    (app.city || "").replace(/,/g, ""),
-                    app.cohort || "",
-                    app.applicationStatus || "selected"
+                    escapeCsv(app.firstName),
+                    escapeCsv(app.lastName),
+                    escapeCsv(app.email),
+                    escapeCsv(app.whatsapp),
+                    escapeCsv(app.country),
+                    escapeCsv(app.city),
+                    escapeCsv(app.age),
+                    escapeCsv(app.gender),
+                    escapeCsv(app.referralSource),
+                    escapeCsv(app.education),
+                    escapeCsv(app.impactExperience),
+                    escapeCsv(app.leadershipExperience),
+                    escapeCsv(app.whyLeadGreen),
+                    escapeCsv(app.environmentalProblem),
+                    escapeCsv(app.desiredChange),
+                    escapeCsv(app.climateArea),
+                    escapeCsv(app.leadInterest),
+                    escapeCsv(app.proposedProject),
+                    escapeCsv(app.leadershipStyle),
+                    escapeCsv(app.availabilityOverview),
+                    escapeCsv(app.adminNote),
+                    escapeCsv(app.cohort),
+                    escapeCsv(app.applicationStatus || "selected")
                 ].join(",");
                 csvContent += row + "\n";
             });
