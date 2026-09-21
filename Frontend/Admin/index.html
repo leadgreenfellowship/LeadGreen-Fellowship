@@ -853,9 +853,73 @@
         });
 
         document.getElementById('btnExportCSV').addEventListener('click', () => {
-            const selectedApps = applications.filter(app => app.applicationStatus === 'selected');
-            if (selectedApps.length === 0) {
-                alert('No selected applications to export.');
+            if (applications.length === 0) {
+                alert('No applications available to process.');
+                return;
+            }
+
+            const LABS = [
+                "Climate Adaptation Lab", "Climate Mitigation Lab", "Renewable Energy Lab",
+                "Clean Energy Access Lab", "Energy Efficiency Lab", "Waste Management Lab",
+                "Plastic Pollution Lab", "Circular Economy Lab", "Recycling Lab",
+                "Sustainable Agriculture Lab", "Food Systems Lab", "Reforestation Lab",
+                "Biodiversity Lab", "Land Restoration Lab", "Water Security Lab",
+                "Sustainable Cities Lab", "Green Infrastructure Lab", "Sustainable Mobility Lab",
+                "Clean Air Lab", "Climate & Health Lab", "Climate Education Lab",
+                "Climate Storytelling Lab", "Climate Policy Lab", "Climate Justice Lab",
+                "Youth Leadership Lab", "Climate Finance Lab", "Green Enterprise Lab",
+                "Climate Technology Lab", "Climate Resilience Lab", "Ocean & Coastal Lab"
+            ];
+
+            // 1. Calculate the Leads to exclude natively
+            let males = [];
+            let females = [];
+
+            const calculateScore = (app) => {
+                let score = 0;
+                const fields = ['impactExperience', 'leadershipExperience', 'whyLeadGreen', 'proposedProject', 'leadershipStyle'];
+                fields.forEach(field => {
+                    const val = app[field] || '';
+                    score += String(val).length;
+                });
+                return score;
+            };
+
+            applications.forEach(app => {
+                const gender = (app.gender || '').trim().toLowerCase();
+                const leadInterest = (app.leadInterest || '').trim().toLowerCase();
+                const age = parseInt(app.age) || 0;
+
+                if (age > 25 && age <= 30 && leadInterest === 'yes') {
+                    app._score = calculateScore(app);
+                    if (gender === 'male') {
+                        males.push(app);
+                    } else if (gender === 'female') {
+                        females.push(app);
+                    }
+                }
+            });
+
+            males.sort((a, b) => b._score - a._score);
+            females.sort((a, b) => b._score - a._score);
+
+            const topMales = males.slice(0, 30);
+            const topFemales = females.slice(0, 30);
+
+            const leadEmails = new Set();
+            topMales.forEach(app => leadEmails.add((app.email || '').trim().toLowerCase()));
+            topFemales.forEach(app => leadEmails.add((app.email || '').trim().toLowerCase()));
+
+            // 2. Collect General Fellows by skipping those identified as Leads
+            let generalFellows = [];
+            applications.forEach(app => {
+                const email = (app.email || '').trim().toLowerCase();
+                if (!email || leadEmails.has(email)) return;
+                generalFellows.push(app);
+            });
+
+            if (generalFellows.length === 0) {
+                alert('No fellows to export after excluding leads.');
                 return;
             }
 
@@ -866,42 +930,21 @@
             };
 
             let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Application ID,Submitted At,First Name,Last Name,Email,WhatsApp,Country,City,Age,Gender,Referral Source,Education,Impact Experience,Leadership Experience,Why LeadGreen,Environmental Problem,Desired Change,Climate Area,Lead Interest,Proposed Project,Leadership Style,Availability,Certificate Fee,Commit Hours,Commit Duration,Commit Tech,Commit Platforms,Declaration Signed,Admin Notes,Cohort,Status\n";
+            csvContent += "Name,Email,Country,Phone Number,Climate Action Lab\n";
 
-            selectedApps.forEach(app => {
-                const submittedDate = app.submittedAt && app.submittedAt.toDate ? app.submittedAt.toDate().toLocaleString() : "";
+            generalFellows.forEach(app => {
+                const name = `${app.firstName || ''} ${app.lastName || ''}`.trim();
+                const email = (app.email || '').trim();
+                const country = (app.country || '').trim();
+                const phone = (app.whatsapp || app.phone || '').trim();
+                const assignedLab = LABS[Math.floor(Math.random() * LABS.length)];
+
                 const row = [
-                    escapeCsv(app.id),
-                    escapeCsv(submittedDate),
-                    escapeCsv(app.firstName),
-                    escapeCsv(app.lastName),
-                    escapeCsv(app.email),
-                    escapeCsv(app.whatsapp),
-                    escapeCsv(app.country),
-                    escapeCsv(app.city),
-                    escapeCsv(app.age),
-                    escapeCsv(app.gender),
-                    escapeCsv(app.referralSource),
-                    escapeCsv(app.education),
-                    escapeCsv(app.impactExperience),
-                    escapeCsv(app.leadershipExperience),
-                    escapeCsv(app.whyLeadGreen),
-                    escapeCsv(app.environmentalProblem),
-                    escapeCsv(app.desiredChange),
-                    escapeCsv(app.climateArea),
-                    escapeCsv(app.leadInterest),
-                    escapeCsv(app.proposedProject),
-                    escapeCsv(app.leadershipStyle),
-                    escapeCsv(app.availabilityOverview),
-                    escapeCsv(app.certificateFee),
-                    escapeCsv(app.commitHours),
-                    escapeCsv(app.commitDuration),
-                    escapeCsv(app.commitTech),
-                    escapeCsv(app.commitPlatforms),
-                    escapeCsv(app.declarationSigned),
-                    escapeCsv(app.adminNote),
-                    escapeCsv(app.cohort),
-                    escapeCsv(app.applicationStatus || "selected")
+                    escapeCsv(name),
+                    escapeCsv(email),
+                    escapeCsv(country),
+                    escapeCsv(phone),
+                    escapeCsv(assignedLab)
                 ].join(",");
                 csvContent += row + "\n";
             });
