@@ -796,16 +796,20 @@
                 return;
             }
 
+            const escapeCsv = (str) => {
+                if (str == null) return "";
+                let cleaned = String(str).replace(/"/g, '""');
+                return `"${cleaned}"`;
+            };
+
             let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "First Name,Last Name,Email,WhatsApp,Country,City,Age,Gender,Referral Source,Education,Impact Experience,Leadership Experience,Why LeadGreen,Environmental Problem,Desired Change,Climate Area,Lead Interest,Proposed Project,Leadership Style,Availability,Admin Notes,Cohort,Status\n";
+            csvContent += "Application ID,Submitted At,First Name,Last Name,Email,WhatsApp,Country,City,Age,Gender,Referral Source,Education,Impact Experience,Leadership Experience,Why LeadGreen,Environmental Problem,Desired Change,Climate Area,Lead Interest,Proposed Project,Leadership Style,Availability,Certificate Fee,Commit Hours,Commit Duration,Commit Tech,Commit Platforms,Declaration Signed,Admin Notes,Cohort,Status\n";
 
             applications.forEach(app => {
-                const escapeCsv = (str) => {
-                    if (str == null) return "";
-                    let cleaned = String(str).replace(/"/g, '""');
-                    return `"${cleaned}"`;
-                };
+                const submittedDate = app.submittedAt && app.submittedAt.toDate ? app.submittedAt.toDate().toLocaleString() : "";
                 const row = [
+                    escapeCsv(app.id),
+                    escapeCsv(submittedDate),
                     escapeCsv(app.firstName),
                     escapeCsv(app.lastName),
                     escapeCsv(app.email),
@@ -826,6 +830,12 @@
                     escapeCsv(app.proposedProject),
                     escapeCsv(app.leadershipStyle),
                     escapeCsv(app.availabilityOverview),
+                    escapeCsv(app.certificateFee),
+                    escapeCsv(app.commitHours),
+                    escapeCsv(app.commitDuration),
+                    escapeCsv(app.commitTech),
+                    escapeCsv(app.commitPlatforms),
+                    escapeCsv(app.declarationSigned),
                     escapeCsv(app.adminNote),
                     escapeCsv(app.cohort),
                     escapeCsv(app.applicationStatus || "pending")
@@ -849,16 +859,20 @@
                 return;
             }
 
+            const escapeCsv = (str) => {
+                if (str == null) return "";
+                let cleaned = String(str).replace(/"/g, '""');
+                return `"${cleaned}"`;
+            };
+
             let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "First Name,Last Name,Email,WhatsApp,Country,City,Age,Gender,Referral Source,Education,Impact Experience,Leadership Experience,Why LeadGreen,Environmental Problem,Desired Change,Climate Area,Lead Interest,Proposed Project,Leadership Style,Availability,Admin Notes,Cohort,Status\n";
+            csvContent += "Application ID,Submitted At,First Name,Last Name,Email,WhatsApp,Country,City,Age,Gender,Referral Source,Education,Impact Experience,Leadership Experience,Why LeadGreen,Environmental Problem,Desired Change,Climate Area,Lead Interest,Proposed Project,Leadership Style,Availability,Certificate Fee,Commit Hours,Commit Duration,Commit Tech,Commit Platforms,Declaration Signed,Admin Notes,Cohort,Status\n";
 
             selectedApps.forEach(app => {
-                const escapeCsv = (str) => {
-                    if (str == null) return "";
-                    let cleaned = String(str).replace(/"/g, '""');
-                    return `"${cleaned}"`;
-                };
+                const submittedDate = app.submittedAt && app.submittedAt.toDate ? app.submittedAt.toDate().toLocaleString() : "";
                 const row = [
+                    escapeCsv(app.id),
+                    escapeCsv(submittedDate),
                     escapeCsv(app.firstName),
                     escapeCsv(app.lastName),
                     escapeCsv(app.email),
@@ -879,6 +893,12 @@
                     escapeCsv(app.proposedProject),
                     escapeCsv(app.leadershipStyle),
                     escapeCsv(app.availabilityOverview),
+                    escapeCsv(app.certificateFee),
+                    escapeCsv(app.commitHours),
+                    escapeCsv(app.commitDuration),
+                    escapeCsv(app.commitTech),
+                    escapeCsv(app.commitPlatforms),
+                    escapeCsv(app.declarationSigned),
                     escapeCsv(app.adminNote),
                     escapeCsv(app.cohort),
                     escapeCsv(app.applicationStatus || "selected")
