@@ -51,36 +51,61 @@ def main():
     except FileNotFoundError:
         pass
         
-    fellows = []
-    # 2. Read all applications and select fellows
+    priority_pool = []
+    secondary_pool = []
+    # 2. Read all applications and select fellows using final criteria
     with open(input_file, mode='r', encoding='utf-8') as f:
         reader = csv.DictReader(f)
         for row in reader:
             email_raw = row.get('Email') or ''
             email = email_raw.strip().lower()
             
-            # Skip if they are already leads
+            # Criteria 1: Exclude team leads
             if email in leads_emails and email != '':
                 continue 
+                
+            try:
+                age = int(row.get('Age', 0) or 0)
+            except ValueError:
+                age = 0
+                
+            why_lead = str(row.get('Why LeadGreen') or '').strip()
+            env_prob = str(row.get('Environmental Problem') or '').strip()
+            gender = str(row.get('Gender') or '').strip().lower()
+            country = str(row.get('Country') or '').strip()
             
-            first_name = (row.get('First Name') or '').strip()
-            last_name = (row.get('Last Name') or '').strip()
-            name = f"{first_name} {last_name}".strip()
-            country = (row.get('Country') or '').strip()
-            # Assuming phone number is listed under WhatsApp column based on data
-            phone = (row.get('WhatsApp') or '').strip()
+            # Criteria 2 & 3: Age limit and Basic Knowledge check
+            if 18 <= age <= 30 and (len(why_lead) > 5 or len(env_prob) > 5):
+                name = f"{(row.get('First Name') or '').strip()} {(row.get('Last Name') or '').strip()}".strip()
+                phone = (row.get('WhatsApp') or '').strip()
+                
+                fellow_record = {
+                    'Name': name,
+                    'Email': email_raw.strip(),
+                    'Country': country,
+                    'Phone Number': phone
+                }
+                
+                # Criteria 4: Priority placing
+                if gender == 'female' or country.lower() != 'nigeria':
+                    priority_pool.append(fellow_record)
+                else:
+                    secondary_pool.append(fellow_record)
+
+    # Criteria 5: Randomly shuffle and truncate up to 3000
+    random.shuffle(priority_pool)
+    random.shuffle(secondary_pool)
+    
+    fellows = []
+    for app in priority_pool:
+        if len(fellows) < 3000:
+            app['Climate Action Lab'] = random.choice(LABS)
+            fellows.append(app)
             
-            # Randomly pick a lab
-            lab = random.choice(LABS)
-            
-            fellow_record = {
-                'Name': name,
-                'Email': email_raw.strip(),
-                'Country': country,
-                'Phone Number': phone,
-                'Climate Action Lab': lab
-            }
-            fellows.append(fellow_record)
+    for app in secondary_pool:
+        if len(fellows) < 3000:
+            app['Climate Action Lab'] = random.choice(LABS)
+            fellows.append(app)
 
     # 3. Write output
     out_fieldnames = ['Name', 'Email', 'Country', 'Phone Number', 'Climate Action Lab']

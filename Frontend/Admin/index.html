@@ -910,12 +910,52 @@
             topMales.forEach(app => leadEmails.add((app.email || '').trim().toLowerCase()));
             topFemales.forEach(app => leadEmails.add((app.email || '').trim().toLowerCase()));
 
-            // 2. Collect General Fellows by skipping those identified as Leads
-            let generalFellows = [];
+            // 2. Select General Fellows based on final criteria
+            let priorityPool = [];
+            let secondaryPool = [];
+
             applications.forEach(app => {
                 const email = (app.email || '').trim().toLowerCase();
                 if (!email || leadEmails.has(email)) return;
-                generalFellows.push(app);
+
+                const age = parseInt(app.age) || 0;
+                const whyLead = (app.whyLeadGreen || '').trim();
+                const envProb = (app.environmentalProblem || '').trim();
+                const generalGender = (app.gender || '').trim().toLowerCase();
+                const generalCountry = (app.country || '').trim().toLowerCase();
+
+                if (age >= 18 && age <= 30 && (whyLead.length > 5 || envProb.length > 5)) {
+                    if (generalGender === 'female' || generalCountry !== 'nigeria') {
+                        priorityPool.push(app);
+                    } else {
+                        secondaryPool.push(app);
+                    }
+                }
+            });
+
+            // Randomly shuffle both pools
+            const shuffle = (array) => {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            };
+            shuffle(priorityPool);
+            shuffle(secondaryPool);
+
+            // Fill selected pool up to 3000
+            let generalFellows = [];
+
+            priorityPool.forEach(app => {
+                if (generalFellows.length < 3000) {
+                    generalFellows.push(app);
+                }
+            });
+
+            secondaryPool.forEach(app => {
+                if (generalFellows.length < 3000) {
+                    generalFellows.push(app);
+                }
             });
 
             if (generalFellows.length === 0) {
