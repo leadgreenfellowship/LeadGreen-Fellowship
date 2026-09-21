@@ -551,6 +551,9 @@
                         <button id="btnExportCSV"
                             style="padding: 10px 16px; background: #0c1824; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px;"><i
                                 class="fa-solid fa-file-csv"></i> Export Selected</button>
+                        <button id="btnSyncDatabase"
+                            style="padding: 10px 16px; background: #3B82F6; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px;"><i
+                                class="fa-solid fa-cloud-arrow-up"></i> Sync DB & Alumni</button>
                     </div>
                 </div>
 
@@ -591,7 +594,7 @@
     <!-- Firebase Integration -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, limit, orderBy } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, query, limit, orderBy, writeBatch, doc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
 
         const firebaseConfig = {
@@ -997,6 +1000,153 @@
             link.click();
             document.body.removeChild(link);
         });
+
+        // ------------------ DB SYNC & ALUMNI MIGRATION ------------------
+        const btnSyncDatabase = document.getElementById('btnSyncDatabase');
+        if (btnSyncDatabase) {
+            btnSyncDatabase.addEventListener('click', async () => {
+                if (applications.length === 0) {
+                    alert('No applications loaded yet. Please wait...');
+                    return;
+                }
+
+                if (!confirm("🚨 Are you sure you want to massively update ALL " + applications.length + " application statuses in the database AND create exactly 3060 alumni profiles? This is permanent.")) return;
+
+                const originalText = btnSyncDatabase.innerHTML;
+                btnSyncDatabase.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Syncing Database...';
+                btnSyncDatabase.disabled = true;
+
+                try {
+                    // IDENTIFY THE EXACT WINNERS
+                    let males = [];
+                    let females = [];
+                    const calculateScore = (app) => {
+                        let score = 0;
+                        const textFields = [app.impactExperience, app.leadershipExperience, app.whyLeadGreen, app.proposedProject, app.leadershipStyle];
+                        textFields.forEach(val => {
+                            if (val) score += String(val).length;
+                        });
+                        return score;
+                    };
+
+                    applications.forEach(app => {
+                        const gender = (app.gender || '').trim().toLowerCase();
+                        const leadInterest = (app.leadInterest || '').trim().toLowerCase();
+                        const age = parseInt(app.age) || 0;
+                        if (age > 25 && age <= 30 && leadInterest === 'yes') {
+                            app._score = calculateScore(app);
+                            if (gender === 'male') { males.push(app); } else if (gender === 'female') { females.push(app); }
+                        }
+                    });
+
+                    males.sort((a, b) => b._score - a._score);
+                    females.sort((a, b) => b._score - a._score);
+
+                    const topMales = males.slice(0, 30);
+                    const topFemales = females.slice(0, 30);
+
+                    const leadEmails = new Set();
+                    topMales.forEach(app => leadEmails.add((app.email || '').trim().toLowerCase()));
+                    topFemales.forEach(app => leadEmails.add((app.email || '').trim().toLowerCase()));
+
+                    let priorityPool = [];
+                    let secondaryPool = [];
+                    applications.forEach(app => {
+                        const email = (app.email || '').trim().toLowerCase();
+                        if (!email || leadEmails.has(email)) return;
+
+                        const age = parseInt(app.age) || 0;
+                        const whyLead = (app.whyLeadGreen || '').trim();
+                        const envProb = (app.environmentalProblem || '').trim();
+                        const generalGender = (app.gender || '').trim().toLowerCase();
+                        const generalCountry = (app.country || '').trim().toLowerCase();
+
+                        if (age >= 18 && age <= 30 && (whyLead.length > 5 || envProb.length > 5)) {
+                            if (generalGender === 'female' || generalCountry !== 'nigeria') {
+                                priorityPool.push(app);
+                            } else {
+                                secondaryPool.push(app);
+                            }
+                        }
+                    });
+
+                    const shuffle = (array) => {
+                        for (let i = array.length - 1; i > 0; i--) {
+                            const j = Math.floor(Math.random() * (i + 1));
+                            [array[i], array[j]] = [array[j], array[i]];
+                        }
+                    };
+                    shuffle(priorityPool);
+                    shuffle(secondaryPool);
+
+                    let generalFellows = [];
+                    priorityPool.forEach(app => { if (generalFellows.length < 3000) generalFellows.push(app); });
+                    secondaryPool.forEach(app => { if (generalFellows.length < 3000) generalFellows.push(app); });
+
+                    // COMPUTE ALL SELECTED IDs
+                    const selectedIds = new Set();
+                    const allSelected = [...topMales, ...topFemales, ...generalFellows];
+                    allSelected.forEach(app => {
+                        if (app.id) selectedIds.add(app.id);
+                    });
+
+                    // FIREBASE BATCH EXECUTION
+                    let batches = [];
+                    let currentBatch = writeBatch(db);
+                    let opCount = 0;
+
+                    const alumniRefBase = collection(db, "alumni");
+
+                    for (let i = 0; i < applications.length; i++) {
+                        const app = applications[i];
+                        if (!app.id) continue;
+
+                        const appRef = doc(db, "applications", app.id);
+
+                        if (selectedIds.has(app.id)) {
+                            currentBatch.update(appRef, { applicationStatus: 'selected' });
+                            opCount++;
+
+                            // Also add to Alumni
+                            const newAlumniRef = doc(alumniRefBase);
+                            const fullName = `${app.firstName || ''} ${app.lastName || ''}`.trim();
+                            currentBatch.set(newAlumniRef, {
+                                name: fullName,
+                                cohort: 'Cohort 3',
+                                photoURL: '',
+                                isPublic: true,
+                                importedAt: new Date().toISOString()
+                            });
+                            opCount++;
+                        } else {
+                            currentBatch.update(appRef, { applicationStatus: 'not_selected' });
+                            opCount++;
+                        }
+
+                        if (opCount >= 450) {
+                            batches.push(currentBatch);
+                            currentBatch = writeBatch(db);
+                            opCount = 0;
+                        }
+                    }
+                    if (opCount > 0) batches.push(currentBatch);
+
+                    for (let b = 0; b < batches.length; b++) {
+                        btnSyncDatabase.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Writing Batch ${b + 1} / ${batches.length}...`;
+                        await batches[b].commit();
+                    }
+
+                    alert('Successfully updated database statuses and migrated ' + selectedIds.size + ' selections to Alumni!');
+                    window.location.reload();
+                } catch (error) {
+                    console.error('Error in DB Sync:', error);
+                    alert("Sync Error: " + error.message);
+                } finally {
+                    btnSyncDatabase.innerHTML = originalText;
+                    btnSyncDatabase.disabled = false;
+                }
+            });
+        }
 
         // Initialization
         fetchApplications();
