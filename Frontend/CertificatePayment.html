@@ -360,17 +360,12 @@
                     </div>
 
                     <button type="submit" class="btn-pay" id="payBtn">
-                        <span id="payText">Pay $1.99</span>
+                        <span id="payText">Proceed to Secure Checkout</span>
                         <div class="loader" id="payLoader"></div>
                     </button>
 
-                    <div
-                        style="text-align: center; font-size: 11px; color: var(--text-light); margin-top: 12px; font-style: italic;">
-                        *Secure international processing in USD
-                    </div>
-
                     <div class="secure-badge">
-                        <i class="fa-solid fa-lock"></i> Secured by Paystack
+                        <i class="fa-solid fa-lock"></i> Secured by Flutterwave
                     </div>
                 </form>
             </div>
@@ -389,8 +384,8 @@
         </div>
     </div>
 
-    <!-- Paystack Inline JS -->
-    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <!-- Flutterwave Inline JS -->
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
 
     <!-- Firebase SDKs -->
     <script type="module">
@@ -420,11 +415,10 @@
         const successName = document.getElementById('successName');
         const successEmail = document.getElementById('successEmail');
 
-        // Note: Change this to your live paystack public key when deploying
-        const PAYSTACK_PUBLIC_KEY = 'pk_live_2cf3580bba9fe1d6144007724ecb1fe1f50ff1b0';
+        // Note: Change this to your live flutterwave public key when deploying
+        const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK_TEST-3e6e18cde217164c79157c178ce698b8-X';
 
-        // $1.99 in cents is 199
-        const AMOUNT_IN_CENTS = 199;
+        const AMOUNT_IN_USD = 1.99;
 
         paymentForm.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -434,36 +428,38 @@
 
             if (!fullName || !emailAddress) return;
 
+            if (FLUTTERWAVE_PUBLIC_KEY === 'YOUR_FLUTTERWAVE_PUBLIC_KEY_HERE') {
+                alert("Please add your Flutterwave Public Key at the bottom of CertificatePayment.html before testing payments.");
+                return;
+            }
+
             init_payment(fullName, emailAddress);
         });
 
         function init_payment(fullName, emailAddress) {
-            var handler = PaystackPop.setup({
-                key: PAYSTACK_PUBLIC_KEY,
-                email: emailAddress,
-                amount: AMOUNT_IN_CENTS,
-                currency: 'USD',
-                metadata: {
-                    custom_fields: [
-                        {
-                            display_name: "Full Name",
-                            variable_name: "full_name",
-                            value: fullName
-                        }
-                    ]
+            FlutterwaveCheckout({
+                public_key: FLUTTERWAVE_PUBLIC_KEY,
+                tx_ref: "lg_cert_" + Date.now(),
+                amount: AMOUNT_IN_USD,
+                currency: "USD",
+                payment_options: "card, ussd", // Automatically handles intl cards seamlessly
+                customer: {
+                    email: emailAddress,
+                    name: fullName,
                 },
-                callback: function (response) {
-                    // This runs after successful payment
-                    const reference = response.reference;
-                    saveToFirebase(fullName, emailAddress, reference);
+                customizations: {
+                    title: "LeadGreen Certificate",
+                    description: "Official Fellowship Certificate Payment"
                 },
-                onClose: function () {
-                    // User closed the popup
+                callback: function (data) {
+                    console.log("Payment successful", data);
+                    const ref = data.transaction_id || data.tx_ref || "FW_" + Date.now();
+                    saveToFirebase(fullName, emailAddress, ref);
+                },
+                onclose: function () {
                     console.log('Payment window closed.');
                 }
             });
-
-            handler.openIframe();
         }
 
         async function saveToFirebase(fullName, email, reference) {
@@ -477,8 +473,8 @@
                 await addDoc(collection(db, "certificate_payments"), {
                     fullName: fullName,
                     email: email,
-                    paymentReference: reference,
-                    amount: AMOUNT_IN_CENTS / 100,
+                    paymentReference: String(reference),
+                    amount: AMOUNT_IN_USD,
                     currency: 'USD',
                     status: 'paid',
                     paidAt: serverTimestamp()
