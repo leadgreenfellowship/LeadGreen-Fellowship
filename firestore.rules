@@ -9,21 +9,34 @@ service cloud.firestore {
 
     // 1. Certificate Payments
     match /certificate_payments/{paymentId} {
-      // Anyone can create (submit payment log from checkout)
-      allow create: if true;
-      // Only authenticated admin can read/update (via Admin portal)
+      allow create: if request.resource.data.amount > 0 &&
+                       request.resource.data.status == 'paid' &&
+                       request.resource.data.fullName is string &&
+                       request.resource.data.fullName.size() < 100 &&
+                       request.resource.data.email is string &&
+                       request.resource.data.email.size() < 100 &&
+                       request.resource.data.keys().hasAll(['fullName', 'email', 'paymentReference', 'amount', 'currency', 'status']);
       allow read, update, delete: if request.auth != null;
     }
 
     // 2. Fellowship Applications
     match /applications/{applicationId} {
-      // Anyone can apply (public form)
-      allow create: if true;
-      // Only authenticated admin can read/update/delete (via Admin Portal)
+      allow create: if request.resource.data.firstName is string &&
+                       request.resource.data.firstName.size() < 100 &&
+                       request.resource.data.email is string &&
+                       request.resource.data.email.size() < 100 &&
+                       request.resource.data.applicationStatus == 'pending' &&
+                       request.resource.data.keys().hasAll(['firstName', 'email', 'country']);
       allow read, update, delete: if request.auth != null;
     }
 
-    // 3. Alumni Data (for the Alumni Directory)
+    // 3. Abandoned Applications (Drafts)
+    match /abandoned_applications/{draftId} {
+      allow create, delete: if true;
+      allow read, update: if request.auth != null;
+    }
+
+    // 4. Alumni Data (for the Alumni Directory)
     match /alumni/{alumniId} {
       // Anyone can read public alumni directory
       allow read: if true;

@@ -340,6 +340,17 @@
         const appId = urlParams.get('id');
         const root = document.getElementById('appDetailsRoot');
 
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>'"]/g, tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag]));
+        }
+
         async function fetchApplication() {
             if (!appId) {
                 root.innerHTML = '<div style="color:#D97706; padding: 30px;">Error: No Application ID provided in URL.</div>';
@@ -357,12 +368,12 @@
                 }
             } catch (error) {
                 console.error("Error drawing application:", error);
-                root.innerHTML = `<div style="color:#D97706; padding: 30px;">Error retrieving data: ${error.message}</div>`;
+                root.innerHTML = `<div style="color:#D97706; padding: 30px;">Error retrieving data: ${escapeHTML(error.message)}</div>`;
             }
         }
 
         function renderApplication(data, id) {
-            const statusStr = data.applicationStatus || 'pending';
+            const statusStr = escapeHTML(data.applicationStatus) || 'pending';
             let statusLabel = 'Submitted (Pending Review)';
             if (statusStr === 'selected') statusLabel = 'Selected';
             if (statusStr === 'not_selected') statusLabel = 'Not Selected';
@@ -373,49 +384,49 @@
                 </div>
 
                 <div class="card">
-                    <h2 style="font-size: 24px; margin-bottom: 5px;">${data.firstName || ''} ${data.lastName || ''}</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 15px;">Application ID: ${id}</p>
+                    <h2 style="font-size: 24px; margin-bottom: 5px;">${escapeHTML(data.firstName) || ''} ${escapeHTML(data.lastName) || ''}</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 15px;">Application ID: ${escapeHTML(id)}</p>
                     <div class="status-badge ${statusStr}">${statusLabel}</div>
                     
                     <h3 class="section-title">Personal Information</h3>
                     <div class="info-grid" style="margin-bottom: 30px;">
-                        <div class="info-block"><span class="label">Email</span><span class="value">${data.email || 'N/A'}</span></div>
-                        <div class="info-block"><span class="label">WhatsApp Number</span><span class="value">${data.whatsapp || 'N/A'}</span></div>
-                        <div class="info-block"><span class="label">Country / City</span><span class="value">${data.country || 'N/A'}, ${data.city || 'N/A'}</span></div>
-                        <div class="info-block"><span class="label">Age / Gender</span><span class="value">${data.age || 'N/A'} - ${data.gender || 'N/A'}</span></div>
-                        <div class="info-block full"><span class="label">How did you hear about us?</span><span class="value">${data.referralSource || 'N/A'}</span></div>
+                        <div class="info-block"><span class="label">Email</span><span class="value">${escapeHTML(data.email) || 'N/A'}</span></div>
+                        <div class="info-block"><span class="label">WhatsApp Number</span><span class="value">${escapeHTML(data.whatsapp) || 'N/A'}</span></div>
+                        <div class="info-block"><span class="label">Country / City</span><span class="value">${escapeHTML(data.country) || 'N/A'}, ${escapeHTML(data.city) || 'N/A'}</span></div>
+                        <div class="info-block"><span class="label">Age / Gender</span><span class="value">${escapeHTML(data.age) || 'N/A'} - ${escapeHTML(data.gender) || 'N/A'}</span></div>
+                        <div class="info-block full"><span class="label">How did you hear about us?</span><span class="value">${escapeHTML(data.referralSource) || 'N/A'}</span></div>
                     </div>
 
                     <h3 class="section-title">Background</h3>
                     <div class="info-grid" style="margin-bottom: 30px;">
-                        <div class="info-block full"><span class="label">Education / Profession</span><span class="value">${data.education || 'N/A'}</span></div>
-                        <div class="info-block full"><span class="label">Impact Experience</span><span class="value">${data.impactExperience || 'N/A'}</span></div>
-                        <div class="info-block full"><span class="label">Leadership Experience</span><span class="value">${data.leadershipExperience || 'N/A'}</span></div>
+                        <div class="info-block full"><span class="label">Education / Profession</span><span class="value">${escapeHTML(data.education) || 'N/A'}</span></div>
+                        <div class="info-block full"><span class="label">Impact Experience</span><span class="value">${escapeHTML(data.impactExperience) || 'N/A'}</span></div>
+                        <div class="info-block full"><span class="label">Leadership Experience</span><span class="value">${escapeHTML(data.leadershipExperience) || 'N/A'}</span></div>
                     </div>
 
                     <h3 class="section-title">Motivation</h3>
                     <div class="info-grid" style="margin-bottom: 30px;">
-                        <div class="info-block full"><span class="label">Why LeadGreen?</span><span class="value">${data.whyLeadGreen || 'N/A'}</span></div>
-                        <div class="info-block full"><span class="label">Environmental Problem</span><span class="value">${data.environmentalProblem || 'N/A'}</span></div>
-                        <div class="info-block full"><span class="label">Desired Change</span><span class="value">${data.desiredChange || 'N/A'}</span></div>
+                        <div class="info-block full"><span class="label">Why LeadGreen?</span><span class="value">${escapeHTML(data.whyLeadGreen) || 'N/A'}</span></div>
+                        <div class="info-block full"><span class="label">Environmental Problem</span><span class="value">${escapeHTML(data.environmentalProblem) || 'N/A'}</span></div>
+                        <div class="info-block full"><span class="label">Desired Change</span><span class="value">${escapeHTML(data.desiredChange) || 'N/A'}</span></div>
                     </div>
 
                     <h3 class="section-title">Action & Leadership</h3>
                     <div class="info-grid" style="margin-bottom: 30px;">
-                        <div class="info-block"><span class="label">Preferred Climate Area</span><span class="value">${data.climateArea || 'N/A'}</span></div>
-                        <div class="info-block"><span class="label">Interested in Leading?</span><span class="value">${data.leadInterest || 'N/A'}</span></div>
-                        <div class="info-block full"><span class="label">Proposed Project / Action</span><span class="value">${data.proposedProject || 'N/A'}</span></div>
-                        <div class="info-block full"><span class="label">Leadership / Teamwork Style</span><span class="value">${data.leadershipStyle || 'N/A'}</span></div>
+                        <div class="info-block"><span class="label">Preferred Climate Area</span><span class="value">${escapeHTML(data.climateArea) || 'N/A'}</span></div>
+                        <div class="info-block"><span class="label">Interested in Leading?</span><span class="value">${escapeHTML(data.leadInterest) || 'N/A'}</span></div>
+                        <div class="info-block full"><span class="label">Proposed Project / Action</span><span class="value">${escapeHTML(data.proposedProject) || 'N/A'}</span></div>
+                        <div class="info-block full"><span class="label">Leadership / Teamwork Style</span><span class="value">${escapeHTML(data.leadershipStyle) || 'N/A'}</span></div>
                     </div>
 
                     <h3 class="section-title">Commitment</h3>
                     <div class="info-grid" style="margin-bottom: 30px;">
-                        <div class="info-block full"><span class="label">Weekly Availability</span><span class="value">${data.availabilityOverview || 'N/A'}</span></div>
+                        <div class="info-block full"><span class="label">Weekly Availability</span><span class="value">${escapeHTML(data.availabilityOverview) || 'N/A'}</span></div>
                     </div>
 
                     <h3 class="section-title">Admin Notes</h3>
                     <div style="display: flex; flex-direction: column; gap: 15px;">
-                        <textarea id="adminNotesInput" rows="4" style="width: 100%; padding: 15px; border-radius: 4px; border: 1px solid #D1D5DB; font-family: 'Inter', sans-serif; resize: vertical;" placeholder="Add internal review notes here...">${data.adminNote || ''}</textarea>
+                        <textarea id="adminNotesInput" rows="4" style="width: 100%; padding: 15px; border-radius: 4px; border: 1px solid #D1D5DB; font-family: 'Inter', sans-serif; resize: vertical;" placeholder="Add internal review notes here...">${escapeHTML(data.adminNote) || ''}</textarea>
                         <button class="btn btn-select" id="btnSaveNotes" style="align-self: flex-start; background-color: #374151;">
                             <i class="fa-solid fa-save"></i> Save Notes
                         </button>

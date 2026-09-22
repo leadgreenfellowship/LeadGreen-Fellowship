@@ -630,6 +630,17 @@
         let currentPage = 1;
         const itemsPerPage = 25;
 
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>'"]/g, tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag]));
+        }
+
         async function fetchApplications() {
             try {
                 const appsQuery = query(collection(db, "applications"), orderBy("submittedAt", "desc"));
@@ -710,7 +721,19 @@
             pageApps.forEach(app => {
                 const tr = document.createElement('tr');
 
-                const initials = ((app.firstName || 'A')[0] + (app.lastName || 'A')[0]).toUpperCase();
+                const rawFirst = app.firstName || 'A';
+                const rawLast = app.lastName || 'A';
+                const initials = (rawFirst[0] + rawLast[0]).toUpperCase();
+
+                const safeFirst = escapeHTML(app.firstName);
+                const safeLast = escapeHTML(app.lastName);
+                const safeEmail = escapeHTML(app.email);
+                const safeCountry = escapeHTML(app.country) || '-';
+                const safeCity = escapeHTML(app.city) || '-';
+                const safeGender = escapeHTML(app.gender) || '-';
+                const safeArea = escapeHTML(app.climateArea) || '-';
+                const safeId = escapeHTML(app.id);
+
                 const statusStr = app.applicationStatus || 'pending';
                 let statusLabel = 'Submitted';
                 if (statusStr === 'under_review') statusLabel = 'Under Review';
@@ -720,18 +743,18 @@
                 tr.innerHTML = `
                     <td>
                         <div class="table-user">
-                            <div class="table-avatar">${initials}</div>
+                            <div class="table-avatar">${escapeHTML(initials)}</div>
                             <div>
-                                <div class="table-name">${app.firstName} ${app.lastName}</div>
-                                <div class="table-email">${app.email}</div>
+                                <div class="table-name">${safeFirst} ${safeLast}</div>
+                                <div class="table-email">${safeEmail}</div>
                             </div>
                         </div>
                     </td>
-                    <td>${app.country || '-'} / ${app.city || '-'}</td>
-                    <td>${app.gender || '-'}</td>
-                    <td>${app.climateArea || '-'}</td>
+                    <td>${safeCountry} / ${safeCity}</td>
+                    <td>${safeGender}</td>
+                    <td>${safeArea}</td>
                     <td><span class="badge ${statusStr}">${statusLabel}</span></td>
-                    <td><a href="AdminApplicationDetails.html?id=${app.id}" class="btn-view">Review Application</a></td>
+                    <td><a href="AdminApplicationDetails.html?id=${safeId}" class="btn-view">Review Application</a></td>
                 `;
                 tableBody.appendChild(tr);
             });

@@ -443,6 +443,17 @@
             });
         }
 
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>'"]/g, tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag]));
+        }
+
         function processCSVData(data) {
             parsedData = [];
             // Auto mapping
@@ -472,11 +483,14 @@
             // Build preview
             previewBody.innerHTML = '';
             parsedData.slice(0, 10).forEach(item => {
+                const safeName = escapeHTML(item.name);
+                const safeCohort = escapeHTML(item.cohort);
+                const safeURL = item.photoURL.replace(/"/g, '&quot;');
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${item.name}</td>
-                    <td><span style="background:#F3F4F6; padding:3px 8px; border-radius:4px; font-size:12px;">${item.cohort}</span></td>
-                    <td>${item.photoURL ? `<a href="${item.photoURL}" target="_blank" style="color:#3B82F6">View Link</a>` : '<span style="color:#9CA3AF">No image</span>'}</td>
+                    <td>${safeName}</td>
+                    <td><span style="background:#F3F4F6; padding:3px 8px; border-radius:4px; font-size:12px;">${safeCohort}</span></td>
+                    <td>${safeURL ? `<a href="${safeURL}" target="_blank" style="color:#3B82F6">View Link</a>` : '<span style="color:#9CA3AF">No image</span>'}</td>
                 `;
                 previewBody.appendChild(tr);
             });

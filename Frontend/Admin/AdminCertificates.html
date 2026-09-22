@@ -367,6 +367,17 @@
 
         let allPayments = [];
 
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>'"]/g, tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag]));
+        }
+
         async function fetchPayments() {
             try {
                 const q = query(collection(db, "certificate_payments"), orderBy("paidAt", "desc"));
@@ -418,11 +429,16 @@
                 // Format amount
                 const amt = payment.amount ? parseFloat(payment.amount).toLocaleString() : '0';
 
+                const safeName = escapeHTML(payment.fullName) || 'N/A';
+                const safeEmail = escapeHTML(payment.email) || 'N/A';
+                const safeRef = escapeHTML(payment.paymentReference) || 'N/A';
+                const safeCurrency = escapeHTML(payment.currency) || 'USD';
+
                 tr.innerHTML = `
-                    <td style="font-weight: 500;">${payment.fullName || 'N/A'}</td>
-                    <td style="color: var(--text-muted);">${payment.email || 'N/A'}</td>
-                    <td style="font-family: monospace; font-size: 12px; color: var(--text-muted);">${payment.paymentReference || 'N/A'}</td>
-                    <td style="font-weight: 600;">${payment.currency || 'USD'} ${amt}</td>
+                    <td style="font-weight: 500;">${safeName}</td>
+                    <td style="color: var(--text-muted);">${safeEmail}</td>
+                    <td style="font-family: monospace; font-size: 12px; color: var(--text-muted);">${safeRef}</td>
+                    <td style="font-weight: 600;">${safeCurrency} ${amt}</td>
                     <td>${dateStr}</td>
                     <td><span class="badge-paid">Paid / Active</span></td>
                 `;
