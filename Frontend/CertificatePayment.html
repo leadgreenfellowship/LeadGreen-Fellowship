@@ -354,9 +354,26 @@
                         <div class="hint">Where we will send updates regarding your certificate.</div>
                     </div>
 
+                    <div class="form-group">
+                        <label for="currencySelect">Payment Currency</label>
+                        <select id="currencySelect"
+                            style="width: 100%; padding: 12px 15px; border: 1px solid var(--border-color); border-radius: 8px; font-family: inherit; font-size: 15px; background: white; margin-bottom: 20px;">
+                            <option value="USD" data-amount="1.99">USD ($1.99) - International Cards & PayPal</option>
+                            <option value="NGN" data-amount="3500">NGN (₦3,500) - Nigeria Bank Transfer, USSD, NQR
+                            </option>
+                            <option value="UGX" data-amount="7500">UGX (7,500 UGX) - Uganda Mobile Money</option>
+                            <option value="RWF" data-amount="2600">RWF (2,600 RWF) - Rwanda Mobile Money</option>
+                            <option value="ZAR" data-amount="35">ZAR (35 ZAR) - South Africa (1Voucher & Cards)</option>
+                            <option value="EUR" data-amount="1.85">EUR (€1.85) - UK/EU Bank Transfer</option>
+                            <option value="GBP" data-amount="1.55">GBP (£1.55) - UK/EU Bank Transfer</option>
+                        </select>
+                        <div class="hint" style="font-size: 12px; color: var(--text-light); margin-top: 5px;">Selecting
+                            a local currency instantly activates your local payment networks.</div>
+                    </div>
+
                     <div class="price-box">
                         <div class="price-label">Certificate Generation Fee</div>
-                        <div class="price-amount">$1.99</div>
+                        <div class="price-amount" id="displayAmount">$1.99</div>
                     </div>
 
                     <button type="submit" class="btn-pay" id="payBtn">
@@ -412,13 +429,24 @@
         const payLoader = document.getElementById('payLoader');
         const formScreen = document.getElementById('form-screen');
         const successScreen = document.getElementById('success-screen');
-        const successName = document.getElementById('successName');
         const successEmail = document.getElementById('successEmail');
+        const currencySelect = document.getElementById('currencySelect');
+        const displayAmount = document.getElementById('displayAmount');
 
         // Note: Change this to your live flutterwave public key when deploying
         const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-607249bb3038c6eaada730e08bd7b948-X';
 
-        const AMOUNT_IN_USD = 1.99;
+        currencySelect.addEventListener('change', function () {
+            const selectedOption = currencySelect.options[currencySelect.selectedIndex];
+            const currency = selectedOption.value;
+            const amount = selectedOption.getAttribute('data-amount');
+
+            let symbol = currency === 'USD' ? '$' :
+                currency === 'NGN' ? '₦' :
+                    currency === 'EUR' ? '€' :
+                        currency === 'GBP' ? '£' : '';
+            displayAmount.innerText = symbol ? `${symbol}${amount}` : `${amount} ${currency}`;
+        });
 
         paymentForm.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -433,15 +461,16 @@
                 return;
             }
 
-            init_payment(fullName, emailAddress);
+            const selectedOption = currencySelect.options[currencySelect.selectedIndex];
+            init_payment(fullName, emailAddress, selectedOption.value, parseFloat(selectedOption.getAttribute('data-amount')));
         });
 
-        function init_payment(fullName, emailAddress) {
+        function init_payment(fullName, emailAddress, currency, amount) {
             FlutterwaveCheckout({
                 public_key: FLUTTERWAVE_PUBLIC_KEY,
                 tx_ref: "lg_cert_" + Date.now(),
-                amount: AMOUNT_IN_USD,
-                currency: "USD",
+                amount: amount,
+                currency: currency,
                 // Omitting payment_options shows all enabled methods on your Flutterwave dashboard automatically
                 customer: {
                     email: emailAddress,
@@ -456,7 +485,7 @@
                     // SECURITY FIX: Explicitly enforce that the transaction must have been successful
                     if (data.status === "successful") {
                         const ref = data.transaction_id || data.tx_ref || "FW_" + Date.now();
-                        saveToFirebase(fullName, emailAddress, ref);
+                        saveToFirebase(fullName, emailAddress, ref, currency, amount);
                     } else {
                         alert("Payment was not completed successfully. Status: " + (data.status || "Unknown"));
                     }
@@ -467,7 +496,7 @@
             });
         }
 
-        async function saveToFirebase(fullName, email, reference) {
+        async function saveToFirebase(fullName, email, reference, currency, amount) {
             // Show loading on button while saving just in case
             payText.style.display = 'none';
             payLoader.style.display = 'block';
@@ -479,8 +508,8 @@
                     fullName: fullName,
                     email: email,
                     paymentReference: String(reference),
-                    amount: AMOUNT_IN_USD,
-                    currency: 'USD',
+                    amount: amount,
+                    currency: currency,
                     status: 'paid',
                     paidAt: serverTimestamp()
                 });
