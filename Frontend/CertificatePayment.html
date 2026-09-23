@@ -442,7 +442,7 @@
                 tx_ref: "lg_cert_" + Date.now(),
                 amount: AMOUNT_IN_USD,
                 currency: "USD",
-                payment_options: "card, account, banktransfer, ussd, mobilemoneyghana, mobilemoneyuganda, mpesa", // Expanded options
+                // Omitting payment_options shows all enabled methods on your Flutterwave dashboard automatically
                 customer: {
                     email: emailAddress,
                     name: fullName,
@@ -452,9 +452,14 @@
                     description: "Official Fellowship Certificate Payment"
                 },
                 callback: function (data) {
-                    console.log("Payment successful", data);
-                    const ref = data.transaction_id || data.tx_ref || "FW_" + Date.now();
-                    saveToFirebase(fullName, emailAddress, ref);
+                    console.log("Payment callback data:", data);
+                    // SECURITY FIX: Explicitly enforce that the transaction must have been successful
+                    if (data.status === "successful") {
+                        const ref = data.transaction_id || data.tx_ref || "FW_" + Date.now();
+                        saveToFirebase(fullName, emailAddress, ref);
+                    } else {
+                        alert("Payment was not completed successfully. Status: " + (data.status || "Unknown"));
+                    }
                 },
                 onclose: function () {
                     console.log('Payment window closed.');
