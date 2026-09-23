@@ -416,7 +416,7 @@
         const successEmail = document.getElementById('successEmail');
 
         // Note: Change this to your live flutterwave public key when deploying
-        const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK_TEST-3e6e18cde217164c79157c178ce698b8-X';
+        const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-607249bb3038c6eaada730e08bd7b948-X';
 
         const AMOUNT_IN_USD = 1.99;
 
@@ -442,7 +442,7 @@
                 tx_ref: "lg_cert_" + Date.now(),
                 amount: AMOUNT_IN_USD,
                 currency: "USD",
-                payment_options: "card, ussd", // Automatically handles intl cards seamlessly
+                payment_options: "card, account, banktransfer, ussd, mobilemoneyghana, mobilemoneyuganda, mpesa", // Expanded options
                 customer: {
                     email: emailAddress,
                     name: fullName,
