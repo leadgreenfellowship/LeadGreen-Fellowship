@@ -354,75 +354,15 @@
                         <div class="hint">Where we will send updates regarding your certificate.</div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="currencySelect">Select Your Country</label>
-                        <select id="currencySelect"
-                            style="width: 100%; padding: 12px 15px; border: 1px solid var(--border-color); border-radius: 8px; font-family: inherit; font-size: 15px; background: white; margin-bottom: 20px;">
-                            <option value="USD" data-amount="1.99" disabled selected>-- Select your country --</option>
-                            <option value="USD" data-amount="1.99">🇩🇿 Algeria</option>
-                            <option value="USD" data-amount="1.99">🇦🇴 Angola</option>
-                            <option value="USD" data-amount="1.99">🇧🇯 Benin</option>
-                            <option value="USD" data-amount="1.99">🇧🇼 Botswana</option>
-                            <option value="USD" data-amount="1.99">🇧🇫 Burkina Faso</option>
-                            <option value="USD" data-amount="1.99">🇧🇮 Burundi</option>
-                            <option value="USD" data-amount="1.99">🇨🇻 Cabo Verde</option>
-                            <option value="XAF" data-amount="1200">🇨🇲 Cameroon</option>
-                            <option value="USD" data-amount="1.99">🇨🇫 Central African Republic</option>
-                            <option value="USD" data-amount="1.99">🇹🇩 Chad</option>
-                            <option value="USD" data-amount="1.99">🇰🇲 Comoros</option>
-                            <option value="USD" data-amount="1.99">🇨🇬 Congo</option>
-                            <option value="XOF" data-amount="1200">🇨🇮 Côte d'Ivoire</option>
-                            <option value="USD" data-amount="1.99">🇨🇩 DR Congo</option>
-                            <option value="USD" data-amount="1.99">🇩🇯 Djibouti</option>
-                            <option value="EGP" data-amount="100">🇪🇬 Egypt</option>
-                            <option value="USD" data-amount="1.99">🇬🇶 Equatorial Guinea</option>
-                            <option value="USD" data-amount="1.99">🇪🇷 Eritrea</option>
-                            <option value="USD" data-amount="1.99">🇸🇿 Eswatini</option>
-                            <option value="USD" data-amount="1.99">🇪🇹 Ethiopia</option>
-                            <option value="USD" data-amount="1.99">🇬🇦 Gabon</option>
-                            <option value="USD" data-amount="1.99">🇬🇲 Gambia</option>
-                            <option value="GHS" data-amount="35">🇬🇭 Ghana</option>
-                            <option value="USD" data-amount="1.99">🇬🇳 Guinea</option>
-                            <option value="USD" data-amount="1.99">🇬🇼 Guinea-Bissau</option>
-                            <option value="KES" data-amount="260">🇰🇪 Kenya</option>
-                            <option value="USD" data-amount="1.99">🇱🇸 Lesotho</option>
-                            <option value="USD" data-amount="1.99">🇱🇷 Liberia</option>
-                            <option value="USD" data-amount="1.99">🇱🇾 Libya</option>
-                            <option value="USD" data-amount="1.99">🇲🇬 Madagascar</option>
-                            <option value="USD" data-amount="1.99">🇲🇼 Malawi</option>
-                            <option value="USD" data-amount="1.99">🇲🇱 Mali</option>
-                            <option value="USD" data-amount="1.99">🇲🇷 Mauritania</option>
-                            <option value="USD" data-amount="1.99">🇲🇺 Mauritius</option>
-                            <option value="USD" data-amount="1.99">🇲🇦 Morocco</option>
-                            <option value="USD" data-amount="1.99">🇲🇿 Mozambique</option>
-                            <option value="USD" data-amount="1.99">🇳🇦 Namibia</option>
-                            <option value="USD" data-amount="1.99">🇳🇪 Niger</option>
-                            <option value="NGN" data-amount="3500">🇳🇬 Nigeria</option>
-                            <option value="RWF" data-amount="2600">🇷🇼 Rwanda</option>
-                            <option value="USD" data-amount="1.99">🇸🇹 Sao Tome and Principe</option>
-                            <option value="XOF" data-amount="1200">🇸🇳 Senegal</option>
-                            <option value="USD" data-amount="1.99">🇸🇨 Seychelles</option>
-                            <option value="USD" data-amount="1.99">🇸🇱 Sierra Leone</option>
-                            <option value="USD" data-amount="1.99">🇸🇴 Somalia</option>
-                            <option value="ZAR" data-amount="35">🇿🇦 South Africa</option>
-                            <option value="USD" data-amount="1.99">🇸🇸 South Sudan</option>
-                            <option value="USD" data-amount="1.99">🇸🇩 Sudan</option>
-                            <option value="TZS" data-amount="5500">🇹🇿 Tanzania</option>
-                            <option value="USD" data-amount="1.99">🇹🇬 Togo</option>
-                            <option value="USD" data-amount="1.99">🇹🇳 Tunisia</option>
-                            <option value="UGX" data-amount="7500">🇺🇬 Uganda</option>
-                            <option value="ZMW" data-amount="55">🇿🇲 Zambia</option>
-                            <option value="USD" data-amount="1.99">🇿🇼 Zimbabwe</option>
-                            <option value="USD" data-amount="1.99">🌎 International (Outside Africa)</option>
-                        </select>
-                        <div class="hint" style="font-size: 12px; color: var(--text-light); margin-top: 5px;">We will
-                            match your country with available local payment networks (Mobile Money, Transfer, etc).
-                        </div>
+                    <div class="price-box" style="display:flex; justify-content:space-between; align-items:center;">
+                        <span class="price-label">Certificate Fee</span>
+                        <span class="price-amount" style="font-size: 20px;">$1.99 USD</span>
                     </div>
 
-                    <div class="price-box">
-                        <div class="price-label">Certificate Generation Fee</div>
-                        <div class="price-amount" id="displayAmount">$1.99</div>
+                    <div class="hint"
+                        style="text-align: center; font-size: 12px; color: var(--text-light); margin-bottom: 20px; background: var(--hover-green); padding: 10px; border-radius: 6px;">
+                        *You will be securely checked out via Flutterwave in USD. Your bank will automatically compute
+                        the conversion to your local currency.
                     </div>
 
                     <button type="submit" class="btn-pay" id="payBtn">
@@ -479,27 +419,9 @@
         const formScreen = document.getElementById('form-screen');
         const successScreen = document.getElementById('success-screen');
         const successEmail = document.getElementById('successEmail');
-        const currencySelect = document.getElementById('currencySelect');
-        const displayAmount = document.getElementById('displayAmount');
 
-        // Note: Change this to your live flutterwave public key when deploying
-        const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-607249bb3038c6eaada730e08bd7b948-X';
-
-        currencySelect.addEventListener('change', function () {
-            const selectedOption = currencySelect.options[currencySelect.selectedIndex];
-            const currency = selectedOption.value;
-            const amount = selectedOption.getAttribute('data-amount');
-
-            let symbol = currency === 'USD' ? '$' :
-                currency === 'NGN' ? '₦' :
-                    currency === 'GHS' ? 'GH₵' :
-                        currency === 'KES' ? 'KSh' :
-                            currency === 'UGX' ? 'UGX ' :
-                                currency === 'ZMW' ? 'ZK' :
-                                    currency === 'ZAR' ? 'R' :
-                                        currency === 'EGP' ? 'E£' : '';
-            displayAmount.innerText = symbol ? `${symbol}${amount}` : `${amount} ${currency}`;
-        });
+        // Note: Change this to your live Flutterwave public key when deploying
+        const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK_TEST-YOUR_FLUTTERWAVE_PUBLIC_KEY_HERE';
 
         paymentForm.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -509,38 +431,35 @@
 
             if (!fullName || !emailAddress) return;
 
-            if (FLUTTERWAVE_PUBLIC_KEY === 'YOUR_FLUTTERWAVE_PUBLIC_KEY_HERE') {
+            if (FLUTTERWAVE_PUBLIC_KEY.includes('FLWPUBK-607249bb3038c6eaada730e08bd7b948-X')) {
                 alert("Please add your Flutterwave Public Key at the bottom of CertificatePayment.html before testing payments.");
                 return;
             }
 
-            const selectedOption = currencySelect.options[currencySelect.selectedIndex];
-            init_payment(fullName, emailAddress, selectedOption.value, parseFloat(selectedOption.getAttribute('data-amount')));
+            init_payment(fullName, emailAddress, "USD", 1.99);
         });
 
         function init_payment(fullName, emailAddress, currency, amount) {
             FlutterwaveCheckout({
                 public_key: FLUTTERWAVE_PUBLIC_KEY,
-                tx_ref: "lg_cert_" + Date.now(),
+                tx_ref: "LG_" + Math.floor((Math.random() * 1000000000) + 1),
                 amount: amount,
                 currency: currency,
-                // Omitting payment_options shows all enabled methods on your Flutterwave dashboard automatically
                 customer: {
                     email: emailAddress,
                     name: fullName,
                 },
                 customizations: {
                     title: "LeadGreen Certificate",
-                    description: "Official Fellowship Certificate Payment"
+                    description: "Official Certificate Payment"
                 },
-                callback: function (data) {
-                    console.log("Payment callback data:", data);
-                    // SECURITY FIX: Explicitly enforce that the transaction must have been successful
-                    if (data.status === "successful") {
-                        const ref = data.transaction_id || data.tx_ref || "FW_" + Date.now();
+                callback: function (response) {
+                    console.log("Payment callback data:", response);
+                    if (response.status === "successful" || response.status === "completed") {
+                        const ref = response.transaction_id || response.tx_ref || "FW_" + Date.now();
                         saveToFirebase(fullName, emailAddress, ref, currency, amount);
                     } else {
-                        alert("Payment was not completed successfully. Status: " + (data.status || "Unknown"));
+                        alert("Payment was not completed successfully. Status: " + (response.status || "Unknown"));
                     }
                 },
                 onclose: function () {
