@@ -421,7 +421,7 @@
         const successEmail = document.getElementById('successEmail');
 
         // Note: Change this to your live Flutterwave public key when deploying
-        const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK_TEST-YOUR_FLUTTERWAVE_PUBLIC_KEY_HERE';
+        const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-607249bb3038c6eaada730e08bd7b948-X';
 
         paymentForm.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -430,11 +430,6 @@
             const emailAddress = document.getElementById('emailAddress').value.trim();
 
             if (!fullName || !emailAddress) return;
-
-            if (FLUTTERWAVE_PUBLIC_KEY.includes('FLWPUBK-607249bb3038c6eaada730e08bd7b948-X')) {
-                alert("Please add your Flutterwave Public Key at the bottom of CertificatePayment.html before testing payments.");
-                return;
-            }
 
             init_payment(fullName, emailAddress, "USD", 1.99);
         });
