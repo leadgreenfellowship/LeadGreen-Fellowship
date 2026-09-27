@@ -139,6 +139,25 @@
             box-shadow: 0 0 0 3px rgba(19, 138, 86, 0.1);
         }
 
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 15px;
+            color: var(--text-main);
+            background-color: white;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(19, 138, 86, 0.1);
+        }
+
         .form-group .hint {
             font-size: 12px;
             color: var(--text-light);
@@ -343,6 +362,15 @@
 
                 <form id="paymentForm">
                     <div class="form-group">
+                        <label for="countrySelect">Location</label>
+                        <select id="countrySelect">
+                            <option value="NG">Nigeria (🇳🇬)</option>
+                            <option value="US">Other / International</option>
+                        </select>
+                        <div class="hint">Your country determines your checkout currency.</div>
+                    </div>
+
+                    <div class="form-group">
                         <label for="fullName">Full Name</label>
                         <input type="text" id="fullName" placeholder="e.g. John Doe" required>
                         <div class="hint">Exactly how you want it to appear on your certificate.</div>
@@ -356,10 +384,10 @@
 
                     <div class="price-box" style="display:flex; justify-content:space-between; align-items:center;">
                         <span class="price-label">Certificate Fee</span>
-                        <span class="price-amount" style="font-size: 20px;">$1.99 USD</span>
+                        <span class="price-amount" id="priceAmount" style="font-size: 20px;">$1.99 USD</span>
                     </div>
 
-                    <div class="hint"
+                    <div id="paymentNote" class="hint"
                         style="text-align: center; font-size: 12px; color: var(--text-light); margin-bottom: 20px; background: var(--hover-green); padding: 10px; border-radius: 6px;">
                         *You will be securely checked out via Flutterwave in USD. Your bank will automatically compute
                         the conversion to your local currency.
@@ -420,6 +448,62 @@
         const successScreen = document.getElementById('success-screen');
         const successEmail = document.getElementById('successEmail');
 
+        const countrySelect = document.getElementById('countrySelect');
+        const priceAmount = document.getElementById('priceAmount');
+        const paymentNote = document.getElementById('paymentNote');
+
+        const GLOBAL_CERTIFICATE_PRICE_USD = 1.99;
+
+        const countryConfig = {
+            "NG": {
+                countryCode: "NG",
+                countryName: "Nigeria",
+                currency: "NGN",
+                currencySymbol: "₦",
+                localAmount: 3000
+            }
+        };
+
+        let currentConfig = null;
+
+        // Auto-detect country based on IP (convenience only)
+        async function fetchUserCountry() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                if (data.country_code && countryConfig[data.country_code]) {
+                    countrySelect.value = data.country_code;
+                } else if (data.country_code && !countryConfig[data.country_code]) {
+                    countrySelect.value = 'US'; // fallback
+                }
+                updatePricingDisplay();
+            } catch (err) {
+                console.warn("Could not auto-detect country");
+            }
+        }
+
+        function updatePricingDisplay() {
+            const selected = countrySelect.value;
+            if (countryConfig[selected]) {
+                currentConfig = countryConfig[selected];
+                const displayPrice = `${currentConfig.currencySymbol}${currentConfig.localAmount.toLocaleString()}`;
+                priceAmount.innerText = displayPrice;
+                payText.innerText = `Pay ${displayPrice}`;
+                paymentNote.innerText = `*You will be securely checked out via Flutterwave in ${currentConfig.currency}.`;
+            } else {
+                currentConfig = null;
+                priceAmount.innerText = `$${GLOBAL_CERTIFICATE_PRICE_USD} USD`;
+                payText.innerText = `Pay $${GLOBAL_CERTIFICATE_PRICE_USD} USD`;
+                paymentNote.innerText = `*You will be securely checked out via Flutterwave in USD. If this is not your local currency, your bank may compute conversion based on their exchange rate.`;
+            }
+        }
+
+        countrySelect.addEventListener('change', updatePricingDisplay);
+
+        // Initialize display and fetch location on load
+        updatePricingDisplay();
+        fetchUserCountry();
+
         // Note: Change this to your live Flutterwave public key when deploying
         const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-607249bb3038c6eaada730e08bd7b948-X';
 
@@ -431,7 +515,15 @@
 
             if (!fullName || !emailAddress) return;
 
-            init_payment(fullName, emailAddress, "USD", 1.99);
+            let currency = "USD";
+            let amount = GLOBAL_CERTIFICATE_PRICE_USD;
+
+            if (currentConfig) {
+                currency = currentConfig.currency;
+                amount = currentConfig.localAmount;
+            }
+
+            init_payment(fullName, emailAddress, currency, amount);
         });
 
         function init_payment(fullName, emailAddress, currency, amount) {
@@ -470,6 +562,9 @@
             payBtn.disabled = true;
 
             try {
+                const countryCode = currentConfig ? currentConfig.countryCode : "Other";
+                const countryName = currentConfig ? currentConfig.countryName : "Other";
+
                 // Add to 'certificate_payments' collection in Firestore
                 await addDoc(collection(db, "certificate_payments"), {
                     fullName: fullName,
@@ -477,7 +572,10 @@
                     paymentReference: String(reference),
                     amount: amount,
                     currency: currency,
-                    status: 'paid',
+                    countryCode: countryCode,
+                    countryName: countryName,
+                    globalPriceUSD: GLOBAL_CERTIFICATE_PRICE_USD,
+                    status: 'pending',
                     paidAt: serverTimestamp()
                 });
 

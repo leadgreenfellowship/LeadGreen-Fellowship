@@ -2,7 +2,7 @@ import csv
 import os
 import random
 
-input_file = r"c:\Users\OLUGBADE TAYO\Desktop\AI coding class\LeadGreen V1\LeadGreen_All_Applications.csv"
+input_file = r"c:\Users\OLUGBADE TAYO\Downloads\LeadGreen_All_Applications (1).csv"
 output_file = r"c:\Users\OLUGBADE TAYO\Desktop\AI coding class\LeadGreen V1\Selected_Leads.csv"
 
 LABS = [
@@ -77,27 +77,32 @@ try:
         males.sort(key=lambda x: x['Score'], reverse=True)
         females.sort(key=lambda x: x['Score'], reverse=True)
 
-        # Select top 30 of each
-        top_males = males[:30]
         top_females = females[:30]
+        num_males_needed = 60 - len(top_females)
+        top_males = males[:num_males_needed]
 
-        # Randomly shuffle labs to assign randomly
         random.shuffle(LABS)
 
-        for i, m in enumerate(top_males):
-            m['Role'] = 'Team Lead'
-            # Check length to prevent index out of bounds in case there are < 30 applicants
-            if i < len(LABS):
-                m['Group'] = LABS[i][0]
-                m['Climate Action Lab'] = LABS[i][1]
-            
+        selected = []
         for i, f in enumerate(top_females):
             f['Role'] = 'Co-Team Lead'
             if i < len(LABS):
                 f['Group'] = LABS[i][0]
                 f['Climate Action Lab'] = LABS[i][1]
-
-        selected = top_males + top_females
+            selected.append(f)
+            
+        for i, m in enumerate(top_males):
+            if i < len(LABS):
+                m['Role'] = 'Team Lead'
+                m['Group'] = LABS[i][0]
+                m['Climate Action Lab'] = LABS[i][1]
+            else:
+                m['Role'] = 'Co-Team Lead'
+                f_missing_idx = len(top_females) + (i - len(LABS))
+                if f_missing_idx < len(LABS):
+                    m['Group'] = LABS[f_missing_idx][0]
+                    m['Climate Action Lab'] = LABS[f_missing_idx][1]
+            selected.append(m)
         
         if not selected:
             print("No applicants found!")
