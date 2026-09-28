@@ -416,17 +416,7 @@
             </div>
         </div>
 
-        <!-- Success Screen -->
-        <div id="success-screen">
-            <div class="success-icon">
-                <i class="fa-solid fa-check"></i>
-            </div>
-            <h2>Payment Successful!</h2>
-            <p>Thank you for claiming your official certificate, <strong id="successName"></strong>.</p>
-            <p>Your details have been securely logged. Your personalized certificate will be generated and sent to
-                <strong><span id="successEmail"></span></strong> shortly.
-            </p>
-        </div>
+        <!-- Success logic moved to standalone CertificateSuccess.html -->
     </div>
 
     <!-- Flutterwave Inline JS -->
@@ -691,11 +681,9 @@
                     paidAt: serverTimestamp()
                 });
 
-                // Show Success Screen
-                successName.innerText = fullName;
-                successEmail.innerText = email;
-                formScreen.style.display = 'none';
-                successScreen.style.display = 'block';
+                // Redirect to Standalone Success Screen
+                const urlParams = new URLSearchParams({ name: fullName, email: email });
+                window.location.href = `CertificateSuccess.html?${urlParams.toString()}`;
 
             } catch (error) {
                 console.error("Error saving document: ", error);
