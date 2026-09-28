@@ -26,25 +26,46 @@ app.post("/webhook", async (req, res) => {
         // Ensure it's a successful transaction
         if (payload.event === "charge.completed" && payload.data.status === "successful") {
             const data = payload.data;
-
             const transactionRef = data.tx_ref;
-            const fullName = data.customer.name || "Unknown";
-            const email = data.customer.email;
-            const amount = data.amount;
-            const currency = data.currency;
+            const transactionId = data.id;
 
-            // Save to Firestore accurately from the backend
-            await db.collection("certificate_payments").doc(String(transactionRef)).set({
-                fullName: fullName,
-                email: email,
-                paymentReference: String(transactionRef),
-                amount: amount,
-                currency: currency,
-                status: "paid",
-                paidAt: admin.firestore.FieldValue.serverTimestamp()
-            }, { merge: true });
+            const docRef = db.collection("certificate_payments").doc(String(transactionRef));
+            const docSnap = await docRef.get();
 
-            console.log(`Payment successfully logged for ${email} with ref ${transactionRef}`);
+            // Idempotency check
+            if (docSnap.exists && (docSnap.data().status === "paid" || docSnap.data().status === "successful")) {
+                console.log(`Transaction ${transactionRef} is already paid. Skipping to prevent duplicates.`);
+                return res.status(200).send("Already processed");
+            }
+
+            // Verify with Flutterwave API to prevent spoofing
+            const fwResponse = await fetch(`https://api.flutterwave.com/v3/transactions/${transactionId}/verify`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${process.env.FLUTTERWAVE_SECRET_KEY || "YOUR_FLUTTERWAVE_SECRET_KEY"}`
+                }
+            });
+
+            const fwData = await fwResponse.json();
+
+            if (fwData.status === "success" && fwData.data.status === "successful" && fwData.data.amount >= data.amount && fwData.data.currency === data.currency) {
+                // Save to Firestore accurately from the backend
+                await docRef.set({
+                    fullName: fwData.data.customer.name || data.customer.name || "Unknown",
+                    email: fwData.data.customer.email || data.customer.email,
+                    paymentReference: String(transactionRef),
+                    amount: fwData.data.amount,
+                    currency: fwData.data.currency,
+                    status: "paid",
+                    paidAt: admin.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+
+                console.log(`Successfully verified and logged payment for ${fwData.data.customer.email} with ref ${transactionRef}`);
+            } else {
+                console.error("Flutterwave API verification failed or mismatched data.", fwData);
+                return res.status(400).send("Verification failed");
+            }
         }
 
         return res.status(200).send("Webhook received");

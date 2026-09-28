@@ -372,11 +372,16 @@
                             <option value="TZ">Tanzania (🇹🇿)</option>
                             <option value="ZM">Zambia (🇿🇲)</option>
                             <option value="MW">Malawi (🇲🇼)</option>
+                            <option value="ZA">South Africa (🇿🇦)</option>
+                            <option value="EG">Egypt (🇪🇬)</option>
                             <option value="CI">Côte d'Ivoire (🇨🇮)</option>
                             <option value="SN">Senegal (🇸🇳)</option>
                             <option value="CM">Cameroon (🇨🇲)</option>
                             <option value="BF">Burkina Faso (🇧🇫)</option>
-                            <option value="US">Other / International</option>
+                            <option value="US">USA (🇺🇸)</option>
+                            <option value="GB">United Kingdom (🇬🇧)</option>
+                            <option value="EU">Europe (🇪🇺)</option>
+                            <option value="Other">Other / International</option>
                         </select>
                         <div class="hint">Your country determines your checkout currency.</div>
                     </div>
@@ -462,7 +467,7 @@
                 currency: "NGN",
                 currencySymbol: "₦",
                 localAmount: 3000,
-                paymentOptions: ["card", "banktransfer", "ussd", "account", "opay"]
+                paymentOptions: ["card", "ussd", "banktransfer", "account", "internetbanking", "nqr", "enaira", "opay"]
             },
             "GH": {
                 countryCode: "GH",
@@ -520,6 +525,22 @@
                 localAmount: 0,
                 paymentOptions: ["card", "mobilemoneymalawi"]
             },
+            "ZA": {
+                countryCode: "ZA",
+                countryName: "South Africa",
+                currency: "ZAR",
+                currencySymbol: "R",
+                localAmount: 0,
+                paymentOptions: ["card", "account", "1voucher"]
+            },
+            "EG": {
+                countryCode: "EG",
+                countryName: "Egypt",
+                currency: "EGP",
+                currencySymbol: "E£",
+                localAmount: 0,
+                paymentOptions: ["card", "fawrypay"]
+            },
             "CI": {
                 countryCode: "CI",
                 countryName: "Côte d'Ivoire",
@@ -551,6 +572,30 @@
                 currencySymbol: "CFA",
                 localAmount: 0,
                 paymentOptions: ["card", "mobilemoneyxof"]
+            },
+            "US": {
+                countryCode: "US",
+                countryName: "United States",
+                currency: "USD",
+                currencySymbol: "$",
+                localAmount: 0,
+                paymentOptions: ["card", "account"]
+            },
+            "GB": {
+                countryCode: "GB",
+                countryName: "United Kingdom",
+                currency: "GBP",
+                currencySymbol: "£",
+                localAmount: 0,
+                paymentOptions: ["card", "account"]
+            },
+            "EU": {
+                countryCode: "EU",
+                countryName: "Europe",
+                currency: "EUR",
+                currencySymbol: "€",
+                localAmount: 0,
+                paymentOptions: ["card", "account"]
             }
         };
 
@@ -622,7 +667,7 @@
         function init_payment(fullName, emailAddress, currency, amount, optionsStr) {
             let checkoutConfig = {
                 public_key: FLUTTERWAVE_PUBLIC_KEY,
-                tx_ref: "LG_" + Math.floor((Math.random() * 1000000000) + 1),
+                tx_ref: "LG_" + Date.now() + "_" + Math.floor(Math.random() * 100000),
                 amount: amount,
                 currency: currency,
                 customer: {
@@ -682,7 +727,7 @@
                 });
 
                 // Redirect to Standalone Success Screen
-                const urlParams = new URLSearchParams({ name: fullName, email: email });
+                const urlParams = new URLSearchParams({ name: fullName, email: email, tx_ref: reference });
                 window.location.href = `CertificateSuccess.html?${urlParams.toString()}`;
 
             } catch (error) {
