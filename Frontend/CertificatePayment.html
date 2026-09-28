@@ -365,6 +365,17 @@
                         <label for="countrySelect">Location</label>
                         <select id="countrySelect">
                             <option value="NG">Nigeria (🇳🇬)</option>
+                            <option value="GH">Ghana (🇬🇭)</option>
+                            <option value="KE">Kenya (🇰🇪)</option>
+                            <option value="UG">Uganda (🇺🇬)</option>
+                            <option value="RW">Rwanda (🇷🇼)</option>
+                            <option value="TZ">Tanzania (🇹🇿)</option>
+                            <option value="ZM">Zambia (🇿🇲)</option>
+                            <option value="MW">Malawi (🇲🇼)</option>
+                            <option value="CI">Côte d'Ivoire (🇨🇮)</option>
+                            <option value="SN">Senegal (🇸🇳)</option>
+                            <option value="CM">Cameroon (🇨🇲)</option>
+                            <option value="BF">Burkina Faso (🇧🇫)</option>
                             <option value="US">Other / International</option>
                         </select>
                         <div class="hint">Your country determines your checkout currency.</div>
@@ -460,7 +471,96 @@
                 countryName: "Nigeria",
                 currency: "NGN",
                 currencySymbol: "₦",
-                localAmount: 3000
+                localAmount: 3000,
+                paymentOptions: ["card", "banktransfer", "ussd", "account", "opay"]
+            },
+            "GH": {
+                countryCode: "GH",
+                countryName: "Ghana",
+                currency: "GHS",
+                currencySymbol: "GH₵",
+                localAmount: 0, // Admin must set approved local amount here
+                paymentOptions: ["card", "mobilemoneyghana"]
+            },
+            "KE": {
+                countryCode: "KE",
+                countryName: "Kenya",
+                currency: "KES",
+                currencySymbol: "KSh",
+                localAmount: 0,
+                paymentOptions: ["card", "mpesa"]
+            },
+            "UG": {
+                countryCode: "UG",
+                countryName: "Uganda",
+                currency: "UGX",
+                currencySymbol: "USh",
+                localAmount: 0,
+                paymentOptions: ["card", "mobilemoneyuganda"]
+            },
+            "RW": {
+                countryCode: "RW",
+                countryName: "Rwanda",
+                currency: "RWF",
+                currencySymbol: "FRw",
+                localAmount: 0,
+                paymentOptions: ["card", "mobilemoneyrwanda"]
+            },
+            "TZ": {
+                countryCode: "TZ",
+                countryName: "Tanzania",
+                currency: "TZS",
+                currencySymbol: "TSh",
+                localAmount: 0,
+                paymentOptions: ["card", "mobilemoneytanzania"]
+            },
+            "ZM": {
+                countryCode: "ZM",
+                countryName: "Zambia",
+                currency: "ZMW",
+                currencySymbol: "ZK",
+                localAmount: 0,
+                paymentOptions: ["card", "mobilemoneyzambia"]
+            },
+            "MW": {
+                countryCode: "MW",
+                countryName: "Malawi",
+                currency: "MWK",
+                currencySymbol: "MK",
+                localAmount: 0,
+                paymentOptions: ["card", "mobilemoneymalawi"]
+            },
+            "CI": {
+                countryCode: "CI",
+                countryName: "Côte d'Ivoire",
+                currency: "XOF",
+                currencySymbol: "CFA",
+                localAmount: 0,
+                paymentOptions: ["card", "mobilemoneyxof"]
+            },
+            "SN": {
+                countryCode: "SN",
+                countryName: "Senegal",
+                currency: "XOF",
+                currencySymbol: "CFA",
+                localAmount: 0,
+                paymentOptions: ["card", "mobilemoneyxof"]
+            },
+            "CM": {
+                countryCode: "CM",
+                countryName: "Cameroon",
+                currency: "XAF",
+                currencySymbol: "FCFA",
+                localAmount: 0,
+                paymentOptions: ["card", "mobilemoneyxaf"]
+            },
+            "BF": {
+                countryCode: "BF",
+                countryName: "Burkina Faso",
+                currency: "XOF",
+                currencySymbol: "CFA",
+                localAmount: 0,
+                paymentOptions: ["card", "mobilemoneyxof"]
             }
         };
 
@@ -484,7 +584,8 @@
 
         function updatePricingDisplay() {
             const selected = countrySelect.value;
-            if (countryConfig[selected]) {
+            // Only use country config if the amount was explicitly configured (greater than 0)
+            if (countryConfig[selected] && countryConfig[selected].localAmount > 0) {
                 currentConfig = countryConfig[selected];
                 const displayPrice = `${currentConfig.currencySymbol}${currentConfig.localAmount.toLocaleString()}`;
                 priceAmount.innerText = displayPrice;
@@ -517,17 +618,19 @@
 
             let currency = "USD";
             let amount = GLOBAL_CERTIFICATE_PRICE_USD;
+            let optionsStr = "";
 
-            if (currentConfig) {
+            if (currentConfig && currentConfig.localAmount > 0) {
                 currency = currentConfig.currency;
                 amount = currentConfig.localAmount;
+                optionsStr = currentConfig.paymentOptions.join(', ');
             }
 
-            init_payment(fullName, emailAddress, currency, amount);
+            init_payment(fullName, emailAddress, currency, amount, optionsStr);
         });
 
-        function init_payment(fullName, emailAddress, currency, amount) {
-            FlutterwaveCheckout({
+        function init_payment(fullName, emailAddress, currency, amount, optionsStr) {
+            let checkoutConfig = {
                 public_key: FLUTTERWAVE_PUBLIC_KEY,
                 tx_ref: "LG_" + Math.floor((Math.random() * 1000000000) + 1),
                 amount: amount,
@@ -544,7 +647,8 @@
                     console.log("Payment callback data:", response);
                     if (response.status === "successful" || response.status === "completed") {
                         const ref = response.transaction_id || response.tx_ref || "FW_" + Date.now();
-                        saveToFirebase(fullName, emailAddress, ref, currency, amount);
+                        const paymentType = response.payment_type || "flutterwave";
+                        saveToFirebase(fullName, emailAddress, ref, currency, amount, paymentType);
                     } else {
                         alert("Payment was not completed successfully. Status: " + (response.status || "Unknown"));
                     }
@@ -552,10 +656,17 @@
                 onclose: function () {
                     console.log('Payment window closed.');
                 }
-            });
+            };
+
+            // Apply payment method restrictions if they exist for this local currency
+            if (optionsStr && optionsStr.length > 0) {
+                checkoutConfig.payment_options = optionsStr;
+            }
+
+            FlutterwaveCheckout(checkoutConfig);
         }
 
-        async function saveToFirebase(fullName, email, reference, currency, amount) {
+        async function saveToFirebase(fullName, email, reference, currency, amount, paymentMethod) {
             // Show loading on button while saving just in case
             payText.style.display = 'none';
             payLoader.style.display = 'block';
@@ -574,6 +685,7 @@
                     currency: currency,
                     countryCode: countryCode,
                     countryName: countryName,
+                    paymentMethod: paymentMethod,
                     globalPriceUSD: GLOBAL_CERTIFICATE_PRICE_USD,
                     status: 'pending',
                     paidAt: serverTimestamp()
