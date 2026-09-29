@@ -365,19 +365,47 @@
                         LeadGreen Fellowship Certificate</h2>
                 </div>
 
-                <div class="price-box" style="display:flex; justify-content:space-between; align-items:center;">
-                    <span class="price-label">Certificate Fee</span>
-                    <span class="price-amount" style="font-size: 20px;">$1.99 USD</span>
-                </div>
+                <form onsubmit="handleLanguageRouting(event)">
+                    <div class="form-group" style="margin-bottom: 25px;">
+                        <label for="languageSelect">Preferred Language / Langue Préférée</label>
+                        <select id="languageSelect" required>
+                            <option value="">-- Select Language --</option>
+                            <option value="EN">English</option>
+                            <option value="FR">Français (French)</option>
+                        </select>
+                    </div>
 
-                <button type="button" class="btn-pay"
-                    onclick="window.location.href='https://selar.com/leadgreenfellowship?add_to_cart=1&email=&fullname=&mobile='">
-                    <span>Pay for Certificate</span>
-                </button>
+                    <div class="price-box" style="display:flex; justify-content:space-between; align-items:center;">
+                        <span class="price-label">Certificate Fee</span>
+                        <span class="price-amount" style="font-size: 20px;">$1.99 USD</span>
+                    </div>
 
-                <div class="secure-badge">
-                    <i class="fa-solid fa-lock"></i> Secured securely via Selar
-                </div>
+                    <button type="submit" class="btn-pay">
+                        <span>Pay for Certificate</span>
+                    </button>
+
+                    <div class="secure-badge">
+                        <i class="fa-solid fa-lock"></i> Secured securely via Selar
+                    </div>
+                </form>
+
+                <script>
+                    window.handleLanguageRouting = function (e) {
+                        e.preventDefault();
+
+                        const btn = e.target.querySelector('button[type="submit"]');
+                        btn.innerHTML = '<span>Redirecting...</span>';
+                        btn.disabled = true;
+
+                        const language = document.getElementById('languageSelect').value;
+
+                        if (language === 'FR') {
+                            window.location.href = 'https://selar.com/leadgreenfellowship2?utm_source=chatgpt.com';
+                        } else {
+                            window.location.href = 'https://selar.com/leadgreenfellowship?add_to_cart=1&email=&fullname=&mobile=';
+                        }
+                    }
+                </script>
             </div>
         </div>
 
