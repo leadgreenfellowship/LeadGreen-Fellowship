@@ -135,47 +135,26 @@
             <i class="fa-solid fa-check"></i>
         </div>
 
-        <h1 id="greeting-header">Payment Successful!</h1>
-        <p id="thank-you-message">Thank you for paying for your LeadGreen certificate. Your payment has been securely
-            recorded.</p>
+        <h1 id="greeting-header">Payment Successful 🎉</h1>
 
-        <div class="highlight-box">
-            <i class="fa-solid fa-certificate"></i> We will now process your certificate.
+        <div style="text-align: left; margin: 30px 0; font-size: 16px; color: var(--text-muted); line-height: 1.8;">
+            <p style="margin-bottom: 20px;">Thank you for completing your LeadGreen Fellowship certificate payment.</p>
+            <p style="margin-bottom: 20px;">Your payment has been successfully received.</p>
+            <p style="margin-bottom: 20px;">Your certificate will be processed after the fellowship verification
+                process.</p>
+            <p style="margin-bottom: 20px;">You do not need to download anything at this time.</p>
         </div>
 
-        <p id="dynamic-message">Your personalized certificate is on the way. Welcome to the LeadGreen Alumni network!
-            Congratulations!</p>
+        <div class="highlight-box" style="margin-bottom: 30px;">
+            <i class="fa-solid fa-receipt"></i> Please keep your payment receipt for your records.
+        </div>
 
-
-
-        <a href="index.html" class="btn-home">Return to Homepage</a>
+        <a href="index.html" class="btn-home" style="width: 100%;">Return to Homepage</a>
 
         <div class="footer-note">
             If you have any questions, please contact our support team.
         </div>
     </div>
-
-    <script>
-        // Retrieve name dynamically if available in URL parameters
-        window.onload = () => {
-            const params = new URLSearchParams(window.location.search);
-            const name = params.get('name');
-            const email = params.get('email');
-
-            if (name) {
-                const header = document.getElementById('greeting-header');
-                const thankYouMsg = document.getElementById('thank-you-message');
-
-                header.innerHTML = `Payment Successful, ${name}!`;
-                thankYouMsg.innerHTML = `Thank you, <strong>${name}</strong>, for paying for your LeadGreen certificate. Your payment has been securely recorded.`;
-            }
-
-            if (email) {
-                const p = document.getElementById('dynamic-message');
-                p.innerHTML = `Your personalized certificate is on the way. Welcome to the LeadGreen Alumni network! Congratulations!`;
-            }
-        };
-    </script>
 </body>
 
 </html>
