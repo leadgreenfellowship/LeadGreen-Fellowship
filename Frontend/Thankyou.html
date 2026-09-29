@@ -148,73 +148,31 @@
 
 
 
-        <a href="CertificatePayment.html" class="btn-home">Return to Certificate Page</a>
+        <a href="index.html" class="btn-home">Return to Homepage</a>
 
         <div class="footer-note">
             If you have any questions, please contact our support team.
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
-        import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
-
-        // Your Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyA5lPT8Fyp265fvebWq4BelNE0dYxuWvCE",
-            authDomain: "leadgreen-fellowship.firebaseapp.com",
-            projectId: "leadgreen-fellowship",
-            storageBucket: "leadgreen-fellowship.firebasestorage.app",
-            messagingSenderId: "639331926711",
-            appId: "1:639331926711:web:03d9d47c8b33cef84a0332"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
+    <script>
+        // Retrieve name dynamically if available in URL parameters
         window.onload = () => {
             const params = new URLSearchParams(window.location.search);
-            const name = params.get('name') || '';
-            const email = params.get('email') || '';
-            const tx_ref = params.get('tx_ref');
-
-            const header = document.getElementById('greeting-header');
-            const thankYouMsg = document.getElementById('thank-you-message');
-            const dynamicMsg = document.getElementById('dynamic-message');
-            const highlightBox = document.querySelector('.highlight-box');
+            const name = params.get('name');
+            const email = params.get('email');
 
             if (name) {
-                header.innerHTML = `Payment Processing, ${name}...`;
-                thankYouMsg.innerHTML = `Please wait while we confirm your payment status...`;
+                const header = document.getElementById('greeting-header');
+                const thankYouMsg = document.getElementById('thank-you-message');
+
+                header.innerHTML = `Payment Successful, ${name}!`;
+                thankYouMsg.innerHTML = `Thank you, <strong>${name}</strong>, for paying for your LeadGreen certificate. Your payment has been securely recorded.`;
             }
 
-            if (tx_ref) {
-                const docRef = doc(db, "certificate_payments", tx_ref);
-                onSnapshot(docRef, (docSnap) => {
-                    if (docSnap.exists()) {
-                        const data = docSnap.data();
-                        if (data.status === 'paid' || data.status === 'successful') {
-                            header.innerHTML = `Payment Successful!`;
-                            header.style.color = 'var(--primary-green)';
-                            thankYouMsg.innerHTML = `Thank you, <strong>${name || 'Fellow'}</strong>, for paying for your LeadGreen certificate. Your payment has been securely recorded as PAID.`;
-                            dynamicMsg.innerHTML = `Your personalized certificate is on the way. Welcome to the LeadGreen Alumni network! Congratulations!`;
-                            highlightBox.innerHTML = `<i class="fa-solid fa-certificate"></i> We will now process your certificate.`;
-                        } else {
-                            header.innerHTML = `Payment Pending...`;
-                            header.style.color = '#B45309';
-                            thankYouMsg.innerHTML = `Your payment is still being processed by the provider. Please wait while we verify your transaction.`;
-                            highlightBox.innerHTML = `<i class="fa-solid fa-clock"></i> We automatically verify the status in the background`;
-                            dynamicMsg.innerHTML = `You don't need to pay again. This page will automatically update once the payment is confirmed.`;
-                        }
-                    } else {
-                        header.innerHTML = `Payment Record Not Found`;
-                        header.style.color = '#991B1B';
-                        thankYouMsg.innerHTML = `We could not find a record for this transaction. Please contact support.`;
-                    }
-                });
-            } else {
-                if (name) header.innerHTML = `Welcome, ${name}!`;
+            if (email) {
+                const p = document.getElementById('dynamic-message');
+                p.innerHTML = `Your personalized certificate is on the way. Welcome to the LeadGreen Alumni network! Congratulations!`;
             }
         };
     </script>
