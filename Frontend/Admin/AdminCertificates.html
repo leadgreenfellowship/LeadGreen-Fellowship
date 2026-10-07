@@ -382,7 +382,8 @@
 
         async function fetchPayments() {
             try {
-                const q = query(collection(db, "certificate_payments"), orderBy("paidAt", "desc"));
+                // Fetch all payments without requiring the paidAt field to exist
+                const q = collection(db, "certificate_payments");
                 const querySnapshot = await getDocs(q);
 
                 let totalAmount = 0;

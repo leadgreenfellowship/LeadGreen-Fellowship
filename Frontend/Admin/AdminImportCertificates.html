@@ -432,7 +432,8 @@
                         paymentReference: String(parsedData[i].reference), // must match 'paymentReference' precisely
                         amount: parsedData[i].amount > 0 ? parsedData[i].amount : 0.01,
                         currency: parsedData[i].currency,
-                        status: "paid"
+                        status: "paid",
+                        paidAt: new Date()
                     }, { merge: true });
 
                     count++;
