@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadGreen - Get Your Certificate</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- PDF Lib -->
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://unpkg.com/@pdf-lib/fontkit@0.0.4/dist/fontkit.umd.min.js"></script>
+
+    <style>
+        :root {
+            --primary-green: #138A56;
+            --light-green: #E8F5EE;
+            --hover-green: #F0F9F4;
+            --text-main: #111827;
+            --text-muted: #4B5563;
+            --text-light: #9CA3AF;
+            --border-color: #E5E7EB;
+            --bg-body: #F3F4F6;
+            --accent: #22c55e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+        }
+
+        .container {
+            background-color: #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            background-color: var(--primary-green);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 15px;
+            color: var(--text-main);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(19, 138, 86, 0.1);
+        }
+
+        .form-group .hint {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        .btn-generate {
+            width: 100%;
+            background-color: var(--primary-green);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-generate:hover {
+            background-color: #0f6c44;
+        }
+
+        .btn-generate:active {
+            transform: scale(0.98);
+        }
+
+        .btn-generate:disabled {
+            background-color: var(--text-light);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #errorMsg {
+            background: #FEF2F2;
+            color: #DC2626;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #F87171;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: none;
+            line-height: 1.4;
+        }
+
+        /* Loader */
+        .loader {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid #fff;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content {
+                padding: 20px;
+            }
+
+            .header {
+                padding: 25px 15px;
+            }
+
+            .header h1 {
+                font-size: 19px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container" id="main-container">
+        <!-- Main Form Screen -->
+        <div id="form-screen">
+            <div class="header">
+                <h1>LeadGreen Certificate Portal</h1>
+                <p>Retrieve and download your official certificate</p>
+                <div
+                    style="background: rgba(255,255,255,0.1); display: inline-block; padding: 10px 20px; border-radius: 30px; font-size: 13px;">
+                    <i class="fa-solid fa-cloud-arrow-down" style="margin-right:5px;"></i> Instant Download
+                </div>
+            </div>
+
+            <div class="content">
+                <div id="errorMsg"></div>
+
+                <form id="certificateForm">
+                    <div class="form-group" style="margin-bottom: 25px;">
+                        <label for="emailInput">Email Address</label>
+                        <input type="email" id="emailInput" placeholder="Enter the email used for payment" required>
+                        <div class="hint">Your confirmed certificate is securely linked to this email address.</div>
+                    </div>
+
+                    <button type="submit" class="btn-generate" id="submitBtn">
+                        <i class="fa-solid fa-cogs" id="btnIcon"></i>
+                        <div class="loader" id="btnLoader"></div>
+                        <span id="btnText">Generate My Certificate</span>
+                    </button>
+
+                    <div
+                        style="margin-top: 25px; text-align: center; font-size: 14px; color: var(--text-light); padding-top: 15px; border-top: 1px solid var(--border-color);">
+                        Haven't paid the certificate fee yet? <br>
+                        <a href="CertificatePayment.html"
+                            style="color: var(--primary-green); font-weight: 600; text-decoration: none; display: inline-block; margin-top: 8px;">
+                            Pay Certificate Fee Here <i class="fa-solid fa-arrow-right" style="font-size: 12px;"></i>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs, limit } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5lPT8Fyp265fvebWq4BelNE0dYxuWvCE",
+            authDomain: "leadgreen-fellowship.firebaseapp.com",
+            projectId: "leadgreen-fellowship",
+            storageBucket: "leadgreen-fellowship.firebasestorage.app",
+            messagingSenderId: "639331926711",
+            appId: "1:639331926711:web:03d9d47c8b33cef84a0332"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const form = document.getElementById('certificateForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnIcon = document.getElementById('btnIcon');
+        const btnLoader = document.getElementById('btnLoader');
+        const btnText = document.getElementById('btnText');
+        const errorMsg = document.getElementById('errorMsg');
+        const emailInput = document.getElementById('emailInput');
+
+        const { PDFDocument, rgb, StandardFonts } = window.PDFLib;
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const inputEmail = emailInput.value.trim().toLowerCase();
+
+            errorMsg.style.display = 'none';
+            btnIcon.style.display = 'none';
+            btnLoader.style.display = 'inline-block';
+            btnText.innerText = 'Verifying...';
+            submitBtn.disabled = true;
+
+            try {
+                // Check certificate_payments collection for a matching successful payment
+                const q = query(collection(db, "certificate_payments"), where("email", "==", inputEmail), limit(1));
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    throw new Error("No completed certificate payment found for this email address. If you paid recently, please allow a few minutes.");
+                }
+
+                let fellowData = null;
+                // Get the first matching record
+                querySnapshot.forEach((doc) => {
+                    fellowData = doc.data();
+                });
+
+                if (fellowData.status === 'paid' || fellowData.status === 'successful') {
+                    btnText.innerText = 'Generating PDF...';
+                    await generateBeautifulPDF(fellowData);
+
+                    btnLoader.style.display = 'none';
+                    btnIcon.className = 'fa-solid fa-check';
+                    btnIcon.style.display = 'inline-block';
+                    btnText.innerText = 'Downloaded!';
+
+                    setTimeout(() => {
+                        resetButton();
+                        emailInput.value = '';
+                    }, 3000);
+                } else {
+                    throw new Error("Your payment status is showing as 'pending' or 'failed'. Please complete the payment.");
+                }
+
+            } catch (err) {
+                console.error(err);
+                errorMsg.innerText = err.message || "An error occurred while verifying. Please try again.";
+                errorMsg.style.display = 'block';
+                resetButton();
+            }
+        });
+
+        function resetButton() {
+            btnLoader.style.display = 'none';
+            btnIcon.className = 'fa-solid fa-cogs';
+            btnIcon.style.display = 'inline-block';
+            btnText.innerText = 'Generate My Certificate';
+            submitBtn.disabled = false;
+        }
+
+        async function generateBeautifulPDF(data) {
+            const pdfDoc = await PDFDocument.create();
+            pdfDoc.registerFontkit(window.fontkit);
+
+            // Standard A4 landscape
+            let page = pdfDoc.addPage([842, 595]);
+            const { width, height } = page.getSize();
+
+            let hasTemplate = false;
+            try {
+                // Fetch the background template
+                let image;
+                try {
+                    const imageBytes = await fetch('certificate_template.jpg').then(res => {
+                        if (!res.ok) throw new Error();
+                        return res.arrayBuffer();
+                    });
+                    image = await pdfDoc.embedJpg(imageBytes);
+                } catch (e) {
+                    const imageBytes = await fetch('certificate_template.png').then(res => {
+                        if (!res.ok) throw new Error();
+                        return res.arrayBuffer();
+                    });
+                    image = await pdfDoc.embedPng(imageBytes);
+                }
+                page.drawImage(image, { x: 0, y: 0, width: width, height: height });
+                hasTemplate = true;
+            } catch (e) {
+                console.warn("Could not load certificate_template.png/jpg. Falling back to blank background.", e);
+                // Fallback elegant border if no template found
+                const primaryColor = rgb(19 / 255, 138 / 255, 86 / 255);
+                const goldColor = rgb(212 / 255, 175 / 255, 55 / 255);
+                page.drawRectangle({ x: 20, y: 20, width: width - 40, height: height - 40, borderColor: primaryColor, borderWidth: 8 });
+                page.drawRectangle({ x: 32, y: 32, width: width - 64, height: height - 64, borderColor: goldColor, borderWidth: 1.5 });
+            }
+
+            // Fonts
+            const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+            const regularFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            const italicFont = await pdfDoc.embedFont(StandardFonts.HelveticaOblique);
+
+            const primaryColor = rgb(19 / 255, 138 / 255, 86 / 255);
+            const goldColor = rgb(212 / 255, 175 / 255, 55 / 255);
+
+            if (!hasTemplate) {
+                // Logo / Header Text
+                const brand = "LEADGREEN FELLOWSHIP";
+                const brandSize = 24;
+                const brandW = boldFont.widthOfTextAtSize(brand, brandSize);
+                page.drawText(brand, { x: (width - brandW) / 2, y: height - 90, size: brandSize, font: boldFont, color: primaryColor });
+
+                // Main Title
+                const title = "CERTIFICATE OF COMPLETION";
+                const titleSize = 42;
+                const titleW = boldFont.widthOfTextAtSize(title, titleSize);
+                page.drawText(title, { x: (width - titleW) / 2, y: height - 160, size: titleSize, font: boldFont, color: rgb(0.1, 0.1, 0.1) });
+
+                // Subtitle
+                const sub = "This is to certify that";
+                const subW = italicFont.widthOfTextAtSize(sub, 20);
+                page.drawText(sub, { x: (width - subW) / 2, y: height - 220, size: 20, font: italicFont, color: rgb(0.3, 0.3, 0.3) });
+
+                // Description
+                const desc = "has successfully completed the intensive curriculum, impact projects,";
+                const desc2 = "and leadership requirements of the LeadGreen Fellowship.";
+                const descW = regularFont.widthOfTextAtSize(desc, 18);
+                const desc2W = regularFont.widthOfTextAtSize(desc2, 18);
+                page.drawText(desc, { x: (width - descW) / 2, y: height - 380, size: 18, font: regularFont, color: rgb(0.2, 0.2, 0.2) });
+                page.drawText(desc2, { x: (width - desc2W) / 2, y: height - 405, size: 18, font: regularFont, color: rgb(0.2, 0.2, 0.2) });
+            }
+
+            // Name
+            const name = (data.fullName || data.full_name || "Esteemed Fellow").toUpperCase();
+            const nameSize = 48; // Slightly smaller to match visual weight
+            const nameW = boldFont.widthOfTextAtSize(name, nameSize);
+            // Drawn over the template's blank name spot
+            page.drawText(name, { x: (width - nameW) / 2, y: height - 280, size: nameSize, font: boldFont, color: rgb(0.1, 0.1, 0.1) });
+
+
+
+            // Cohort / Issue Date
+            const today = new Date();
+            const dateStr = data.paidAt ? new Date(data.paidAt.seconds * 1000).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : today.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+            page.drawText(`Date Issued: ${dateStr}`, { x: 100, y: 100, size: 14, font: regularFont, color: rgb(0, 0, 0) });
+
+            const certId = data.paymentReference || ('LG-' + Math.floor(Math.random() * 1000000));
+            page.drawText(`Certificate ID: ${certId}`, { x: width - 300, y: 100, size: 14, font: regularFont, color: rgb(0, 0, 0) });
+
+            const pdfBytes = await pdfDoc.save();
+            const blob = new Blob([pdfBytes], { type: "application/pdf" });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = `LeadGreen-Certificate-${name.replace(/\s+/g, '_')}.pdf`;
+            link.click();
+        }
+    </script>
+</body>
+
+</html>
