@@ -400,14 +400,26 @@
             }
 
             // ==========================================
-            // TEXT POSITIONING SETTINGS (Proportional to Image Size)
-            // Note: In PDFs, Y=0 is the BOTTOM of the page.
+            // DYNAMIC TEXT POSITIONING SETTINGS 
             // ==========================================
-            const nameY = (height / 2) - (height * 0.08); // Tweak the "- (height * 0.08)" to shift up or down
-            const nameSize = Math.floor(height * 0.08);   // Automatically calculates the perfect font size based on your image resolution (was 44pt on A4)
+            // Default Fallbacks
+            let nameY = (height / 2) - (height * 0.08);
+            let nameSize = Math.floor(height * 0.08);
+
+            // Attempt to pull layout configurations published by the Admin Designer
+            try {
+                const layoutSnap = await getDoc(doc(db, "certificate_payments", "GLOBAL_LAYOUT"));
+                if (layoutSnap.exists()) {
+                    const layoutData = layoutSnap.data();
+                    if (layoutData.nameYOffset !== undefined) nameY = layoutData.nameYOffset;
+                    if (layoutData.nameSize !== undefined) nameSize = layoutData.nameSize;
+                }
+            } catch (e) {
+                console.warn("Could not load dynamic layout, using defaults", e);
+            }
 
             // Name
-            const name = (data.fullName || data.full_name || "Esteemed Fellow"); // Removed .toUpperCase() in case they want it regular casing for cursive
+            const name = (data.fullName || data.full_name || "Esteemed Fellow");
             const nameW = nameFont.widthOfTextAtSize(name, nameSize);
 
             // Draw Name (centered automatically horizontally)

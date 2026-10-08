@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadGreen - Visual Certificate Designer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- PDF Lib for Realtime Preview -->
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://unpkg.com/@pdf-lib/fontkit@0.0.4/dist/fontkit.umd.min.js"></script>
+
+    <style>
+        :root {
+            --primary-green: #138A56;
+            --light-green: #E8F5EE;
+            --hover-green: #F0F9F4;
+            --text-main: #111827;
+            --text-muted: #4B5563;
+            --border-color: #F3F4F6;
+            --bg-body: #FAFAFA;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* Sidebar Copy */
+        .sidebar {
+            width: 260px;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            background-color: #FFFFFF;
+            position: fixed;
+            height: 100vh;
+            z-index: 10;
+        }
+
+        .sidebar-logo {
+            margin-bottom: 40px;
+            padding-left: 10px;
+        }
+
+        .sidebar-logo img {
+            height: 55px;
+            object-fit: contain;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .nav-item i {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-item:hover {
+            background-color: var(--hover-green);
+            color: var(--text-main);
+        }
+
+        .nav-item.active {
+            background-color: var(--light-green);
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
+        .nav-item.logout {
+            color: #EF4444;
+        }
+
+        .content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 40px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        .designer-layout {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .controls-panel {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #E5E7EB;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .control-group {
+            margin-bottom: 25px;
+        }
+
+        .control-group label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .btn-save {
+            width: 100%;
+            background-color: var(--primary-green);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-save:hover {
+            background-color: #0d6e43;
+        }
+
+        .preview-panel {
+            background: #fff;
+            padding: 10px;
+            border-radius: 12px;
+            border: 1px solid #E5E7EB;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            height: calc(100vh - 150px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        #pdfViewer {
+            width: 100%;
+            flex: 1;
+            border: none;
+            border-radius: 8px;
+            background: #F3F4F6;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <img src="../Logo name green.png" alt="Leadgreen Logo">
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item"><i class="fa-solid fa-users"></i><span>Applications</span></a>
+            <a href="AdminAnalytics.html" class="nav-item"><i
+                    class="fa-solid fa-chart-pie"></i><span>Analytics</span></a>
+            <a href="AdminAlumniImport.html" class="nav-item"><i class="fa-solid fa-cloud-arrow-up"></i><span>Import
+                    Alumni</span></a>
+            <a href="AdminImportCertificates.html" class="nav-item"><i
+                    class="fa-solid fa-file-invoice-dollar"></i><span>Import Payments</span></a>
+            <a href="AdminCertificates.html" class="nav-item"><i class="fa-solid fa-certificate"></i><span>Certificate
+                    Payments</span></a>
+            <!-- Designer Tool -->
+            <a href="AdminCertificateDesigner.html" class="nav-item active"><i
+                    class="fa-solid fa-pen-ruler"></i><span>Visual Designer</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="#" id="logout-btn" class="nav-item logout"><i
+                    class="fa-solid fa-arrow-right-from-bracket"></i><span>Logout</span></a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content">
+        <div class="header">
+            <h1>Certificate Layout Designer</h1>
+            <p>Drag the sliders to instantly see the fellow's name move. When perfect, click Save to push live.</p>
+        </div>
+
+        <div class="designer-layout">
+            <div class="controls-panel">
+                <h3 style="margin-bottom: 20px; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                    Position Tweaks</h3>
+
+                <div class="control-group">
+                    <label><span>Name Position (Up/Down)</span> <span id="yVal">0</span></label>
+                    <input type="range" id="ySlider" min="0" max="3000" value="0">
+                    <small style="color: #666; font-size: 11px;">(Slide left to move down, slide right to move
+                        up)</small>
+                </div>
+
+                <div class="control-group">
+                    <label><span>Name Font Size</span> <span id="sizeVal">44</span></label>
+                    <input type="range" id="sizeSlider" min="10" max="300" value="44">
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid #E5E7EB; margin: 25px 0;">
+
+                <button class="btn-save" id="saveBtn"><i class="fa-solid fa-cloud-arrow-up"></i> Publish to Live
+                    Portal</button>
+            </div>
+
+            <div class="preview-panel">
+                <iframe id="pdfViewer"></iframe>
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase Integration -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+
+        // Setup
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5lPT8Fyp265fvebWq4BelNE0dYxuWvCE",
+            authDomain: "leadgreen-fellowship.firebaseapp.com",
+            projectId: "leadgreen-fellowship",
+            storageBucket: "leadgreen-fellowship.firebasestorage.app",
+            messagingSenderId: "639331926711",
+            appId: "1:639331926711:web:03d9d47c8b33cef84a0332"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Security Guard
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "AdminLogin.html";
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            signOut(auth).then(() => window.location.href = "AdminLogin.html");
+        });
+
+        // Config State
+        let config = {
+            nameYOffset: 0,
+            nameSize: 44
+        };
+        let cachedImageBytes = null;
+        let cachedFontBytes = null;
+        let imageDims = { width: 842, height: 595 };
+        const { PDFDocument, rgb, StandardFonts } = window.PDFLib;
+
+        // UI Binding
+        const ySlider = document.getElementById('ySlider');
+        const sizeSlider = document.getElementById('sizeSlider');
+        const yVal = document.getElementById('yVal');
+        const sizeVal = document.getElementById('sizeVal');
+        const viewer = document.getElementById('pdfViewer');
+
+        async function preloadAssets() {
+            // Load templates
+            const templateNames = ['../certificate_template.png.jpg', '../certificate_template.jpg', '../certificate_template.png'];
+            for (let t of templateNames) {
+                try {
+                    const res = await fetch(t + '?v=' + new Date().getTime());
+                    if (res.ok) {
+                        cachedImageBytes = await res.arrayBuffer();
+                        break;
+                    }
+                } catch (e) { }
+            }
+
+            // Load Font
+            try {
+                const fRes = await fetch('../Awesome.ttf');
+                if (fRes.ok) cachedFontBytes = await fRes.arrayBuffer();
+            } catch (e) { }
+
+            // Load Existing DB Config if any
+            try {
+                const docSnap = await getDoc(doc(db, "certificate_payments", "GLOBAL_LAYOUT"));
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if (data.nameYOffset !== undefined) config.nameYOffset = data.nameYOffset;
+                    if (data.nameSize !== undefined) config.nameSize = data.nameSize;
+                }
+            } catch (err) { console.warn("No existing layout found."); }
+
+            // Extract initial dimensions to setup sliders accurately
+            if (cachedImageBytes) {
+                const tempPdf = await PDFDocument.create();
+                try {
+                    const img = await tempPdf.embedJpg(cachedImageBytes);
+                    imageDims = { width: img.width, height: img.height };
+                } catch (e) {
+                    try {
+                        const img = await tempPdf.embedPng(cachedImageBytes);
+                        imageDims = { width: img.width, height: img.height };
+                    } catch (e) { }
+                }
+            }
+
+            // Init Sliders
+            ySlider.max = imageDims.height;
+            // Native default is half empty space minus a bit. Let's make slider control absolute Y
+            if (!config.nameYOffset) config.nameYOffset = Math.floor(imageDims.height / 2);
+            ySlider.value = config.nameYOffset;
+            sizeSlider.value = config.nameSize;
+
+            yVal.innerText = config.nameYOffset;
+            sizeVal.innerText = config.nameSize;
+
+            renderPreview();
+        }
+
+        async function renderPreview() {
+            yVal.innerText = ySlider.value;
+            sizeVal.innerText = sizeSlider.value;
+
+            const pdfDoc = await PDFDocument.create();
+            pdfDoc.registerFontkit(window.fontkit);
+
+            let page = pdfDoc.addPage([imageDims.width, imageDims.height]);
+
+            if (cachedImageBytes) {
+                try {
+                    const img = await pdfDoc.embedJpg(cachedImageBytes);
+                    page.drawImage(img, { x: 0, y: 0, width: imageDims.width, height: imageDims.height });
+                } catch (e) {
+                    try {
+                        const img = await pdfDoc.embedPng(cachedImageBytes);
+                        page.drawImage(img, { x: 0, y: 0, width: imageDims.width, height: imageDims.height });
+                    } catch (e) { }
+                }
+            }
+
+            const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+            let nameFont = boldFont;
+            if (cachedFontBytes) {
+                try { nameFont = await pdfDoc.embedFont(cachedFontBytes); } catch (e) { }
+            }
+
+            const name = "Jane Sample-Fellow";
+            const curY = parseInt(ySlider.value);
+            const curSize = parseInt(sizeSlider.value);
+
+            const nameW = nameFont.widthOfTextAtSize(name, curSize);
+            page.drawText(name, { x: (imageDims.width - nameW) / 2, y: curY, size: curSize, font: nameFont, color: rgb(0.1, 0.1, 0.1) });
+
+            const pdfBytes = await pdfDoc.save();
+            const blob = new Blob([pdfBytes], { type: "application/pdf" });
+            viewer.src = window.URL.createObjectURL(blob) + "#toolbar=0&navpanes=0&scrollbar=0";
+        }
+
+        // Live updating (debounce slightly for performance)
+        let timeout = null;
+        [ySlider, sizeSlider].forEach(slider => {
+            slider.addEventListener('input', () => {
+                clearTimeout(timeout);
+                yVal.innerText = ySlider.value;
+                sizeVal.innerText = sizeSlider.value;
+                timeout = setTimeout(renderPreview, 300);
+            });
+        });
+
+        // Save to DB
+        document.getElementById('saveBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('saveBtn');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+            try {
+                await setDoc(doc(db, "certificate_payments", "GLOBAL_LAYOUT"), {
+                    nameYOffset: parseInt(ySlider.value),
+                    nameSize: parseInt(sizeSlider.value),
+                    updatedAt: new Date()
+                }, { merge: true });
+                btn.style.backgroundColor = "#16A34A";
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Published Successfully!';
+                setTimeout(() => {
+                    btn.style.backgroundColor = "";
+                    btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Publish to Live Portal';
+                }, 3000);
+            } catch (err) {
+                alert("Error saving: " + err.message);
+                btn.innerHTML = 'Error publishing!';
+            }
+        });
+
+        preloadAssets();
+    </script>
+</body>
+
+</html>
