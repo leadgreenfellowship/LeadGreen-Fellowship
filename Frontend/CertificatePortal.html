@@ -378,33 +378,33 @@
             // Fonts
             const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
             const regularFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
-            const italicFont = await pdfDoc.embedFont(StandardFonts.HelveticaOblique);
+
+            // Load custom "Awesome" font
+            let nameFont = boldFont; // temporary fallback
+            try {
+                const fontBytes = await fetch('Awesome.ttf').then(res => {
+                    if (!res.ok) throw new Error("Font not found");
+                    return res.arrayBuffer();
+                });
+                nameFont = await pdfDoc.embedFont(fontBytes);
+            } catch (e) {
+                console.warn("Awesome.ttf not found in folder. Using default font.");
+            }
 
             // ==========================================
             // TEXT POSITIONING SETTINGS 
             // (Adjust these Y values to move text up/down)
             // Note: In PDFs, Y=0 is the BOTTOM of the page.
             // ==========================================
-            const nameY = height - 280;     // Decrease number (e.g. 260) to move Name UP. Increase to move DOWN.
-            const nameSize = 48;            // Adjust font size of the Name
-            const dateY = 100;              // Y position for the Date & ID at bottom
-            const dateX = 100;              // X Position for Date
+            const nameY = height - 260;     // Decrease number (e.g. 260) to move Name UP. Increase to move DOWN.
+            const nameSize = 44;            // Adjust font size of the Name
 
             // Name
-            const name = (data.fullName || data.full_name || "Esteemed Fellow").toUpperCase();
-            const nameW = boldFont.widthOfTextAtSize(name, nameSize);
+            const name = (data.fullName || data.full_name || "Esteemed Fellow"); // Removed .toUpperCase() in case they want it regular casing for cursive
+            const nameW = nameFont.widthOfTextAtSize(name, nameSize);
 
             // Draw Name (centered automatically horizontally)
-            page.drawText(name, { x: (width - nameW) / 2, y: nameY, size: nameSize, font: boldFont, color: rgb(0.1, 0.1, 0.1) });
-
-            // Cohort / Issue Date
-            const today = new Date();
-            const dateStr = data.paidAt ? new Date(data.paidAt.seconds * 1000).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : today.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-
-            page.drawText(`Date Issued: ${dateStr}`, { x: dateX, y: dateY, size: 14, font: regularFont, color: rgb(0, 0, 0) });
-
-            const certId = data.paymentReference || ('LG-' + Math.floor(Math.random() * 1000000));
-            page.drawText(`Certificate ID: ${certId}`, { x: width - 300, y: dateY, size: 14, font: regularFont, color: rgb(0, 0, 0) });
+            page.drawText(name, { x: (width - nameW) / 2, y: nameY, size: nameSize, font: nameFont, color: rgb(0.1, 0.1, 0.1) });
 
             const pdfBytes = await pdfDoc.save();
             const blob = new Blob([pdfBytes], { type: "application/pdf" });
