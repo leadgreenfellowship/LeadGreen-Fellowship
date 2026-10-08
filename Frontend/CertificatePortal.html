@@ -331,11 +331,10 @@
             const pdfDoc = await PDFDocument.create();
             pdfDoc.registerFontkit(window.fontkit);
 
-            // Standard A4 landscape
-            let page = pdfDoc.addPage([842, 595]);
-            const { width, height } = page.getSize();
-
+            let page;
+            let width, height;
             let hasTemplate = false;
+
             try {
                 // Fetch the background template
                 let image;
@@ -345,7 +344,7 @@
 
                 for (let t of templateNames) {
                     try {
-                        const res = await fetch(t);
+                        const res = await fetch(t + '?v=' + new Date().getTime()); // Prevent caching when you update the image
                         if (res.ok) {
                             fetchedBytes = await res.arrayBuffer();
                             usedExtension = t.toLowerCase().includes('.jpg') || t.toLowerCase().includes('.jpeg') ? 'jpg' : 'png';
@@ -364,11 +363,20 @@
                     image = await pdfDoc.embedPng(fetchedBytes);
                 }
 
+                // Match PDF size EXACTLY to image size to guarantee 0% blur and 100% sharpness / perfect aspect ratio
+                width = image.width;
+                height = image.height;
+                page = pdfDoc.addPage([width, height]);
                 page.drawImage(image, { x: 0, y: 0, width: width, height: height });
                 hasTemplate = true;
             } catch (e) {
                 console.warn("Could not load templates. Falling back to blank background.", e);
                 // Fallback elegant border if no template found
+                page = pdfDoc.addPage([842, 595]);
+                const dims = page.getSize();
+                width = dims.width;
+                height = dims.height;
+
                 const primaryColor = rgb(19 / 255, 138 / 255, 86 / 255);
                 const goldColor = rgb(212 / 255, 175 / 255, 55 / 255);
                 page.drawRectangle({ x: 20, y: 20, width: width - 40, height: height - 40, borderColor: primaryColor, borderWidth: 8 });
@@ -392,12 +400,11 @@
             }
 
             // ==========================================
-            // TEXT POSITIONING SETTINGS 
-            // (Adjust these Y values to move text up/down)
+            // TEXT POSITIONING SETTINGS (Proportional to Image Size)
             // Note: In PDFs, Y=0 is the BOTTOM of the page.
             // ==========================================
-            const nameY = height - 260;     // Decrease number (e.g. 260) to move Name UP. Increase to move DOWN.
-            const nameSize = 44;            // Adjust font size of the Name
+            const nameY = (height / 2) - (height * 0.08); // Tweak the "- (height * 0.08)" to shift up or down
+            const nameSize = Math.floor(height * 0.08);   // Automatically calculates the perfect font size based on your image resolution (was 44pt on A4)
 
             // Name
             const name = (data.fullName || data.full_name || "Esteemed Fellow"); // Removed .toUpperCase() in case they want it regular casing for cursive
