@@ -235,6 +235,18 @@
                     Position Tweaks</h3>
 
                 <div class="control-group">
+                    <label><span>1. Load Background Template</span></label>
+                    <input type="file" id="imageInput" accept="image/png, image/jpeg"
+                        style="width: 100%; margin-bottom: 15px;">
+
+                    <label><span>2. Load Font (Optional)</span></label>
+                    <input type="file" id="fontInput" accept=".ttf" style="width: 100%;">
+                    <small style="color: #666; font-size: 11px;">(Load Awesome.ttf to see exact cursive preview)</small>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid #E5E7EB; margin: 25px 0;">
+
+                <div class="control-group">
                     <label><span>Name Position (Up/Down)</span> <span id="yVal">0</span></label>
                     <input type="range" id="ySlider" min="0" max="3000" value="0">
                     <small style="color: #666; font-size: 11px;">(Slide left to move down, slide right to move
@@ -253,6 +265,8 @@
             </div>
 
             <div class="preview-panel">
+                <div id="loadingOverlay" style="display: none; padding: 20px; text-align: center; color: #666;">
+                    Generating Preview...</div>
                 <iframe id="pdfViewer"></iframe>
             </div>
         </div>
@@ -305,38 +319,17 @@
         const yVal = document.getElementById('yVal');
         const sizeVal = document.getElementById('sizeVal');
         const viewer = document.getElementById('pdfViewer');
+        const imageInput = document.getElementById('imageInput');
+        const fontInput = document.getElementById('fontInput');
 
-        async function preloadAssets() {
-            // Load templates
-            const templateNames = ['../certificate_template.png.jpg', '../certificate_template.jpg', '../certificate_template.png'];
-            for (let t of templateNames) {
-                try {
-                    const res = await fetch(t + '?v=' + new Date().getTime());
-                    if (res.ok) {
-                        cachedImageBytes = await res.arrayBuffer();
-                        break;
-                    }
-                } catch (e) { }
-            }
-
-            // Load Font
-            try {
-                const fRes = await fetch('../Awesome.ttf');
-                if (fRes.ok) cachedFontBytes = await fRes.arrayBuffer();
-            } catch (e) { }
-
-            // Load Existing DB Config if any
-            try {
-                const docSnap = await getDoc(doc(db, "certificate_payments", "GLOBAL_LAYOUT"));
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    if (data.nameYOffset !== undefined) config.nameYOffset = data.nameYOffset;
-                    if (data.nameSize !== undefined) config.nameSize = data.nameSize;
-                }
-            } catch (err) { console.warn("No existing layout found."); }
-
-            // Extract initial dimensions to setup sliders accurately
-            if (cachedImageBytes) {
+        // Allow user to manually select files if browser blocks local ../ fetching
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async function (evt) {
+                cachedImageBytes = evt.target.result;
+                // Calculate dimensions
                 const tempPdf = await PDFDocument.create();
                 try {
                     const img = await tempPdf.embedJpg(cachedImageBytes);
@@ -347,19 +340,37 @@
                         imageDims = { width: img.width, height: img.height };
                     } catch (e) { }
                 }
-            }
+                ySlider.max = imageDims.height;
+                ySlider.value = Math.floor(imageDims.height / 2);
+                renderPreview();
+            };
+            reader.readAsArrayBuffer(file);
+        });
 
-            // Init Sliders
-            ySlider.max = imageDims.height;
-            // Native default is half empty space minus a bit. Let's make slider control absolute Y
-            if (!config.nameYOffset) config.nameYOffset = Math.floor(imageDims.height / 2);
-            ySlider.value = config.nameYOffset;
+        fontInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (evt) {
+                cachedFontBytes = evt.target.result;
+                renderPreview();
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        async function preloadDatabaseSettings() {
+            try {
+                const docSnap = await getDoc(doc(db, "certificate_payments", "GLOBAL_LAYOUT"));
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if (data.nameYOffset !== undefined) config.nameYOffset = data.nameYOffset;
+                    if (data.nameSize !== undefined) config.nameSize = data.nameSize;
+                }
+            } catch (err) { console.warn("No layout found."); }
+
             sizeSlider.value = config.nameSize;
-
-            yVal.innerText = config.nameYOffset;
-            sizeVal.innerText = config.nameSize;
-
-            renderPreview();
+            ySlider.value = config.nameYOffset;
+            renderPreview(); // Will render blank or with loaded settings if user uploaded image first
         }
 
         async function renderPreview() {
@@ -434,7 +445,7 @@
             }
         });
 
-        preloadAssets();
+        preloadDatabaseSettings();
     </script>
 </body>
 
