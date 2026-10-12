@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadGreen Admin – Mission Reviews</title>
+    <meta name="description" content="Review and manage mission submissions from LeadGreen fellows.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-green: #138A56;
+            --light-green: #E8F5EE;
+            --hover-green: #F0F9F4;
+            --text-main: #111827;
+            --text-muted: #4B5563;
+            --text-light: #9CA3AF;
+            --border-color: #F3F4F6;
+            --card-border: #E5E7EB;
+            --bg-body: #FAFAFA;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            width: 260px;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            background-color: #FFFFFF;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .sidebar-logo {
+            margin-bottom: 40px;
+            padding-left: 10px;
+        }
+
+        .sidebar-logo img {
+            height: 55px;
+            object-fit: contain;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-grow: 1;
+        }
+
+        .nav-section-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 14px 15px 6px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 15px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .nav-item i {
+            font-size: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-item:hover {
+            background-color: var(--hover-green);
+            color: var(--text-main);
+        }
+
+        .nav-item.active {
+            background-color: var(--light-green);
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-item.logout {
+            color: #EF4444;
+        }
+
+        /* ── Main Content ── */
+        .content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 40px;
+        }
+
+        /* ── Page Header ── */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 28px;
+        }
+
+        .page-header h1 {
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        /* ── Stats Strip ── */
+        .stats-strip {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: #fff;
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 16px 18px;
+        }
+
+        .stat-card .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .stat-card .stat-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* ── Filter Bar ── */
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .search-wrap {
+            flex: 1;
+            min-width: 220px;
+            position: relative;
+        }
+
+        .search-wrap i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 14px 10px 38px;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            background: #fff;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-green);
+        }
+
+        .filter-select {
+            padding: 10px 14px;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            background: #fff;
+            outline: none;
+            cursor: pointer;
+            color: var(--text-main);
+        }
+
+        /* ── Table Card ── */
+        .table-card {
+            background: #fff;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            padding: 13px 16px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: #FAFAFA;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.15s;
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: var(--hover-green);
+        }
+
+        tbody td {
+            padding: 14px 16px;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        .td-fellow {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .fellow-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--light-green);
+            color: var(--primary-green);
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .fellow-name {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .fellow-email {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 1px;
+        }
+
+        .mission-title {
+            font-weight: 500;
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .badge-pending {
+            background: #FFF7ED;
+            color: #EA580C;
+        }
+
+        .badge-approved {
+            background: #ECFDF5;
+            color: #059669;
+        }
+
+        .badge-revision {
+            background: #EFF6FF;
+            color: #2563EB;
+        }
+
+        .badge-submitted {
+            background: #F5F3FF;
+            color: #7C3AED;
+        }
+
+        .badge-draft {
+            background: #F9FAFB;
+            color: #6B7280;
+        }
+
+        /* Review Button */
+        .btn-review {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            background: var(--light-green);
+            color: var(--primary-green);
+            border: none;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-review:hover {
+            background: #c8e8d8;
+        }
+
+        /* ── Table Footer ── */
+        .table-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-top: 1px solid var(--card-border);
+        }
+
+        .results-info {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .pagination {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .page-btn {
+            width: 34px;
+            height: 34px;
+            border: 1px solid var(--card-border);
+            border-radius: 7px;
+            background: #fff;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+            color: var(--text-muted);
+        }
+
+        .page-btn:hover {
+            border-color: var(--primary-green);
+            color: var(--primary-green);
+        }
+
+        .page-btn.active {
+            background: var(--primary-green);
+            color: #fff;
+            border-color: var(--primary-green);
+        }
+
+        .page-btn.dots {
+            cursor: default;
+            border: none;
+            background: transparent;
+        }
+
+        /* ── Empty / Loading States ── */
+        .state-box {
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .state-box i {
+            font-size: 36px;
+            color: var(--text-light);
+            margin-bottom: 14px;
+        }
+
+        .state-box p {
+            font-size: 15px;
+        }
+
+        .spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid var(--card-border);
+            border-top-color: var(--primary-green);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 14px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ────── Sidebar ────── -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <img src="Logo name green.png" alt="LeadGreen" onerror="this.style.display='none'">
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section-label">Main</div>
+            <a href="index.html" class="nav-item">
+                <i class="fa-solid fa-gauge-high"></i> Dashboard
+            </a>
+            <a href="index.html#applications" class="nav-item">
+                <i class="fa-solid fa-file-lines"></i> Applications
+            </a>
+
+            <div class="nav-section-label">Fellows</div>
+            <a href="../Fellowspage.html" class="nav-item">
+                <i class="fa-solid fa-users"></i> Fellows
+            </a>
+            <a href="MissionReviewQueue.html" class="nav-item active">
+                <i class="fa-solid fa-list-check"></i> Mission Reviews
+            </a>
+
+            <div class="nav-section-label">Tools</div>
+            <a href="AdminCertificates.html" class="nav-item">
+                <i class="fa-solid fa-certificate"></i> Certificates
+            </a>
+            <a href="AdminAnalytics.html" class="nav-item">
+                <i class="fa-solid fa-chart-line"></i> Analytics
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="#" class="nav-item logout" id="logoutBtn">
+                <i class="fa-solid fa-right-from-bracket"></i> Log Out
+            </a>
+        </div>
+    </aside>
+
+    <!-- ────── Main Content ────── -->
+    <main class="content">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1>Mission Reviews</h1>
+                <p>Review and manage mission submissions from LeadGreen fellows.</p>
+            </div>
+        </div>
+
+        <!-- Stats Strip -->
+        <div class="stats-strip">
+            <div class="stat-card">
+                <div class="stat-label">Total Submissions</div>
+                <div class="stat-value" id="statTotal">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Pending Review</div>
+                <div class="stat-value" id="statPending" style="color:#EA580C;">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Approved</div>
+                <div class="stat-value" id="statApproved" style="color:#059669;">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Revision Requested</div>
+                <div class="stat-value" id="statRevision" style="color:#2563EB;">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Submitted (New)</div>
+                <div class="stat-value" id="statSubmitted" style="color:#7C3AED;">—</div>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <div class="search-wrap">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" class="search-input" id="searchInput"
+                    placeholder="Search by name, email or mission title…">
+            </div>
+            <select class="filter-select" id="filterStatus">
+                <option value="">All Statuses</option>
+                <option value="submitted">Submitted</option>
+                <option value="pending">Pending Review</option>
+                <option value="approved">Approved</option>
+                <option value="revision_requested">Revision Requested</option>
+                <option value="draft">Draft</option>
+            </select>
+            <select class="filter-select" id="filterCohort">
+                <option value="">All Cohorts</option>
+                <option value="Cohort 4">Cohort 4</option>
+                <option value="Cohort 3">Cohort 3</option>
+                <option value="Cohort 2">Cohort 2</option>
+                <option value="Cohort 1">Cohort 1</option>
+            </select>
+        </div>
+
+        <!-- Table Card -->
+        <div class="table-card">
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fellow</th>
+                            <th>Mission Title</th>
+                            <th>Cohort</th>
+                            <th>Submitted On</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="missionTableBody">
+                        <tr>
+                            <td colspan="6">
+                                <div class="state-box">
+                                    <div class="spinner"></div>
+                                    <p>Loading missions…</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-footer">
+                <div class="results-info" id="resultsInfo">—</div>
+                <div class="pagination" id="paginationEl"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ────── Firebase + Logic ────── -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import {
+            getFirestore, collection, query, orderBy, getDocs
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // ── Firebase Config ──
+        const firebaseConfig = {
+            apiKey: "AIzaSyBiws3YfUqnLTMcwBuNrUa_vE0Y5EHIASM",
+            authDomain: "leadgreen-v1.firebaseapp.com",
+            projectId: "leadgreen-v1",
+            storageBucket: "leadgreen-v1.appspot.com",
+            messagingSenderId: "1066498278137",
+            appId: "1:1066498278137:web:b4b4c2f4a23476c8cf6b12"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // ── Auth Guard ──
+        onAuthStateChanged(auth, user => {
+            if (!user) window.location.href = "AdminLogin.html";
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', async e => {
+            e.preventDefault();
+            await signOut(auth);
+            window.location.href = "AdminLogin.html";
+        });
+
+        // ── State ──
+        let allMissions = [];
+        let currentPage = 1;
+        const PAGE_SIZE = 15;
+
+        // ── Fetch All Missions ──
+        async function fetchMissions() {
+            try {
+                const colRef = collection(db, "missions");
+                const q = query(colRef, orderBy("submittedAt", "desc"));
+                const snap = await getDocs(q);
+
+                allMissions = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                updateStats();
+                renderTable();
+            } catch (err) {
+                console.error("Error fetching missions:", err);
+                document.getElementById('missionTableBody').innerHTML = `
+                    <tr><td colspan="6">
+                        <div class="state-box">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <p>Failed to load missions. Check your Firebase configuration.<br>
+                            <small style="color:var(--text-light)">${err.message}</small></p>
+                        </div>
+                    </td></tr>`;
+            }
+        }
+
+        // ── Stats ──
+        function updateStats() {
+            const counts = { submitted: 0, pending: 0, approved: 0, revision_requested: 0 };
+            allMissions.forEach(m => {
+                const s = (m.status || '').toLowerCase();
+                if (counts[s] !== undefined) counts[s]++;
+            });
+            document.getElementById('statTotal').textContent = allMissions.length;
+            document.getElementById('statPending').textContent = counts.pending;
+            document.getElementById('statApproved').textContent = counts.approved;
+            document.getElementById('statRevision').textContent = counts.revision_requested;
+            document.getElementById('statSubmitted').textContent = counts.submitted;
+        }
+
+        // ── Filtering ──
+        function getFiltered() {
+            const search = document.getElementById('searchInput').value.trim().toLowerCase();
+            const status = document.getElementById('filterStatus').value;
+            const cohort = document.getElementById('filterCohort').value;
+
+            return allMissions.filter(m => {
+                const name = ((m.fellowName || m.name || '') + ' ' + (m.fellowEmail || m.email || '') + ' ' + (m.missionTitle || m.title || '')).toLowerCase();
+                const matchSearch = !search || name.includes(search);
+                const matchStatus = !status || (m.status || '').toLowerCase() === status;
+                const matchCohort = !cohort || (m.cohort || '') === cohort;
+                return matchSearch && matchStatus && matchCohort;
+            });
+        }
+
+        // ── Render Table ──
+        function renderTable() {
+            const filtered = getFiltered();
+            const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+            if (currentPage > totalPages) currentPage = 1;
+
+            const start = (currentPage - 1) * PAGE_SIZE;
+            const slice = filtered.slice(start, start + PAGE_SIZE);
+
+            const tbody = document.getElementById('missionTableBody');
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6">
+                    <div class="state-box">
+                        <i class="fa-solid fa-inbox"></i>
+                        <p>No missions match your filters.</p>
+                    </div></td></tr>`;
+                document.getElementById('resultsInfo').textContent = 'No results';
+                document.getElementById('paginationEl').innerHTML = '';
+                return;
+            }
+
+            tbody.innerHTML = slice.map(m => {
+                const name = escapeHTML(m.fellowName || m.name || 'Unknown Fellow');
+                const email = escapeHTML(m.fellowEmail || m.email || '');
+                const title = escapeHTML(m.missionTitle || m.title || 'Untitled Mission');
+                const cohort = escapeHTML(m.cohort || '—');
+                const status = (m.status || 'draft').toLowerCase();
+                const dateStr = formatDate(m.submittedAt || m.createdAt);
+                const initials = getInitials(name);
+
+                return `
+                <tr>
+                    <td>
+                        <div class="td-fellow">
+                            <div class="fellow-avatar">${initials}</div>
+                            <div>
+                                <div class="fellow-name">${name}</div>
+                                <div class="fellow-email">${email}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><div class="mission-title" title="${title}">${title}</div></td>
+                    <td>${cohort}</td>
+                    <td>${dateStr}</td>
+                    <td><span class="badge ${badgeClass(status)}">${statusLabel(status)}</span></td>
+                    <td>
+                        <button class="btn-review" onclick="window.location.href='MissionReviewDetail.html?id=${encodeURIComponent(m.id)}'">
+                            <i class="fa-solid fa-eye"></i> Review
+                        </button>
+                    </td>
+                </tr>`;
+            }).join('');
+
+            document.getElementById('resultsInfo').textContent =
+                `Showing ${start + 1}–${Math.min(start + PAGE_SIZE, filtered.length)} of ${filtered.length} submission${filtered.length !== 1 ? 's' : ''}`;
+
+            renderPagination(totalPages);
+        }
+
+        // ── Pagination ──
+        function renderPagination(totalPages) {
+            const el = document.getElementById('paginationEl');
+            if (totalPages <= 1) { el.innerHTML = ''; return; }
+
+            let html = '';
+
+            // Prev
+            if (currentPage > 1) {
+                html += `<button class="page-btn" onclick="goPage(${currentPage - 1})"><i class="fa-solid fa-chevron-left" style="font-size:11px"></i></button>`;
+            }
+
+            for (let p = 1; p <= totalPages; p++) {
+                if (totalPages > 7 && p > 3 && p < totalPages - 1 && Math.abs(p - currentPage) > 1) {
+                    if (p === 4 || p === totalPages - 2) html += `<span class="page-btn dots">…</span>`;
+                    continue;
+                }
+                html += `<button class="page-btn ${p === currentPage ? 'active' : ''}" onclick="goPage(${p})">${p}</button>`;
+            }
+
+            // Next
+            if (currentPage < totalPages) {
+                html += `<button class="page-btn" onclick="goPage(${currentPage + 1})"><i class="fa-solid fa-chevron-right" style="font-size:11px"></i></button>`;
+            }
+
+            el.innerHTML = html;
+        }
+
+        window.goPage = function (p) {
+            currentPage = p;
+            renderTable();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        // ── Helpers ──
+        function escapeHTML(str) {
+            return String(str || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        function getInitials(name) {
+            return name.split(' ').map(w => w[0] || '').slice(0, 2).join('').toUpperCase() || '?';
+        }
+
+        function formatDate(val) {
+            if (!val) return '—';
+            const d = val.toDate ? val.toDate() : new Date(val);
+            if (isNaN(d)) return '—';
+            return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+
+        function badgeClass(status) {
+            const map = {
+                pending: 'badge-pending',
+                approved: 'badge-approved',
+                revision_requested: 'badge-revision',
+                submitted: 'badge-submitted',
+                draft: 'badge-draft',
+            };
+            return map[status] || 'badge-draft';
+        }
+
+        function statusLabel(status) {
+            const map = {
+                pending: 'Pending Review',
+                approved: 'Approved',
+                revision_requested: 'Revision Requested',
+                submitted: 'Submitted',
+                draft: 'Draft',
+            };
+            return map[status] || status;
+        }
+
+        // ── Event Listeners ──
+        document.getElementById('searchInput').addEventListener('input', () => { currentPage = 1; renderTable(); });
+        document.getElementById('filterStatus').addEventListener('change', () => { currentPage = 1; renderTable(); });
+        document.getElementById('filterCohort').addEventListener('change', () => { currentPage = 1; renderTable(); });
+
+        // ── Init ──
+        fetchMissions();
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadGreen Admin – Mission Detail</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-green: #138A56;
+            --light-green: #E8F5EE;
+            --hover-green: #F0F9F4;
+            --text-main: #111827;
+            --text-muted: #4B5563;
+            --text-light: #9CA3AF;
+            --border-color: #F3F4F6;
+            --card-border: #E5E7EB;
+            --bg-body: #FAFAFA;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            width: 260px;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            background-color: #FFFFFF;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .sidebar-logo {
+            margin-bottom: 40px;
+            padding-left: 10px;
+        }
+
+        .sidebar-logo img {
+            height: 55px;
+            object-fit: contain;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-grow: 1;
+        }
+
+        .nav-section-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 14px 15px 6px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 15px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .nav-item i {
+            font-size: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-item:hover {
+            background-color: var(--hover-green);
+            color: var(--text-main);
+        }
+
+        .nav-item.active {
+            background-color: var(--light-green);
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-item.logout {
+            color: #EF4444;
+        }
+
+        /* ── Content ── */
+        .content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 40px;
+            max-width: 1200px;
+        }
+
+        /* ── Toolbar ── */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--primary-green);
+        }
+
+        .toolbar-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* ── Buttons ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-approve {
+            background: #16A34A;
+            color: #fff;
+        }
+
+        .btn-approve:hover {
+            background: #15803D;
+        }
+
+        .btn-revision {
+            background: #2563EB;
+            color: #fff;
+        }
+
+        .btn-revision:hover {
+            background: #1D4ED8;
+        }
+
+        .btn-secondary {
+            background: #fff;
+            color: var(--text-main);
+            border: 1px solid var(--card-border);
+        }
+
+        .btn-secondary:hover {
+            background: #F9FAFB;
+        }
+
+        .btn-save {
+            background: #374151;
+            color: #fff;
+        }
+
+        .btn-save:hover {
+            background: #1F2937;
+        }
+
+        /* ── Layout Grid ── */
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        /* ── Profile Card ── */
+        .profile-card {
+            background: #fff;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 28px 22px;
+            position: sticky;
+            top: 30px;
+        }
+
+        .profile-avatar-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--light-green);
+            color: var(--primary-green);
+            font-size: 26px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .profile-name {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .profile-email {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+
+        .profile-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .meta-row .meta-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 3px;
+        }
+
+        .meta-row .meta-val {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-pending {
+            background: #FFF7ED;
+            color: #EA580C;
+        }
+
+        .badge-approved {
+            background: #ECFDF5;
+            color: #059669;
+        }
+
+        .badge-revision {
+            background: #EFF6FF;
+            color: #2563EB;
+        }
+
+        .badge-submitted {
+            background: #F5F3FF;
+            color: #7C3AED;
+        }
+
+        .badge-draft {
+            background: #F9FAFB;
+            color: #6B7280;
+        }
+
+        /* ── Right Column ── */
+        .detail-right {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* ── Card ── */
+        .card {
+            background: #fff;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 26px 28px;
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-main);
+        }
+
+        .card-title i {
+            color: var(--primary-green);
+        }
+
+        /* ── Info Grid ── */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px 24px;
+        }
+
+        .info-block.full {
+            grid-column: 1 / -1;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        /* ── Evidence Grid ── */
+        .evidence-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .evidence-item {
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .evidence-item:hover {
+            border-color: var(--primary-green);
+        }
+
+        .evidence-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .evidence-video-thumb {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .evidence-video-thumb i {
+            font-size: 28px;
+            color: var(--primary-green);
+        }
+
+        /* ── Admin Decision Panel ── */
+        .decision-card {
+            background: #fff;
+            border: 2px solid var(--card-border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .decision-header {
+            padding: 18px 24px;
+            background: #F9FAFB;
+            border-bottom: 1px solid var(--card-border);
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .decision-body {
+            padding: 22px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .notes-label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .notes-wrap {
+            position: relative;
+        }
+
+        .notes-textarea {
+            width: 100%;
+            height: 120px;
+            padding: 14px;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .notes-textarea:focus {
+            border-color: var(--primary-green);
+        }
+
+        .char-count {
+            position: absolute;
+            bottom: 10px;
+            right: 12px;
+            font-size: 12px;
+            color: var(--text-light);
+            background: #fff;
+            padding-left: 4px;
+            pointer-events: none;
+        }
+
+        .decision-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* ── Loading / Error ── */
+        .state-box {
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .state-box i {
+            font-size: 36px;
+            color: var(--text-light);
+            margin-bottom: 14px;
+            display: block;
+        }
+
+        .spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid var(--card-border);
+            border-top-color: var(--primary-green);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 14px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ── Toast ── */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 14px 22px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: #16A34A;
+        }
+
+        .toast.error {
+            background: #DC2626;
+        }
+
+        .toast.info {
+            background: #2563EB;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ────── Sidebar ────── -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <img src="Logo name green.png" alt="LeadGreen" onerror="this.style.display='none'">
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section-label">Main</div>
+            <a href="index.html" class="nav-item">
+                <i class="fa-solid fa-gauge-high"></i> Dashboard
+            </a>
+            <a href="index.html#applications" class="nav-item">
+                <i class="fa-solid fa-file-lines"></i> Applications
+            </a>
+
+            <div class="nav-section-label">Fellows</div>
+            <a href="../Fellowspage.html" class="nav-item">
+                <i class="fa-solid fa-users"></i> Fellows
+            </a>
+            <a href="MissionReviewQueue.html" class="nav-item active">
+                <i class="fa-solid fa-list-check"></i> Mission Reviews
+            </a>
+
+            <div class="nav-section-label">Tools</div>
+            <a href="AdminCertificates.html" class="nav-item">
+                <i class="fa-solid fa-certificate"></i> Certificates
+            </a>
+            <a href="AdminAnalytics.html" class="nav-item">
+                <i class="fa-solid fa-chart-line"></i> Analytics
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="#" class="nav-item logout" id="logoutBtn">
+                <i class="fa-solid fa-right-from-bracket"></i> Log Out
+            </a>
+        </div>
+    </aside>
+
+    <!-- ────── Main Content ────── -->
+    <main class="content" id="mainContent">
+        <div class="state-box">
+            <div class="spinner"></div>
+            <p>Loading mission details…</p>
+        </div>
+    </main>
+
+    <!-- Toast -->
+    <div class="toast" id="toastEl"></div>
+
+    <!-- ────── Firebase + Logic ────── -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import {
+            getFirestore, doc, getDoc, updateDoc, serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // ── Firebase Config ──
+        const firebaseConfig = {
+            apiKey: "AIzaSyBiws3YfUqnLTMcwBuNrUa_vE0Y5EHIASM",
+            authDomain: "leadgreen-v1.firebaseapp.com",
+            projectId: "leadgreen-v1",
+            storageBucket: "leadgreen-v1.appspot.com",
+            messagingSenderId: "1066498278137",
+            appId: "1:1066498278137:web:b4b4c2f4a23476c8cf6b12"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+        const missionId = new URLSearchParams(window.location.search).get('id');
+        const root = document.getElementById('mainContent');
+
+        // ── Auth Guard ──
+        onAuthStateChanged(auth, user => {
+            if (!user) { window.location.href = "AdminLogin.html"; return; }
+            currentUser = user;
+            if (missionId) fetchMission(); else showError("No mission ID in URL.");
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', async e => {
+            e.preventDefault();
+            await signOut(auth);
+            window.location.href = "AdminLogin.html";
+        });
+
+        // ── Fetch Mission ──
+        async function fetchMission() {
+            try {
+                const snap = await getDoc(doc(db, "missions", missionId));
+                if (!snap.exists()) { showError("Mission not found."); return; }
+                renderDetail(snap.data(), snap.id);
+            } catch (err) {
+                console.error(err);
+                showError("Failed to load mission: " + err.message);
+            }
+        }
+
+        // ── Render ──
+        function renderDetail(d, id) {
+            const name = esc(d.fellowName || d.name || 'Unknown Fellow');
+            const email = esc(d.fellowEmail || d.email || '');
+            const title = esc(d.missionTitle || d.title || 'Untitled Mission');
+            const cohort = esc(d.cohort || '—');
+            const status = (d.status || 'draft').toLowerCase();
+            const initials = getInitials(name);
+
+            // Evidence arrays
+            const photos = Array.isArray(d.photos) ? d.photos : [];
+            const videos = Array.isArray(d.videos) ? d.videos : [];
+
+            root.innerHTML = `
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <a href="MissionReviewQueue.html" class="back-link">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Queue
+                </a>
+                <div class="toolbar-actions">
+                    <span class="badge ${badgeClass(status)}">${statusLabel(status)}</span>
+                </div>
+            </div>
+
+            <!-- Grid -->
+            <div class="detail-grid">
+
+                <!-- Left: Profile -->
+                <div class="profile-card">
+                    <div class="profile-avatar-wrap">
+                        <div class="profile-avatar">${initials}</div>
+                        <div class="profile-name">${name}</div>
+                        <div class="profile-email">${email}</div>
+                    </div>
+                    <div class="profile-meta">
+                        <div class="meta-row">
+                            <div class="meta-label">Cohort</div>
+                            <div class="meta-val">${cohort}</div>
+                        </div>
+                        <div class="meta-row">
+                            <div class="meta-label">Mission ID</div>
+                            <div class="meta-val" style="font-size:12px; word-break:break-all;">${esc(id)}</div>
+                        </div>
+                        <div class="meta-row">
+                            <div class="meta-label">Submitted On</div>
+                            <div class="meta-val">${formatDate(d.submittedAt || d.createdAt)}</div>
+                        </div>
+                        <div class="meta-row">
+                            <div class="meta-label">Current Status</div>
+                            <div><span class="badge ${badgeClass(status)}">${statusLabel(status)}</span></div>
+                        </div>
+                        ${d.reviewedAt ? `
+                        <div class="meta-row">
+                            <div class="meta-label">Last Reviewed</div>
+                            <div class="meta-val">${formatDate(d.reviewedAt)}</div>
+                        </div>` : ''}
+                    </div>
+                </div>
+
+                <!-- Right: Detail Panels -->
+                <div class="detail-right">
+
+                    <!-- Mission Details -->
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-bullseye"></i> Mission Details</div>
+                        <div class="info-grid">
+                            <div class="info-block full">
+                                <div class="info-label">Mission Title</div>
+                                <div class="info-value">${title}</div>
+                            </div>
+                            <div class="info-block">
+                                <div class="info-label">Climate Action Area</div>
+                                <div class="info-value">${esc(d.climateArea || d.actionArea || '—')}</div>
+                            </div>
+                            <div class="info-block">
+                                <div class="info-label">Target Location</div>
+                                <div class="info-value">${esc(d.location || d.targetLocation || '—')}</div>
+                            </div>
+                            <div class="info-block full">
+                                <div class="info-label">Mission Description</div>
+                                <div class="info-value">${esc(d.description || d.missionDescription || '—')}</div>
+                            </div>
+                            <div class="info-block">
+                                <div class="info-label">Start Date</div>
+                                <div class="info-value">${esc(d.startDate || '—')}</div>
+                            </div>
+                            <div class="info-block">
+                                <div class="info-label">End Date</div>
+                                <div class="info-value">${esc(d.endDate || '—')}</div>
+                            </div>
+                            <div class="info-block full">
+                                <div class="info-label">Expected Outcomes</div>
+                                <div class="info-value">${esc(d.expectedOutcomes || d.outcomes || '—')}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mission Plan -->
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-map"></i> Mission Plan</div>
+                        <div class="info-grid">
+                            <div class="info-block full">
+                                <div class="info-label">Activities</div>
+                                <div class="info-value">${esc(d.activities || '—')}</div>
+                            </div>
+                            <div class="info-block full">
+                                <div class="info-label">Resources Required</div>
+                                <div class="info-value">${esc(d.resources || '—')}</div>
+                            </div>
+                            <div class="info-block full">
+                                <div class="info-label">Success Metrics</div>
+                                <div class="info-value">${esc(d.successMetrics || d.metrics || '—')}</div>
+                            </div>
+                            <div class="info-block">
+                                <div class="info-label">Number of Beneficiaries</div>
+                                <div class="info-value">${esc(d.beneficiaries || '—')}</div>
+                            </div>
+                            <div class="info-block">
+                                <div class="info-label">Team Size</div>
+                                <div class="info-value">${esc(d.teamSize || '—')}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Evidence -->
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-images"></i> Submitted Evidence</div>
+                        ${photos.length === 0 && videos.length === 0 ? `
+                            <p style="color:var(--text-muted); font-size:14px;">No evidence files submitted.</p>
+                        ` : `
+                        <div class="evidence-grid" id="evidenceGrid">
+                            ${photos.map((url, i) => `
+                                <div class="evidence-item" onclick="window.open('${url}','_blank')">
+                                    <img src="${url}" alt="Photo ${i + 1}" onerror="this.parentNode.innerHTML='<div style=\'padding:10px;text-align:center;font-size:12px;color:#9CA3AF\'><i class=\'fa-solid fa-image\'></i><br>Photo</div>'">
+                                </div>`).join('')}
+                            ${videos.map((url, i) => `
+                                <a class="evidence-item" href="${url}" target="_blank" rel="noopener">
+                                    <div class="evidence-video-thumb">
+                                        <i class="fa-solid fa-circle-play"></i>
+                                        <span>Video ${i + 1}</span>
+                                    </div>
+                                </a>`).join('')}
+                        </div>`}
+                    </div>
+
+                    <!-- Admin Decision Panel -->
+                    <div class="decision-card">
+                        <div class="decision-header">
+                            <i class="fa-solid fa-gavel" style="color:var(--primary-green);margin-right:8px;"></i>
+                            Admin Review Decision
+                        </div>
+                        <div class="decision-body">
+                            <div>
+                                <div class="notes-label">Admin Notes <span style="font-weight:400;color:var(--text-muted)">(optional — visible to admin only)</span></div>
+                                <div class="notes-wrap">
+                                    <textarea class="notes-textarea" id="adminNotes" maxlength="600"
+                                        placeholder="Add review notes or feedback for internal reference..."
+                                        oninput="document.getElementById('charCount').textContent=this.value.length+' / 600'"
+                                    >${esc(d.adminNote || '')}</textarea>
+                                    <span class="char-count" id="charCount">${(d.adminNote || '').length} / 600</span>
+                                </div>
+                                <button class="btn btn-save" id="btnSaveNotes" style="margin-top:10px;">
+                                    <i class="fa-solid fa-floppy-disk"></i> Save Notes
+                                </button>
+                            </div>
+
+                            <hr style="border:0; border-top:1px solid var(--border-color);">
+
+                            <div>
+                                <div class="notes-label" style="margin-bottom:6px;">Feedback to Fellow <span style="font-weight:400;color:var(--text-muted)">(sent if Revision Requested)</span></div>
+                                <textarea class="notes-textarea" id="fellowFeedback" maxlength="800"
+                                    placeholder="Describe what the fellow needs to revise or improve..."
+                                >${esc(d.revisionFeedback || '')}</textarea>
+                            </div>
+
+                            <div class="decision-actions">
+                                <button class="btn btn-approve" id="btnApprove">
+                                    <i class="fa-solid fa-check-circle"></i> Approve Mission
+                                </button>
+                                <button class="btn btn-revision" id="btnRevision">
+                                    <i class="fa-solid fa-rotate-left"></i> Request Revision
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /detail-right -->
+            </div><!-- /detail-grid -->
+            `;
+
+            // ── Wire up buttons ──
+            document.getElementById('btnSaveNotes').addEventListener('click', () => saveNotes(id));
+            document.getElementById('btnApprove').addEventListener('click', () => updateStatus(id, 'approved'));
+            document.getElementById('btnRevision').addEventListener('click', () => updateStatus(id, 'revision_requested'));
+        }
+
+        // ── Save Notes ──
+        async function saveNotes(id) {
+            const note = document.getElementById('adminNotes').value;
+            const btn = document.getElementById('btnSaveNotes');
+            try {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
+                await updateDoc(doc(db, "missions", id), {
+                    adminNote: note,
+                    noteSavedAt: serverTimestamp(),
+                    noteSavedBy: currentUser.uid
+                });
+                showToast('Notes saved successfully.', 'success');
+            } catch (err) {
+                showToast('Error saving notes: ' + err.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Notes';
+            }
+        }
+
+        // ── Update Status ──
+        async function updateStatus(id, newStatus) {
+            const label = newStatus === 'approved' ? 'Approve' : 'Request Revision for';
+            if (!confirm(`Are you sure you want to ${label} this mission?`)) return;
+
+            const feedback = document.getElementById('fellowFeedback')?.value || '';
+            const note = document.getElementById('adminNotes')?.value || '';
+
+            const payload = {
+                status: newStatus,
+                adminNote: note,
+                reviewedAt: serverTimestamp(),
+                reviewedBy: currentUser.uid,
+            };
+
+            if (newStatus === 'revision_requested') {
+                payload.revisionFeedback = feedback;
+            }
+
+            try {
+                await updateDoc(doc(db, "missions", id), payload);
+                showToast(
+                    newStatus === 'approved'
+                        ? 'Mission approved successfully!'
+                        : 'Revision requested. Fellow will be notified.',
+                    'success'
+                );
+                setTimeout(() => window.location.reload(), 1500);
+            } catch (err) {
+                showToast('Error updating status: ' + err.message, 'error');
+            }
+        }
+
+        // ── Toast ──
+        function showToast(msg, type = 'success') {
+            const el = document.getElementById('toastEl');
+            const icons = { success: 'fa-check-circle', error: 'fa-triangle-exclamation', info: 'fa-circle-info' };
+            el.className = `toast ${type} show`;
+            el.innerHTML = `<i class="fa-solid ${icons[type] || icons.info}"></i> ${msg}`;
+            setTimeout(() => el.classList.remove('show'), 3500);
+        }
+
+        // ── Helpers ──
+        function esc(str) {
+            return String(str || '').replace(/[&<>"']/g, c =>
+                ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        function getInitials(name) {
+            return name.split(' ').map(w => w[0] || '').slice(0, 2).join('').toUpperCase() || '?';
+        }
+
+        function formatDate(val) {
+            if (!val) return '—';
+            const d = val.toDate ? val.toDate() : new Date(val);
+            if (isNaN(d)) return '—';
+            return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+
+        function badgeClass(status) {
+            const map = {
+                pending: 'badge-pending',
+                approved: 'badge-approved',
+                revision_requested: 'badge-revision',
+                submitted: 'badge-submitted',
+                draft: 'badge-draft',
+            };
+            return map[status] || 'badge-draft';
+        }
+
+        function statusLabel(status) {
+            const map = {
+                pending: 'Pending Review',
+                approved: 'Approved',
+                revision_requested: 'Revision Requested',
+                submitted: 'Submitted',
+                draft: 'Draft',
+            };
+            return map[status] || status;
+        }
+
+        function showError(msg) {
+            root.innerHTML = `<div class="state-box">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <p>${msg}</p>
+                <a href="MissionReviewQueue.html" style="margin-top:16px;display:inline-block;color:var(--primary-green);font-weight:600;">
+                    ← Back to Queue
+                </a>
+            </div>`;
+        }
+    </script>
+
+</body>
+
+</html>

@@ -242,60 +242,33 @@
         </div>
     </div>
 
-    <!-- Hidden Photopea API Engine -->
-    <iframe id="pp" src="https://www.photopea.com"
-        style="width:0; height:0; border:none; position:absolute; visibility:hidden;"></iframe>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://unpkg.com/@pdf-lib/fontkit@0.0.4/dist/fontkit.umd.min.js"></script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
-        import { getFirestore, collection, query, where, getDocs, limit } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+        import { getFirestore, collection, query, where, getDocs, limit, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
+        // Your web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyA5lPT8Fyp265fvebWq4BelNE0dYxuWvCE",
             authDomain: "leadgreen-fellowship.firebaseapp.com",
             projectId: "leadgreen-fellowship",
             storageBucket: "leadgreen-fellowship.firebasestorage.app",
             messagingSenderId: "639331926711",
-            appId: "1:639331926711:web:03d9d47c8b33cef84a0332"
+            appId: "1:639331926711:web:03d9d47c8b33cef84a0332",
+            measurementId: "G-7Z2E8C0474"
         };
 
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+
+        const { PDFDocument, rgb, StandardFonts } = window.PDFLib;
 
         const emailInput = document.getElementById('emailInput');
         const submitBtn = document.getElementById('submitBtn');
         const errorMsg = document.getElementById('errorMsg');
-
-        // PHOTOPEA API SETUP
-        let isPhotopeaReady = false;
-        let isPsdLoaded = false;
-        const ppIframe = document.getElementById("pp").contentWindow;
-
-        // Listen for messages from Photopea
-        window.addEventListener("message", function (e) {
-            // Check if Photopea initialized
-            if (e.data === "done") {
-                isPhotopeaReady = true;
-                console.log("Photopea Engine Loaded in background.");
-            }
-
-            // Check if Photopea sent us the final PDF back!
-            if (e.data instanceof ArrayBuffer) {
-                console.log("Received PDF from Photopea!");
-                const blob = new Blob([e.data], { type: "application/pdf" });
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = "My_LeadGreen_Certificate.pdf";
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-
-                // Reset UI
-                submitBtn.innerHTML = 'Download My Certificate';
-                submitBtn.disabled = false;
-            }
-        });
 
         submitBtn.addEventListener('click', async () => {
             const email = emailInput.value.trim().toLowerCase();
@@ -310,7 +283,7 @@
             submitBtn.disabled = true;
 
             try {
-                // 1. Verify Payment in Firestore
+                // 1. Check if email exists in certificate_payments
                 const paymentsRef = collection(db, "certificate_payments");
                 const q = query(paymentsRef, where("email", "==", email), limit(1));
                 const querySnapshot = await getDocs(q);
@@ -323,62 +296,135 @@
                     return;
                 }
 
-                // Get Fellow Data
-                const fellowData = querySnapshot.docs[0].data();
-                const fellowName = fellowData.fullName || fellowData.full_name || "Esteemed Fellow";
+                submitBtn.innerHTML = 'Generating Certificate...';
 
-                submitBtn.innerHTML = 'Generating via Photoshop Engine...';
+                // Extract record safely
+                const data = querySnapshot.docs[0].data();
+                await generateBeautifulPDF(data);
 
-                // 2. Fetch the PSD File and Font (To send to Photopea)
-                // Note: We use absolute/relative fetching. Ensure these files are hosted!
-                let psdBytes = null;
-                try {
-                    const psdRes = await fetch("certificate.psd");
-                    if (!psdRes.ok) throw new Error("PSD not found");
-                    psdBytes = await psdRes.arrayBuffer();
-                } catch (e) {
-                    alert("Developer Error: Please upload 'certificate.psd' to the folder.");
-                    submitBtn.innerHTML = 'Download My Certificate';
-                    submitBtn.disabled = false;
-                    return;
-                }
-
-                // Ensure Photopea is warm
-                if (!isPhotopeaReady) {
-                    alert("Photopea Engine is still starting up. Please try again in 3 seconds.");
-                    submitBtn.innerHTML = 'Download My Certificate';
-                    submitBtn.disabled = false;
-                    return;
-                }
-
-                // 3. Command Photopea to load the PSD
-                ppIframe.postMessage(psdBytes, "*");
-
-                // Optional: Command Photopea to load the Font if you use a custom one
-                // try { const fontRes = await fetch("Awesome.ttf"); const fontBytes = await fontRes.arrayBuffer(); ppIframe.postMessage(fontBytes, "*"); } catch(e) {}
-
-                // 4. Send the Secret Photoshop Script
-                // We use setTimeout to give Photopea 1 second to parse the PSD ArrayBuffer we just sent
-                setTimeout(() => {
-                    const script = `
-                        try {
-                            app.activeDocument.layers.getByName("Fellow Name").textItem.contents = "${fellowName.replace(/"/g, '\\"')}";
-                            app.activeDocument.saveToOE("pdf");
-                        } catch(e) {
-                            alert("PSD Error: Could not find a text layer named exactly 'Fellow Name'. Please rename your text layer in Photoshop!");
-                        }
-                    `;
-                    ppIframe.postMessage(script, "*");
-                }, 1500);
+                submitBtn.innerHTML = 'Download My Certificate';
+                submitBtn.disabled = false;
 
             } catch (err) {
-                console.error(err);
-                errorMsg.textContent = "An error occurred verifying your record. Please try again.";
+                console.error("Firestore Error:", err);
+                errorMsg.textContent = "An error occurred verifying your record. Please check your connection.";
                 errorMsg.style.display = 'block';
                 submitBtn.innerHTML = 'Download My Certificate';
                 submitBtn.disabled = false;
             }
         });
+
+        // -------------------------------------------------------------------
+        // HIGH QUALITY PDF GENERATION ENGINE
+        // -------------------------------------------------------------------
+        async function generateBeautifulPDF(data) {
+            const pdfDoc = await PDFDocument.create();
+            pdfDoc.registerFontkit(window.fontkit);
+
+            let page;
+            let width, height;
+
+            try {
+                // Fetch the background template
+                let image;
+                const templateNames = ['certificate_template.png.jpg', 'certificate_template.jpg', 'certificate_template.png', 'certificate_template.jpeg'];
+                let fetchedBytes = null;
+                let usedExtension = '';
+
+                for (let t of templateNames) {
+                    try {
+                        const res = await fetch(t + '?v=' + new Date().getTime()); // Prevent caching when you update the image
+                        if (res.ok) {
+                            fetchedBytes = await res.arrayBuffer();
+                            usedExtension = t.toLowerCase().includes('.jpg') || t.toLowerCase().includes('.jpeg') ? 'jpg' : 'png';
+                            break;
+                        }
+                    } catch (e) { } // ignore and try next
+                }
+
+                if (!fetchedBytes) {
+                    throw new Error("No template found");
+                }
+
+                if (usedExtension === 'jpg') {
+                    image = await pdfDoc.embedJpg(fetchedBytes);
+                } else {
+                    image = await pdfDoc.embedPng(fetchedBytes);
+                }
+
+                // Match PDF size EXACTLY to image size to guarantee 0% blur and 100% sharpness / perfect aspect ratio
+                width = image.width;
+                height = image.height;
+                page = pdfDoc.addPage([width, height]);
+                page.drawImage(image, { x: 0, y: 0, width: width, height: height });
+            } catch (e) {
+                console.warn("Could not load templates. Falling back to blank background.", e);
+                // Fallback elegant border if no template found
+                page = pdfDoc.addPage([842, 595]);
+                const dims = page.getSize();
+                width = dims.width;
+                height = dims.height;
+
+                const primaryColor = rgb(19 / 255, 138 / 255, 86 / 255);
+                const goldColor = rgb(212 / 255, 175 / 255, 55 / 255);
+                page.drawRectangle({ x: 20, y: 20, width: width - 40, height: height - 40, borderColor: primaryColor, borderWidth: 8 });
+                page.drawRectangle({ x: 32, y: 32, width: width - 64, height: height - 64, borderColor: goldColor, borderWidth: 1.5 });
+            }
+
+            // Fonts
+            const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+            const regularFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+            // Load custom "Awesome" font
+            let nameFont = boldFont; // temporary fallback
+            try {
+                const fontBytes = await fetch('Awesome.ttf').then(res => {
+                    if (!res.ok) throw new Error("Font not found");
+                    return res.arrayBuffer();
+                });
+                nameFont = await pdfDoc.embedFont(fontBytes);
+            } catch (e) {
+                console.warn("Awesome.ttf not found in folder. Using default font.");
+            }
+
+            // ==========================================
+            // DYNAMIC TEXT POSITIONING SETTINGS 
+            // ==========================================
+            // Default Fallbacks
+            let nameY = (height / 2) - (height * 0.08);
+            let nameSize = Math.floor(height * 0.08);
+
+            // Attempt to pull layout configurations published by the Admin Designer
+            try {
+                const layoutSnap = await getDoc(doc(db, "certificate_payments", "GLOBAL_LAYOUT"));
+                if (layoutSnap.exists()) {
+                    const layoutData = layoutSnap.data();
+                    if (layoutData.nameYOffset !== undefined) nameY = layoutData.nameYOffset;
+                    if (layoutData.nameSize !== undefined) nameSize = layoutData.nameSize;
+                }
+            } catch (e) {
+                console.warn("Could not load dynamic layout, using defaults", e);
+            }
+
+            // Name
+            const name = (data.fullName || data.full_name || "Esteemed Fellow");
+            const nameW = nameFont.widthOfTextAtSize(name, nameSize);
+
+            // Draw Name (centered automatically horizontally)
+            page.drawText(name, { x: (width - nameW) / 2, y: nameY, size: nameSize, font: nameFont, color: rgb(0.1, 0.1, 0.1) });
+
+            // Finalize PDF
+            const pdfBytes = await pdfDoc.save();
+            const blob = new Blob([pdfBytes], { type: "application/pdf" });
+            const url = window.URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `LeadGreen_Certificate_${name.replace(/\s+/g, '_')}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
     </script>
 </body>
 
