@@ -168,6 +168,7 @@
         <p class="subtitle">Securely access the LeadGreen dashboard.</p>
 
         <div class="error-msg" id="errorMessage">Invalid login credentials.</div>
+        <div class="error-msg" id="successMessage" style="background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0; display:none;"></div>
 
         <form id="loginForm">
             <div class="input-group">
@@ -176,7 +177,10 @@
             </div>
 
             <div class="input-group">
-                <label for="password">Password</label>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <label for="password" style="margin-bottom:0;">Password</label>
+                    <a href="#" id="forgotPasswordBtn" style="font-size:12px; color:var(--primary-green); text-decoration:none; font-weight:600;">Forgot password?</a>
+                </div>
                 <input type="password" id="password" required placeholder="••••••••">
             </div>
 
@@ -185,13 +189,13 @@
             </button>
         </form>
 
-        <a href="../Homepage.html" class="back-home">&larr; Return to Public Website</a>
+        <a href="../index.html" class="back-home">&larr; Return to Public Website</a>
     </div>
 
     <!-- Firebase Authentication Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
 
         // Firebase Setup
         const firebaseConfig = {
@@ -208,16 +212,52 @@
         const loginForm = document.getElementById('loginForm');
         const btnSubmit = document.getElementById('btnSubmit');
         const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+        const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
+
+        // Forgot Password Handler
+        forgotPasswordBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+
+            if (!email || !email.includes('@')) {
+                errorMessage.textContent = 'Please enter your admin email address first, then click "Forgot password?".';
+                errorMessage.style.display = 'block';
+                document.getElementById('email').focus();
+                return;
+            }
+
+            try {
+                forgotPasswordBtn.textContent = 'Sending link...';
+                await sendPasswordResetEmail(auth, email);
+                successMessage.textContent = `Password reset link sent to ${email}. Please check your inbox (and spam folder).`;
+                successMessage.style.display = 'block';
+                forgotPasswordBtn.textContent = 'Reset link sent!';
+                setTimeout(() => { forgotPasswordBtn.textContent = 'Forgot password?'; }, 5000);
+            } catch (err) {
+                console.error("Password reset error:", err);
+                forgotPasswordBtn.textContent = 'Forgot password?';
+                if (err.code === 'auth/user-not-found') {
+                    errorMessage.textContent = 'No account found with this email address.';
+                } else {
+                    errorMessage.textContent = 'Could not send reset email. ' + (err.message || 'Please try again.');
+                }
+                errorMessage.style.display = 'block';
+            }
+        });
 
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('email').value;
+            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
 
             const originalText = btnSubmit.innerHTML;
             btnSubmit.innerHTML = 'Authenticating... <i class="fa-solid fa-spinner fa-spin"></i>';
             btnSubmit.disabled = true;
             errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
 
             try {
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
