@@ -576,8 +576,17 @@
             <a href="AdminCertificates.html" class="nav-item">
                 <i class="fa-solid fa-certificate"></i> Certificates
             </a>
+            <a href="AdminCertificateDesigner.html" class="nav-item">
+                <i class="fa-solid fa-pen-ruler"></i> Visual Designer
+            </a>
+            <a href="AdminAlumniImport.html" class="nav-item">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Import Alumni
+            </a>
+            <a href="AdminImportCertificates.html" class="nav-item">
+                <i class="fa-solid fa-file-invoice-dollar"></i> Import Payments
+            </a>
             <a href="AdminAnalytics.html" class="nav-item">
-                <i class="fa-solid fa-chart-line"></i> Analytics
+                <i class="fa-solid fa-chart-pie"></i> Analytics
             </a>
         </nav>
 
@@ -609,12 +618,12 @@
 
         // ── Firebase Config ──
         const firebaseConfig = {
-            apiKey: "AIzaSyBiws3YfUqnLTMcwBuNrUa_vE0Y5EHIASM",
-            authDomain: "leadgreen-v1.firebaseapp.com",
-            projectId: "leadgreen-v1",
-            storageBucket: "leadgreen-v1.appspot.com",
-            messagingSenderId: "1066498278137",
-            appId: "1:1066498278137:web:b4b4c2f4a23476c8cf6b12"
+            apiKey: "AIzaSyA5lPT8Fyp265fvebWq4BelNE0dYxuWvCE",
+            authDomain: "leadgreen-fellowship.firebaseapp.com",
+            projectId: "leadgreen-fellowship",
+            storageBucket: "leadgreen-fellowship.firebasestorage.app",
+            messagingSenderId: "639331926711",
+            appId: "1:639331926711:web:03d9d47c8b33cef84a0332"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -658,10 +667,40 @@
             const cohort = esc(d.cohort || '—');
             const status = (d.status || 'draft').toLowerCase();
             const initials = getInitials(name);
+            const refId = esc(d.referenceId || id);
 
-            // Evidence arrays
-            const photos = Array.isArray(d.photos) ? d.photos : [];
-            const videos = Array.isArray(d.videos) ? d.videos : [];
+            // Evidence arrays (harmonized across photos & photoURLs, videos & videoLink)
+            let rawPhotos = [];
+            if (Array.isArray(d.photoURLs)) rawPhotos.push(...d.photoURLs);
+            if (Array.isArray(d.photos)) rawPhotos.push(...d.photos);
+            if (typeof d.photoURL === 'string' && d.photoURL.trim()) rawPhotos.push(d.photoURL.trim());
+            if (typeof d.photo === 'string' && d.photo.trim()) rawPhotos.push(d.photo.trim());
+            const photos = [...new Set(rawPhotos.filter(p => typeof p === 'string' && p.trim()))];
+
+            let rawVideos = [];
+            if (Array.isArray(d.videos)) rawVideos.push(...d.videos);
+            if (Array.isArray(d.videoURLs)) rawVideos.push(...d.videoURLs);
+            if (typeof d.videoLink === 'string' && d.videoLink.trim()) rawVideos.push(d.videoLink.trim());
+            if (typeof d.videoURL === 'string' && d.videoURL.trim()) rawVideos.push(d.videoURL.trim());
+            const videos = [...new Set(rawVideos.filter(v => typeof v === 'string' && v.trim()))];
+
+            // Field fallbacks
+            const climateArea = esc(d.climateArea || d.actionArea || '—');
+            const location = esc(d.location || d.targetLocation || '—');
+            const description = esc(d.description || d.missionDescription || '—');
+            const executionDate = esc(d.missionDate || d.startDate || '—');
+            const endDate = esc(d.endDate || '');
+            const mainGoal = esc(d.mainGoal || d.goal || '—');
+            const impactTarget = esc(d.impactTarget || d.target || '—');
+            const expectedOutcomes = esc(d.expectedOutcomes || d.outcomes || '—');
+            const activities = esc(d.activities || '—');
+            const resources = esc(d.resources || '—');
+            const successMetrics = esc(d.successMetrics || d.metrics || '—');
+            const beneficiaries = esc(d.beneficiaries !== undefined ? d.beneficiaries : '—');
+            const teamSize = esc(d.teamSize !== undefined ? d.teamSize : '—');
+            const additionalNotes = esc(d.additionalNotes || '—');
+            const existingAdminNote = esc(d.adminNote || d.adminNotes || '');
+            const existingFeedback = esc(d.revisionFeedback || '');
 
             root.innerHTML = `
             <!-- Toolbar -->
@@ -693,10 +732,20 @@
                             <div class="meta-label">Mission ID</div>
                             <div class="meta-val" style="font-size:12px; word-break:break-all;">${esc(id)}</div>
                         </div>
+                        ${refId !== esc(id) ? `
+                        <div class="meta-row">
+                            <div class="meta-label">Reference ID</div>
+                            <div class="meta-val" style="font-size:12px; font-weight:600; color:var(--primary-green);">${refId}</div>
+                        </div>` : ''}
                         <div class="meta-row">
                             <div class="meta-label">Submitted On</div>
                             <div class="meta-val">${formatDate(d.submittedAt || d.createdAt)}</div>
                         </div>
+                        ${d.resubmittedAt ? `
+                        <div class="meta-row">
+                            <div class="meta-label">Resubmitted On</div>
+                            <div class="meta-val">${formatDate(d.resubmittedAt)}</div>
+                        </div>` : ''}
                         <div class="meta-row">
                             <div class="meta-label">Current Status</div>
                             <div><span class="badge ${badgeClass(status)}">${statusLabel(status)}</span></div>
@@ -705,6 +754,11 @@
                         <div class="meta-row">
                             <div class="meta-label">Last Reviewed</div>
                             <div class="meta-val">${formatDate(d.reviewedAt)}</div>
+                        </div>` : ''}
+                        ${d.reviewedByEmail ? `
+                        <div class="meta-row">
+                            <div class="meta-label">Reviewed By</div>
+                            <div class="meta-val" style="font-size:12px;">${esc(d.reviewedByEmail)}</div>
                         </div>` : ''}
                     </div>
                 </div>
@@ -722,28 +776,38 @@
                             </div>
                             <div class="info-block">
                                 <div class="info-label">Climate Action Area</div>
-                                <div class="info-value">${esc(d.climateArea || d.actionArea || '—')}</div>
+                                <div class="info-value">${climateArea}</div>
                             </div>
                             <div class="info-block">
                                 <div class="info-label">Target Location</div>
-                                <div class="info-value">${esc(d.location || d.targetLocation || '—')}</div>
+                                <div class="info-value">${location}</div>
                             </div>
                             <div class="info-block full">
                                 <div class="info-label">Mission Description</div>
-                                <div class="info-value">${esc(d.description || d.missionDescription || '—')}</div>
+                                <div class="info-value">${description}</div>
                             </div>
-                            <div class="info-block">
-                                <div class="info-label">Start Date</div>
-                                <div class="info-value">${esc(d.startDate || '—')}</div>
+                            <div class="info-block ${endDate ? '' : 'full'}">
+                                <div class="info-label">${endDate ? 'Start Date' : 'Execution Date'}</div>
+                                <div class="info-value">${executionDate}</div>
                             </div>
+                            ${endDate ? `
                             <div class="info-block">
                                 <div class="info-label">End Date</div>
-                                <div class="info-value">${esc(d.endDate || '—')}</div>
+                                <div class="info-value">${endDate}</div>
+                            </div>` : ''}
+                            <div class="info-block">
+                                <div class="info-label">Main Goal</div>
+                                <div class="info-value">${mainGoal}</div>
                             </div>
+                            <div class="info-block">
+                                <div class="info-label">Impact Target</div>
+                                <div class="info-value">${impactTarget}</div>
+                            </div>
+                            ${expectedOutcomes !== '—' && expectedOutcomes !== impactTarget ? `
                             <div class="info-block full">
                                 <div class="info-label">Expected Outcomes</div>
-                                <div class="info-value">${esc(d.expectedOutcomes || d.outcomes || '—')}</div>
-                            </div>
+                                <div class="info-value">${expectedOutcomes}</div>
+                            </div>` : ''}
                         </div>
                     </div>
 
@@ -752,47 +816,78 @@
                         <div class="card-title"><i class="fa-solid fa-map"></i> Mission Plan</div>
                         <div class="info-grid">
                             <div class="info-block full">
-                                <div class="info-label">Activities</div>
-                                <div class="info-value">${esc(d.activities || '—')}</div>
+                                <div class="info-label">Activities & Methodology</div>
+                                <div class="info-value">${activities}</div>
                             </div>
                             <div class="info-block full">
                                 <div class="info-label">Resources Required</div>
-                                <div class="info-value">${esc(d.resources || '—')}</div>
+                                <div class="info-value">${resources}</div>
                             </div>
                             <div class="info-block full">
-                                <div class="info-label">Success Metrics</div>
-                                <div class="info-value">${esc(d.successMetrics || d.metrics || '—')}</div>
+                                <div class="info-label">Success Metrics & KPIs</div>
+                                <div class="info-value">${successMetrics}</div>
                             </div>
                             <div class="info-block">
-                                <div class="info-label">Number of Beneficiaries</div>
-                                <div class="info-value">${esc(d.beneficiaries || '—')}</div>
+                                <div class="info-label">Estimated Beneficiaries</div>
+                                <div class="info-value">${beneficiaries}</div>
                             </div>
                             <div class="info-block">
-                                <div class="info-label">Team Size</div>
-                                <div class="info-value">${esc(d.teamSize || '—')}</div>
+                                <div class="info-label">Team / Volunteer Size</div>
+                                <div class="info-value">${teamSize}</div>
                             </div>
+                            ${additionalNotes !== '—' ? `
+                            <div class="info-block full">
+                                <div class="info-label">Additional Notes & Context</div>
+                                <div class="info-value">${additionalNotes}</div>
+                            </div>` : ''}
                         </div>
                     </div>
 
                     <!-- Evidence -->
                     <div class="card">
-                        <div class="card-title"><i class="fa-solid fa-images"></i> Submitted Evidence</div>
+                        <div class="card-title"><i class="fa-solid fa-images"></i> Submitted Evidence (${photos.length} Photo${photos.length !== 1 ? 's' : ''}${videos.length > 0 ? `, ${videos.length} Video${videos.length !== 1 ? 's' : ''}` : ''})</div>
                         ${photos.length === 0 && videos.length === 0 ? `
                             <p style="color:var(--text-muted); font-size:14px;">No evidence files submitted.</p>
                         ` : `
                         <div class="evidence-grid" id="evidenceGrid">
                             ${photos.map((url, i) => `
-                                <div class="evidence-item" onclick="window.open('${url}','_blank')">
-                                    <img src="${url}" alt="Photo ${i + 1}" onerror="this.parentNode.innerHTML='<div style=\'padding:10px;text-align:center;font-size:12px;color:#9CA3AF\'><i class=\'fa-solid fa-image\'></i><br>Photo</div>'">
+                                <div class="evidence-item" onclick="window.open('${url}','_blank')" title="Click to view full photo">
+                                    <img src="${url}" alt="Evidence Photo ${i + 1}" onerror="this.parentNode.innerHTML='<div style=\\'padding:10px;text-align:center;font-size:12px;color:#9CA3AF\\'><i class=\\'fa-solid fa-image\\'></i><br>Photo ${i + 1}</div>'">
                                 </div>`).join('')}
-                            ${videos.map((url, i) => `
-                                <a class="evidence-item" href="${url}" target="_blank" rel="noopener">
+                            ${videos.map((url, i) => {
+                const meta = getVideoMeta(url);
+                return `
+                                <a class="evidence-item" href="${url}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;" title="${meta.label}: ${url}">
                                     <div class="evidence-video-thumb">
-                                        <i class="fa-solid fa-circle-play"></i>
-                                        <span>Video ${i + 1}</span>
+                                        <i class="${meta.icon}" style="color:${meta.color}; font-size:32px;"></i>
+                                        <span style="font-weight:600; font-size:12px; color:var(--text-main); margin-top:4px;">${meta.platform}</span>
+                                        <span style="font-size:11px; color:var(--primary-green); display:flex; align-items:center; gap:4px; font-weight:500;">
+                                            Open Link <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:9px;"></i>
+                                        </span>
                                     </div>
-                                </a>`).join('')}
-                        </div>`}
+                                </a>`;
+            }).join('')}
+                        </div>
+                        ${videos.length > 0 ? `
+                        <div style="margin-top:18px; padding-top:14px; border-top:1px solid var(--border-color);">
+                            <div style="font-size:12px; font-weight:600; color:var(--text-muted); margin-bottom:8px;">Video Links:</div>
+                            <div style="display:flex; flex-direction:column; gap:8px;">
+                                ${videos.map((url, i) => {
+                const meta = getVideoMeta(url);
+                return `
+                                    <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; background:#F9FAFB; padding:9px 14px; border-radius:8px; border:1px solid var(--border-color); font-size:13px;">
+                                        <div style="display:flex; align-items:center; gap:10px; overflow:hidden;">
+                                            <i class="${meta.icon}" style="color:${meta.color}; font-size:18px; flex-shrink:0;"></i>
+                                            <span style="font-weight:600; flex-shrink:0;">${meta.platform}:</span>
+                                            <a href="${url}" target="_blank" rel="noopener noreferrer" style="color:var(--primary-green); text-decoration:underline; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:400px;">${esc(url)}</a>
+                                        </div>
+                                        <a href="${url}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding:4px 12px; font-size:12px; flex-shrink:0;">
+                                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Open
+                                        </a>
+                                    </div>`;
+            }).join('')}
+                            </div>
+                        </div>` : ''}`}
                     </div>
 
                     <!-- Admin Decision Panel -->
@@ -808,8 +903,8 @@
                                     <textarea class="notes-textarea" id="adminNotes" maxlength="600"
                                         placeholder="Add review notes or feedback for internal reference..."
                                         oninput="document.getElementById('charCount').textContent=this.value.length+' / 600'"
-                                    >${esc(d.adminNote || '')}</textarea>
-                                    <span class="char-count" id="charCount">${(d.adminNote || '').length} / 600</span>
+                                    >${existingAdminNote}</textarea>
+                                    <span class="char-count" id="charCount">${existingAdminNote.length} / 600</span>
                                 </div>
                                 <button class="btn btn-save" id="btnSaveNotes" style="margin-top:10px;">
                                     <i class="fa-solid fa-floppy-disk"></i> Save Notes
@@ -819,10 +914,19 @@
                             <hr style="border:0; border-top:1px solid var(--border-color);">
 
                             <div>
+                                ${d.revisionHistory ? `
+                                <div style="background:#FFFBEB; border:1px solid #FDE68A; border-left:4px solid #F59E0B; padding:12px; border-radius:8px; margin-bottom:14px; font-size:12px; color:#92400E;">
+                                    <div style="font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                                        <i class="fa-solid fa-clock-rotate-left"></i> Previous Revision History
+                                    </div>
+                                    <div style="line-height:1.5;">
+                                        ${Array.isArray(d.revisionHistory) ? d.revisionHistory.map((item, idx) => `<div style="margin-bottom:${idx === d.revisionHistory.length - 1 ? '0' : '6px'};"><strong>Round ${idx + 1}:</strong> ${esc(item)}</div>`).join('') : `<div>${esc(d.revisionHistory)}</div>`}
+                                    </div>
+                                </div>` : ''}
                                 <div class="notes-label" style="margin-bottom:6px;">Feedback to Fellow <span style="font-weight:400;color:var(--text-muted)">(sent if Revision Requested)</span></div>
                                 <textarea class="notes-textarea" id="fellowFeedback" maxlength="800"
-                                    placeholder="Describe what the fellow needs to revise or improve..."
-                                >${esc(d.revisionFeedback || '')}</textarea>
+                                    placeholder="Describe specifically what the fellow needs to revise, add, or improve before approval..."
+                                >${existingFeedback}</textarea>
                             </div>
 
                             <div class="decision-actions">
@@ -855,8 +959,10 @@
                 btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
                 await updateDoc(doc(db, "missions", id), {
                     adminNote: note,
+                    adminNotes: note,
                     noteSavedAt: serverTimestamp(),
-                    noteSavedBy: currentUser.uid
+                    noteSavedBy: currentUser.uid,
+                    noteSavedByEmail: currentUser.email || ''
                 });
                 showToast('Notes saved successfully.', 'success');
             } catch (err) {
@@ -869,17 +975,27 @@
 
         // ── Update Status ──
         async function updateStatus(id, newStatus) {
+            const feedback = document.getElementById('fellowFeedback')?.value.trim() || '';
+            const note = document.getElementById('adminNotes')?.value || '';
+
+            if (newStatus === 'revision_requested') {
+                if (!feedback) {
+                    showToast('Please enter feedback for the fellow explaining what needs to be revised.', 'error');
+                    document.getElementById('fellowFeedback')?.focus();
+                    return;
+                }
+            }
+
             const label = newStatus === 'approved' ? 'Approve' : 'Request Revision for';
             if (!confirm(`Are you sure you want to ${label} this mission?`)) return;
-
-            const feedback = document.getElementById('fellowFeedback')?.value || '';
-            const note = document.getElementById('adminNotes')?.value || '';
 
             const payload = {
                 status: newStatus,
                 adminNote: note,
+                adminNotes: note,
                 reviewedAt: serverTimestamp(),
                 reviewedBy: currentUser.uid,
+                reviewedByEmail: currentUser.email || ''
             };
 
             if (newStatus === 'revision_requested') {
@@ -946,6 +1062,26 @@
                 draft: 'Draft',
             };
             return map[status] || status;
+        }
+
+        function getVideoMeta(url) {
+            const u = String(url || '').toLowerCase();
+            if (u.includes('youtube.com') || u.includes('youtu.be')) {
+                return { platform: 'YouTube', icon: 'fa-brands fa-youtube', color: '#EF4444', label: 'Watch on YouTube' };
+            }
+            if (u.includes('vimeo.com')) {
+                return { platform: 'Vimeo', icon: 'fa-brands fa-vimeo', color: '#0EA5E9', label: 'Watch on Vimeo' };
+            }
+            if (u.includes('loom.com')) {
+                return { platform: 'Loom', icon: 'fa-solid fa-video', color: '#6366F1', label: 'Watch on Loom' };
+            }
+            if (u.includes('drive.google.com')) {
+                return { platform: 'Google Drive', icon: 'fa-brands fa-google-drive', color: '#10B981', label: 'Open in Google Drive' };
+            }
+            if (u.endsWith('.mp4') || u.endsWith('.webm') || u.endsWith('.mov')) {
+                return { platform: 'Video File', icon: 'fa-solid fa-file-video', color: '#3B82F6', label: 'Play Direct Video' };
+            }
+            return { platform: 'Video Link', icon: 'fa-solid fa-circle-play', color: '#138A56', label: 'Open Video' };
         }
 
         function showError(msg) {

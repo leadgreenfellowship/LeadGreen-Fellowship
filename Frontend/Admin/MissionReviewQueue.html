@@ -489,8 +489,17 @@
             <a href="AdminCertificates.html" class="nav-item">
                 <i class="fa-solid fa-certificate"></i> Certificates
             </a>
+            <a href="AdminCertificateDesigner.html" class="nav-item">
+                <i class="fa-solid fa-pen-ruler"></i> Visual Designer
+            </a>
+            <a href="AdminAlumniImport.html" class="nav-item">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Import Alumni
+            </a>
+            <a href="AdminImportCertificates.html" class="nav-item">
+                <i class="fa-solid fa-file-invoice-dollar"></i> Import Payments
+            </a>
             <a href="AdminAnalytics.html" class="nav-item">
-                <i class="fa-solid fa-chart-line"></i> Analytics
+                <i class="fa-solid fa-chart-pie"></i> Analytics
             </a>
         </nav>
 
@@ -514,23 +523,27 @@
 
         <!-- Stats Strip -->
         <div class="stats-strip">
-            <div class="stat-card">
+            <div class="stat-card" onclick="filterByStat('')" style="cursor:pointer;" title="Click to view all">
                 <div class="stat-label">Total Submissions</div>
                 <div class="stat-value" id="statTotal">—</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-label">Pending Review</div>
+            <div class="stat-card" onclick="filterByStat('under_review')" style="cursor:pointer;"
+                title="Click to filter Under Review (Submitted + Pending)">
+                <div class="stat-label">Under Review</div>
                 <div class="stat-value" id="statPending" style="color:#EA580C;">—</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card" onclick="filterByStat('approved')" style="cursor:pointer;"
+                title="Click to filter Approved">
                 <div class="stat-label">Approved</div>
                 <div class="stat-value" id="statApproved" style="color:#059669;">—</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card" onclick="filterByStat('revision_requested')" style="cursor:pointer;"
+                title="Click to filter Revision Requested">
                 <div class="stat-label">Revision Requested</div>
                 <div class="stat-value" id="statRevision" style="color:#2563EB;">—</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card" onclick="filterByStat('submitted')" style="cursor:pointer;"
+                title="Click to filter New Submissions">
                 <div class="stat-label">Submitted (New)</div>
                 <div class="stat-value" id="statSubmitted" style="color:#7C3AED;">—</div>
             </div>
@@ -545,7 +558,8 @@
             </div>
             <select class="filter-select" id="filterStatus">
                 <option value="">All Statuses</option>
-                <option value="submitted">Submitted</option>
+                <option value="under_review">Under Review / Pending</option>
+                <option value="submitted">Submitted (New)</option>
                 <option value="pending">Pending Review</option>
                 <option value="approved">Approved</option>
                 <option value="revision_requested">Revision Requested</option>
@@ -605,12 +619,12 @@
 
         // ── Firebase Config ──
         const firebaseConfig = {
-            apiKey: "AIzaSyBiws3YfUqnLTMcwBuNrUa_vE0Y5EHIASM",
-            authDomain: "leadgreen-v1.firebaseapp.com",
-            projectId: "leadgreen-v1",
-            storageBucket: "leadgreen-v1.appspot.com",
-            messagingSenderId: "1066498278137",
-            appId: "1:1066498278137:web:b4b4c2f4a23476c8cf6b12"
+            apiKey: "AIzaSyA5lPT8Fyp265fvebWq4BelNE0dYxuWvCE",
+            authDomain: "leadgreen-fellowship.firebaseapp.com",
+            projectId: "leadgreen-fellowship",
+            storageBucket: "leadgreen-fellowship.firebasestorage.app",
+            messagingSenderId: "639331926711",
+            appId: "1:639331926711:web:03d9d47c8b33cef84a0332"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -619,7 +633,11 @@
 
         // ── Auth Guard ──
         onAuthStateChanged(auth, user => {
-            if (!user) window.location.href = "AdminLogin.html";
+            if (!user) {
+                window.location.href = "AdminLogin.html";
+            } else {
+                fetchMissions();
+            }
         });
 
         document.getElementById('logoutBtn').addEventListener('click', async e => {
@@ -637,10 +655,22 @@
         async function fetchMissions() {
             try {
                 const colRef = collection(db, "missions");
-                const q = query(colRef, orderBy("submittedAt", "desc"));
-                const snap = await getDocs(q);
+                let snap;
+                try {
+                    const q = query(colRef, orderBy("submittedAt", "desc"));
+                    snap = await getDocs(q);
+                } catch (queryErr) {
+                    console.warn("Ordered query failed, falling back to base collection:", queryErr);
+                    snap = await getDocs(colRef);
+                }
 
                 allMissions = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                allMissions.sort((a, b) => {
+                    const tA = a.submittedAt?.toMillis ? a.submittedAt.toMillis() : (a.resubmittedAt?.toMillis ? a.resubmittedAt.toMillis() : (a.createdAt?.toMillis ? a.createdAt.toMillis() : 0));
+                    const tB = b.submittedAt?.toMillis ? b.submittedAt.toMillis() : (b.resubmittedAt?.toMillis ? b.resubmittedAt.toMillis() : (b.createdAt?.toMillis ? b.createdAt.toMillis() : 0));
+                    return tB - tA;
+                });
+
                 updateStats();
                 renderTable();
             } catch (err) {
@@ -658,17 +688,26 @@
 
         // ── Stats ──
         function updateStats() {
-            const counts = { submitted: 0, pending: 0, approved: 0, revision_requested: 0 };
+            const counts = { submitted: 0, pending: 0, approved: 0, revision_requested: 0, draft: 0 };
             allMissions.forEach(m => {
-                const s = (m.status || '').toLowerCase();
+                const s = (m.status || 'draft').toLowerCase();
                 if (counts[s] !== undefined) counts[s]++;
+                else counts.draft++;
             });
             document.getElementById('statTotal').textContent = allMissions.length;
-            document.getElementById('statPending').textContent = counts.pending;
+            document.getElementById('statPending').textContent = counts.submitted + counts.pending;
             document.getElementById('statApproved').textContent = counts.approved;
             document.getElementById('statRevision').textContent = counts.revision_requested;
-            document.getElementById('statSubmitted').textContent = counts.submitted;
+            if (document.getElementById('statSubmitted')) {
+                document.getElementById('statSubmitted').textContent = counts.submitted;
+            }
         }
+
+        window.filterByStat = function (statusVal) {
+            document.getElementById('filterStatus').value = statusVal;
+            currentPage = 1;
+            renderTable();
+        };
 
         // ── Filtering ──
         function getFiltered() {
@@ -677,10 +716,19 @@
             const cohort = document.getElementById('filterCohort').value;
 
             return allMissions.filter(m => {
-                const name = ((m.fellowName || m.name || '') + ' ' + (m.fellowEmail || m.email || '') + ' ' + (m.missionTitle || m.title || '')).toLowerCase();
+                const name = ((m.fellowName || m.name || m.fullName || '') + ' ' + (m.fellowEmail || m.email || '') + ' ' + (m.missionTitle || m.title || '') + ' ' + (m.referenceId || '')).toLowerCase();
                 const matchSearch = !search || name.includes(search);
-                const matchStatus = !status || (m.status || '').toLowerCase() === status;
-                const matchCohort = !cohort || (m.cohort || '') === cohort;
+
+                let matchStatus = true;
+                const mStatus = (m.status || 'draft').toLowerCase();
+                if (status === 'under_review' || status === 'needs_review') {
+                    matchStatus = (mStatus === 'submitted' || mStatus === 'pending');
+                } else if (status) {
+                    matchStatus = (mStatus === status);
+                }
+
+                const mCohort = m.cohort || m.Cohort || '';
+                const matchCohort = !cohort || mCohort === cohort;
                 return matchSearch && matchStatus && matchCohort;
             });
         }
@@ -708,12 +756,13 @@
             }
 
             tbody.innerHTML = slice.map(m => {
-                const name = escapeHTML(m.fellowName || m.name || 'Unknown Fellow');
+                const name = escapeHTML(m.fellowName || m.name || m.fullName || 'Unknown Fellow');
                 const email = escapeHTML(m.fellowEmail || m.email || '');
                 const title = escapeHTML(m.missionTitle || m.title || 'Untitled Mission');
-                const cohort = escapeHTML(m.cohort || '—');
+                const cohort = escapeHTML(m.cohort || m.Cohort || '—');
                 const status = (m.status || 'draft').toLowerCase();
-                const dateStr = formatDate(m.submittedAt || m.createdAt);
+                const isResubmitted = !!m.resubmittedAt;
+                const dateStr = formatDate(m.resubmittedAt || m.submittedAt || m.createdAt);
                 const initials = getInitials(name);
 
                 return `
@@ -727,9 +776,15 @@
                             </div>
                         </div>
                     </td>
-                    <td><div class="mission-title" title="${title}">${title}</div></td>
+                    <td>
+                        <div class="mission-title" title="${title}">${title}</div>
+                        ${m.referenceId ? `<div style="font-size:11px;color:var(--text-light);margin-top:2px;">REF: ${escapeHTML(m.referenceId)}</div>` : ''}
+                    </td>
                     <td>${cohort}</td>
-                    <td>${dateStr}</td>
+                    <td>
+                        <div>${dateStr}</div>
+                        ${isResubmitted ? `<span style="font-size:10px; color:#2563EB; font-weight:600;"><i class="fa-solid fa-rotate-left"></i> Resubmitted</span>` : ''}
+                    </td>
                     <td><span class="badge ${badgeClass(status)}">${statusLabel(status)}</span></td>
                     <td>
                         <button class="btn-review" onclick="window.location.href='MissionReviewDetail.html?id=${encodeURIComponent(m.id)}'">
@@ -821,9 +876,6 @@
         document.getElementById('searchInput').addEventListener('input', () => { currentPage = 1; renderTable(); });
         document.getElementById('filterStatus').addEventListener('change', () => { currentPage = 1; renderTable(); });
         document.getElementById('filterCohort').addEventListener('change', () => { currentPage = 1; renderTable(); });
-
-        // ── Init ──
-        fetchMissions();
     </script>
 
 </body>
