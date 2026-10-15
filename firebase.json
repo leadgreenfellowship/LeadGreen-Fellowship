@@ -2,13 +2,24 @@
     "firestore": {
         "rules": "firestore.rules"
     },
-    "hosting": {
-        "site": "leadgreen-fellowship",
-        "public": "Frontend",
-        "ignore": [
-            "firebase.json",
-            "**/.*",
-            "**/node_modules/**"
-        ]
-    }
+    "hosting": [
+        {
+            "target": "fellowship",
+            "public": "Frontend",
+            "ignore": [
+                "firebase.json",
+                "**/.*",
+                "**/node_modules/**"
+            ]
+        },
+        {
+            "target": "missions",
+            "public": "Frontend/MissionSubmission",
+            "ignore": [
+                "firebase.json",
+                "**/.*",
+                "**/node_modules/**"
+            ]
+        }
+    ]
 }

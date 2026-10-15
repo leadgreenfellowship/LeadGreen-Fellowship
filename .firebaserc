@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "leadgreen-fellowship"
+  },
+  "targets": {
+    "leadgreen-fellowship": {
+      "hosting": {
+        "fellowship": [
+          "leadgreen-fellowship"
+        ],
+        "missions": [
+          "leadgreen-missions"
+        ]
+      }
+    }
   }
 }

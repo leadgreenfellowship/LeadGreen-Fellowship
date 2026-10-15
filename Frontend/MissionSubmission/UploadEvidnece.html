@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadGreen - Upload Evidence</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-green: #138A56;
+            --light-green: #E8F5EE;
+            --hover-green: #F0F9F4;
+            --text-main: #111827;
+            --text-muted: #4B5563;
+            --text-light: #9CA3AF;
+            --border-color: #E5E7EB;
+            --input-border: #D1D5DB;
+            --error-red: #EF4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Layout */
+        .layout {
+            display: flex;
+            width: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            background-color: #FFFFFF;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-logo {
+            margin-bottom: 40px;
+            padding-left: 10px;
+        }
+
+        .sidebar-logo img {
+            height: 45px;
+            object-fit: contain;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .nav-item i {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-item:hover {
+            background-color: var(--hover-green);
+            color: var(--text-main);
+        }
+
+        .nav-item.active {
+            background-color: var(--light-green);
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-item.logout {
+            color: #DC2626;
+        }
+
+        .nav-item.logout:hover {
+            background-color: #FEF2F2;
+        }
+
+        /* Main Content */
+        .content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #FFFFFF;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            padding: 50px 60px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        h1.page-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: var(--text-main);
+        }
+
+        /* Stepper */
+        .stepper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 50px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #FFFFFF;
+            border: 2px solid var(--input-border);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            transition: all 0.2s;
+        }
+
+        .step.completed .step-circle {
+            background-color: var(--primary-green);
+            border-color: var(--primary-green);
+            color: #FFFFFF;
+        }
+
+        .step.completed .step-label {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .step.active .step-circle {
+            background-color: var(--primary-green);
+            border-color: var(--primary-green);
+            color: #FFFFFF;
+        }
+
+        .step-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .step.active .step-label {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .step-line {
+            width: 120px;
+            height: 2px;
+            background-color: var(--input-border);
+            margin: 0 15px;
+            margin-top: -30px;
+            z-index: 1;
+        }
+
+        .step-line.active-line {
+            background-color: var(--primary-green);
+        }
+
+        /* Form Fields */
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .section-subtitle {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        label span.required {
+            color: var(--error-red);
+            margin-left: 4px;
+        }
+
+        .input-hint {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        input[type="text"],
+        input[type="url"],
+        textarea {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 15px;
+            color: var(--text-main);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px var(--light-green);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .textarea-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 5px;
+        }
+
+        .char-count {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Photo Grid */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .photo-item {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-add {
+            width: 100%;
+            aspect-ratio: 1;
+            border: 2px dashed var(--input-border);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary-green);
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: transparent;
+        }
+
+        .photo-add i {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .photo-add span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .photo-add:hover {
+            background-color: var(--light-green);
+            border-color: var(--primary-green);
+        }
+
+        /* Form Actions */
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-outline {
+            background-color: #FFFFFF;
+            border: 1px solid var(--input-border);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            background-color: #F3F4F6;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-green);
+            border: 1px solid var(--primary-green);
+            color: #FFFFFF;
+        }
+
+        .btn-primary:hover {
+            background-color: #0E6B41;
+        }
+
+        /* Autosave Notice */
+        .autosave-notice {
+            background-color: #F3F4F6;
+            color: var(--text-muted);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .autosave-notice i {
+            color: var(--primary-green);
+        }
+
+        /* Placeholder Image Utilities */
+        .bg-placeholder-1 {
+            background-image: url('https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=400&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .bg-placeholder-2 {
+            background-image: url('https://images.unsplash.com/photo-1618477461853-cf6ed80fbea5?q=80&w=400&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .bg-placeholder-3 {
+            background-image: url('https://images.unsplash.com/photo-1569000971485-a7dbcbca08d8?q=80&w=400&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 70px;
+                padding: 20px 10px;
+            }
+
+            .nav-item span {
+                display: none;
+            }
+
+            .nav-item {
+                justify-content: center;
+            }
+
+            .content {
+                margin-left: 70px;
+                padding: 20px;
+            }
+
+            .form-container {
+                padding: 30px 20px;
+            }
+
+            .step-line {
+                width: 40px;
+            }
+
+            .photo-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="Logo name green.png" alt="Leadgreen Logo">
+            </div>
+            <nav class="sidebar-nav">
+                <a href="../FellowsDashboard.html" class="nav-item"><i class="fa-solid fa-border-all"></i>
+                    <span>Dashboard</span></a>
+                <a href="MissionDetails.html" class="nav-item active"><i class="fa-regular fa-clipboard"></i>
+                    <span>Mission</span></a>
+                <a href="../FellowsResouces.html" class="nav-item"><i class="fa-regular fa-folder-open"></i>
+                    <span>Resources</span></a>
+                <a href="../FellwsAccountSetting.html" class="nav-item"><i class="fa-regular fa-user"></i>
+                    <span>Account settings</span></a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="../Login.html" class="nav-item logout"><i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <span>Logout</span></a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+
+            <div class="form-container">
+                <h1 class="page-title">Create Your Mission</h1>
+
+                <!-- Stepper -->
+                <div class="stepper">
+                    <div class="step completed">
+                        <div class="step-circle"><i class="fa-solid fa-check"></i></div>
+                        <span class="step-label">Mission Details</span>
+                    </div>
+                    <div class="step-line active-line"></div>
+                    <div class="step completed">
+                        <div class="step-circle"><i class="fa-solid fa-check"></i></div>
+                        <span class="step-label">Plan</span>
+                    </div>
+                    <div class="step-line active-line"></div>
+                    <div class="step active">
+                        <div class="step-circle"><i class="fa-solid fa-check"></i></div>
+                        <span class="step-label">Evidence</span>
+                    </div>
+                </div>
+
+                <form id="uploadEvidenceForm">
+                    <h2 class="section-title">Upload Evidence</h2>
+                    <p class="section-subtitle">Add photos and videos that show the implementation of your mission.</p>
+
+                    <div class="form-group">
+                        <label>Photo <span class="required">*</span></label>
+                        <div class="photo-grid">
+                            <div class="photo-item bg-placeholder-1"></div>
+                            <div class="photo-item bg-placeholder-2"></div>
+                            <div class="photo-item bg-placeholder-3"></div>
+                            <div class="photo-add">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>Add More</span>
+                            </div>
+                        </div>
+                        <span class="input-hint">Upload images showing the implementation of your mission. Max 5MB
+                            each.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="videoLink">Video Link</label>
+                        <input type="url" id="videoLink" value="https://youtu.be/abcdEfgH123"
+                            placeholder="e.g. https://youtu.be/...">
+                        <span class="input-hint">Paste a public link to your video evidence.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="additionalNotes">Additional Notes (Optional)</label>
+                        <textarea id="additionalNotes"
+                            placeholder="Any additional context you want to provide...">The video shows the cleanup process and community participation.</textarea>
+                        <div class="textarea-footer">
+                            <span class="char-count">68 / 300</span>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" id="backBtn"><i
+                                class="fa-solid fa-angle-left"></i> Back</button>
+                        <button type="submit" class="btn btn-primary">Review & Submit <i
+                                class="fa-solid fa-angle-down"></i></button>
+                    </div>
+                </form>
+
+            </div>
+
+            <!-- Autosave Info Footer -->
+            <div class="autosave-notice">
+                <i class="fa-solid fa-circle-exclamation"></i> Note: All forms autosave as you go. You can log out and
+                return later to continue.
+            </div>
+
+        </main>
+    </div>
+
+</body>
+
+</html>
