@@ -1,0 +1,1926 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadGreen — Submit Your Project</title>
+    <meta name="description"
+        content="Submit your LeadGreen fellowship project. Share your impact story with photos, plans, and evidence.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #138A56;
+            --primary-dark: #0E6B41;
+            --primary-light: #E8F5EE;
+            --primary-glow: rgba(19, 138, 86, 0.15);
+            --accent: #10B981;
+            --bg: #F0F5F1;
+            --bg-card: #FFFFFF;
+            --text: #111827;
+            --text-muted: #4B5563;
+            --text-light: #9CA3AF;
+            --border: #E5E7EB;
+            --input-border: #D1D5DB;
+            --error: #EF4444;
+            --error-bg: #FEF2F2;
+            --warning: #F59E0B;
+            --warning-bg: #FFFBEB;
+            --info: #3B82F6;
+            --info-bg: #EFF6FF;
+            --success-bg: #ECFDF5;
+            --radius: 12px;
+            --radius-lg: 16px;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.10);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Animated Background ── */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 20% 50%, rgba(19, 138, 86, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(16, 185, 129, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(59, 130, 246, 0.03) 0%, transparent 50%);
+            animation: bgFloat 20s ease-in-out infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes bgFloat {
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            33% {
+                transform: translate(-2%, 1%);
+            }
+
+            66% {
+                transform: translate(1%, -1%);
+            }
+        }
+
+        /* ── Header ── */
+        .site-header {
+            background: rgba(255, 255, 255, 0.98);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            height: 52px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .header-nav a {
+            color: #333333;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .header-nav a:hover {
+            color: var(--primary);
+        }
+
+        .header-nav a.active {
+            color: var(--primary);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            background: #F3F4F6;
+            padding: 6px 14px 6px 8px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+        }
+
+        .header-user .avatar-sm {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #333;
+            cursor: pointer;
+            padding: 6px;
+        }
+
+        /* ── Portal Hero Banner ── */
+        .portal-hero {
+            background-color: #0c1824;
+            background-image:
+                radial-gradient(circle at top right, rgba(19, 138, 86, 0.28) 0%, transparent 45%),
+                radial-gradient(circle at bottom left, rgba(19, 138, 86, 0.18) 0%, transparent 45%);
+            color: #ffffff;
+            padding: 55px 5% 50px;
+            text-align: center;
+            position: relative;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .portal-hero-content {
+            max-width: 820px;
+            margin: 0 auto;
+        }
+
+        .portal-hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(110, 231, 183, 0.12);
+            border: 1px solid rgba(110, 231, 183, 0.35);
+            color: #6EE7B7;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .portal-hero-tag i {
+            font-size: 11px;
+        }
+
+        .portal-hero-title {
+            font-size: 38px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1.2;
+            margin-bottom: 14px;
+            background: linear-gradient(135deg, #ffffff 60%, #6EE7B7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .portal-hero-desc {
+            font-size: 16px;
+            color: #D1D5DB;
+            line-height: 1.6;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        /* ── Main Container ── */
+        .main-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-shell {
+            width: 100%;
+            max-width: 820px;
+        }
+
+        /* ── Stepper ── */
+        .stepper-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 36px;
+            gap: 0;
+        }
+
+        .stepper-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: default;
+        }
+
+        .step-dot {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2.5px solid var(--input-border);
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--text-light);
+            transition: all 0.35s cubic-bezier(.4, 0, .2, 1);
+            position: relative;
+        }
+
+        .stepper-step.active .step-dot {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 0 0 5px var(--primary-glow);
+        }
+
+        .stepper-step.completed .step-dot {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .step-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            transition: color 0.3s;
+        }
+
+        .stepper-step.active .step-name,
+        .stepper-step.completed .step-name {
+            color: var(--primary);
+        }
+
+        .step-connector {
+            width: 80px;
+            height: 3px;
+            background: var(--border);
+            margin: 0 8px;
+            margin-top: -22px;
+            border-radius: 2px;
+            transition: background 0.4s;
+        }
+
+        .step-connector.done {
+            background: var(--primary);
+        }
+
+        /* ── Card ── */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 44px 48px;
+            box-shadow: var(--shadow);
+            transition: opacity 0.3s, transform 0.3s;
+            animation: cardIn 0.4s cubic-bezier(.4, 0, .2, 1);
+        }
+
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .card-subtitle {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-bottom: 36px;
+            line-height: 1.5;
+        }
+
+        /* ── Form Fields ── */
+        .field {
+            margin-bottom: 28px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .field label .req {
+            color: var(--error);
+            margin-left: 3px;
+        }
+
+        .field input,
+        .field textarea,
+        .field select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1.5px solid var(--input-border);
+            border-radius: var(--radius);
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            color: var(--text);
+            background: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+
+        .field input:focus,
+        .field textarea:focus,
+        .field select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-glow);
+        }
+
+        .field textarea {
+            resize: vertical;
+            min-height: 110px;
+            line-height: 1.6;
+        }
+
+        .field .hint {
+            display: block;
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 6px;
+        }
+
+        .field .char-ct {
+            text-align: right;
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .field.error input,
+        .field.error textarea {
+            border-color: var(--error);
+        }
+
+        .field .error-msg {
+            color: var(--error);
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .field.error .error-msg {
+            display: block;
+        }
+
+        /* ── Photo Upload ── */
+        .upload-zone {
+            border: 2px dashed var(--input-border);
+            border-radius: var(--radius);
+            padding: 32px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s;
+            background: #FAFBFC;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .upload-zone i {
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .upload-zone .uz-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .upload-zone .uz-hint {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .photo-previews {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .photo-thumb {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid var(--border);
+        }
+
+        .photo-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-thumb .remove-photo {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 24px;
+            height: 24px;
+            background: rgba(0, 0, 0, 0.55);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .photo-thumb .remove-photo:hover {
+            background: var(--error);
+        }
+
+        /* ── Buttons ── */
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 13px 26px;
+            border-radius: var(--radius);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-outline {
+            background: var(--bg-card);
+            border: 1.5px solid var(--input-border);
+            color: var(--text);
+        }
+
+        .btn-outline:hover {
+            background: #F3F4F6;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(19, 138, 86, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(19, 138, 86, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-lg {
+            padding: 16px 36px;
+            font-size: 16px;
+        }
+
+        /* ── Alert Box ── */
+        .alert {
+            padding: 14px 18px;
+            border-radius: var(--radius);
+            font-size: 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .alert i {
+            margin-top: 2px;
+            font-size: 16px;
+        }
+
+        .alert-info {
+            background: var(--info-bg);
+            color: var(--info);
+            border: 1px solid #BFDBFE;
+        }
+
+        .alert-warning {
+            background: var(--warning-bg);
+            color: #92400E;
+            border: 1px solid #FDE68A;
+        }
+
+        .alert-error {
+            background: var(--error-bg);
+            color: var(--error);
+            border: 1px solid #FECACA;
+        }
+
+        .alert-success {
+            background: var(--success-bg);
+            color: var(--primary);
+            border: 1px solid #A7F3D0;
+        }
+
+        /* ── Verify Step ── */
+        .verify-card {
+            text-align: center;
+            padding: 60px 48px;
+        }
+
+        .verify-icon {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, var(--primary-light), #C6F6D5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 30px;
+            color: var(--primary);
+        }
+
+        .verify-card h2 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .verify-card p {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin-bottom: 32px;
+            line-height: 1.6;
+            max-width: 460px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .verify-input-wrap {
+            max-width: 420px;
+            margin: 0 auto 20px;
+        }
+
+        .verify-input-wrap input {
+            width: 100%;
+            padding: 15px 18px;
+            border: 1.5px solid var(--input-border);
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .verify-input-wrap input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-glow);
+        }
+
+        /* ── Success Page ── */
+        .success-card {
+            text-align: center;
+            padding: 60px 48px;
+        }
+
+        .success-check {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 28px;
+            font-size: 36px;
+            color: #fff;
+            animation: popIn 0.5s cubic-bezier(.4, 0, .2, 1);
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            60% {
+                transform: scale(1.15);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-card h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+
+        .success-card p {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.7;
+            max-width: 480px;
+            margin: 0 auto 32px;
+        }
+
+        .success-ref {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        /* ── Toast ── */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--text);
+            color: #fff;
+            padding: 14px 22px;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(120%);
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(.4, 0, .2, 1);
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.toast-error {
+            background: var(--error);
+        }
+
+        /* ── Loading spinner inline ── */
+        .spin-inline {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ── Progress Bar ── */
+        .upload-progress {
+            width: 100%;
+            background: var(--border);
+            border-radius: 20px;
+            height: 6px;
+            margin-top: 12px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .upload-progress .bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 20px;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        /* ── Hidden ── */
+        .hidden {
+            display: none !important;
+        }
+
+        /* ── Footer ── */
+        .site-footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 13px;
+            color: var(--text-light);
+            z-index: 1;
+            position: relative;
+        }
+
+        .site-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 820px) {
+            .header-nav {
+                display: none;
+            }
+
+            .header-nav.active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #ffffff;
+                padding: 20px 5%;
+                border-bottom: 1px solid var(--border);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+                gap: 16px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .portal-hero {
+                padding: 40px 20px 35px;
+            }
+
+            .portal-hero-title {
+                font-size: 28px;
+            }
+
+            .portal-hero-desc {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 640px) {
+
+            .card,
+            .verify-card,
+            .success-card {
+                padding: 28px 20px;
+            }
+
+            .card-title {
+                font-size: 20px;
+            }
+
+            .field-row {
+                grid-template-columns: 1fr;
+            }
+
+            .step-connector {
+                width: 36px;
+            }
+
+            .step-name {
+                font-size: 10px;
+            }
+
+            .step-dot {
+                width: 36px;
+                height: 36px;
+                font-size: 13px;
+            }
+
+            .actions {
+                flex-direction: column-reverse;
+            }
+
+            .actions .btn {
+                width: 100%;
+            }
+
+            .site-header {
+                padding: 12px 16px;
+            }
+
+            .logo-img {
+                height: 44px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── Header ── -->
+    <header class="site-header">
+        <a href="https://leadgreen-fellowship.web.app/" class="logo-area" title="LeadGreen Home">
+            <img src="Logo name green.png" alt="Leadgreen Fellowship Logo" class="logo-img">
+        </a>
+
+        <div class="header-right">
+            <nav class="header-nav" id="headerNav">
+                <a href="https://leadgreen-fellowship.web.app/">Home</a>
+                <a href="https://leadgreen-fellowship.web.app/About.html">About</a>
+                <a href="https://leadgreen-fellowship.web.app/Fellowspage.html">Meet Fellows</a>
+                <a href="https://leadgreen-fellowship.web.app/index.html#impact">Impact</a>
+                <a href="https://leadgreen-fellowship.web.app/index.html#faq">FAQ</a>
+            </nav>
+
+            <div class="header-user hidden" id="headerUser">
+                <div class="avatar-sm" id="headerAvatar">?</div>
+                <span id="headerName">Fellow</span>
+            </div>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- ── Hero Banner ── -->
+    <section class="portal-hero">
+        <div class="portal-hero-content">
+            <div class="portal-hero-tag">
+                <i class="fa-solid fa-seedling"></i>
+                <span>Learn. Act. Measure. Lead.</span>
+            </div>
+            <h1 class="portal-hero-title">Fellowship Project Submission</h1>
+            <p class="portal-hero-desc">Document and submit your community climate action project. Share your measurable impact, execution details, and photo evidence with the LeadGreen Fellowship Committee.</p>
+        </div>
+    </section>
+
+    <!-- ── Main ── -->
+    <div class="main-container">
+        <div class="form-shell">
+
+            <!-- ═══════ STEP 0 – Fellow Info ═══════ -->
+            <div id="step0" class="card verify-card">
+                <div class="verify-icon"><i class="fa-solid fa-seedling"></i></div>
+                <h2>Welcome, Fellow!</h2>
+                <p>Enter your details below to start or continue your project submission.</p>
+
+                <div id="verifyAlert" class="alert alert-error hidden">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <span id="verifyAlertText"></span>
+                </div>
+
+                <div class="verify-input-wrap">
+                    <input type="text" id="verifyName" placeholder="Your Full Name" autocomplete="name"
+                        autofocus style="margin-bottom: 12px;">
+                    <input type="email" id="verifyEmail" placeholder="your.email@example.com" autocomplete="email">
+                </div>
+
+                <button class="btn btn-primary btn-lg" id="verifyBtn" onclick="verifyFellow()">
+                    Continue <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- ═══════ STEP 1-3 Content (hidden until verified) ═══════ -->
+            <div id="formArea" class="hidden">
+
+                <!-- Revision Feedback Alert Banner -->
+                <div id="revisionBanner" class="alert hidden"
+                    style="background:#EFF6FF; border:1.5px solid #BFDBFE; color:#1E40AF; padding:18px 22px; border-radius:14px; margin-bottom:28px; box-shadow:0 4px 14px rgba(37,99,235,0.06);">
+                    <div style="display:flex; align-items:flex-start; gap:14px;">
+                        <div
+                            style="width:36px; height:36px; border-radius:50%; background:#DBEAFE; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <i class="fa-solid fa-rotate-left" style="font-size:16px; color:#2563EB;"></i>
+                        </div>
+                        <div style="flex:1;">
+                            <div style="font-weight:700; font-size:15px; margin-bottom:6px; color:#1E3A8A;">Revision
+                                Requested by Review Team</div>
+                            <div id="revisionBannerFeedback"
+                                style="font-size:14px; line-height:1.6; color:#1E40AF; background:#fff; padding:12px 14px; border-radius:8px; border:1px solid #E0E7FF; margin-bottom:8px; font-style:italic;">
+                            </div>
+                            <div style="font-size:12px; color:#3B82F6; font-weight:500;">Your previous answers have been
+                                loaded below. Please make the requested updates and submit your revised project.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stepper -->
+                <div class="stepper-bar" id="stepperBar">
+                    <div class="stepper-step active" data-step="1">
+                        <div class="step-dot">1</div>
+                        <span class="step-name">Details</span>
+                    </div>
+                    <div class="step-connector" id="conn1"></div>
+                    <div class="stepper-step" data-step="2">
+                        <div class="step-dot">2</div>
+                        <span class="step-name">Plan</span>
+                    </div>
+                    <div class="step-connector" id="conn2"></div>
+                    <div class="stepper-step" data-step="3">
+                        <div class="step-dot">3</div>
+                        <span class="step-name">Evidence</span>
+                    </div>
+                </div>
+
+                <!-- ═══ STEP 1 — Project Details ═══ -->
+                <div id="step1" class="card">
+                    <h2 class="card-title">Project Details</h2>
+                    <p class="card-subtitle">Tell us about your climate action project. What did you set out to
+                        accomplish?</p>
+
+                    <div class="field">
+                        <label for="missionTitle">Project Title <span class="req">*</span></label>
+                        <input type="text" id="missionTitle" placeholder="e.g. Community Plastic Waste Collection"
+                            maxlength="120">
+                        <span class="error-msg">Please enter a project title</span>
+                    </div>
+
+                    <div class="field">
+                        <label for="climateArea">Climate Focus Area <span class="req">*</span></label>
+                        <select id="climateArea">
+                            <option value="">Select an area…</option>
+                            <option value="Waste Management">Waste Management</option>
+                            <option value="Reforestation">Reforestation & Tree Planting</option>
+                            <option value="Water Conservation">Water Conservation</option>
+                            <option value="Renewable Energy">Renewable Energy</option>
+                            <option value="Sustainable Agriculture">Sustainable Agriculture</option>
+                            <option value="Biodiversity">Biodiversity & Wildlife</option>
+                            <option value="Clean Air">Clean Air & Pollution</option>
+                            <option value="Climate Education">Climate Education & Awareness</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span class="error-msg">Please select a climate focus area</span>
+                    </div>
+
+                    <div class="field">
+                        <label for="missionDescription">Project Description <span class="req">*</span></label>
+                        <textarea id="missionDescription"
+                            placeholder="Describe the overview of your project — what it is, why it matters, and what you hoped to achieve…"
+                            maxlength="1000"></textarea>
+                        <div class="char-ct"><span id="descCount">0</span> / 1000</div>
+                        <span class="error-msg">Please provide a description (at least 50 characters)</span>
+                    </div>
+
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="missionLocation">Location <span class="req">*</span></label>
+                            <input type="text" id="missionLocation" placeholder="City, Country">
+                            <span class="error-msg">Please enter a location</span>
+                        </div>
+                        <div class="field">
+                            <label for="missionDate">Date Carried Out <span class="req">*</span></label>
+                            <input type="date" id="missionDate">
+                            <span class="error-msg">Please select a date</span>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="missionGoal">Main Goal <span class="req">*</span></label>
+                        <textarea id="missionGoal" placeholder="What was the primary objective of your project?"
+                            maxlength="500" style="min-height:80px;"></textarea>
+                        <span class="error-msg">Please describe your main goal</span>
+                    </div>
+
+                    <div class="field">
+                        <label for="missionImpact">Who did you impact? <span class="req">*</span></label>
+                        <textarea id="missionImpact" placeholder="Identify the people or community you impacted…"
+                            maxlength="500" style="min-height:80px;"></textarea>
+                        <span class="error-msg">Please describe who you impacted</span>
+                    </div>
+
+                    <div class="actions">
+                        <div></div>
+                        <button class="btn btn-primary" onclick="goStep(2)">Next: Plan <i
+                                class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- ═══ STEP 2 — Project Plan ═══ -->
+                <div id="step2" class="card hidden">
+                    <h2 class="card-title">Project Plan</h2>
+                    <p class="card-subtitle">Share the details of how you executed your project.</p>
+
+                    <div class="field">
+                        <label for="activities">Activities Carried Out <span class="req">*</span></label>
+                        <textarea id="activities"
+                            placeholder="List the activities you carried out…&#10;• Activity 1&#10;• Activity 2&#10;• Activity 3"
+                            maxlength="1000"></textarea>
+                        <div class="char-ct"><span id="actCount">0</span> / 1000</div>
+                        <span class="error-msg">Please list your activities</span>
+                    </div>
+
+                    <div class="field">
+                        <label for="resources">Resources & Materials Used</label>
+                        <textarea id="resources" placeholder="What materials, tools, or resources did you use?"
+                            maxlength="600" style="min-height:80px;"></textarea>
+                    </div>
+
+                    <div class="field">
+                        <label for="successMetrics">How do you measure success? <span class="req">*</span></label>
+                        <textarea id="successMetrics"
+                            placeholder="e.g. Amount of waste collected (50kg), number of participants (30 people)…"
+                            maxlength="600" style="min-height:80px;"></textarea>
+                        <span class="error-msg">Please describe how you measured success</span>
+                    </div>
+
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="beneficiaries">Number of Beneficiaries</label>
+                            <input type="number" id="beneficiaries" placeholder="e.g. 150" min="0">
+                        </div>
+                        <div class="field">
+                            <label for="teamSize">Team Size</label>
+                            <input type="number" id="teamSize" placeholder="e.g. 10" min="1">
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button class="btn btn-outline" onclick="goStep(1)"><i class="fa-solid fa-arrow-left"></i>
+                            Back</button>
+                        <button class="btn btn-primary" onclick="goStep(3)">Next: Evidence <i
+                                class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- ═══ STEP 3 — Upload Evidence ═══ -->
+                <div id="step3" class="card hidden">
+                    <h2 class="card-title">Upload Evidence</h2>
+                    <p class="card-subtitle">Add photos and videos that prove the implementation of your project.</p>
+
+                    <div class="field">
+                        <label>Project Photos <span class="req">*</span></label>
+                        <div class="upload-zone" id="uploadZone"
+                            onclick="document.getElementById('photoInput').click()">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <div class="uz-title">Click to upload photos</div>
+                            <div class="uz-hint">JPG, PNG, or WebP — Max 5 MB each — Up to 8 photos</div>
+                        </div>
+                        <input type="file" id="photoInput" accept="image/*" multiple class="hidden">
+                        <div class="photo-previews" id="photoPreviews"></div>
+                        <div class="upload-progress" id="uploadProgress">
+                            <div class="bar" id="uploadBar"></div>
+                        </div>
+                        <span class="error-msg" id="photoError" style="display:none;">Please upload at least 1
+                            photo</span>
+                    </div>
+
+                    <div class="field">
+                        <label for="videoLink">Video Link (Optional)</label>
+                        <input type="url" id="videoLink" placeholder="e.g. https://youtu.be/abcdEfgH123">
+                        <span class="hint">Paste a link to a YouTube, Google Drive, or other public video</span>
+                    </div>
+
+                    <div class="field">
+                        <label for="additionalNotes">Additional Notes (Optional)</label>
+                        <textarea id="additionalNotes" placeholder="Any extra context you want to share with reviewers…"
+                            maxlength="500" style="min-height:80px;"></textarea>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>Once submitted, your project will be reviewed by the LeadGreen admin team. You'll be
+                            notified when a decision is made.</span>
+                    </div>
+
+                    <div class="actions">
+                        <button class="btn btn-outline" onclick="goStep(2)"><i class="fa-solid fa-arrow-left"></i>
+                            Back</button>
+                        <button class="btn btn-primary btn-lg" id="submitBtn" onclick="submitMission()">
+                            <i class="fa-solid fa-paper-plane"></i> Submit Project
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══════ SUCCESS ═══════ -->
+            <div id="successCard" class="card success-card hidden">
+                <div class="success-check"><i class="fa-solid fa-check"></i></div>
+                <h2 id="successTitle">Project Submitted!</h2>
+                <p id="successDesc">Your project has been successfully submitted for review. Our admin team will review
+                    your submission
+                    and get back to you soon.</p>
+                <div class="success-ref" id="successRef">REF: —</div>
+                <p style="font-size:13px; color:var(--text-light);">You can close this page. We'll reach out via your
+                    registered email address.</p>
+                <button class="btn btn-outline" onclick="location.reload()" style="margin-top:20px;">
+                    <i class="fa-solid fa-arrow-left"></i> Return to Portal
+                </button>
+            </div>
+
+            <!-- ═══════ UNDER REVIEW STATUS CARD ═══════ -->
+            <div id="inReviewCard" class="card verify-card hidden">
+                <div class="verify-icon" style="background:#F5F3FF; color:#7C3AED;">
+                    <i class="fa-solid fa-hourglass-half"></i>
+                </div>
+                <h2>Project Under Review</h2>
+                <p id="inReviewDesc">You already have a project submission under review. Our administrative team is
+                    currently evaluating your submission.</p>
+                <div class="success-ref" id="inReviewRef" style="background:#F5F3FF; color:#7C3AED;">REF: —</div>
+                <div style="margin-top:20px; font-size:13px; color:var(--text-light); line-height:1.6;">
+                    Submitted: <strong id="inReviewDate" style="color:var(--text-main);">—</strong><br>
+                    If revisions are requested, you will be able to update your project directly on this portal.
+                </div>
+                <button class="btn btn-outline" onclick="location.reload()" style="margin-top:26px;">
+                    <i class="fa-solid fa-arrow-rotate-right"></i> Check Status Again
+                </button>
+            </div>
+
+            <!-- ═══════ APPROVED STATUS CARD ═══════ -->
+            <div id="approvedCard" class="card success-card hidden">
+                <div class="success-check" style="background:linear-gradient(135deg, #059669, #10B981);">
+                    <i class="fa-solid fa-award"></i>
+                </div>
+                <h2 style="color:#059669;">Project Approved! 🎉</h2>
+                <p id="approvedDesc">Congratulations! Your climate action project has been reviewed and officially
+                    approved by the LeadGreen Fellowship Committee.</p>
+                <div class="success-ref" id="approvedRef" style="background:#ECFDF5; color:#059669;">REF: —</div>
+                <p style="font-size:14px; color:var(--text-muted); margin-top:16px;">
+                    You have satisfied your fellowship project requirements. Thank you for your leadership in climate
+                    action!
+                </p>
+                <button class="btn btn-outline" onclick="location.reload()" style="margin-top:24px;">
+                    <i class="fa-solid fa-arrow-left"></i> Verify Another Email
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ── Official LeadGreen Footer ── -->
+    <footer style="background-color: #0c1824; color: #ffffff; padding: 70px 5% 35px; font-family: 'Inter', sans-serif; border-top: 4px solid var(--primary); margin-top: auto;">
+        <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 50px;">
+            <!-- Brand Column -->
+            <div style="flex: 2; min-width: 280px;">
+                <h2 style="font-family: 'Inter', sans-serif; font-size: 26px; font-weight: 800; color: #6EE7B7; margin-bottom: 10px; letter-spacing: 1px;">
+                    LEADGREEN</h2>
+                <h4 style="font-size: 13px; font-weight: 700; color: #34D399; text-transform: uppercase; margin-bottom: 18px; letter-spacing: 2px;">
+                    Learn. Act. Measure. Lead.</h4>
+                <p style="color: #9CA3AF; font-size: 14px; line-height: 1.7; max-width: 350px;">
+                    Building a network of young African changemakers taking measurable action for a greener Africa.
+                </p>
+            </div>
+
+            <!-- Links Column -->
+            <div style="flex: 1;">
+                <h4 style="font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 20px; letter-spacing: 0.5px;">
+                    Navigation</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <a href="https://leadgreen-fellowship.web.app/" style="color: #D1D5DB; text-decoration: none; font-size: 14px; transition: 0.2s;" onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Home</a>
+                    <a href="https://leadgreen-fellowship.web.app/About.html" style="color: #D1D5DB; text-decoration: none; font-size: 14px; transition: 0.2s;" onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">About</a>
+                    <a href="https://leadgreen-fellowship.web.app/Fellowspage.html" style="color: #D1D5DB; text-decoration: none; font-size: 14px; transition: 0.2s;" onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Meet Fellows</a>
+                    <a href="https://leadgreen-fellowship.web.app/index.html#impact" style="color: #D1D5DB; text-decoration: none; font-size: 14px; transition: 0.2s;" onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Impact</a>
+                    <a href="https://leadgreen-fellowship.web.app/index.html#faq" style="color: #D1D5DB; text-decoration: none; font-size: 14px; transition: 0.2s;" onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">FAQ</a>
+                    <a href="https://leadgreen-fellowship.web.app/Admin/AdminLogin.html" style="color: #D1D5DB; text-decoration: none; font-size: 14px; transition: 0.2s;" onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Admin Portal</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Base Copyright Row -->
+        <div style="max-width: 1200px; margin: 50px auto 0; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+            <div style="color: #9CA3AF; font-size: 13px;">
+                &copy; 2026 LeadGreen Fellowship. All rights reserved.
+            </div>
+            <div class="social-icons" style="display: flex; gap: 18px;">
+                <a href="#" style="color: #9CA3AF; font-size: 16px; transition: 0.2s;" onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" style="color: #9CA3AF; font-size: 16px; transition: 0.2s;" onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" style="color: #9CA3AF; font-size: 16px; transition: 0.2s;" onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ── Toast ── -->
+    <div class="toast" id="toast">
+        <i class="fa-solid fa-check-circle"></i>
+        <span id="toastText"></span>
+    </div>
+
+    <!-- ── Firebase SDK ── -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import {
+            getFirestore, collection, query, where, getDocs, addDoc, doc, getDoc, updateDoc, serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import {
+            getStorage, ref, uploadBytesResumable, getDownloadURL
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+        // ── Firebase Config (aligned with LeadGreen project) ──
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5lPT8Fyp265fvebWq4BelNE0dYxuWvCE",
+            authDomain: "leadgreen-fellowship.firebaseapp.com",
+            projectId: "leadgreen-fellowship",
+            storageBucket: "leadgreen-fellowship.firebasestorage.app",
+            messagingSenderId: "639331926711",
+            appId: "1:639331926711:web:03d9d47c8b33cef84a0332"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        // ── STATE ──
+        let currentStep = 0;
+        let fellowData = null;
+        let existingMission = null;   // previous project/mission doc if exists
+        let existingPhotos = [];      // saved photos from previous submission
+        let photoFiles = [];          // new File objects
+        let isSubmitting = false;
+
+        // ── Expose functions globally ──
+        window.verifyFellow = verifyFellow;
+        window.goStep = goStep;
+        window.submitMission = submitMission;
+        window.removePhoto = removePhoto;
+        window.removeExistingPhoto = removeExistingPhoto;
+
+        // ═══════════════════════════════════════════
+        // STEP 0 — Collect Fellow Info (Open Access)
+        // ═══════════════════════════════════════════
+        async function verifyFellow() {
+            const name = document.getElementById('verifyName').value.trim();
+            const email = document.getElementById('verifyEmail').value.trim().toLowerCase();
+            const alertEl = document.getElementById('verifyAlert');
+            const btn = document.getElementById('verifyBtn');
+
+            alertEl.classList.add('hidden');
+
+            if (!name) {
+                showVerifyError('Please enter your full name.');
+                return;
+            }
+
+            if (!email || !email.includes('@')) {
+                showVerifyError('Please enter a valid email address.');
+                return;
+            }
+
+            btn.innerHTML = '<span class="spin-inline"></span> Loading…';
+            btn.disabled = true;
+
+            try {
+                // Build fellowData from user input
+                fellowData = {
+                    id: 'fellow_' + Date.now(),
+                    name: name,
+                    fullName: name,
+                    email: email,
+                    applicationEmail: email,
+                    cohort: 'Cohort 4'
+                };
+
+                // Show user info in header
+                document.getElementById('headerUser').classList.remove('hidden');
+                document.getElementById('headerName').textContent = name;
+                document.getElementById('headerAvatar').textContent = getInitials(name);
+
+                // Check existing project submissions for this email
+                const missionsRef = collection(db, "missions");
+                const mq = query(missionsRef, where("fellowEmail", "==", email));
+                let msnap = await getDocs(mq);
+
+                if (msnap.empty) {
+                    const mq2 = query(missionsRef, where("email", "==", email));
+                    msnap = await getDocs(mq2);
+                }
+
+                if (!msnap.empty) {
+                    // Find the most recent submission
+                    const missionsList = msnap.docs.map(d => ({ id: d.id, ...d.data() }));
+                    missionsList.sort((a, b) => {
+                        const timeA = a.submittedAt?.toMillis ? a.submittedAt.toMillis() : (a.createdAt?.toMillis ? a.createdAt.toMillis() : 0);
+                        const timeB = b.submittedAt?.toMillis ? b.submittedAt.toMillis() : (b.createdAt?.toMillis ? b.createdAt.toMillis() : 0);
+                        return timeB - timeA;
+                    });
+
+                    const latestMission = missionsList[0];
+                    const mStatus = (latestMission.status || 'draft').toLowerCase();
+                    const projTitle = latestMission.projectTitle || latestMission.missionTitle || latestMission.title || 'Climate Action Project';
+
+                    // State 1: Project is already approved
+                    if (mStatus === 'approved') {
+                        document.getElementById('step0').classList.add('hidden');
+                        document.getElementById('approvedCard').classList.remove('hidden');
+                        document.getElementById('approvedRef').textContent = 'REF: ' + (latestMission.referenceId || latestMission.id).toUpperCase();
+                        document.getElementById('approvedDesc').textContent = `Congratulations, ${name}! Your project "${projTitle}" has been approved by the LeadGreen Fellowship Committee.`;
+                        if (typeof confetti === 'function') {
+                            confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+                        }
+                        return;
+                    }
+
+                    // State 2: Project is currently under review
+                    if (mStatus === 'submitted' || mStatus === 'pending') {
+                        document.getElementById('step0').classList.add('hidden');
+                        document.getElementById('inReviewCard').classList.remove('hidden');
+                        document.getElementById('inReviewRef').textContent = 'REF: ' + (latestMission.referenceId || latestMission.id).toUpperCase();
+                        const subDate = latestMission.submittedAt?.toDate ? latestMission.submittedAt.toDate() : new Date();
+                        document.getElementById('inReviewDate').textContent = subDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                        document.getElementById('inReviewDesc').textContent = `Your project "${projTitle}" has been submitted and is currently in the review queue.`;
+                        return;
+                    }
+
+                    // State 3: Revisions requested by Admin
+                    if (mStatus === 'revision_requested') {
+                        existingMission = latestMission;
+
+                        // Pre-fill form fields
+                        document.getElementById('missionTitle').value = existingMission.projectTitle || existingMission.missionTitle || existingMission.title || '';
+                        document.getElementById('climateArea').value = existingMission.climateArea || existingMission.actionArea || '';
+                        document.getElementById('missionDescription').value = existingMission.projectDescription || existingMission.missionDescription || existingMission.description || '';
+                        document.getElementById('descCount').textContent = (document.getElementById('missionDescription').value || '').length;
+                        document.getElementById('missionLocation').value = existingMission.location || existingMission.targetLocation || '';
+                        document.getElementById('missionDate').value = existingMission.projectDate || existingMission.missionDate || existingMission.startDate || '';
+                        document.getElementById('missionGoal').value = existingMission.projectGoal || existingMission.mainGoal || existingMission.goal || '';
+                        document.getElementById('missionImpact').value = existingMission.impactTarget || existingMission.target || '';
+                        document.getElementById('activities').value = existingMission.activities || '';
+                        document.getElementById('actCount').textContent = (document.getElementById('activities').value || '').length;
+                        document.getElementById('resources').value = existingMission.resources || '';
+                        document.getElementById('successMetrics').value = existingMission.successMetrics || existingMission.metrics || '';
+                        document.getElementById('beneficiaries').value = existingMission.beneficiaries || '';
+                        document.getElementById('teamSize').value = existingMission.teamSize || '';
+                        document.getElementById('videoLink').value = existingMission.videoLink || (Array.isArray(existingMission.videos) && existingMission.videos[0]) || '';
+                        document.getElementById('additionalNotes').value = existingMission.additionalNotes || '';
+
+                        // Pre-load existing photos
+                        const rawPhotos = [
+                            ...(Array.isArray(existingMission.photoURLs) ? existingMission.photoURLs : []),
+                            ...(Array.isArray(existingMission.photos) ? existingMission.photos : []),
+                            ...(typeof existingMission.photoURL === 'string' && existingMission.photoURL.trim() ? [existingMission.photoURL.trim()] : [])
+                        ];
+                        existingPhotos = [...new Set(rawPhotos.filter(u => typeof u === 'string' && u.trim()))];
+
+                        // Display revision feedback alert
+                        const bannerEl = document.getElementById('revisionBanner');
+                        const bannerText = document.getElementById('revisionBannerFeedback');
+                        bannerText.textContent = existingMission.revisionFeedback || 'Please review your project details and update the required fields as requested by your reviewer.';
+                        bannerEl.classList.remove('hidden');
+
+                        // Change submit button text
+                        document.getElementById('submitBtn').innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Revised Project';
+
+                        renderPhotoPreviews();
+                    }
+                }
+
+                // Proceed to Step 1
+                document.getElementById('step0').classList.add('hidden');
+                document.getElementById('formArea').classList.remove('hidden');
+                currentStep = 1;
+                updateStepper();
+
+            } catch (err) {
+                console.error('Error:', err);
+                showVerifyError('Something went wrong. Please check your connection and try again.');
+            }
+
+            btn.innerHTML = 'Continue <i class="fa-solid fa-arrow-right"></i>';
+            btn.disabled = false;
+        }
+
+        function showVerifyError(msg) {
+            const el = document.getElementById('verifyAlert');
+            document.getElementById('verifyAlertText').textContent = msg;
+            el.classList.remove('hidden');
+        }
+
+        // ═══════════════════════════════════════════
+        // Navigation
+        // ═══════════════════════════════════════════
+        function goStep(step) {
+            if (step > currentStep) {
+                if (!validateStep(currentStep)) return;
+            }
+
+            currentStep = step;
+
+            document.getElementById('step1').classList.toggle('hidden', step !== 1);
+            document.getElementById('step2').classList.toggle('hidden', step !== 2);
+            document.getElementById('step3').classList.toggle('hidden', step !== 3);
+
+            updateStepper();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateStepper() {
+            const steps = document.querySelectorAll('.stepper-step');
+            const conns = [document.getElementById('conn1'), document.getElementById('conn2')];
+
+            steps.forEach((el, i) => {
+                const n = i + 1;
+                el.classList.remove('active', 'completed');
+
+                if (n < currentStep) {
+                    el.classList.add('completed');
+                    el.querySelector('.step-dot').innerHTML = '<i class="fa-solid fa-check" style="font-size:14px;"></i>';
+                } else if (n === currentStep) {
+                    el.classList.add('active');
+                    el.querySelector('.step-dot').textContent = n;
+                } else {
+                    el.querySelector('.step-dot').textContent = n;
+                }
+            });
+
+            conns.forEach((c, i) => {
+                c.classList.toggle('done', (i + 1) < currentStep);
+            });
+        }
+
+        // ═══════════════════════════════════════════
+        // Validation
+        // ═══════════════════════════════════════════
+        function validateStep(step) {
+            clearErrors();
+            let valid = true;
+
+            if (step === 1) {
+                if (!val('missionTitle')) valid = false;
+                if (!document.getElementById('climateArea').value) { markError('climateArea'); valid = false; }
+                if ((document.getElementById('missionDescription').value || '').length < 50) { markError('missionDescription'); valid = false; }
+                if (!val('missionLocation')) valid = false;
+                if (!val('missionDate')) valid = false;
+                if (!val('missionGoal')) valid = false;
+                if (!val('missionImpact')) valid = false;
+            }
+
+            if (step === 2) {
+                if (!val('activities')) valid = false;
+                if (!val('successMetrics')) valid = false;
+            }
+
+            if (step === 3) {
+                const totalPhotos = existingPhotos.length + photoFiles.length;
+                if (totalPhotos === 0) {
+                    document.getElementById('photoError').style.display = 'block';
+                    valid = false;
+                }
+            }
+
+            if (!valid) {
+                showToast('Please fill in all required fields', true);
+            }
+
+            return valid;
+        }
+
+        function val(id) {
+            const el = document.getElementById(id);
+            if (!el.value || !el.value.trim()) {
+                markError(id);
+                return false;
+            }
+            return true;
+        }
+
+        function markError(id) {
+            const el = document.getElementById(id);
+            el.closest('.field').classList.add('error');
+        }
+
+        function clearErrors() {
+            document.querySelectorAll('.field.error').forEach(el => el.classList.remove('error'));
+            document.getElementById('photoError').style.display = 'none';
+        }
+
+        // ═══════════════════════════════════════════
+        // Photo Upload Handling
+        // ═══════════════════════════════════════════
+        document.getElementById('photoInput').addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            const maxFiles = 8;
+            const maxSize = 5 * 1024 * 1024; // 5 MB
+
+            files.forEach(file => {
+                if (existingPhotos.length + photoFiles.length >= maxFiles) {
+                    showToast(`Maximum ${maxFiles} photos allowed`, true);
+                    return;
+                }
+                if (file.size > maxSize) {
+                    showToast(`${file.name} is too large (max 5 MB)`, true);
+                    return;
+                }
+                if (!file.type.startsWith('image/')) {
+                    showToast(`${file.name} is not an image file`, true);
+                    return;
+                }
+                photoFiles.push(file);
+            });
+
+            renderPhotoPreviews();
+            e.target.value = '';
+        });
+
+        // Drag & Drop
+        const uploadZone = document.getElementById('uploadZone');
+        uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.style.borderColor = 'var(--primary)'; uploadZone.style.background = 'var(--primary-light)'; });
+        uploadZone.addEventListener('dragleave', () => { uploadZone.style.borderColor = ''; uploadZone.style.background = ''; });
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.style.borderColor = '';
+            uploadZone.style.background = '';
+            const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+            files.forEach(file => {
+                if (existingPhotos.length + photoFiles.length < 8 && file.size <= 5 * 1024 * 1024) {
+                    photoFiles.push(file);
+                }
+            });
+            renderPhotoPreviews();
+        });
+
+        function renderPhotoPreviews() {
+            const container = document.getElementById('photoPreviews');
+            container.innerHTML = '';
+
+            // Render existing previously-uploaded photos
+            existingPhotos.forEach((url, idx) => {
+                const div = document.createElement('div');
+                div.className = 'photo-thumb';
+                div.style.position = 'relative';
+                div.innerHTML = `
+                    <img src="${url}" alt="Saved Photo ${idx + 1}">
+                    <span style="position:absolute; bottom:6px; left:6px; background:rgba(0,0,0,0.65); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:600;">Saved</span>
+                    <button class="remove-photo" onclick="removeExistingPhoto(${idx})" title="Remove saved photo"><i class="fa-solid fa-xmark"></i></button>
+                `;
+                container.appendChild(div);
+            });
+
+            // Render newly selected photo files
+            photoFiles.forEach((file, idx) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const div = document.createElement('div');
+                    div.className = 'photo-thumb';
+                    div.style.position = 'relative';
+                    div.innerHTML = `
+                        <img src="${e.target.result}" alt="New Photo ${idx + 1}">
+                        <span style="position:absolute; bottom:6px; left:6px; background:rgba(5,150,105,0.85); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:600;">New</span>
+                        <button class="remove-photo" onclick="removePhoto(${idx})" title="Remove"><i class="fa-solid fa-xmark"></i></button>
+                    `;
+                    container.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function removeExistingPhoto(idx) {
+            existingPhotos.splice(idx, 1);
+            renderPhotoPreviews();
+        }
+
+        window.removePhoto = function (idx) {
+            photoFiles.splice(idx, 1);
+            renderPhotoPreviews();
+        };
+
+        // ═══════════════════════════════════════════
+        // Upload Photos to Firebase Storage
+        // ═══════════════════════════════════════════
+        async function uploadPhotos(missionId) {
+            const uploadedURLs = [];
+            if (photoFiles.length === 0) return uploadedURLs;
+
+            const progressEl = document.getElementById('uploadProgress');
+            const barEl = document.getElementById('uploadBar');
+            progressEl.style.display = 'block';
+
+            for (let i = 0; i < photoFiles.length; i++) {
+                const file = photoFiles[i];
+                const storageRef = ref(storage, `missions/${missionId}/photos/${Date.now()}_${file.name}`);
+
+                await new Promise((resolve, reject) => {
+                    const uploadTask = uploadBytesResumable(storageRef, file);
+
+                    uploadTask.on('state_changed',
+                        (snapshot) => {
+                            const fileProgress = (snapshot.bytesTransferred / snapshot.totalBytes);
+                            const overallProgress = ((i + fileProgress) / photoFiles.length) * 100;
+                            barEl.style.width = overallProgress + '%';
+                        },
+                        (error) => {
+                            console.error('Upload error:', error);
+                            reject(error);
+                        },
+                        async () => {
+                            const url = await getDownloadURL(uploadTask.snapshot.ref);
+                            uploadedURLs.push(url);
+                            resolve();
+                        }
+                    );
+                });
+            }
+
+            barEl.style.width = '100%';
+            return uploadedURLs;
+        }
+
+        // ═══════════════════════════════════════════
+        // Submit Project
+        // ═══════════════════════════════════════════
+        async function submitMission() {
+            if (isSubmitting) return;
+
+            // Final validation
+            if (!validateStep(3)) return;
+
+            isSubmitting = true;
+            const btn = document.getElementById('submitBtn');
+            btn.innerHTML = '<span class="spin-inline"></span> Submitting…';
+            btn.disabled = true;
+
+            try {
+                const targetRefId = existingMission ? (existingMission.referenceId || existingMission.id) : ('prj_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6));
+
+                // Upload new photos (if any)
+                const newURLs = await uploadPhotos(targetRefId);
+                const finalPhotoURLs = [...existingPhotos, ...newURLs];
+
+                // Prepare values
+                const email = fellowData.email || fellowData.applicationEmail || '';
+                const vLink = document.getElementById('videoLink').value.trim();
+                const fellowName = fellowData.name || fellowData.fullName || fellowData.firstName || 'Unknown';
+                const cohortVal = fellowData.cohort || fellowData.Cohort || 'Cohort 4';
+
+                const titleVal = document.getElementById('missionTitle').value.trim();
+                const climateVal = document.getElementById('climateArea').value;
+                const descVal = document.getElementById('missionDescription').value.trim();
+                const locVal = document.getElementById('missionLocation').value.trim();
+                const dateVal = document.getElementById('missionDate').value;
+                const goalVal = document.getElementById('missionGoal').value.trim();
+                const impactVal = document.getElementById('missionImpact').value.trim();
+                const actVal = document.getElementById('activities').value.trim();
+                const resVal = document.getElementById('resources').value.trim();
+                const metVal = document.getElementById('successMetrics').value.trim();
+                const benVal = parseInt(document.getElementById('beneficiaries').value) || 0;
+                const teamVal = parseInt(document.getElementById('teamSize').value) || 0;
+                const notesVal = document.getElementById('additionalNotes').value.trim();
+
+                const missionData = {
+                    // Fellow info
+                    fellowId: fellowData.id,
+                    fellowName: fellowName,
+                    name: fellowName,
+                    fellowEmail: email,
+                    email: email,
+                    cohort: cohortVal,
+
+                    // Step 1 — Details (Full Dual Schema: Project & Mission keys)
+                    projectTitle: titleVal,
+                    missionTitle: titleVal,
+                    title: titleVal,
+                    climateArea: climateVal,
+                    actionArea: climateVal,
+                    projectDescription: descVal,
+                    missionDescription: descVal,
+                    description: descVal,
+                    location: locVal,
+                    targetLocation: locVal,
+                    projectDate: dateVal,
+                    missionDate: dateVal,
+                    startDate: dateVal,
+                    projectGoal: goalVal,
+                    mainGoal: goalVal,
+                    goal: goalVal,
+                    impactTarget: impactVal,
+                    target: impactVal,
+                    expectedOutcomes: impactVal,
+                    outcomes: impactVal,
+
+                    // Step 2 — Plan
+                    activities: actVal,
+                    resources: resVal,
+                    successMetrics: metVal,
+                    metrics: metVal,
+                    beneficiaries: benVal,
+                    teamSize: teamVal,
+
+                    // Step 3 — Evidence
+                    photoURLs: finalPhotoURLs,
+                    photos: finalPhotoURLs,
+                    videoLink: vLink,
+                    videos: vLink ? [vLink] : [],
+                    additionalNotes: notesVal,
+
+                    // Status & Admin Notes Sync
+                    status: 'submitted',
+                    adminNote: existingMission ? (existingMission.adminNote || existingMission.adminNotes || '') : '',
+                    adminNotes: existingMission ? (existingMission.adminNote || existingMission.adminNotes || '') : '',
+                };
+
+                if (existingMission) {
+                    // Update existing submission in-place
+                    missionData.resubmittedAt = serverTimestamp();
+                    missionData.updatedAt = serverTimestamp();
+                    missionData.revisionResolved = true;
+                    if (existingMission.revisionFeedback) {
+                        const prevFeedback = existingMission.revisionFeedback;
+                        const prevHist = Array.isArray(existingMission.revisionHistory)
+                            ? [...existingMission.revisionHistory]
+                            : (existingMission.revisionHistory ? [existingMission.revisionHistory] : []);
+                        if (!prevHist.includes(prevFeedback)) {
+                            prevHist.push(prevFeedback);
+                        }
+                        missionData.revisionHistory = prevHist;
+                    }
+                    await updateDoc(doc(db, "missions", existingMission.id), missionData);
+
+                    document.getElementById('formArea').classList.add('hidden');
+                    document.getElementById('successTitle').textContent = 'Revision Resubmitted!';
+                    document.getElementById('successDesc').textContent = 'Your updated project submission has been received and sent back to the review queue.';
+                    document.getElementById('successRef').textContent = 'REF: ' + targetRefId.toUpperCase();
+                    document.getElementById('successCard').classList.remove('hidden');
+                    if (typeof confetti === 'function') {
+                        confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+                    }
+
+                    showToast('Revised project submitted successfully!');
+                } else {
+                    // New project submission
+                    missionData.submittedAt = serverTimestamp();
+                    missionData.createdAt = serverTimestamp();
+                    missionData.referenceId = targetRefId;
+
+                    await addDoc(collection(db, "missions"), missionData);
+
+                    document.getElementById('formArea').classList.add('hidden');
+                    document.getElementById('successRef').textContent = 'REF: ' + targetRefId.toUpperCase();
+                    document.getElementById('successCard').classList.remove('hidden');
+                    if (typeof confetti === 'function') {
+                        confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
+                    }
+
+                    showToast('Project submitted successfully!');
+                }
+
+            } catch (err) {
+                console.error('Submit error:', err);
+                showToast('Failed to submit. Please check your connection and try again.', true);
+                btn.innerHTML = existingMission ? '<i class="fa-solid fa-paper-plane"></i> Submit Revised Project' : '<i class="fa-solid fa-paper-plane"></i> Submit Project';
+                btn.disabled = false;
+                isSubmitting = false;
+            }
+        }
+
+        // ═══════════════════════════════════════════
+        // Character counters
+        // ═══════════════════════════════════════════
+        document.getElementById('missionDescription').addEventListener('input', (e) => {
+            document.getElementById('descCount').textContent = e.target.value.length;
+        });
+
+        document.getElementById('activities').addEventListener('input', (e) => {
+            document.getElementById('actCount').textContent = e.target.value.length;
+        });
+
+        // ═══════════════════════════════════════════
+        // Enter key on verify input
+        // ═══════════════════════════════════════════
+        document.getElementById('verifyEmail').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') verifyFellow();
+        });
+        document.getElementById('verifyName').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') document.getElementById('verifyEmail').focus();
+        });
+
+        // ═══════════════════════════════════════════
+        // Helpers
+        // ═══════════════════════════════════════════
+        function getInitials(name) {
+            return (name || '').split(' ').map(w => w[0] || '').slice(0, 2).join('').toUpperCase() || '?';
+        }
+
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toast');
+            const text = document.getElementById('toastText');
+            text.textContent = msg;
+            toast.classList.toggle('toast-error', isError);
+            toast.querySelector('i').className = isError ? 'fa-solid fa-circle-exclamation' : 'fa-solid fa-check-circle';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+
+        // Mobile Nav Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const headerNav = document.getElementById('headerNav');
+        if (menuToggle && headerNav) {
+            menuToggle.addEventListener('click', () => {
+                headerNav.classList.toggle('active');
+                const icon = menuToggle.querySelector('i');
+                if (headerNav.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                } else {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
+    </script>
+
+</body>
+
+</html>
