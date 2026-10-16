@@ -4,31 +4,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeadGreen - Get Your Certificate</title>
+    <title>LeadGreen Fellowship — Official Certificate Generator</title>
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
-        rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- PDF Lib -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Canvas Confetti for Celebration -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+    <!-- PDF Lib & FontKit -->
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script src="https://unpkg.com/@pdf-lib/fontkit@0.0.4/dist/fontkit.umd.min.js"></script>
 
     <style>
+        @font-face {
+            font-family: 'AwesomeScript';
+            src: url('awesome.regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         :root {
-            --primary-green: #138A56;
-            --light-green: #E8F5EE;
-            --hover-green: #F0F9F4;
-            --text-main: #111827;
+            --primary: #138A56;
+            --primary-dark: #0D623D;
+            --primary-light: #E8F5EE;
+            --primary-hover: #10774A;
+            --accent-gold: #F59E0B;
+            --accent-gold-dark: #D97706;
+            --accent-gold-light: #FEF3C7;
+            --text-dark: #111827;
             --text-muted: #4B5563;
             --text-light: #9CA3AF;
-            --border-color: #E5E7EB;
-            --bg-body: #F3F4F6;
-            --accent: #22c55e;
+            --bg-page: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --border: #E2E8F0;
+            --border-hover: #CBD5E1;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-premium: 0 25px 50px -12px rgba(19, 138, 86, 0.15);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
         }
 
         * {
@@ -38,392 +61,1444 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #F0FDF4 0%, #F8FAFC 40%, #ECFDF5 100%);
+            color: var(--text-dark);
             min-height: 100vh;
-            padding: 20px;
-            background-image: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            display: flex;
+            flex-direction: column;
+            line-height: 1.5;
         }
 
-        .container {
-            background-color: #FFFFFF;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        /* Top Navigation Bar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 14px 28px;
+        }
+
+        .navbar-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 700;
+            font-size: 17px;
+        }
+
+        .nav-brand img {
+            height: 38px;
+            width: auto;
+        }
+
+        .nav-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(19, 138, 86, 0.15);
+        }
+
+        .nav-badge i {
+            font-size: 11px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-link-btn {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
+        }
+
+        .nav-link-btn:hover {
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        /* Main Container */
+        .main-container {
+            flex: 1;
+            max-width: 1400px;
             width: 100%;
-            max-width: 500px;
-            overflow: hidden;
-            position: relative;
+            margin: 0 auto;
+            padding: 32px 24px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        .header {
-            background-color: var(--primary-green);
+        /* -------------------------------------------------------------
+           PHASE 1: VERIFICATION SCREEN
+        ------------------------------------------------------------- */
+        .verification-wrapper {
+            max-width: 520px;
+            margin: 40px auto;
+            width: 100%;
+        }
+
+        .card-auth {
+            background: var(--card-bg);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-premium);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .auth-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
-            padding: 30px 20px;
+            padding: 36px 30px;
             text-align: center;
             position: relative;
         }
 
-        .header h1 {
-            font-size: 22px;
-            font-weight: 700;
+        .auth-header-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            margin: 0 auto 16px;
+            color: #FEF08A;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .auth-header h1 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            letter-spacing: -0.02em;
+        }
+
+        .auth-header p {
+            font-size: 14px;
+            opacity: 0.92;
+            max-width: 380px;
+            margin: 0 auto;
+        }
+
+        .auth-body {
+            padding: 36px 32px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
             margin-bottom: 8px;
         }
 
-        .header p {
-            font-size: 14px;
-            font-weight: 400;
-            opacity: 0.9;
-            margin-bottom: 15px;
-        }
-
-        .content {
-            padding: 30px;
-        }
-
-        .form-group {
+        .input-group {
+            position: relative;
             margin-bottom: 20px;
         }
 
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text-main);
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 15px;
-            color: var(--text-main);
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary-green);
-            box-shadow: 0 0 0 3px rgba(19, 138, 86, 0.1);
-        }
-
-        .form-group .hint {
-            font-size: 12px;
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
             color: var(--text-light);
-            margin-top: 5px;
+            font-size: 16px;
+            transition: color 0.2s;
         }
 
-        .btn-generate {
+        .form-input {
             width: 100%;
-            background-color: var(--primary-green);
+            padding: 14px 16px 14px 46px;
+            font-size: 15px;
+            border-radius: var(--radius-md);
+            border: 1.5px solid var(--border);
+            background: #FAFAFA;
+            color: var(--text-dark);
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            background: #FFFFFF;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(19, 138, 86, 0.12);
+        }
+
+        .btn-verify {
+            width: 100%;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
             color: white;
-            padding: 14px;
             border: none;
-            border-radius: 8px;
+            border-radius: var(--radius-md);
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
+            transition: all 0.2s;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             gap: 10px;
+            box-shadow: 0 4px 12px rgba(19, 138, 86, 0.25);
         }
 
-        .btn-generate:hover {
-            background-color: #0f6c44;
+        .btn-verify:hover {
+            background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-dark) 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(19, 138, 86, 0.35);
         }
 
-        .btn-generate:active {
-            transform: scale(0.98);
+        .btn-verify:active {
+            transform: translateY(0);
         }
 
-        .btn-generate:disabled {
-            background-color: var(--text-light);
+        .btn-verify:disabled {
+            opacity: 0.7;
             cursor: not-allowed;
             transform: none;
         }
 
-        #errorMsg {
-            background: #FEF2F2;
-            color: #DC2626;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #F87171;
-            font-size: 14px;
-            margin-bottom: 20px;
+        /* Unpaid Alert Box */
+        .unpaid-card {
             display: none;
-            line-height: 1.4;
+            margin-top: 24px;
+            background: #FFFBEB;
+            border: 1.5px solid #FCD34D;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            animation: slideDown 0.3s ease;
         }
 
-        /* Loader */
-        .loader {
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 3px solid #fff;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
+        .unpaid-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .unpaid-header i {
+            color: #D97706;
+            font-size: 20px;
+            margin-top: 2px;
+        }
+
+        .unpaid-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #92400E;
+        }
+
+        .unpaid-desc {
+            font-size: 13px;
+            color: #78350F;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .btn-pay-now {
+            width: 100%;
+            padding: 12px 18px;
+            background: #D97706;
+            color: white;
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn-pay-now:hover {
+            background: #B45309;
+        }
+
+        .auth-footer {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .auth-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* -------------------------------------------------------------
+           PHASE 2: CERTIFICATE STUDIO
+        ------------------------------------------------------------- */
+        .studio-wrapper {
             display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .studio-header {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 24px 30px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .fellow-welcome h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-dark);
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .fellow-welcome p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .fellow-status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #ECFDF5;
+            color: #065F46;
+            border: 1px solid #A7F3D0;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .fellow-status-pill .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10B981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-change-email {
+            background: transparent;
+            border: 1px solid var(--border);
+            padding: 7px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-change-email:hover {
+            border-color: var(--text-muted);
+            color: var(--text-dark);
+            background: #F1F5F9;
+        }
+
+        /* Studio Grid */
+        .studio-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 28px;
+            align-items: start;
+        }
+
+        @media (max-width: 1080px) {
+            .studio-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Canvas Card */
+        .canvas-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .canvas-card-header {
+            padding: 16px 22px;
+            background: #F8FAFC;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .canvas-card-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .canvas-stage-wrapper {
+            padding: 24px;
+            background: #F1F5F9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 480px;
+            position: relative;
+        }
+
+        #certCanvas {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            background: white;
+            transition: opacity 0.2s;
+        }
+
+        .canvas-loading-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 5;
+        }
+
+        /* Controls Panel */
+        .controls-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            padding: 28px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .control-section-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Language Toggle Tabs */
+        .lang-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: #F1F5F9;
+            padding: 4px;
+            border-radius: var(--radius-md);
+            gap: 4px;
+        }
+
+        .lang-tab-btn {
+            border: none;
+            background: transparent;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .lang-tab-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Name Inputs & Casing */
+        .name-input-wrapper {
+            position: relative;
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border);
+            color: var(--text-dark);
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .name-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(19, 138, 86, 0.1);
+        }
+
+        .casing-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .btn-casing {
+            flex: 1;
+            padding: 6px 10px;
+            background: #F8FAFC;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-casing:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        /* Uniform Design Badge */
+        .uniform-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #F0FDF4;
+            border: 1px solid rgba(19, 138, 86, 0.2);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            color: var(--primary-dark);
+            margin-top: 10px;
+        }
+
+        .uniform-badge i {
+            color: var(--primary);
+            font-size: 15px;
+        }
+
+        /* Export Action Buttons */
+        .actions-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .btn-download-pdf {
+            width: 100%;
+            padding: 14px 18px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(19, 138, 86, 0.25);
+            transition: all 0.2s;
+        }
+
+        .btn-download-pdf:hover {
+            background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-dark) 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(19, 138, 86, 0.35);
+        }
+
+        .btn-download-png {
+            width: 100%;
+            padding: 12px 18px;
+            background: #FFFFFF;
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s;
+        }
+
+        .btn-download-png:hover {
+            background: var(--primary-light);
+        }
+
+        .btn-linkedin {
+            width: 100%;
+            padding: 11px 18px;
+            background: #0A66C2;
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn-linkedin:hover {
+            background: #004182;
+        }
+
+        /* Spinners */
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .spinner-dark {
+            border: 2px solid rgba(19, 138, 86, 0.2);
+            border-top-color: var(--primary);
         }
 
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
+            to { transform: rotate(360deg); }
         }
 
-        @media (max-width: 480px) {
-            .content {
-                padding: 20px;
-            }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-            .header {
-                padding: 25px 15px;
-            }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-            .header h1 {
-                font-size: 19px;
-            }
+        /* LinkedIn Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            max-width: 480px;
+            width: 100%;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            background: #0A66C2;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 17px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-close-modal {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            opacity: 0.8;
+        }
+
+        .btn-close-modal:hover {
+            opacity: 1;
+        }
+
+        .modal-body {
+            padding: 24px;
+            font-size: 14px;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .modal-field {
+            background: #F8FAFC;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-copy-field {
+            background: transparent;
+            border: none;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 12px;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="container" id="main-container">
-        <!-- Main Form Screen -->
-        <div id="form-screen">
-            <div class="header">
-                <h1>LeadGreen Certificate Portal</h1>
-                <p>Retrieve and download your official certificate</p>
-                <div
-                    style="background: rgba(255,255,255,0.1); display: inline-block; padding: 10px 20px; border-radius: 30px; font-size: 13px;">
-                    <i class="fa-solid fa-cloud-arrow-down" style="margin-right:5px;"></i> Instant Download
+    <!-- Sticky Navbar -->
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="index.html" class="nav-brand">
+                <img src="Logo name green.png" alt="LeadGreen Logo" onerror="this.src='https://via.placeholder.com/140x40?text=LeadGreen'">
+            </a>
+            <div class="nav-links">
+                <span class="nav-badge">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    Official Verification Portal
+                </span>
+                <a href="CertificatePayment.html" class="nav-link-btn">Payment Page</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-container">
+
+        <!-- =========================================================
+             PHASE 1: VERIFICATION SCREEN
+        ========================================================== -->
+        <div class="verification-wrapper" id="verificationSection">
+            <div class="card-auth">
+                <div class="auth-header">
+                    <div class="auth-header-icon">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                    <h1>LeadGreen Certificate Portal</h1>
+                    <p>Enter your registered email address to verify your certificate status and generate your credential.</p>
+                </div>
+
+                <div class="auth-body">
+                    <form id="verifyForm">
+                        <label class="form-label" for="fellowEmail">Fellow Email Address</label>
+                        <div class="input-group">
+                            <input
+                                type="email"
+                                id="fellowEmail"
+                                class="form-input"
+                                placeholder="e.g. yourname@gmail.com"
+                                required
+                                autocomplete="email"
+                            >
+                            <i class="fa-regular fa-envelope input-icon"></i>
+                        </div>
+
+                        <button type="submit" class="btn-verify" id="btnVerify">
+                            <span id="btnVerifyText">Verify & Generate Certificate</span>
+                            <i class="fa-solid fa-arrow-right" id="btnVerifyIcon"></i>
+                            <div class="spinner" id="btnVerifySpinner" style="display: none;"></div>
+                        </button>
+                    </form>
+
+                    <!-- Unpaid Alert Banner -->
+                    <div class="unpaid-card" id="unpaidCard">
+                        <div class="unpaid-header">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <div>
+                                <div class="unpaid-title">Certificate Registration Required</div>
+                                <div class="unpaid-desc" id="unpaidDescText">
+                                    We could not find a confirmed certificate registration for <strong id="unpaidEmailSpan">this email</strong>. To generate your official, verifiable certificate, please complete your registration.
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="CertificatePayment.html" class="btn-pay-now" id="btnPayNowLink">
+                            <i class="fa-solid fa-credit-card"></i>
+                            <span>Complete Certificate Payment ($1.99)</span>
+                        </a>
+
+                        <div style="margin-top: 12px; font-size: 12px; text-align: center; color: #92400E;">
+                            Paid with a different email? <a href="#" onclick="focusEmailInput(event)" style="color: #92400E; font-weight: 700; text-decoration: underline;">Try another address</a>
+                        </div>
+                    </div>
+
+                    <div class="auth-footer">
+                        Need help or have questions? <a href="mailto:support@leadgreenfellowship.com">Contact Fellow Support</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =========================================================
+             PHASE 2: INTERACTIVE CERTIFICATE STUDIO
+        ========================================================== -->
+        <div class="studio-wrapper" id="studioSection">
+            <!-- Studio Header -->
+            <div class="studio-header">
+                <div class="fellow-welcome">
+                    <h2 id="studioGreeting">
+                        Congratulations, Fellow!
+                        <i class="fa-solid fa-circle-check" style="color: #10B981; font-size: 20px;"></i>
+                    </h2>
+                    <p>Your LeadGreen Fellowship certificate of completion is verified and ready to customize & download.</p>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="fellow-status-pill">
+                        <span class="dot"></span>
+                        <span id="fellowRefBadge">Verified Record</span>
+                    </div>
+                    <button class="btn-change-email" id="btnSignOut">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Switch Fellow</span>
+                    </button>
                 </div>
             </div>
 
-            <div class="content">
-                <div id="errorMsg"></div>
-
-                <form id="certificateForm">
-                    <div class="form-group" style="margin-bottom: 25px;">
-                        <label for="emailInput">Email Address</label>
-                        <input type="email" id="emailInput" placeholder="Enter the email used for payment" required>
-                        <div class="hint">Your confirmed certificate is securely linked to this email address.</div>
+            <!-- Studio Grid -->
+            <div class="studio-grid">
+                <!-- Left: Live Certificate Canvas -->
+                <div class="canvas-card">
+                    <div class="canvas-card-header">
+                        <div class="canvas-card-title">
+                            <i class="fa-solid fa-eye" style="color: var(--primary);"></i>
+                            <span>Live Certificate Preview</span>
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-light);">
+                            <span id="templateResolutionNotice">1570 × 1123 High-Definition</span>
+                        </div>
                     </div>
 
-                    <button type="submit" class="btn-generate" id="submitBtn">
-                        <i class="fa-solid fa-cogs" id="btnIcon"></i>
-                        <div class="loader" id="btnLoader"></div>
-                        <span id="btnText">Generate My Certificate</span>
-                    </button>
-
-                    <div
-                        style="margin-top: 25px; text-align: center; font-size: 14px; color: var(--text-light); padding-top: 15px; border-top: 1px solid var(--border-color);">
-                        Haven't paid the certificate fee yet? <br>
-                        <a href="CertificatePayment.html"
-                            style="color: var(--primary-green); font-weight: 600; text-decoration: none; display: inline-block; margin-top: 8px;">
-                            Pay Certificate Fee Here <i class="fa-solid fa-arrow-right" style="font-size: 12px;"></i>
-                        </a>
+                    <div class="canvas-stage-wrapper">
+                        <div class="canvas-loading-overlay" id="canvasLoadingOverlay">
+                            <div class="spinner spinner-dark" style="width: 32px; height: 32px; border-width: 3px;"></div>
+                            <div style="font-size: 14px; font-weight: 600; color: var(--text-dark);">Rendering Certificate...</div>
+                        </div>
+                        <canvas id="certCanvas" width="1570" height="1123"></canvas>
                     </div>
-                </form>
+                </div>
+
+                <!-- Right: Customization Controls -->
+                <div class="controls-card">
+                    <!-- Template Language Selector -->
+                    <div>
+                        <div class="control-section-title">
+                            <span>1. Certificate Language</span>
+                            <span style="font-size: 11px; text-transform: none; color: var(--text-light);">Switch anytime</span>
+                        </div>
+                        <div class="lang-tabs">
+                            <button type="button" class="lang-tab-btn active" id="btnLangEn" onclick="switchLanguage('EN')">
+                                <i class="fa-solid fa-globe"></i>
+                                <span>English</span>
+                            </button>
+                            <button type="button" class="lang-tab-btn" id="btnLangFr" onclick="switchLanguage('FR')">
+                                <i class="fa-solid fa-language"></i>
+                                <span>Français</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Fellow Name Customization -->
+                    <div>
+                        <div class="control-section-title">
+                            <span>2. Fellow Name on Certificate</span>
+                        </div>
+                        <div class="name-input-wrapper">
+                            <input type="text" id="customNameInput" class="name-input" placeholder="Enter Full Name">
+                        </div>
+                        <div class="casing-buttons">
+                            <button type="button" class="btn-casing" onclick="applyCasing('title')">
+                                <i class="fa-solid fa-text-height"></i> Title Case
+                            </button>
+                            <button type="button" class="btn-casing" onclick="applyCasing('upper')">
+                                <i class="fa-solid fa-font"></i> ALL CAPS
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Uniform Design Notice -->
+                    <div class="uniform-badge">
+                        <i class="fa-solid fa-certificate"></i>
+                        <span>Official fellowship script typography and calibrated layout applied automatically.</span>
+                    </div>
+
+                    <!-- Action Downloads -->
+                    <div class="actions-group">
+                        <button type="button" class="btn-download-pdf" id="btnDownloadPdf" onclick="downloadOfficialPdf()">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <span id="btnPdfText">Download Official PDF</span>
+                        </button>
+
+                        <button type="button" class="btn-download-png" id="btnDownloadPng" onclick="downloadHighResPng()">
+                            <i class="fa-solid fa-image"></i>
+                            <span>Download High-Res Image (PNG)</span>
+                        </button>
+
+                        <button type="button" class="btn-linkedin" onclick="openLinkedInModal()">
+                            <i class="fa-brands fa-linkedin"></i>
+                            <span>Add to LinkedIn Profile</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- LinkedIn Helper Modal -->
+    <div class="modal-overlay" id="linkedInModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3><i class="fa-brands fa-linkedin"></i> Add Certificate to LinkedIn</h3>
+                <button type="button" class="btn-close-modal" onclick="closeLinkedInModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Enhance your LinkedIn profile with your verified LeadGreen credential:</p>
+
+                <div style="margin-top: 14px;">
+                    <strong>Certification Name:</strong>
+                    <div class="modal-field">
+                        <span id="liCertName">LeadGreen Fellowship - Certificate of Completion</span>
+                        <button class="btn-copy-field" onclick="copyText('LeadGreen Fellowship - Certificate of Completion')">Copy</button>
+                    </div>
+                </div>
+
+                <div>
+                    <strong>Issuing Organization:</strong>
+                    <div class="modal-field">
+                        <span>LeadGreen Fellowship</span>
+                        <button class="btn-copy-field" onclick="copyText('LeadGreen Fellowship')">Copy</button>
+                    </div>
+                </div>
+
+                <div>
+                    <strong>Credential ID:</strong>
+                    <div class="modal-field">
+                        <span id="liCertId">LG-CERT-XXXX</span>
+                        <button class="btn-copy-field" onclick="copyText(document.getElementById('liCertId').innerText)">Copy</button>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <a href="https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME" target="_blank" class="btn-linkedin" style="text-decoration:none;">
+                        <i class="fa-brands fa-linkedin"></i>
+                        <span>Open LinkedIn Certifications</span>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 
-    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-    <script src="https://unpkg.com/@pdf-lib/fontkit@0.0.4/dist/fontkit.umd.min.js"></script>
-
+    <!-- Firebase & Core Generator Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
-        import { getFirestore, collection, query, where, getDocs, limit, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+        import { getFirestore, collection, query, where, getDocs, limit } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
-        // Your web app's Firebase configuration
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyA5lPT8Fyp265fvebWq4BelNE0dYxuWvCE",
             authDomain: "leadgreen-fellowship.firebaseapp.com",
             projectId: "leadgreen-fellowship",
             storageBucket: "leadgreen-fellowship.firebasestorage.app",
             messagingSenderId: "639331926711",
-            appId: "1:639331926711:web:03d9d47c8b33cef84a0332",
-            measurementId: "G-7Z2E8C0474"
+            appId: "1:639331926711:web:03d9d47c8b33cef84a0332"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        const { PDFDocument, rgb, StandardFonts } = window.PDFLib;
+        // State Store
+        window.appState = {
+            verifiedFellow: null,
+            language: 'EN', // 'EN' or 'FR'
+            defaultVerticalPosEn: 468,
+            defaultVerticalPosFr: 475,
+            templateImageEn: null,
+            templateImageFr: null,
+            fontBytes: null
+        };
 
-        const emailInput = document.getElementById('emailInput');
-        const submitBtn = document.getElementById('submitBtn');
-        const errorMsg = document.getElementById('errorMsg');
+        const canvas = document.getElementById('certCanvas');
+        const ctx = canvas.getContext('2d');
 
-        submitBtn.addEventListener('click', async () => {
-            const email = emailInput.value.trim().toLowerCase();
-            if (!email) {
-                errorMsg.textContent = "Please enter your email address.";
-                errorMsg.style.display = 'block';
-                return;
-            }
-
-            errorMsg.style.display = 'none';
-            submitBtn.innerHTML = 'Verifying Record...';
-            submitBtn.disabled = true;
+        // Preload Template Images
+        async function preloadTemplates() {
+            const loadImg = (src) => new Promise((resolve, reject) => {
+                const img = new Image();
+                img.crossOrigin = "anonymous";
+                img.onload = () => resolve(img);
+                img.onerror = (e) => reject(e);
+                img.src = src;
+            });
 
             try {
-                // 1. Check if email exists in certificate_payments
-                const paymentsRef = collection(db, "certificate_payments");
-                const q = query(paymentsRef, where("email", "==", email), limit(1));
-                const querySnapshot = await getDocs(q);
-
-                if (querySnapshot.empty) {
-                    errorMsg.innerHTML = `No payment record found for <strong>${email}</strong>.<br><br>If you haven't paid yet, <a href="#" style="color:red; text-decoration:underline;">Click Here to Pay</a>.`;
-                    errorMsg.style.display = 'block';
-                    submitBtn.innerHTML = 'Download My Certificate';
-                    submitBtn.disabled = false;
-                    return;
-                }
-
-                submitBtn.innerHTML = 'Generating Certificate...';
-
-                // Extract record safely
-                const data = querySnapshot.docs[0].data();
-                await generateBeautifulPDF(data);
-
-                submitBtn.innerHTML = 'Download My Certificate';
-                submitBtn.disabled = false;
-
+                const [enImg, frImg] = await Promise.all([
+                    loadImg('certificate_template_en.png').catch(() => null),
+                    loadImg('certificate_template.png').catch(() => null)
+                ]);
+                window.appState.templateImageEn = enImg;
+                window.appState.templateImageFr = frImg;
             } catch (err) {
-                console.error("Firestore Error:", err);
-                errorMsg.textContent = "An error occurred verifying your record. Please check your connection.";
-                errorMsg.style.display = 'block';
-                submitBtn.innerHTML = 'Download My Certificate';
-                submitBtn.disabled = false;
+                console.error("Error preloading templates:", err);
+            }
+
+            // Preload Awesome font arrayBuffer for PDF export
+            try {
+                const fontRes = await fetch('awesome.regular.ttf');
+                if (fontRes.ok) {
+                    window.appState.fontBytes = await fontRes.arrayBuffer();
+                }
+            } catch (e) {
+                console.warn("Could not preload font for pdf:", e);
+            }
+        }
+
+        preloadTemplates();
+
+        // Check URL Query Parameters on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const emailParam = urlParams.get('email');
+            if (emailParam) {
+                document.getElementById('fellowEmail').value = emailParam.trim();
+                executeVerification(emailParam.trim());
             }
         });
 
-        // -------------------------------------------------------------------
-        // HIGH QUALITY PDF GENERATION ENGINE
-        // -------------------------------------------------------------------
-        async function generateBeautifulPDF(data) {
-            const pdfDoc = await PDFDocument.create();
-            pdfDoc.registerFontkit(window.fontkit);
+        // Verification Form Submit
+        document.getElementById('verifyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('fellowEmail').value.trim();
+            if (email) {
+                executeVerification(email);
+            }
+        });
 
-            let page;
-            let width, height;
+        async function executeVerification(email) {
+            const normalizedEmail = email.toLowerCase().trim();
+            const btnVerify = document.getElementById('btnVerify');
+            const btnText = document.getElementById('btnVerifyText');
+            const btnIcon = document.getElementById('btnVerifyIcon');
+            const spinner = document.getElementById('btnVerifySpinner');
+            const unpaidCard = document.getElementById('unpaidCard');
+
+            btnVerify.disabled = true;
+            btnText.innerText = "Verifying Payment Record...";
+            btnIcon.style.display = 'none';
+            spinner.style.display = 'block';
+            unpaidCard.style.display = 'none';
 
             try {
-                // Fetch the background template
-                let image;
-                const templateNames = ['certificate_template.png.jpg', 'certificate_template.jpg', 'certificate_template.png', 'certificate_template.jpeg'];
-                let fetchedBytes = null;
-                let usedExtension = '';
+                const paymentsRef = collection(db, "certificate_payments");
+                const q = query(paymentsRef, where("email", "==", normalizedEmail), limit(1));
+                const querySnapshot = await getDocs(q);
 
-                for (let t of templateNames) {
-                    try {
-                        const res = await fetch(t + '?v=' + new Date().getTime()); // Prevent caching when you update the image
-                        if (res.ok) {
-                            fetchedBytes = await res.arrayBuffer();
-                            usedExtension = t.toLowerCase().includes('.jpg') || t.toLowerCase().includes('.jpeg') ? 'jpg' : 'png';
-                            break;
-                        }
-                    } catch (e) { } // ignore and try next
-                }
-
-                if (!fetchedBytes) {
-                    throw new Error("No template found");
-                }
-
-                if (usedExtension === 'jpg') {
-                    image = await pdfDoc.embedJpg(fetchedBytes);
+                if (querySnapshot.empty) {
+                    handleUnpaidStatus(normalizedEmail);
                 } else {
-                    image = await pdfDoc.embedPng(fetchedBytes);
+                    const data = querySnapshot.docs[0].data();
+                    if (data.status === 'paid' || data.status === 'successful') {
+                        handlePaidSuccess(data, querySnapshot.docs[0].id);
+                    } else {
+                        handleUnpaidStatus(normalizedEmail);
+                    }
                 }
-
-                // Match PDF size EXACTLY to image size to guarantee 0% blur and 100% sharpness / perfect aspect ratio
-                width = image.width;
-                height = image.height;
-                page = pdfDoc.addPage([width, height]);
-                page.drawImage(image, { x: 0, y: 0, width: width, height: height });
-            } catch (e) {
-                console.warn("Could not load templates. Falling back to blank background.", e);
-                // Fallback elegant border if no template found
-                page = pdfDoc.addPage([842, 595]);
-                const dims = page.getSize();
-                width = dims.width;
-                height = dims.height;
-
-                const primaryColor = rgb(19 / 255, 138 / 255, 86 / 255);
-                const goldColor = rgb(212 / 255, 175 / 255, 55 / 255);
-                page.drawRectangle({ x: 20, y: 20, width: width - 40, height: height - 40, borderColor: primaryColor, borderWidth: 8 });
-                page.drawRectangle({ x: 32, y: 32, width: width - 64, height: height - 64, borderColor: goldColor, borderWidth: 1.5 });
+            } catch (err) {
+                console.error("Verification error:", err);
+                alert("Error connecting to verification server. Please check your internet connection and try again.");
+            } finally {
+                btnVerify.disabled = false;
+                btnText.innerText = "Verify & Generate Certificate";
+                btnIcon.style.display = 'inline-block';
+                spinner.style.display = 'none';
             }
+        }
 
-            // Fonts
-            const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-            const regularFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        function handleUnpaidStatus(email) {
+            const unpaidCard = document.getElementById('unpaidCard');
+            const unpaidEmailSpan = document.getElementById('unpaidEmailSpan');
+            const btnPayNowLink = document.getElementById('btnPayNowLink');
 
-            // Load custom "Awesome" font
-            let nameFont = boldFont; // temporary fallback
+            unpaidEmailSpan.innerText = email;
+            btnPayNowLink.href = `CertificatePayment.html?email=${encodeURIComponent(email)}`;
+            unpaidCard.style.display = 'block';
+            unpaidCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function handlePaidSuccess(record, docId) {
+            window.appState.verifiedFellow = {
+                fullName: record.fullName || "Esteemed Fellow",
+                email: record.email,
+                reference: record.paymentReference || docId || "LG-CERT",
+                amount: record.amount,
+                currency: record.currency
+            };
+
+            // Trigger Confetti Celebration
             try {
-                const fontBytes = await fetch('Awesome.ttf').then(res => {
-                    if (!res.ok) throw new Error("Font not found");
-                    return res.arrayBuffer();
+                confetti({
+                    particleCount: 80,
+                    spread: 70,
+                    origin: { y: 0.6 }
                 });
-                nameFont = await pdfDoc.embedFont(fontBytes);
-            } catch (e) {
-                console.warn("Awesome.ttf not found in folder. Using default font.");
+            } catch (e) { }
+
+            // Transition to Phase 2
+            document.getElementById('verificationSection').style.display = 'none';
+            const studio = document.getElementById('studioSection');
+            studio.style.display = 'block';
+
+            // Populate Fellow Data
+            const displayName = window.appState.verifiedFellow.fullName;
+            document.getElementById('studioGreeting').innerHTML = `
+                Congratulations, ${escapeHtml(displayName)}!
+                <i class="fa-solid fa-circle-check" style="color: #10B981; font-size: 22px;"></i>
+            `;
+            document.getElementById('fellowRefBadge').innerText = `Ref: ${window.appState.verifiedFellow.reference}`;
+            document.getElementById('customNameInput').value = displayName;
+            document.getElementById('liCertId').innerText = window.appState.verifiedFellow.reference;
+
+            // Render Certificate
+            renderCanvas();
+        }
+
+        // Real-Time Canvas Rendering Engine
+        async function renderCanvas() {
+            const overlay = document.getElementById('canvasLoadingOverlay');
+            overlay.style.display = 'flex';
+
+            const state = window.appState;
+            const isEnglish = state.language === 'EN';
+            let template = isEnglish ? state.templateImageEn : state.templateImageFr;
+
+            // If template not loaded yet, fetch now
+            if (!template) {
+                const src = isEnglish ? 'certificate_template_en.png' : 'certificate_template.png';
+                template = await new Promise((res) => {
+                    const img = new Image();
+                    img.crossOrigin = "anonymous";
+                    img.onload = () => res(img);
+                    img.onerror = () => res(null);
+                    img.src = src;
+                });
+                if (isEnglish) state.templateImageEn = template;
+                else state.templateImageFr = template;
             }
 
-            // ==========================================
-            // DYNAMIC TEXT POSITIONING SETTINGS 
-            // ==========================================
-            // Default Fallbacks
-            let nameY = (height / 2) - (height * 0.08);
-            let nameSize = Math.floor(height * 0.08);
-
-            // Attempt to pull layout configurations published by the Admin Designer
-            try {
-                const layoutSnap = await getDoc(doc(db, "certificate_payments", "GLOBAL_LAYOUT"));
-                if (layoutSnap.exists()) {
-                    const layoutData = layoutSnap.data();
-                    if (layoutData.nameYOffset !== undefined) nameY = layoutData.nameYOffset;
-                    if (layoutData.nameSize !== undefined) nameSize = layoutData.nameSize;
-                }
-            } catch (e) {
-                console.warn("Could not load dynamic layout, using defaults", e);
+            // Draw Background Template
+            if (template) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(template, 0, 0, canvas.width, canvas.height);
+            } else {
+                ctx.fillStyle = "#FFFFFF";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.strokeStyle = "#138A56";
+                ctx.lineWidth = 14;
+                ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+                ctx.strokeStyle = "#F59E0B";
+                ctx.lineWidth = 3;
+                ctx.strokeRect(34, 34, canvas.width - 68, canvas.height - 68);
             }
 
-            // Name
-            const name = (data.fullName || data.full_name || "Esteemed Fellow");
-            const nameW = nameFont.widthOfTextAtSize(name, nameSize);
+            // Prepare Fellow Name
+            const name = (document.getElementById('customNameInput').value || "LeadGreen Fellow").trim();
 
-            // Draw Name (centered automatically horizontally)
-            page.drawText(name, { x: (width - nameW) / 2, y: nameY, size: nameSize, font: nameFont, color: rgb(0.1, 0.1, 0.1) });
+            // Uniform Official Script Font
+            let fontSize = 54;
+            ctx.font = `${fontSize}px 'AwesomeScript', cursive`;
 
-            // Finalize PDF
-            const pdfBytes = await pdfDoc.save();
-            const blob = new Blob([pdfBytes], { type: "application/pdf" });
-            const url = window.URL.createObjectURL(blob);
+            // Auto-fit font size if recipient name is long
+            const maxNameWidth = 1100;
+            const textMetrics = ctx.measureText(name);
+            if (textMetrics.width > maxNameWidth) {
+                fontSize = Math.floor(fontSize * (maxNameWidth / textMetrics.width));
+                ctx.font = `${fontSize}px 'AwesomeScript', cursive`;
+            }
 
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = `LeadGreen_Certificate_${name.replace(/\s+/g, '_')}.pdf`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = '#111827';
+
+            // Draw Name at calibrated X & Y
+            const posX = canvas.width / 2;
+            const posY = isEnglish ? state.defaultVerticalPosEn : state.defaultVerticalPosFr;
+
+            ctx.fillText(name, posX, posY);
+
+            // Optional: Draw Verification Code at bottom left
+            const certRef = state.verifiedFellow?.reference || '';
+            if (certRef) {
+                ctx.font = "12px 'Inter', monospace";
+                ctx.fillStyle = "#94A3B8";
+                ctx.textAlign = "left";
+                ctx.fillText(`ID: ${certRef}`, 70, canvas.height - 40);
+            }
+
+            overlay.style.display = 'none';
+        }
+
+        // Controls: Language Toggle
+        window.switchLanguage = function (lang) {
+            window.appState.language = lang;
+            document.getElementById('btnLangEn').classList.toggle('active', lang === 'EN');
+            document.getElementById('btnLangFr').classList.toggle('active', lang === 'FR');
+            renderCanvas();
+        };
+
+        // Controls: Name Input Listener
+        document.getElementById('customNameInput').addEventListener('input', () => {
+            renderCanvas();
+        });
+
+        // Controls: Casing Adjustment
+        window.applyCasing = function (type) {
+            const input = document.getElementById('customNameInput');
+            let val = input.value;
+            if (type === 'upper') {
+                val = val.toUpperCase();
+            } else if (type === 'title') {
+                val = val.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+            }
+            input.value = val;
+            renderCanvas();
+        };
+
+        // Sign Out / Switch Fellow
+        document.getElementById('btnSignOut').addEventListener('click', () => {
+            window.appState.verifiedFellow = null;
+            document.getElementById('studioSection').style.display = 'none';
+            document.getElementById('verificationSection').style.display = 'block';
+            document.getElementById('fellowEmail').value = '';
+            document.getElementById('unpaidCard').style.display = 'none';
+        });
+
+        // -------------------------------------------------------------
+        // EXPORT: DOWNLOAD HIGH-RESOLUTION PNG
+        // -------------------------------------------------------------
+        window.downloadHighResPng = function () {
+            const name = (document.getElementById('customNameInput').value || 'LeadGreen_Fellow').trim();
+            const cleanName = name.replace(/[^a-zA-Z0-9_-]/g, '_');
+            const dataUrl = canvas.toDataURL('image/png', 1.0);
+
+            const a = document.createElement('a');
+            a.href = dataUrl;
+            a.download = `LeadGreen_Certificate_${cleanName}.png`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
+        };
+
+        // -------------------------------------------------------------
+        // EXPORT: DOWNLOAD OFFICIAL PDF (pdf-lib)
+        // -------------------------------------------------------------
+        window.downloadOfficialPdf = async function () {
+            const btn = document.getElementById('btnDownloadPdf');
+            const btnText = document.getElementById('btnPdfText');
+            btn.disabled = true;
+            btnText.innerText = "Building Vector PDF...";
+
+            try {
+                const { PDFDocument, rgb, StandardFonts } = window.PDFLib;
+                const pdfDoc = await PDFDocument.create();
+                pdfDoc.registerFontkit(window.fontkit);
+
+                const width = canvas.width;  // 1570
+                const height = canvas.height; // 1123
+                const page = pdfDoc.addPage([width, height]);
+
+                // 1. Embed background image
+                const isEnglish = window.appState.language === 'EN';
+                const templateSrc = isEnglish ? 'certificate_template_en.png' : 'certificate_template.png';
+                const imgBytes = await fetch(templateSrc).then(r => r.arrayBuffer());
+                const bgImage = await pdfDoc.embedPng(imgBytes);
+
+                page.drawImage(bgImage, { x: 0, y: 0, width: width, height: height });
+
+                // 2. Embed Font (Uniform AwesomeScript with Standard fallback)
+                let nameFont = null;
+                if (window.appState.fontBytes) {
+                    try {
+                        nameFont = await pdfDoc.embedFont(window.appState.fontBytes);
+                    } catch (e) {
+                        console.warn("Failed embedding AwesomeScript font in PDF, falling back to TimesRomanBold", e);
+                    }
+                }
+
+                if (!nameFont) {
+                    nameFont = await pdfDoc.embedFont(StandardFonts.TimesRomanBold);
+                }
+
+                // 3. Draw Fellow Name with uniform sizing and auto-fit
+                const name = (document.getElementById('customNameInput').value || 'LeadGreen Fellow').trim();
+                let fontSize = 54;
+                let textWidth = nameFont.widthOfTextAtSize(name, fontSize);
+                const maxNameWidth = 1100;
+                if (textWidth > maxNameWidth) {
+                    fontSize = Math.floor(fontSize * (maxNameWidth / textWidth));
+                    textWidth = nameFont.widthOfTextAtSize(name, fontSize);
+                }
+
+                // Convert Canvas Y (from top) to PDF Y (from bottom)
+                const isEnglish = window.appState.language === 'EN';
+                const verticalPos = isEnglish ? window.appState.defaultVerticalPosEn : window.appState.defaultVerticalPosFr;
+                const pdfX = (width - textWidth) / 2;
+                const pdfY = height - verticalPos - (fontSize * 0.28);
+
+                page.drawText(name, {
+                    x: pdfX,
+                    y: pdfY,
+                    size: fontSize,
+                    font: nameFont,
+                    color: rgb(0.08, 0.1, 0.12)
+                });
+
+                // 4. Draw Verification ID
+                const ref = window.appState.verifiedFellow?.reference || '';
+                if (ref) {
+                    const codeFont = await pdfDoc.embedFont(StandardFonts.Courier);
+                    page.drawText(`ID: ${ref}`, {
+                        x: 70,
+                        y: 35,
+                        size: 11,
+                        font: codeFont,
+                        color: rgb(0.5, 0.55, 0.6)
+                    });
+                }
+
+                // 5. Save & Download
+                const pdfBytes = await pdfDoc.save();
+                const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+                const url = window.URL.createObjectURL(blob);
+
+                const cleanName = name.replace(/[^a-zA-Z0-9_-]/g, '_');
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `LeadGreen_Certificate_${cleanName}.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+
+            } catch (err) {
+                console.error("PDF generation failed:", err);
+                alert("Could not generate PDF: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btnText.innerText = "Download Official PDF";
+            }
+        };
+
+        // LinkedIn Modal Helper
+        window.openLinkedInModal = function () {
+            document.getElementById('linkedInModal').style.display = 'flex';
+        };
+
+        window.closeLinkedInModal = function () {
+            document.getElementById('linkedInModal').style.display = 'none';
+        };
+
+        window.copyText = function (text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Copied to clipboard!");
+            });
+        };
+
+        window.focusEmailInput = function (e) {
+            e.preventDefault();
+            document.getElementById('unpaidCard').style.display = 'none';
+            const input = document.getElementById('fellowEmail');
+            input.focus();
+            input.select();
+        };
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
     </script>
 </body>

@@ -366,6 +366,15 @@
                 </div>
 
                 <form onsubmit="handleLanguageRouting(event)">
+                    <div id="emailNotice" style="display: none; background: #E8F5EE; border: 1px solid #138A56; padding: 10px 14px; border-radius: 8px; font-size: 13px; color: #138A56; margin-bottom: 20px;">
+                        <i class="fa-solid fa-circle-user"></i> Registering for: <strong id="displayEmail"></strong>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label for="fellowEmailInput">Your Registered Email</label>
+                        <input type="email" id="fellowEmailInput" placeholder="Enter your fellowship email" required style="width: 100%; padding: 12px 15px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 15px;">
+                    </div>
+
                     <div class="form-group" style="margin-bottom: 25px;">
                         <label for="languageSelect">Preferred Language / Langue Préférée</label>
                         <select id="languageSelect" required>
@@ -387,14 +396,37 @@
                     <div class="secure-badge">
                         <i class="fa-solid fa-lock"></i> Secured securely via Coachli
                     </div>
+
+                    <div style="text-align: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border-color); font-size: 14px; color: var(--text-muted);">
+                        Already completed your payment? <br>
+                        <a href="CertificatePortal.html" id="linkToGenerator" style="color: var(--primary-green); font-weight: 700; text-decoration: none; display: inline-block; margin-top: 6px;">
+                            Go to Certificate Generator <i class="fa-solid fa-arrow-right" style="font-size: 12px;"></i>
+                        </a>
+                    </div>
                 </form>
 
                 <script>
+                    window.addEventListener('DOMContentLoaded', () => {
+                        const params = new URLSearchParams(window.location.search);
+                        const email = params.get('email') || localStorage.getItem('leadgreen_fellow_email') || '';
+                        if (email) {
+                            document.getElementById('fellowEmailInput').value = email;
+                            document.getElementById('displayEmail').innerText = email;
+                            document.getElementById('emailNotice').style.display = 'block';
+                            document.getElementById('linkToGenerator').href = `CertificatePortal.html?email=${encodeURIComponent(email)}`;
+                        }
+                    });
+
                     window.handleLanguageRouting = function (e) {
                         e.preventDefault();
 
+                        const emailInput = document.getElementById('fellowEmailInput').value.trim();
+                        if (emailInput) {
+                            localStorage.setItem('leadgreen_fellow_email', emailInput);
+                        }
+
                         const btn = e.target.querySelector('button[type="submit"]');
-                        btn.innerHTML = '<span>Redirecting...</span>';
+                        btn.innerHTML = '<span>Redirecting to Checkout...</span>';
                         btn.disabled = true;
 
                         const language = document.getElementById('languageSelect').value;
@@ -404,7 +436,7 @@
                         } else {
                             window.location.href = 'https://coachli.co/leadgreenfellow/PR-d8af185b84';
                         }
-                    }
+                    };
                 </script>
             </div>
         </div>
