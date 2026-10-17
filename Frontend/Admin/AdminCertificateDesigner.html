@@ -723,6 +723,7 @@
         // Fetch settings from Firestore
         async function loadFirestoreSettings() {
             try {
+                // 1. Check primary layout doc
                 const snap = await getDoc(doc(db, "certificate_payments", "GLOBAL_LAYOUT"));
                 if (snap.exists()) {
                     state.layoutDocData = snap.data();
@@ -756,6 +757,37 @@
                         state.templates.EN.fontSize = d.nameSize;
                         state.templates.FR.fontSize = d.nameSize;
                     }
+                }
+
+                // 2. Also check isolated docs as fallbacks
+                if (!state.templates.EN.isCustom) {
+                    try {
+                        const snapEn = await getDoc(doc(db, "certificate_payments", "GLOBAL_LAYOUT_EN"));
+                        if (snapEn.exists()) {
+                            const dEn = snapEn.data();
+                            if (dEn.templateData) {
+                                state.templates.EN.activeData = dEn.templateData;
+                                state.templates.EN.isCustom = true;
+                            }
+                            if (typeof dEn.nameYOffset === 'number') state.templates.EN.yPos = dEn.nameYOffset;
+                            if (typeof dEn.nameSize === 'number') state.templates.EN.fontSize = dEn.nameSize;
+                        }
+                    } catch(e) {}
+                }
+
+                if (!state.templates.FR.isCustom) {
+                    try {
+                        const snapFr = await getDoc(doc(db, "certificate_payments", "GLOBAL_LAYOUT_FR"));
+                        if (snapFr.exists()) {
+                            const dFr = snapFr.data();
+                            if (dFr.templateData) {
+                                state.templates.FR.activeData = dFr.templateData;
+                                state.templates.FR.isCustom = true;
+                            }
+                            if (typeof dFr.nameYOffset === 'number') state.templates.FR.yPos = dFr.nameYOffset;
+                            if (typeof dFr.nameSize === 'number') state.templates.FR.fontSize = dFr.nameSize;
+                        }
+                    } catch(e) {}
                 }
             } catch (err) {
                 console.warn("Could not read GLOBAL_LAYOUT:", err);
@@ -839,6 +871,13 @@
             document.getElementById('dropzoneTitle').innerText = t.isCustom 
                 ? (t.isPdf ? `Active PDF: ${(t.fileToUpload?.name || 'Template.pdf')}` : "Replace Template Design") 
                 : "Upload New Template Design";
+
+            const quickLoadBtnText = document.querySelector('#btnLoadLocalPdf span');
+            if (quickLoadBtnText) {
+                quickLoadBtnText.innerText = state.currentLang === 'EN' 
+                    ? "Use Frontend/certificate_template_en.pdf" 
+                    : "Use Frontend/certificate_template_fr.pdf";
+            }
             
             updatePdfPageControls();
         }
@@ -848,6 +887,14 @@
             state.currentLang = lang;
             document.getElementById('tabEn').classList.toggle('active', lang === 'EN');
             document.getElementById('tabFr').classList.toggle('active', lang === 'FR');
+            
+            const sampleNameInput = document.getElementById('sampleNameInput');
+            if (lang === 'FR' && sampleNameInput.value === 'Jane Sample-Fellow') {
+                sampleNameInput.value = 'Jean Exemple-Fellow';
+            } else if (lang === 'EN' && sampleNameInput.value === 'Jean Exemple-Fellow') {
+                sampleNameInput.value = 'Jane Sample-Fellow';
+            }
+
             syncUI();
             renderPreview();
         };
@@ -937,7 +984,7 @@
             const targetCtx = targetCanvas.getContext('2d');
             targetCtx.drawImage(offCanvas, 0, 0, 1570, 1123);
             
-            const dataUrl = targetCanvas.toDataURL('image/jpeg', 0.94);
+            const dataUrl = targetCanvas.toDataURL('image/jpeg', 0.82);
             const img = await loadImage(dataUrl);
             return { dataUrl, img, width: targetCanvas.width, height: targetCanvas.height };
         }
@@ -1054,21 +1101,23 @@
             }
         }
 
-        // Quick button to load repository certificate_template_en.pdf
+        // Quick button to load repository certificate_template_en.pdf or certificate_template_fr.pdf
         window.loadProjectTemplatePdf = async function() {
             const btn = document.getElementById('btnLoadLocalPdf');
             const origHtml = btn.innerHTML;
             btn.disabled = true;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading template...';
             try {
-                const res = await fetch('../certificate_template_en.pdf');
-                if (!res.ok) throw new Error("Could not find ../certificate_template_en.pdf");
+                const isEnglish = state.currentLang === 'EN';
+                const filename = isEnglish ? 'certificate_template_en.pdf' : 'certificate_template_fr.pdf';
+                const res = await fetch(`../${filename}`);
+                if (!res.ok) throw new Error(`Could not find ../${filename}`);
                 const blob = await res.blob();
-                const file = new File([blob], "certificate_template_en.pdf", { type: "application/pdf" });
+                const file = new File([blob], filename, { type: "application/pdf" });
                 await handleSelectedFile(file);
             } catch (e) {
                 console.warn("Could not auto-fetch local PDF:", e);
-                showAlert("Could not auto-fetch ../certificate_template_en.pdf directly. Please click the upload area above and select your PDF file.", "error");
+                showAlert(`Could not auto-fetch ../${state.currentLang === 'EN' ? 'certificate_template_en.pdf' : 'certificate_template_fr.pdf'}. Please click the upload area above and select your PDF file.`, "error");
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = origHtml;
@@ -1214,7 +1263,8 @@
             try {
                 const updatePayload = {
                     updatedAt: new Date(),
-                    updatedBy: auth.currentUser?.email || "Admin"
+                    updatedBy: auth.currentUser?.email || "Admin",
+                    nameSize: t.fontSize || 54
                 };
 
                 // Store calibrated position & size
@@ -1224,71 +1274,47 @@
                 } else {
                     updatePayload.nameYOffsetFr = t.yPos;
                 }
-                updatePayload.nameSize = t.fontSize;
 
-                // Handle template upload
-                if (t.isCustom && t.activeData) {
-                    let storageUrl = null;
+                // Compress template image for storage (JPEG quality 0.82 ~160KB)
+                let compactDataUrl = t.activeData;
+                if (t.imgElement) {
+                    const tempCanvas = document.createElement('canvas');
+                    tempCanvas.width = 1570;
+                    tempCanvas.height = 1123;
+                    const tempCtx = tempCanvas.getContext('2d');
+                    tempCtx.drawImage(t.imgElement, 0, 0, 1570, 1123);
+                    compactDataUrl = tempCanvas.toDataURL('image/jpeg', 0.82);
+                }
 
-                    // 1. Upload original file to Firebase Storage if selected
-                    if (t.fileToUpload) {
-                        try {
-                            const isPdf = t.fileToUpload.type === 'application/pdf' || t.fileToUpload.name.toLowerCase().endsWith('.pdf');
-                            const ext = isPdf ? 'pdf' : (t.fileToUpload.name.split('.').pop() || 'png');
-                            const storageRef = ref(storage, `certificate_templates/template_${currentLang.toLowerCase()}_${Date.now()}.${ext}`);
-                            await uploadBytes(storageRef, t.fileToUpload);
-                            storageUrl = await getDownloadURL(storageRef);
-                        } catch (storageErr) {
-                            console.warn("Storage upload warning, using direct data URI fallback:", storageErr);
-                        }
-                    }
-
-                    // Compress canvas background to clean high-res JPEG data URL (300KB) if dataUrl exceeds 800KB
-                    let finalDataUrl = t.activeData;
-                    if (t.activeData.length > 800000 && t.imgElement) {
-                        const tempCanvas = document.createElement('canvas');
-                        tempCanvas.width = 1570;
-                        tempCanvas.height = 1123;
-                        const tempCtx = tempCanvas.getContext('2d');
-                        tempCtx.drawImage(t.imgElement, 0, 0, 1570, 1123);
-                        finalDataUrl = tempCanvas.toDataURL('image/jpeg', 0.92);
-                    }
-
+                if (t.isCustom && compactDataUrl) {
                     if (currentLang === 'EN') {
-                        updatePayload.templateDataEn = finalDataUrl;
-                        if (storageUrl) {
-                            if (t.isPdf) {
-                                updatePayload.templatePdfUrlEn = storageUrl;
-                            } else {
-                                updatePayload.templateUrlEn = storageUrl;
-                            }
-                        }
+                        updatePayload.templateDataEn = compactDataUrl;
+                        updatePayload.hasCustomEn = true;
                     } else {
-                        updatePayload.templateDataFr = finalDataUrl;
-                        if (storageUrl) {
-                            if (t.isPdf) {
-                                updatePayload.templatePdfUrlFr = storageUrl;
-                            } else {
-                                updatePayload.templateUrlFr = storageUrl;
-                            }
-                        }
-                    }
-                } else if (!t.isCustom) {
-                    // Reset custom template keys in Firestore
-                    if (currentLang === 'EN') {
-                        updatePayload.templateDataEn = null;
-                        updatePayload.templateUrlEn = null;
-                        updatePayload.templatePdfUrlEn = null;
-                    } else {
-                        updatePayload.templateDataFr = null;
-                        updatePayload.templateUrlFr = null;
-                        updatePayload.templatePdfUrlFr = null;
+                        updatePayload.templateDataFr = compactDataUrl;
+                        updatePayload.hasCustomFr = true;
                     }
                 }
 
+                // 1. Update shared GLOBAL_LAYOUT
                 await setDoc(doc(db, "certificate_payments", "GLOBAL_LAYOUT"), updatePayload, { merge: true });
 
-                showAlert(`Successfully published ${currentLang === 'EN' ? 'English' : 'French'} template and layout to the live Certificate Portal!`, 'success');
+                // 2. Also save to isolated language doc for bulletproof redundancy
+                const langDocId = currentLang === 'EN' ? "GLOBAL_LAYOUT_EN" : "GLOBAL_LAYOUT_FR";
+                const langPayload = {
+                    nameYOffset: t.yPos,
+                    nameSize: t.fontSize,
+                    isCustom: t.isCustom,
+                    isPdf: t.isPdf || false,
+                    updatedAt: new Date(),
+                    updatedBy: auth.currentUser?.email || "Admin"
+                };
+                if (t.isCustom && compactDataUrl) {
+                    langPayload.templateData = compactDataUrl;
+                }
+                await setDoc(doc(db, "certificate_payments", langDocId), langPayload, { merge: true });
+
+                showAlert(`Successfully published ${currentLang === 'EN' ? 'English' : 'French'} template and layout! It is now live on the Fellow Certificate Portal.`, 'success');
                 btn.style.backgroundColor = "#16A34A";
                 btnText.innerHTML = '<i class="fa-solid fa-check"></i> Published Successfully!';
 
@@ -1329,7 +1355,27 @@
             updatePdfPageControls();
             syncUI();
             renderPreview();
-            showAlert(`Reset to default ${currentLang} template. Click "Publish to Live Portal" to apply live.`, 'success');
+
+            try {
+                const clearPayload = { updatedAt: new Date() };
+                if (currentLang === 'EN') {
+                    clearPayload.templateDataEn = null;
+                    clearPayload.templateUrlEn = null;
+                    clearPayload.hasCustomEn = false;
+                    clearPayload.nameYOffsetEn = 534;
+                } else {
+                    clearPayload.templateDataFr = null;
+                    clearPayload.templateUrlFr = null;
+                    clearPayload.hasCustomFr = false;
+                    clearPayload.nameYOffsetFr = 536;
+                }
+                await setDoc(doc(db, "certificate_payments", "GLOBAL_LAYOUT"), clearPayload, { merge: true });
+                const langDocId = currentLang === 'EN' ? "GLOBAL_LAYOUT_EN" : "GLOBAL_LAYOUT_FR";
+                await setDoc(doc(db, "certificate_payments", langDocId), { templateData: null, isCustom: false, nameYOffset: currentLang === 'EN' ? 534 : 536, updatedAt: new Date() }, { merge: true });
+                showAlert(`Reset to default ${currentLang === 'EN' ? 'English' : 'French'} template and updated live portal!`, 'success');
+            } catch (err) {
+                console.warn("Reset Firestore error:", err);
+            }
         };
 
         function showAlert(msg, type) {

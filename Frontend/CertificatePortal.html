@@ -1048,7 +1048,7 @@
     <!-- Firebase & Core Generator Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
-        import { getFirestore, collection, query, where, getDocs, limit, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+        import { getFirestore, collection, query, where, getDocs, limit, doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
         // Firebase Configuration
         const firebaseConfig = {
@@ -1069,6 +1069,8 @@
             language: 'EN', // 'EN' or 'FR'
             defaultVerticalPosEn: 534, // Calibrated: sits naturally 10px above horizontal baseline (Y=572)
             defaultVerticalPosFr: 536, // Calibrated: sits naturally 10px above horizontal baseline (Y=575)
+            defaultFontSizeEn: 54,
+            defaultFontSizeFr: 54,
             customTemplateEn: null,
             customTemplateFr: null,
             customTemplatePdfEn: null,
@@ -1081,90 +1083,213 @@
         const canvas = document.getElementById('certCanvas');
         const ctx = canvas.getContext('2d');
 
-        // Preload Template Images & Dynamic Admin Layout
+        // Helper: Image Loader
+        const loadImg = (src) => new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            img.onload = () => resolve(img);
+            img.onerror = (e) => reject(e);
+            img.src = src;
+        });
+
+        // Helper: Setup PDF.js Worker cleanly
+        let pdfWorkerReady = false;
+        async function setupPdfJsWorker() {
+            if (pdfWorkerReady) return;
+            try {
+                const workerUrl = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                const res = await fetch(workerUrl);
+                if (res.ok) {
+                    const blob = new Blob([await res.text()], { type: 'application/javascript' });
+                    window.pdfjsLib.GlobalWorkerOptions.workerSrc = URL.createObjectURL(blob);
+                    pdfWorkerReady = true;
+                    return;
+                }
+            } catch (e) {
+                console.warn("Could not load worker as Blob, using direct URL:", e);
+            }
+            window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+            pdfWorkerReady = true;
+        }
+
+        // Helper: Load Image or Render Vector PDF Page
+        async function loadImgOrPdf(src) {
+            if (!src) return null;
+            const isPdf = src.toLowerCase().includes('.pdf') || src.startsWith('data:application/pdf');
+            if (isPdf && window.pdfjsLib) {
+                try {
+                    await setupPdfJsWorker();
+                    let arrayBuffer;
+                    if (src.startsWith('data:')) {
+                        const base64Part = src.split(',')[1];
+                        const binaryStr = atob(base64Part);
+                        const bytes = new Uint8Array(binaryStr.length);
+                        for (let i = 0; i < binaryStr.length; i++) {
+                            bytes[i] = binaryStr.charCodeAt(i);
+                        }
+                        arrayBuffer = bytes.buffer;
+                    } else {
+                        const res = await fetch(src);
+                        arrayBuffer = await res.arrayBuffer();
+                    }
+                    const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                    const page = await pdf.getPage(1);
+                    const unscaled = page.getViewport({ scale: 1.0 });
+                    const scale = Math.max(1570 / unscaled.width, 2.0);
+                    const viewport = page.getViewport({ scale });
+                    const off = document.createElement('canvas');
+                    off.width = Math.round(viewport.width);
+                    off.height = Math.round(viewport.height);
+                    await page.render({ canvasContext: off.getContext('2d'), viewport }).promise;
+                    const norm = document.createElement('canvas');
+                    norm.width = 1570;
+                    norm.height = 1123;
+                    norm.getContext('2d').drawImage(off, 0, 0, 1570, 1123);
+                    return await loadImg(norm.toDataURL('image/jpeg', 0.85));
+                } catch (e) {
+                    console.warn("Could not render PDF via PDF.js, falling back to direct load:", e);
+                }
+            }
+            return await loadImg(src);
+        }
+
+        // Apply Firestore Layout Data to App State
+        function applyLayoutData(data, langHint = null) {
+            if (!data) return false;
+            let changed = false;
+
+            if (langHint === 'EN') {
+                if (data.templateData !== undefined) {
+                    if (window.appState.customTemplateEn !== data.templateData) {
+                        window.appState.customTemplateEn = data.templateData;
+                        window.appState.templateImageEn = null;
+                        changed = true;
+                    }
+                }
+                if (typeof data.nameYOffset === 'number' && data.nameYOffset >= 200) {
+                    window.appState.defaultVerticalPosEn = data.nameYOffset;
+                    changed = true;
+                }
+                if (typeof data.nameSize === 'number' && data.nameSize >= 20) {
+                    window.appState.defaultFontSizeEn = data.nameSize;
+                    changed = true;
+                }
+            } else if (langHint === 'FR') {
+                if (data.templateData !== undefined) {
+                    if (window.appState.customTemplateFr !== data.templateData) {
+                        window.appState.customTemplateFr = data.templateData;
+                        window.appState.templateImageFr = null;
+                        changed = true;
+                    }
+                }
+                if (typeof data.nameYOffset === 'number' && data.nameYOffset >= 200) {
+                    window.appState.defaultVerticalPosFr = data.nameYOffset;
+                    changed = true;
+                }
+                if (typeof data.nameSize === 'number' && data.nameSize >= 20) {
+                    window.appState.defaultFontSizeFr = data.nameSize;
+                    changed = true;
+                }
+            } else {
+                // Shared GLOBAL_LAYOUT
+                if (data.templateDataEn !== undefined) {
+                    if (window.appState.customTemplateEn !== data.templateDataEn) {
+                        window.appState.customTemplateEn = data.templateDataEn;
+                        window.appState.templateImageEn = null;
+                        changed = true;
+                    }
+                } else if (data.templateUrlEn) {
+                    if (window.appState.customTemplateEn !== data.templateUrlEn) {
+                        window.appState.customTemplateEn = data.templateUrlEn;
+                        window.appState.templateImageEn = null;
+                        changed = true;
+                    }
+                }
+
+                if (data.templateDataFr !== undefined) {
+                    if (window.appState.customTemplateFr !== data.templateDataFr) {
+                        window.appState.customTemplateFr = data.templateDataFr;
+                        window.appState.templateImageFr = null;
+                        changed = true;
+                    }
+                } else if (data.templateUrlFr) {
+                    if (window.appState.customTemplateFr !== data.templateUrlFr) {
+                        window.appState.customTemplateFr = data.templateUrlFr;
+                        window.appState.templateImageFr = null;
+                        changed = true;
+                    }
+                }
+
+                if (data.templatePdfUrlEn) window.appState.customTemplatePdfEn = data.templatePdfUrlEn;
+                if (data.templatePdfUrlFr) window.appState.customTemplatePdfFr = data.templatePdfUrlFr;
+
+                if (typeof data.nameYOffsetEn === 'number' && data.nameYOffsetEn >= 200) {
+                    window.appState.defaultVerticalPosEn = data.nameYOffsetEn;
+                    changed = true;
+                } else if (typeof data.nameYOffset === 'number' && data.nameYOffset >= 200) {
+                    window.appState.defaultVerticalPosEn = data.nameYOffset;
+                    changed = true;
+                }
+
+                if (typeof data.nameYOffsetFr === 'number' && data.nameYOffsetFr >= 200) {
+                    window.appState.defaultVerticalPosFr = data.nameYOffsetFr;
+                    changed = true;
+                }
+
+                if (typeof data.nameSize === 'number' && data.nameSize >= 20) {
+                    window.appState.defaultFontSizeEn = data.nameSize;
+                    window.appState.defaultFontSizeFr = data.nameSize;
+                    changed = true;
+                }
+            }
+            return changed;
+        }
+
+        // Preload Template Images, Real-Time Sync & Dynamic Admin Layout
         async function preloadTemplates() {
-            // 1. Fetch dynamic template design uploaded by Admin (if published)
+            // Real-time synchronization with published Admin layouts
+            try {
+                onSnapshot(doc(db, "certificate_payments", "GLOBAL_LAYOUT"), (snap) => {
+                    if (snap.exists()) {
+                        const changed = applyLayoutData(snap.data(), null);
+                        if (changed && window.appState.verifiedFellow) {
+                            renderCanvas();
+                        }
+                    }
+                });
+
+                onSnapshot(doc(db, "certificate_payments", "GLOBAL_LAYOUT_EN"), (snap) => {
+                    if (snap.exists()) {
+                        const changed = applyLayoutData(snap.data(), 'EN');
+                        if (changed && window.appState.verifiedFellow && window.appState.language === 'EN') {
+                            renderCanvas();
+                        }
+                    }
+                });
+
+                onSnapshot(doc(db, "certificate_payments", "GLOBAL_LAYOUT_FR"), (snap) => {
+                    if (snap.exists()) {
+                        const changed = applyLayoutData(snap.data(), 'FR');
+                        if (changed && window.appState.verifiedFellow && window.appState.language === 'FR') {
+                            renderCanvas();
+                        }
+                    }
+                });
+            } catch (err) {
+                console.warn("Could not bind real-time onSnapshot listeners:", err);
+            }
+
+            // Initial fetch to prime state immediately
             try {
                 const layoutSnap = await getDoc(doc(db, "certificate_payments", "GLOBAL_LAYOUT"));
                 if (layoutSnap.exists()) {
-                    const data = layoutSnap.data();
-                    if (data.templateDataEn) window.appState.customTemplateEn = data.templateDataEn;
-                    else if (data.templateUrlEn) window.appState.customTemplateEn = data.templateUrlEn;
-
-                    if (data.templateDataFr) window.appState.customTemplateFr = data.templateDataFr;
-                    else if (data.templateUrlFr) window.appState.customTemplateFr = data.templateUrlFr;
-
-                    if (data.templatePdfUrlEn) window.appState.customTemplatePdfEn = data.templatePdfUrlEn;
-                    if (data.templatePdfUrlFr) window.appState.customTemplatePdfFr = data.templatePdfUrlFr;
-
-                    // Fallback to universal template if set
-                    if (data.templateData && !window.appState.customTemplateEn) window.appState.customTemplateEn = data.templateData;
-                    if (data.templateUrl && !window.appState.customTemplateEn) window.appState.customTemplateEn = data.templateUrl;
-
-                    if (typeof data.nameYOffsetEn === 'number' && data.nameYOffsetEn >= 300) {
-                        window.appState.defaultVerticalPosEn = data.nameYOffsetEn;
-                    } else if (typeof data.nameYOffset === 'number' && data.nameYOffset >= 300) {
-                        window.appState.defaultVerticalPosEn = data.nameYOffset;
-                    }
-
-                    if (typeof data.nameYOffsetFr === 'number' && data.nameYOffsetFr >= 300) {
-                        window.appState.defaultVerticalPosFr = data.nameYOffsetFr;
-                    }
+                    applyLayoutData(layoutSnap.data(), null);
                 }
-            } catch (err) {
-                console.warn("Could not load dynamic GLOBAL_LAYOUT, using defaults:", err);
+            } catch (e) {
+                console.warn("Initial GLOBAL_LAYOUT fetch error:", e);
             }
 
-            const loadImg = (src) => new Promise((resolve, reject) => {
-                const img = new Image();
-                img.crossOrigin = "anonymous";
-                img.onload = () => resolve(img);
-                img.onerror = (e) => reject(e);
-                img.src = src;
-            });
-
-            const loadImgOrPdf = async (src) => {
-                if (!src) return null;
-                if ((src.toLowerCase().includes('.pdf') || src.startsWith('data:application/pdf')) && window.pdfjsLib) {
-                    try {
-                        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-                        const res = await fetch(src);
-                        const arrayBuffer = await res.arrayBuffer();
-                        const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-                        const page = await pdf.getPage(1);
-                        const unscaled = page.getViewport({ scale: 1.0 });
-                        const scale = Math.max(1570 / unscaled.width, 2.0);
-                        const viewport = page.getViewport({ scale });
-                        const off = document.createElement('canvas');
-                        off.width = Math.round(viewport.width);
-                        off.height = Math.round(viewport.height);
-                        await page.render({ canvasContext: off.getContext('2d'), viewport }).promise;
-                        const norm = document.createElement('canvas');
-                        norm.width = 1570;
-                        norm.height = 1123;
-                        norm.getContext('2d').drawImage(off, 0, 0, 1570, 1123);
-                        return await loadImg(norm.toDataURL('image/jpeg', 0.94));
-                    } catch (e) {
-                        console.warn("Could not render PDF via PDF.js, falling back to direct load:", e);
-                    }
-                }
-                return await loadImg(src);
-            };
-
-            try {
-                const enSrc = window.appState.customTemplateEn || 'certificate_template_en.png';
-                const frSrc = window.appState.customTemplateFr || 'certificate_template.png';
-                const [enImg, frImg] = await Promise.all([
-                    loadImgOrPdf(enSrc).catch(() => loadImg('certificate_template_en.png').catch(() => null)),
-                    loadImgOrPdf(frSrc).catch(() => loadImg('certificate_template.png').catch(() => null))
-                ]);
-                window.appState.templateImageEn = enImg;
-                window.appState.templateImageFr = frImg;
-            } catch (err) {
-                console.error("Error preloading templates:", err);
-            }
-
-            // Preload Awesome font arrayBuffer for PDF export
+            // Preload Awesome font arrayBuffer for official PDF export
             try {
                 const fontRes = await fetch('awesome.regular.ttf');
                 if (fontRes.ok) {
@@ -1172,6 +1297,21 @@
                 }
             } catch (e) {
                 console.warn("Could not preload font for pdf:", e);
+            }
+
+            // Eagerly preload default template images in background
+            try {
+                const enSrc = window.appState.customTemplateEn || 'certificate_template_en.png';
+                const frSrc = window.appState.customTemplateFr || 'certificate_template.png';
+                Promise.all([
+                    loadImgOrPdf(enSrc).catch(() => loadImg('certificate_template_en.png').catch(() => null)),
+                    loadImgOrPdf(frSrc).catch(() => loadImg('certificate_template.png').catch(() => null))
+                ]).then(([enImg, frImg]) => {
+                    if (enImg) window.appState.templateImageEn = enImg;
+                    if (frImg) window.appState.templateImageFr = frImg;
+                });
+            } catch (err) {
+                console.error("Error preloading template assets:", err);
             }
         }
 
@@ -1293,24 +1433,28 @@
         // Real-Time Canvas Rendering Engine
         async function renderCanvas() {
             const overlay = document.getElementById('canvasLoadingOverlay');
-            overlay.style.display = 'flex';
+            if (overlay) overlay.style.display = 'flex';
 
             const state = window.appState;
             const isEnglish = state.language === 'EN';
             let template = isEnglish ? state.templateImageEn : state.templateImageFr;
 
-            // If template not loaded yet, fetch now
+            // If template not cached yet, fetch using loadImgOrPdf
             if (!template) {
                 const src = isEnglish 
                     ? (state.customTemplateEn || 'certificate_template_en.png') 
                     : (state.customTemplateFr || 'certificate_template.png');
-                template = await new Promise((res) => {
-                    const img = new Image();
-                    img.crossOrigin = "anonymous";
-                    img.onload = () => res(img);
-                    img.onerror = () => res(null);
-                    img.src = src;
-                });
+                try {
+                    template = await loadImgOrPdf(src);
+                } catch (e) {
+                    console.warn("Could not load preferred template, falling back to PNG:", e);
+                    const fallbackSrc = isEnglish ? 'certificate_template_en.png' : 'certificate_template.png';
+                    try {
+                        template = await loadImg(fallbackSrc);
+                    } catch (err2) {
+                        template = null;
+                    }
+                }
                 if (isEnglish) state.templateImageEn = template;
                 else state.templateImageFr = template;
             }
@@ -1333,8 +1477,8 @@
             // Prepare Fellow Name
             const name = (document.getElementById('customNameInput').value || "LeadGreen Fellow").trim();
 
-            // Uniform Official Script Font
-            let fontSize = 54;
+            // Official Script Font with Dynamic Admin Size
+            let fontSize = isEnglish ? (state.defaultFontSizeEn || 54) : (state.defaultFontSizeFr || 54);
             ctx.font = `${fontSize}px 'AwesomeScript', cursive`;
 
             // Auto-fit font size if recipient name is long
@@ -1355,7 +1499,7 @@
 
             ctx.fillText(name, posX, posY);
 
-            // Optional: Draw Verification Code at bottom left
+            // Draw Verification Code at bottom left
             const certRef = state.verifiedFellow?.reference || '';
             if (certRef) {
                 ctx.font = "12px 'Inter', monospace";
@@ -1364,14 +1508,16 @@
                 ctx.fillText(`ID: ${certRef}`, 70, canvas.height - 40);
             }
 
-            overlay.style.display = 'none';
+            if (overlay) overlay.style.display = 'none';
         }
 
         // Controls: Language Toggle
         window.switchLanguage = function (lang) {
             window.appState.language = lang;
-            document.getElementById('btnLangEn').classList.toggle('active', lang === 'EN');
-            document.getElementById('btnLangFr').classList.toggle('active', lang === 'FR');
+            const btnEn = document.getElementById('btnLangEn');
+            const btnFr = document.getElementById('btnLangFr');
+            if (btnEn) btnEn.classList.toggle('active', lang === 'EN');
+            if (btnFr) btnFr.classList.toggle('active', lang === 'FR');
             renderCanvas();
         };
 
@@ -1399,7 +1545,7 @@
 
             const a = document.createElement('a');
             a.href = dataUrl;
-            a.download = `LeadGreen_Certificate_${cleanName}.png`;
+            a.download = `LeadGreen_Certificate_${window.appState.language}_${cleanName}.png`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -1417,61 +1563,84 @@
             try {
                 const { PDFDocument, rgb, StandardFonts } = window.PDFLib;
                 const pdfDoc = await PDFDocument.create();
-                pdfDoc.registerFontkit(window.fontkit);
+                if (window.fontkit) pdfDoc.registerFontkit(window.fontkit);
 
                 const width = canvas.width;  // 1570
                 const height = canvas.height; // 1123
                 let page = null;
 
-                // 1. Embed background (donor vector PDF or high-res image)
                 const isEnglish = window.appState.language === 'EN';
-                const pdfSrc = isEnglish ? window.appState.customTemplatePdfEn : window.appState.customTemplatePdfFr;
+                const customSrc = isEnglish ? window.appState.customTemplateEn : window.appState.customTemplateFr;
+                const defaultPdf = isEnglish ? 'certificate_template_en.pdf' : 'certificate_template_fr.pdf';
+                const defaultPng = isEnglish ? 'certificate_template_en.png' : 'certificate_template.png';
 
-                if (pdfSrc) {
+                // 1. Check custom uploaded template (could be PDF or Image data URL)
+                if (customSrc) {
                     try {
-                        const pdfBytes = await fetch(pdfSrc).then(r => r.arrayBuffer());
-                        const donorPdf = await PDFDocument.load(pdfBytes);
-                        const [donorPage] = await pdfDoc.copyPages(donorPdf, [0]);
-                        page = pdfDoc.addPage(donorPage);
-                    } catch (pdfErr) {
-                        console.warn("Could not copy vector PDF donor page, falling back to image:", pdfErr);
-                    }
-                }
+                        let arrayBuffer = null;
+                        if (customSrc.startsWith('data:')) {
+                            const base64Part = customSrc.split(',')[1];
+                            const binaryStr = atob(base64Part);
+                            const bytes = new Uint8Array(binaryStr.length);
+                            for (let i = 0; i < binaryStr.length; i++) {
+                                bytes[i] = binaryStr.charCodeAt(i);
+                            }
+                            arrayBuffer = bytes.buffer;
+                        } else {
+                            const r = await fetch(customSrc);
+                            arrayBuffer = await r.arrayBuffer();
+                        }
 
-                if (!page) {
-                    page = pdfDoc.addPage([width, height]);
-                    const templateSrc = isEnglish 
-                        ? (window.appState.customTemplateEn || 'certificate_template_en.png') 
-                        : (window.appState.customTemplateFr || 'certificate_template.png');
-
-                    const imgBytes = await fetch(templateSrc).then(r => r.arrayBuffer());
-                    let bgImage = null;
-                    try {
-                        const isPdf = String.fromCharCode(...new Uint8Array(imgBytes.slice(0, 5))) === '%PDF-';
-                        if (isPdf) {
-                            const donorPdf = await PDFDocument.load(imgBytes);
+                        const header = String.fromCharCode(...new Uint8Array(arrayBuffer.slice(0, 5)));
+                        if (header === '%PDF-') {
+                            const donorPdf = await PDFDocument.load(arrayBuffer);
                             const [donorPage] = await pdfDoc.copyPages(donorPdf, [0]);
-                            pdfDoc.removePage(0);
                             page = pdfDoc.addPage(donorPage);
                         } else {
-                            bgImage = await pdfDoc.embedPng(imgBytes);
+                            page = pdfDoc.addPage([width, height]);
+                            let bgImage = null;
+                            try {
+                                bgImage = await pdfDoc.embedJpg(arrayBuffer);
+                            } catch (e1) {
+                                bgImage = await pdfDoc.embedPng(arrayBuffer);
+                            }
+                            if (bgImage) {
+                                page.drawImage(bgImage, { x: 0, y: 0, width, height });
+                            }
                         }
-                    } catch (e) {
-                        try {
-                            bgImage = await pdfDoc.embedJpg(imgBytes);
-                        } catch (e2) {
-                            const fallbackSrc = isEnglish ? 'certificate_template_en.png' : 'certificate_template.png';
-                            const fallbackBytes = await fetch(fallbackSrc).then(r => r.arrayBuffer());
-                            bgImage = await pdfDoc.embedPng(fallbackBytes);
-                        }
-                    }
-
-                    if (bgImage) {
-                        page.drawImage(bgImage, { x: 0, y: 0, width: width, height: height });
+                    } catch (customErr) {
+                        console.warn("Could not embed custom template into PDF, trying defaults:", customErr);
                     }
                 }
 
-                // 2. Embed Font (Uniform AwesomeScript with Standard fallback)
+                // 2. Fallback to repository vector PDF donor template
+                if (!page) {
+                    try {
+                        const pdfRes = await fetch(defaultPdf);
+                        if (pdfRes.ok) {
+                            const pdfBytes = await pdfRes.arrayBuffer();
+                            const donorPdf = await PDFDocument.load(pdfBytes);
+                            const [donorPage] = await pdfDoc.copyPages(donorPdf, [0]);
+                            page = pdfDoc.addPage(donorPage);
+                        }
+                    } catch (pdfErr) {
+                        console.warn("Could not copy default PDF template, trying PNG fallback:", pdfErr);
+                    }
+                }
+
+                // 3. Fallback to default PNG template image
+                if (!page) {
+                    page = pdfDoc.addPage([width, height]);
+                    try {
+                        const imgBytes = await fetch(defaultPng).then(r => r.arrayBuffer());
+                        const bgImage = await pdfDoc.embedPng(imgBytes);
+                        page.drawImage(bgImage, { x: 0, y: 0, width, height });
+                    } catch (pngErr) {
+                        console.warn("Could not embed fallback PNG:", pngErr);
+                    }
+                }
+
+                // 4. Embed Font (Uniform AwesomeScript with Standard fallback)
                 let nameFont = null;
                 if (window.appState.fontBytes) {
                     try {
@@ -1485,9 +1654,9 @@
                     nameFont = await pdfDoc.embedFont(StandardFonts.TimesRomanBold);
                 }
 
-                // 3. Draw Fellow Name with uniform sizing and auto-fit
+                // 5. Draw Fellow Name with dynamic sizing and auto-fit
                 const name = (document.getElementById('customNameInput').value || 'LeadGreen Fellow').trim();
-                let fontSize = 54;
+                let fontSize = isEnglish ? (window.appState.defaultFontSizeEn || 54) : (window.appState.defaultFontSizeFr || 54);
                 let textWidth = nameFont.widthOfTextAtSize(name, fontSize);
                 const maxNameWidth = 1100;
                 if (textWidth > maxNameWidth) {
@@ -1496,7 +1665,6 @@
                 }
 
                 // Convert Canvas Y (from top) to PDF Y (from bottom)
-                // Baseline calibrated to sit 10pt above the designated line, perfectly mirroring the canvas
                 const verticalPos = isEnglish ? window.appState.defaultVerticalPosEn : window.appState.defaultVerticalPosFr;
                 const pdfX = (width - textWidth) / 2;
                 const pdfY = height - verticalPos - 21;
@@ -1509,7 +1677,7 @@
                     color: rgb(0.08, 0.1, 0.12)
                 });
 
-                // 4. Draw Verification ID
+                // 6. Draw Verification ID
                 const ref = window.appState.verifiedFellow?.reference || '';
                 if (ref) {
                     const codeFont = await pdfDoc.embedFont(StandardFonts.Courier);
@@ -1522,7 +1690,7 @@
                     });
                 }
 
-                // 5. Save & Download
+                // 7. Save & Download
                 const pdfBytes = await pdfDoc.save();
                 const blob = new Blob([pdfBytes], { type: 'application/pdf' });
                 const url = window.URL.createObjectURL(blob);
@@ -1530,7 +1698,7 @@
                 const cleanName = name.replace(/[^a-zA-Z0-9_-]/g, '_');
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `LeadGreen_Certificate_${cleanName}.pdf`;
+                a.download = `LeadGreen_Certificate_${window.appState.language}_${cleanName}.pdf`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
