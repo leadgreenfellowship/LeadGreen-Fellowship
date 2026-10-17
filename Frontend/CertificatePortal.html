@@ -1140,14 +1140,20 @@
         preloadTemplates();
 
         // Check URL Query Parameters on Load
-        window.addEventListener('DOMContentLoaded', () => {
+        function checkUrlParamsAndInit() {
             const urlParams = new URLSearchParams(window.location.search);
             const emailParam = urlParams.get('email');
             if (emailParam) {
                 document.getElementById('fellowEmail').value = emailParam.trim();
                 executeVerification(emailParam.trim());
             }
-        });
+        }
+
+        if (document.readyState === 'loading') {
+            window.addEventListener('DOMContentLoaded', checkUrlParamsAndInit);
+        } else {
+            checkUrlParamsAndInit();
+        }
 
         // Verification Form Submit
         document.getElementById('verifyForm').addEventListener('submit', async (e) => {
@@ -1423,7 +1429,6 @@
                 }
 
                 // Convert Canvas Y (from top) to PDF Y (from bottom)
-                const isEnglish = window.appState.language === 'EN';
                 const verticalPos = isEnglish ? window.appState.defaultVerticalPosEn : window.appState.defaultVerticalPosFr;
                 const pdfX = (width - textWidth) / 2;
                 const pdfY = height - verticalPos - (fontSize * 0.28);
