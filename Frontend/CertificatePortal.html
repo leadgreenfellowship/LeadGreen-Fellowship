@@ -598,30 +598,7 @@
             box-shadow: 0 0 0 3px rgba(19, 138, 86, 0.1);
         }
 
-        .casing-buttons {
-            display: flex;
-            gap: 8px;
-            margin-top: 8px;
-        }
 
-        .btn-casing {
-            flex: 1;
-            padding: 6px 10px;
-            background: #F8FAFC;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-casing:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            background: var(--primary-light);
-        }
 
         /* Uniform Design Badge */
         .uniform-badge {
@@ -990,14 +967,7 @@
                         <div class="name-input-wrapper">
                             <input type="text" id="customNameInput" class="name-input" placeholder="Enter Full Name">
                         </div>
-                        <div class="casing-buttons">
-                            <button type="button" class="btn-casing" onclick="applyCasing('title')">
-                                <i class="fa-solid fa-text-height"></i> Title Case
-                            </button>
-                            <button type="button" class="btn-casing" onclick="applyCasing('upper')">
-                                <i class="fa-solid fa-font"></i> ALL CAPS
-                            </button>
-                        </div>
+
                     </div>
 
                     <!-- Uniform Design Notice -->
@@ -1076,7 +1046,7 @@
     <!-- Firebase & Core Generator Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
-        import { getFirestore, collection, query, where, getDocs, limit } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+        import { getFirestore, collection, query, where, getDocs, limit, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
         // Firebase Configuration
         const firebaseConfig = {
@@ -1095,8 +1065,10 @@
         window.appState = {
             verifiedFellow: null,
             language: 'EN', // 'EN' or 'FR'
-            defaultVerticalPosEn: 468,
-            defaultVerticalPosFr: 475,
+            defaultVerticalPosEn: 534, // Calibrated: sits naturally 10px above horizontal baseline (Y=572)
+            defaultVerticalPosFr: 536, // Calibrated: sits naturally 10px above horizontal baseline (Y=575)
+            customTemplateEn: null,
+            customTemplateFr: null,
             templateImageEn: null,
             templateImageFr: null,
             fontBytes: null
@@ -1105,8 +1077,37 @@
         const canvas = document.getElementById('certCanvas');
         const ctx = canvas.getContext('2d');
 
-        // Preload Template Images
+        // Preload Template Images & Dynamic Admin Layout
         async function preloadTemplates() {
+            // 1. Fetch dynamic template design uploaded by Admin (if published)
+            try {
+                const layoutSnap = await getDoc(doc(db, "certificate_payments", "GLOBAL_LAYOUT"));
+                if (layoutSnap.exists()) {
+                    const data = layoutSnap.data();
+                    if (data.templateDataEn) window.appState.customTemplateEn = data.templateDataEn;
+                    else if (data.templateUrlEn) window.appState.customTemplateEn = data.templateUrlEn;
+
+                    if (data.templateDataFr) window.appState.customTemplateFr = data.templateDataFr;
+                    else if (data.templateUrlFr) window.appState.customTemplateFr = data.templateUrlFr;
+
+                    // Fallback to universal template if set
+                    if (data.templateData && !window.appState.customTemplateEn) window.appState.customTemplateEn = data.templateData;
+                    if (data.templateUrl && !window.appState.customTemplateEn) window.appState.customTemplateEn = data.templateUrl;
+
+                    if (typeof data.nameYOffsetEn === 'number' && data.nameYOffsetEn >= 300) {
+                        window.appState.defaultVerticalPosEn = data.nameYOffsetEn;
+                    } else if (typeof data.nameYOffset === 'number' && data.nameYOffset >= 300) {
+                        window.appState.defaultVerticalPosEn = data.nameYOffset;
+                    }
+
+                    if (typeof data.nameYOffsetFr === 'number' && data.nameYOffsetFr >= 300) {
+                        window.appState.defaultVerticalPosFr = data.nameYOffsetFr;
+                    }
+                }
+            } catch (err) {
+                console.warn("Could not load dynamic GLOBAL_LAYOUT, using defaults:", err);
+            }
+
             const loadImg = (src) => new Promise((resolve, reject) => {
                 const img = new Image();
                 img.crossOrigin = "anonymous";
@@ -1116,9 +1117,11 @@
             });
 
             try {
+                const enSrc = window.appState.customTemplateEn || 'certificate_template_en.png';
+                const frSrc = window.appState.customTemplateFr || 'certificate_template.png';
                 const [enImg, frImg] = await Promise.all([
-                    loadImg('certificate_template_en.png').catch(() => null),
-                    loadImg('certificate_template.png').catch(() => null)
+                    loadImg(enSrc).catch(() => loadImg('certificate_template_en.png').catch(() => null)),
+                    loadImg(frSrc).catch(() => loadImg('certificate_template.png').catch(() => null))
                 ]);
                 window.appState.templateImageEn = enImg;
                 window.appState.templateImageFr = frImg;
@@ -1263,7 +1266,9 @@
 
             // If template not loaded yet, fetch now
             if (!template) {
-                const src = isEnglish ? 'certificate_template_en.png' : 'certificate_template.png';
+                const src = isEnglish 
+                    ? (state.customTemplateEn || 'certificate_template_en.png') 
+                    : (state.customTemplateFr || 'certificate_template.png');
                 template = await new Promise((res) => {
                     const img = new Image();
                     img.crossOrigin = "anonymous";
@@ -1340,19 +1345,6 @@
             renderCanvas();
         });
 
-        // Controls: Casing Adjustment
-        window.applyCasing = function (type) {
-            const input = document.getElementById('customNameInput');
-            let val = input.value;
-            if (type === 'upper') {
-                val = val.toUpperCase();
-            } else if (type === 'title') {
-                val = val.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
-            }
-            input.value = val;
-            renderCanvas();
-        };
-
         // Sign Out / Switch Fellow
         document.getElementById('btnSignOut').addEventListener('click', () => {
             window.appState.verifiedFellow = null;
@@ -1396,11 +1388,25 @@
                 const height = canvas.height; // 1123
                 const page = pdfDoc.addPage([width, height]);
 
-                // 1. Embed background image
+                // 1. Embed background image (dynamic admin design if uploaded)
                 const isEnglish = window.appState.language === 'EN';
-                const templateSrc = isEnglish ? 'certificate_template_en.png' : 'certificate_template.png';
+                const templateSrc = isEnglish 
+                    ? (window.appState.customTemplateEn || 'certificate_template_en.png') 
+                    : (window.appState.customTemplateFr || 'certificate_template.png');
+
                 const imgBytes = await fetch(templateSrc).then(r => r.arrayBuffer());
-                const bgImage = await pdfDoc.embedPng(imgBytes);
+                let bgImage = null;
+                try {
+                    bgImage = await pdfDoc.embedPng(imgBytes);
+                } catch (e) {
+                    try {
+                        bgImage = await pdfDoc.embedJpg(imgBytes);
+                    } catch (e2) {
+                        const fallbackSrc = isEnglish ? 'certificate_template_en.png' : 'certificate_template.png';
+                        const fallbackBytes = await fetch(fallbackSrc).then(r => r.arrayBuffer());
+                        bgImage = await pdfDoc.embedPng(fallbackBytes);
+                    }
+                }
 
                 page.drawImage(bgImage, { x: 0, y: 0, width: width, height: height });
 
@@ -1429,9 +1435,10 @@
                 }
 
                 // Convert Canvas Y (from top) to PDF Y (from bottom)
+                // Baseline calibrated to sit 10pt above the designated line, perfectly mirroring the canvas
                 const verticalPos = isEnglish ? window.appState.defaultVerticalPosEn : window.appState.defaultVerticalPosFr;
                 const pdfX = (width - textWidth) / 2;
-                const pdfY = height - verticalPos - (fontSize * 0.28);
+                const pdfY = height - verticalPos - 21;
 
                 page.drawText(name, {
                     x: pdfX,

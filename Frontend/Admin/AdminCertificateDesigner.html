@@ -4,22 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeadGreen - Visual Certificate Designer</title>
+    <title>LeadGreen - Certificate Template Designer & Uploader</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- PDF Lib for Realtime Preview -->
+    <!-- PDF Lib for Realtime Preview & Rendering -->
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script src="https://unpkg.com/@pdf-lib/fontkit@0.0.4/dist/fontkit.umd.min.js"></script>
 
     <style>
+        @font-face {
+            font-family: 'AwesomeScript';
+            src: url('../awesome.regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         :root {
             --primary-green: #138A56;
+            --primary-dark: #0D623D;
             --light-green: #E8F5EE;
             --hover-green: #F0F9F4;
             --text-main: #111827;
             --text-muted: #4B5563;
-            --border-color: #F3F4F6;
+            --border-color: #E5E7EB;
             --bg-body: #FAFAFA;
         }
 
@@ -41,7 +49,7 @@
             text-decoration: none;
         }
 
-        /* Sidebar Copy */
+        /* Sidebar */
         .sidebar {
             width: 260px;
             border-right: 1px solid var(--border-color);
@@ -112,86 +120,326 @@
         .content {
             margin-left: 260px;
             flex: 1;
-            padding: 40px;
+            padding: 35px 40px;
         }
 
         .header h1 {
             font-size: 24px;
             font-weight: 800;
             margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .header p {
             color: var(--text-muted);
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+            font-size: 14px;
         }
 
         .designer-layout {
             display: grid;
-            grid-template-columns: 350px 1fr;
-            gap: 30px;
+            grid-template-columns: 420px 1fr;
+            gap: 25px;
             align-items: start;
         }
 
         .controls-panel {
             background: #fff;
-            padding: 25px;
+            padding: 24px;
             border-radius: 12px;
-            border: 1px solid #E5E7EB;
+            border: 1px solid var(--border-color);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
+        /* Language Toggle Tabs */
+        .lang-switch {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: #F3F4F6;
+            padding: 4px;
+            border-radius: 8px;
+            gap: 4px;
+        }
+
+        .lang-tab {
+            border: none;
+            background: transparent;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .lang-tab.active {
+            background: #FFFFFF;
+            color: var(--primary-green);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* Template Drop/Upload Zone */
+        .upload-dropzone {
+            border: 2px dashed #D1D5DB;
+            background: #F9FAFB;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .upload-dropzone:hover, .upload-dropzone.dragover {
+            border-color: var(--primary-green);
+            background: var(--hover-green);
+        }
+
+        .upload-dropzone i {
+            font-size: 28px;
+            color: var(--primary-green);
+            margin-bottom: 8px;
+        }
+
+        .upload-dropzone h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .upload-dropzone p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .template-status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #F3F4F6;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+
+        .status-badge.custom {
+            background: #DCFCE7;
+            color: #15803D;
+        }
+
+        .status-badge.default {
+            background: #E5E7EB;
+            color: #4B5563;
+        }
+
+        /* Controls */
         .control-group {
-            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
-        .control-group label {
+        .control-header {
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
             font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 10px;
         }
 
-        .control-group input[type="range"] {
-            width: 100%;
+        .control-val {
+            font-family: monospace;
+            background: #F3F4F6;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: var(--primary-green);
+            font-weight: 700;
+        }
+
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .slider-row input[type="range"] {
+            flex: 1;
             cursor: pointer;
         }
 
-        .btn-save {
+        .btn-nudge {
+            background: #F3F4F6;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn-nudge:hover {
+            background: #E5E7EB;
+        }
+
+        .text-input-field {
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 14px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            outline: none;
+            font-family: inherit;
+        }
+
+        .text-input-field:focus {
+            border-color: var(--primary-green);
+        }
+
+        /* Action Buttons */
+        .actions-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-publish {
             width: 100%;
             background-color: var(--primary-green);
             color: white;
-            padding: 15px;
+            padding: 14px;
             border: none;
             border-radius: 8px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 2px 8px rgba(19, 138, 86, 0.25);
         }
 
-        .btn-save:hover {
-            background-color: #0d6e43;
+        .btn-publish:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
         }
 
+        .btn-reset {
+            width: 100%;
+            background: transparent;
+            color: #6B7280;
+            border: 1px solid #D1D5DB;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-reset:hover {
+            background: #F3F4F6;
+            color: #111827;
+        }
+
+        /* Right Preview Panel */
         .preview-panel {
             background: #fff;
-            padding: 10px;
+            padding: 18px;
             border-radius: 12px;
-            border: 1px solid #E5E7EB;
+            border: 1px solid var(--border-color);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            height: calc(100vh - 150px);
             display: flex;
             flex-direction: column;
+            gap: 14px;
         }
 
-        #pdfViewer {
-            width: 100%;
-            flex: 1;
-            border: none;
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-title {
+            font-size: 14px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .canvas-container {
+            background: #F1F5F9;
             border-radius: 8px;
-            background: #F3F4F6;
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 480px;
+            position: relative;
+        }
+
+        #designerCanvas {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+            background: white;
+        }
+
+        .alert-box {
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-success {
+            background: #ECFDF5;
+            color: #065F46;
+            border: 1px solid #A7F3D0;
+        }
+
+        .alert-error {
+            background: #FEF2F2;
+            color: #991B1B;
+            border: 1px solid #FECACA;
         }
     </style>
 </head>
@@ -204,83 +452,133 @@
         </div>
         <nav class="sidebar-nav">
             <a href="index.html" class="nav-item"><i class="fa-solid fa-users"></i><span>Applications</span></a>
-            <a href="AdminAnalytics.html" class="nav-item"><i
-                    class="fa-solid fa-chart-pie"></i><span>Analytics</span></a>
-            <a href="AdminAlumniImport.html" class="nav-item"><i class="fa-solid fa-cloud-arrow-up"></i><span>Import
-                    Alumni</span></a>
-            <a href="AdminImportCertificates.html" class="nav-item"><i
-                    class="fa-solid fa-file-invoice-dollar"></i><span>Import Payments</span></a>
-            <a href="AdminCertificates.html" class="nav-item"><i class="fa-solid fa-certificate"></i><span>Certificate
-                    Payments</span></a>
+            <a href="AdminAnalytics.html" class="nav-item"><i class="fa-solid fa-chart-pie"></i><span>Analytics</span></a>
+            <a href="AdminAlumniImport.html" class="nav-item"><i class="fa-solid fa-cloud-arrow-up"></i><span>Import Alumni</span></a>
+            <a href="AdminImportCertificates.html" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i><span>Import Payments</span></a>
+            <a href="AdminCertificates.html" class="nav-item"><i class="fa-solid fa-certificate"></i><span>Certificate Payments</span></a>
             <!-- Designer Tool -->
-            <a href="AdminCertificateDesigner.html" class="nav-item active"><i
-                    class="fa-solid fa-pen-ruler"></i><span>Visual Designer</span></a>
-            <a href="MissionReviewQueue.html" class="nav-item"><i class="fa-solid fa-list-check"></i><span>Mission
-                    Reviews</span></a>
+            <a href="AdminCertificateDesigner.html" class="nav-item active"><i class="fa-solid fa-pen-ruler"></i><span>Visual Designer</span></a>
+            <a href="MissionReviewQueue.html" class="nav-item"><i class="fa-solid fa-list-check"></i><span>Mission Reviews</span></a>
         </nav>
         <div class="sidebar-footer">
-            <a href="#" id="logout-btn" class="nav-item logout"><i
-                    class="fa-solid fa-arrow-right-from-bracket"></i><span>Logout</span></a>
+            <a href="#" id="logout-btn" class="nav-item logout"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Logout</span></a>
         </div>
     </aside>
 
     <!-- Main Content -->
     <main class="content">
         <div class="header">
-            <h1>Certificate Layout Designer</h1>
-            <p>Drag the sliders to instantly see the fellow's name move. When perfect, click Save to push live.</p>
+            <h1><i class="fa-solid fa-palette" style="color: var(--primary-green);"></i> Certificate Template Designer & Uploader</h1>
+            <p>Upload a new certificate template design, preview it live with fellowship script typography, calibrate the name placement, and publish to the live fellow portal.</p>
         </div>
 
+        <div id="statusAlert" class="alert-box"></div>
+
         <div class="designer-layout">
+            <!-- Controls Panel -->
             <div class="controls-panel">
-                <h3 style="margin-bottom: 20px; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                    Position Tweaks</h3>
-
-                <div class="control-group">
-                    <label><span>1. Load Background Template</span></label>
-                    <input type="file" id="imageInput" accept="image/png, image/jpeg"
-                        style="width: 100%; margin-bottom: 15px;">
-
-                    <label><span>2. Load Font (Optional)</span></label>
-                    <input type="file" id="fontInput" accept=".ttf" style="width: 100%;">
-                    <small style="color: #666; font-size: 11px;">(Load Awesome.ttf to see exact cursive preview)</small>
+                <!-- 1. Language Selector -->
+                <div>
+                    <label style="font-size: 13px; font-weight: 700; margin-bottom: 8px; display: block;">1. Select Certificate Language</label>
+                    <div class="lang-switch">
+                        <button type="button" class="lang-tab active" id="tabEn" onclick="switchLanguage('EN')">
+                            <i class="fa-solid fa-globe"></i> English Template
+                        </button>
+                        <button type="button" class="lang-tab" id="tabFr" onclick="switchLanguage('FR')">
+                            <i class="fa-solid fa-language"></i> French Template
+                        </button>
+                    </div>
                 </div>
 
-                <hr style="border: 0; border-top: 1px solid #E5E7EB; margin: 25px 0;">
-
-                <div class="control-group">
-                    <label><span>Name Position (Up/Down)</span> <span id="yVal">0</span></label>
-                    <input type="range" id="ySlider" min="0" max="3000" value="0">
-                    <small style="color: #666; font-size: 11px;">(Slide left to move down, slide right to move
-                        up)</small>
+                <!-- Template Status -->
+                <div class="template-status-bar">
+                    <span>Active Template:</span>
+                    <span id="templateStatusBadge" class="status-badge default">Default System Design</span>
                 </div>
 
-                <div class="control-group">
-                    <label><span>Name Font Size</span> <span id="sizeVal">44</span></label>
-                    <input type="range" id="sizeSlider" min="10" max="300" value="44">
+                <!-- 2. Template Image Upload -->
+                <div>
+                    <label style="font-size: 13px; font-weight: 700; margin-bottom: 8px; display: block;">2. Upload New Template Design</label>
+                    <div class="upload-dropzone" id="dropZone" onclick="document.getElementById('templateFileInput').click()">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <h4 id="dropzoneTitle">Click to Browse or Drop Image</h4>
+                        <p id="dropzoneDesc">Supports PNG, JPG, or WebP (1570 × 1123 px recommended)</p>
+                        <input type="file" id="templateFileInput" accept="image/png, image/jpeg, image/webp" style="display: none;">
+                    </div>
                 </div>
 
-                <hr style="border: 0; border-top: 1px solid #E5E7EB; margin: 25px 0;">
+                <!-- 3. Sample Name for Preview -->
+                <div class="control-group">
+                    <label class="control-header">
+                        <span>3. Test Fellow Name Preview</span>
+                    </label>
+                    <input type="text" id="sampleNameInput" class="text-input-field" value="Jane Sample-Fellow" placeholder="Enter sample fellow name">
+                </div>
 
-                <button class="btn-save" id="saveBtn"><i class="fa-solid fa-cloud-arrow-up"></i> Publish to Live
-                    Portal</button>
+                <!-- 4. Vertical Position Slider -->
+                <div class="control-group">
+                    <div class="control-header">
+                        <span>4. Fellow Name Position (Y)</span>
+                        <span id="yValDisplay" class="control-val">534 px</span>
+                    </div>
+                    <div class="slider-row">
+                        <button type="button" class="btn-nudge" onclick="nudgeY(-1)" title="Move Up 1px">-</button>
+                        <input type="range" id="ySlider" min="400" max="750" value="534">
+                        <button type="button" class="btn-nudge" onclick="nudgeY(1)" title="Move Down 1px">+</button>
+                    </div>
+                    <small style="color: #6B7280; font-size: 11px;">Calibrated to sit cleanly 10px above the template's designated baseline.</small>
+                </div>
+
+                <!-- 5. Font Size Slider -->
+                <div class="control-group">
+                    <div class="control-header">
+                        <span>5. Script Font Size</span>
+                        <span id="sizeValDisplay" class="control-val">54 px</span>
+                    </div>
+                    <div class="slider-row">
+                        <button type="button" class="btn-nudge" onclick="nudgeSize(-1)">-</button>
+                        <input type="range" id="sizeSlider" min="30" max="85" value="54">
+                        <button type="button" class="btn-nudge" onclick="nudgeSize(1)">+</button>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="actions-group">
+                    <button class="btn-publish" id="publishBtn" onclick="publishDesign()">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span id="publishBtnText">Publish to Live Portal</span>
+                    </button>
+                    <button class="btn-reset" id="resetBtn" onclick="resetToDefault()">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Revert to Built-in Official Template</span>
+                    </button>
+                </div>
             </div>
 
+            <!-- Preview Panel -->
             <div class="preview-panel">
-                <div id="loadingOverlay" style="display: none; padding: 20px; text-align: center; color: #666;">
-                    Generating Preview...</div>
-                <iframe id="pdfViewer"></iframe>
+                <div class="preview-header">
+                    <span class="preview-title">
+                        <i class="fa-solid fa-eye" style="color: var(--primary-green);"></i>
+                        <span id="previewTitleText">Live Preview (English Template)</span>
+                    </span>
+                    <span style="font-size: 12px; color: #6B7280;" id="canvasDimInfo">1570 × 1123 px</span>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="designerCanvas" width="1570" height="1123"></canvas>
+                </div>
             </div>
         </div>
     </main>
 
-    <!-- Firebase Integration -->
+    <!-- Firebase SDK & Designer Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-storage.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
 
-        // Setup
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyA5lPT8Fyp265fvebWq4BelNE0dYxuWvCE",
             authDomain: "leadgreen-fellowship.firebaseapp.com",
@@ -289,9 +587,11 @@
             messagingSenderId: "639331926711",
             appId: "1:639331926711:web:03d9d47c8b33cef84a0332"
         };
+
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const storage = getStorage(app);
 
         // Security Guard
         onAuthStateChanged(auth, (user) => {
@@ -305,149 +605,384 @@
             signOut(auth).then(() => window.location.href = "AdminLogin.html");
         });
 
-        // Config State
-        let config = {
-            nameYOffset: 0,
-            nameSize: 44
+        // App Designer State
+        const state = {
+            currentLang: 'EN', // 'EN' or 'FR'
+            layoutDocData: {},
+            templates: {
+                EN: {
+                    activeData: null,
+                    defaultSrc: '../certificate_template_en.png',
+                    imgElement: null,
+                    yPos: 534,
+                    fontSize: 54,
+                    isCustom: false,
+                    fileToUpload: null
+                },
+                FR: {
+                    activeData: null,
+                    defaultSrc: '../certificate_template.png',
+                    imgElement: null,
+                    yPos: 536,
+                    fontSize: 54,
+                    isCustom: false,
+                    fileToUpload: null
+                }
+            }
         };
-        let cachedImageBytes = null;
-        let cachedFontBytes = null;
-        let imageDims = { width: 842, height: 595 };
-        const { PDFDocument, rgb, StandardFonts } = window.PDFLib;
 
-        // UI Binding
+        const canvas = document.getElementById('designerCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Initialize and Preload
+        async function init() {
+            await document.fonts.ready;
+            await loadFirestoreSettings();
+            await loadTemplateImages();
+            syncUI();
+            renderPreview();
+        }
+
+        // Fetch settings from Firestore
+        async function loadFirestoreSettings() {
+            try {
+                const snap = await getDoc(doc(db, "certificate_payments", "GLOBAL_LAYOUT"));
+                if (snap.exists()) {
+                    state.layoutDocData = snap.data();
+                    const d = state.layoutDocData;
+
+                    // English
+                    if (d.templateDataEn) {
+                        state.templates.EN.activeData = d.templateDataEn;
+                        state.templates.EN.isCustom = true;
+                    } else if (d.templateUrlEn) {
+                        state.templates.EN.activeData = d.templateUrlEn;
+                        state.templates.EN.isCustom = true;
+                    }
+                    if (typeof d.nameYOffsetEn === 'number' && d.nameYOffsetEn >= 300) {
+                        state.templates.EN.yPos = d.nameYOffsetEn;
+                    }
+
+                    // French
+                    if (d.templateDataFr) {
+                        state.templates.FR.activeData = d.templateDataFr;
+                        state.templates.FR.isCustom = true;
+                    } else if (d.templateUrlFr) {
+                        state.templates.FR.activeData = d.templateUrlFr;
+                        state.templates.FR.isCustom = true;
+                    }
+                    if (typeof d.nameYOffsetFr === 'number' && d.nameYOffsetFr >= 300) {
+                        state.templates.FR.yPos = d.nameYOffsetFr;
+                    }
+
+                    if (typeof d.nameSize === 'number' && d.nameSize >= 20) {
+                        state.templates.EN.fontSize = d.nameSize;
+                        state.templates.FR.fontSize = d.nameSize;
+                    }
+                }
+            } catch (err) {
+                console.warn("Could not read GLOBAL_LAYOUT:", err);
+            }
+        }
+
+        // Helper to load image object
+        function loadImage(src) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.crossOrigin = "anonymous";
+                img.onload = () => resolve(img);
+                img.onerror = (e) => reject(e);
+                img.src = src;
+            });
+        }
+
+        async function loadTemplateImages() {
+            for (const lang of ['EN', 'FR']) {
+                const t = state.templates[lang];
+                const src = t.activeData || t.defaultSrc;
+                try {
+                    t.imgElement = await loadImage(src);
+                } catch (e) {
+                    console.warn(`Failed loading custom template for ${lang}, loading default:`, e);
+                    try {
+                        t.imgElement = await loadImage(t.defaultSrc);
+                        t.isCustom = false;
+                    } catch (e2) {
+                        console.error(`Could not load default template for ${lang}:`, e2);
+                    }
+                }
+            }
+        }
+
+        // Render Canvas Preview
+        function renderPreview() {
+            const currentT = state.templates[state.currentLang];
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Background Template
+            if (currentT.imgElement) {
+                ctx.drawImage(currentT.imgElement, 0, 0, canvas.width, canvas.height);
+            } else {
+                ctx.fillStyle = "#FFFFFF";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            // Draw Sample Fellow Name
+            const sampleName = (document.getElementById('sampleNameInput').value || "Jane Sample-Fellow").trim();
+            const fontSize = parseInt(document.getElementById('sizeSlider').value);
+            ctx.font = `${fontSize}px 'AwesomeScript', cursive`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = '#111827';
+
+            const posY = parseInt(document.getElementById('ySlider').value);
+            ctx.fillText(sampleName, canvas.width / 2, posY);
+        }
+
+        // Sync UI with current language state
+        function syncUI() {
+            const t = state.templates[state.currentLang];
+            document.getElementById('ySlider').value = t.yPos;
+            document.getElementById('yValDisplay').innerText = `${t.yPos} px`;
+            document.getElementById('sizeSlider').value = t.fontSize;
+            document.getElementById('sizeValDisplay').innerText = `${t.fontSize} px`;
+
+            const badge = document.getElementById('templateStatusBadge');
+            if (t.isCustom) {
+                badge.className = "status-badge custom";
+                badge.innerHTML = '<i class="fa-solid fa-circle-check"></i> Custom Admin Template (Active)';
+            } else {
+                badge.className = "status-badge default";
+                badge.innerHTML = '<i class="fa-solid fa-certificate"></i> Built-in Official Template';
+            }
+
+            document.getElementById('previewTitleText').innerText = `Live Preview (${state.currentLang === 'EN' ? 'English Template' : 'French Template'})`;
+            document.getElementById('dropzoneTitle').innerText = t.isCustom ? "Replace Template Design" : "Upload New Template Design";
+        }
+
+        // Language Switcher
+        window.switchLanguage = function(lang) {
+            state.currentLang = lang;
+            document.getElementById('tabEn').classList.toggle('active', lang === 'EN');
+            document.getElementById('tabFr').classList.toggle('active', lang === 'FR');
+            syncUI();
+            renderPreview();
+        };
+
+        // Sliders & Fine-Tuning
         const ySlider = document.getElementById('ySlider');
         const sizeSlider = document.getElementById('sizeSlider');
-        const yVal = document.getElementById('yVal');
-        const sizeVal = document.getElementById('sizeVal');
-        const viewer = document.getElementById('pdfViewer');
-        const imageInput = document.getElementById('imageInput');
-        const fontInput = document.getElementById('fontInput');
+        const sampleNameInput = document.getElementById('sampleNameInput');
 
-        // Allow user to manually select files if browser blocks local ../ fetching
-        imageInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = async function (evt) {
-                cachedImageBytes = evt.target.result;
-                // Calculate dimensions
-                const tempPdf = await PDFDocument.create();
-                try {
-                    const img = await tempPdf.embedJpg(cachedImageBytes);
-                    imageDims = { width: img.width, height: img.height };
-                } catch (e) {
-                    try {
-                        const img = await tempPdf.embedPng(cachedImageBytes);
-                        imageDims = { width: img.width, height: img.height };
-                    } catch (e) { }
-                }
-                ySlider.max = imageDims.height;
-                ySlider.value = Math.floor(imageDims.height / 2);
-                renderPreview();
-            };
-            reader.readAsArrayBuffer(file);
+        ySlider.addEventListener('input', () => {
+            const val = parseInt(ySlider.value);
+            document.getElementById('yValDisplay').innerText = `${val} px`;
+            state.templates[state.currentLang].yPos = val;
+            renderPreview();
         });
 
-        fontInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function (evt) {
-                cachedFontBytes = evt.target.result;
-                renderPreview();
-            };
-            reader.readAsArrayBuffer(file);
+        sizeSlider.addEventListener('input', () => {
+            const val = parseInt(sizeSlider.value);
+            document.getElementById('sizeValDisplay').innerText = `${val} px`;
+            state.templates[state.currentLang].fontSize = val;
+            renderPreview();
         });
 
-        async function preloadDatabaseSettings() {
-            try {
-                const docSnap = await getDoc(doc(db, "certificate_payments", "GLOBAL_LAYOUT"));
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    if (data.nameYOffset !== undefined) config.nameYOffset = data.nameYOffset;
-                    if (data.nameSize !== undefined) config.nameSize = data.nameSize;
-                }
-            } catch (err) { console.warn("No layout found."); }
+        sampleNameInput.addEventListener('input', renderPreview);
 
-            sizeSlider.value = config.nameSize;
-            ySlider.value = config.nameYOffset;
-            renderPreview(); // Will render blank or with loaded settings if user uploaded image first
-        }
+        window.nudgeY = function(delta) {
+            let val = parseInt(ySlider.value) + delta;
+            val = Math.max(parseInt(ySlider.min), Math.min(parseInt(ySlider.max), val));
+            ySlider.value = val;
+            document.getElementById('yValDisplay').innerText = `${val} px`;
+            state.templates[state.currentLang].yPos = val;
+            renderPreview();
+        };
 
-        async function renderPreview() {
-            yVal.innerText = ySlider.value;
-            sizeVal.innerText = sizeSlider.value;
+        window.nudgeSize = function(delta) {
+            let val = parseInt(sizeSlider.value) + delta;
+            val = Math.max(parseInt(sizeSlider.min), Math.min(parseInt(sizeSlider.max), val));
+            sizeSlider.value = val;
+            document.getElementById('sizeValDisplay').innerText = `${val} px`;
+            state.templates[state.currentLang].fontSize = val;
+            renderPreview();
+        };
 
-            const pdfDoc = await PDFDocument.create();
-            pdfDoc.registerFontkit(window.fontkit);
+        // File Upload Handling
+        const fileInput = document.getElementById('templateFileInput');
+        const dropZone = document.getElementById('dropZone');
 
-            let page = pdfDoc.addPage([imageDims.width, imageDims.height]);
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) handleSelectedFile(file);
+        });
 
-            if (cachedImageBytes) {
-                try {
-                    const img = await pdfDoc.embedJpg(cachedImageBytes);
-                    page.drawImage(img, { x: 0, y: 0, width: imageDims.width, height: imageDims.height });
-                } catch (e) {
-                    try {
-                        const img = await pdfDoc.embedPng(cachedImageBytes);
-                        page.drawImage(img, { x: 0, y: 0, width: imageDims.width, height: imageDims.height });
-                    } catch (e) { }
-                }
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file) handleSelectedFile(file);
+        });
+
+        function handleSelectedFile(file) {
+            if (!file.type.startsWith('image/')) {
+                showAlert('Please select an image file (PNG, JPG, or WebP).', 'error');
+                return;
             }
 
-            const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-            let nameFont = boldFont;
-            if (cachedFontBytes) {
-                try { nameFont = await pdfDoc.embedFont(cachedFontBytes); } catch (e) { }
-            }
+            const reader = new FileReader();
+            reader.onload = async (evt) => {
+                const dataUrl = evt.target.result;
+                const img = await loadImage(dataUrl);
+                
+                const t = state.templates[state.currentLang];
+                t.activeData = dataUrl;
+                t.imgElement = img;
+                t.isCustom = true;
+                t.fileToUpload = file;
 
-            const name = "Jane Sample-Fellow";
-            const curY = parseInt(ySlider.value);
-            const curSize = parseInt(sizeSlider.value);
-
-            const nameW = nameFont.widthOfTextAtSize(name, curSize);
-            page.drawText(name, { x: (imageDims.width - nameW) / 2, y: curY, size: curSize, font: nameFont, color: rgb(0.1, 0.1, 0.1) });
-
-            const pdfBytes = await pdfDoc.save();
-            const blob = new Blob([pdfBytes], { type: "application/pdf" });
-            viewer.src = window.URL.createObjectURL(blob) + "#toolbar=0&navpanes=0&scrollbar=0";
+                document.getElementById('dropzoneTitle').innerText = file.name;
+                document.getElementById('dropzoneDesc').innerText = `${img.width} × ${img.height} px (${(file.size / 1024).toFixed(1)} KB)`;
+                syncUI();
+                renderPreview();
+                showAlert(`Loaded "${file.name}". Click "Publish to Live Portal" to make it active for all fellows!`, 'success');
+            };
+            reader.readAsDataURL(file);
         }
 
-        // Live updating (debounce slightly for performance)
-        let timeout = null;
-        [ySlider, sizeSlider].forEach(slider => {
-            slider.addEventListener('input', () => {
-                clearTimeout(timeout);
-                yVal.innerText = ySlider.value;
-                sizeVal.innerText = sizeSlider.value;
-                timeout = setTimeout(renderPreview, 300);
-            });
-        });
+        // Publish to Live Portal
+        window.publishDesign = async function() {
+            const btn = document.getElementById('publishBtn');
+            const btnText = document.getElementById('publishBtnText');
+            btn.disabled = true;
+            btnText.innerText = "Publishing to Portal...";
 
-        // Save to DB
-        document.getElementById('saveBtn').addEventListener('click', async () => {
-            const btn = document.getElementById('saveBtn');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+            const currentLang = state.currentLang;
+            const t = state.templates[currentLang];
+
             try {
-                await setDoc(doc(db, "certificate_payments", "GLOBAL_LAYOUT"), {
-                    nameYOffset: parseInt(ySlider.value),
-                    nameSize: parseInt(sizeSlider.value),
-                    updatedAt: new Date()
-                }, { merge: true });
+                const updatePayload = {
+                    updatedAt: new Date(),
+                    updatedBy: auth.currentUser?.email || "Admin"
+                };
+
+                // Store calibrated position & size
+                if (currentLang === 'EN') {
+                    updatePayload.nameYOffsetEn = t.yPos;
+                    updatePayload.nameYOffset = t.yPos; // backwards compatibility
+                } else {
+                    updatePayload.nameYOffsetFr = t.yPos;
+                }
+                updatePayload.nameSize = t.fontSize;
+
+                // Handle template upload
+                if (t.isCustom && t.activeData) {
+                    // 1. Save data URI (compressed high-efficiency format)
+                    let storageUrl = null;
+
+                    // 2. Try upload to Firebase Storage as well
+                    if (t.fileToUpload) {
+                        try {
+                            const ext = t.fileToUpload.name.split('.').pop() || 'png';
+                            const storageRef = ref(storage, `certificate_templates/template_${currentLang.toLowerCase()}_${Date.now()}.${ext}`);
+                            await uploadBytes(storageRef, t.fileToUpload);
+                            storageUrl = await getDownloadURL(storageRef);
+                        } catch (storageErr) {
+                            console.warn("Storage upload warning, using direct data URI fallback:", storageErr);
+                        }
+                    }
+
+                    // Compress canvas background to clean high-res JPEG data URL (300KB) if dataUrl exceeds 800KB
+                    let finalDataUrl = t.activeData;
+                    if (t.activeData.length > 800000 && t.imgElement) {
+                        const tempCanvas = document.createElement('canvas');
+                        tempCanvas.width = 1570;
+                        tempCanvas.height = 1123;
+                        const tempCtx = tempCanvas.getContext('2d');
+                        tempCtx.drawImage(t.imgElement, 0, 0, 1570, 1123);
+                        finalDataUrl = tempCanvas.toDataURL('image/jpeg', 0.92);
+                    }
+
+                    if (currentLang === 'EN') {
+                        updatePayload.templateDataEn = finalDataUrl;
+                        if (storageUrl) updatePayload.templateUrlEn = storageUrl;
+                    } else {
+                        updatePayload.templateDataFr = finalDataUrl;
+                        if (storageUrl) updatePayload.templateUrlFr = storageUrl;
+                    }
+                } else if (!t.isCustom) {
+                    // Reset custom template keys in Firestore
+                    if (currentLang === 'EN') {
+                        updatePayload.templateDataEn = null;
+                        updatePayload.templateUrlEn = null;
+                    } else {
+                        updatePayload.templateDataFr = null;
+                        updatePayload.templateUrlFr = null;
+                    }
+                }
+
+                await setDoc(doc(db, "certificate_payments", "GLOBAL_LAYOUT"), updatePayload, { merge: true });
+
+                showAlert(`Successfully published ${currentLang === 'EN' ? 'English' : 'French'} template and layout to the live Certificate Portal!`, 'success');
                 btn.style.backgroundColor = "#16A34A";
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> Published Successfully!';
-                setTimeout(() => {
-                    btn.style.backgroundColor = "";
-                    btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Publish to Live Portal';
-                }, 3000);
-            } catch (err) {
-                alert("Error saving: " + err.message);
-                btn.innerHTML = 'Error publishing!';
-            }
-        });
+                btnText.innerHTML = '<i class="fa-solid fa-check"></i> Published Successfully!';
 
-        preloadDatabaseSettings();
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.style.backgroundColor = "";
+                    btnText.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Publish to Live Portal';
+                }, 3000);
+
+            } catch (err) {
+                console.error("Publishing error:", err);
+                showAlert("Error publishing layout: " + err.message, "error");
+                btn.disabled = false;
+                btnText.innerText = "Publish to Live Portal";
+            }
+        };
+
+        // Reset to Built-in Default Template
+        window.resetToDefault = async function() {
+            if (!confirm(`Are you sure you want to reset the ${state.currentLang === 'EN' ? 'English' : 'French'} certificate to the official default built-in template?`)) {
+                return;
+            }
+
+            const currentLang = state.currentLang;
+            const t = state.templates[currentLang];
+            t.activeData = null;
+            t.fileToUpload = null;
+            t.isCustom = false;
+            t.yPos = currentLang === 'EN' ? 534 : 536;
+            t.fontSize = 54;
+            t.imgElement = await loadImage(t.defaultSrc);
+
+            syncUI();
+            renderPreview();
+            showAlert(`Reset to default ${currentLang} template. Click "Publish to Live Portal" to apply live.`, 'success');
+        };
+
+        function showAlert(msg, type) {
+            const el = document.getElementById('statusAlert');
+            el.className = `alert-box alert-${type}`;
+            el.innerHTML = type === 'success' 
+                ? `<i class="fa-solid fa-circle-check"></i> <span>${msg}</span>`
+                : `<i class="fa-solid fa-triangle-exclamation"></i> <span>${msg}</span>`;
+            el.style.display = 'flex';
+            setTimeout(() => {
+                el.style.display = 'none';
+            }, 6000);
+        }
+
+        init();
     </script>
 </body>
 
