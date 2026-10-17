@@ -1,0 +1,225 @@
+/* ==========================================================================
+   LeadGreen Admin - Universal Responsive Design System
+   Applies consistent responsive layout, mobile topbar, and drawer across all Admin pages
+   ========================================================================== */
+
+/* Topbar for Mobile and Tablet (Hidden by default on Desktop) */
+.admin-mobile-topbar {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #FFFFFF;
+    border-bottom: 1px solid var(--border-color, #E5E7EB);
+    padding: 0 16px;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1040;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.admin-mobile-topbar .topbar-brand img {
+    height: 34px;
+    width: auto;
+    object-fit: contain;
+}
+
+.admin-menu-btn {
+    width: 42px;
+    height: 42px;
+    border: none;
+    background: #F3F4F6;
+    border-radius: 8px;
+    color: var(--text-main, #111827);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.admin-menu-btn:hover {
+    background: var(--light-green, #E8F5EE);
+    color: var(--primary-green, #138A56);
+}
+
+/* Sidebar Backdrop */
+.admin-sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(2px);
+    z-index: 1045;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.admin-sidebar-backdrop.active {
+    display: block;
+    opacity: 1;
+}
+
+/* -------------------------------------------------------------
+   TABLET & MOBILE BREAKPOINTS (<= 992px)
+   ------------------------------------------------------------- */
+@media (max-width: 992px) {
+    .admin-mobile-topbar {
+        display: flex;
+    }
+
+    body {
+        flex-direction: column;
+    }
+
+    .layout {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    /* Off-canvas sidebar */
+    .sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 280px !important;
+        height: 100vh !important;
+        z-index: 1050 !important;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 6px 0 24px rgba(0, 0, 0, 0.15) !important;
+        background-color: #FFFFFF !important;
+    }
+
+    .sidebar.active,
+    body.admin-sidebar-open .sidebar {
+        transform: translateX(0) !important;
+    }
+
+    /* Main content adjusts to full width below topbar */
+    .content,
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 24px 20px !important;
+        margin-top: 60px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Header rows stack cleanly */
+    .header,
+    .page-header,
+    .top-row {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 16px !important;
+    }
+
+    .header-actions,
+    .actions,
+    .filter-actions {
+        width: 100% !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+    }
+
+    /* Stats & metric grids wrap */
+    .stats-grid,
+    .grid-metrics,
+    .metrics-row,
+    .overview-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+        gap: 16px !important;
+    }
+
+    /* Charts grid stack to single column */
+    .charts-grid,
+    .analytics-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+
+    /* Designer Layout: stack controls and preview */
+    .designer-layout {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+
+    .controls-panel {
+        width: 100% !important;
+    }
+
+    /* Universal responsive table container */
+    .table-container,
+    .data-table-card,
+    .card-table,
+    .table-responsive {
+        width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        border-radius: 8px;
+    }
+
+    table {
+        min-width: 600px;
+    }
+}
+
+/* -------------------------------------------------------------
+   SMARTPHONE BREAKPOINTS (<= 576px)
+   ------------------------------------------------------------- */
+@media (max-width: 576px) {
+    .content,
+    .main-content {
+        padding: 16px 14px !important;
+    }
+
+    .stats-grid,
+    .grid-metrics {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    .stat-card,
+    .card-metric {
+        padding: 16px 14px !important;
+    }
+
+    .header h1,
+    .page-header h1 {
+        font-size: 20px !important;
+    }
+
+    .btn,
+    .btn-primary,
+    .btn-secondary {
+        font-size: 13.5px !important;
+        padding: 10px 14px !important;
+    }
+
+    /* Filter & Search bars */
+    .search-filter-bar,
+    .filter-bar,
+    .toolbar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+    }
+
+    .search-box,
+    .search-input-wrapper {
+        width: 100% !important;
+    }
+
+    /* Modals & Dialogs */
+    .modal-content,
+    .modal-card {
+        width: 95% !important;
+        padding: 20px 16px !important;
+    }
+}

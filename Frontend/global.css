@@ -225,10 +225,10 @@ header {
     z-index: 1000;
 }
 
-/* Responsive */
+/* Responsive & Adaptive Layouts Across All Screens */
 @media (max-width: 992px) {
     header {
-        padding: 12px 15px;
+        padding: 12px 20px;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
@@ -237,13 +237,24 @@ header {
 
     .logo img,
     .logo-img {
-        height: 44px !important;
-        max-width: 170px;
+        height: 40px !important;
+        max-width: 160px;
         object-fit: contain;
     }
 
     .menu-toggle {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: transparent;
+        border: none;
+        font-size: 24px;
+        color: var(--accent-color);
+        cursor: pointer;
+        z-index: 1001;
+        transition: transform 0.2s;
     }
 
     .header-right {
@@ -251,15 +262,16 @@ header {
         top: 0;
         right: -100%;
         width: 80%;
-        max-width: 400px;
+        max-width: 380px;
         height: 100vh;
         background-color: var(--bg-light);
-        padding: 80px 30px 40px;
-        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-        transition: right 0.3s ease-in-out;
-        z-index: 999;
+        padding: 75px 25px 40px;
+        box-shadow: -8px 0 24px rgba(0, 0, 0, 0.12);
+        transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1000;
         align-items: flex-start;
         justify-content: flex-start;
+        overflow-y: auto;
     }
 
     .header-right.active {
@@ -269,12 +281,12 @@ header {
     .main-nav {
         flex-direction: column;
         align-items: flex-start;
-        gap: 25px;
+        gap: 18px;
         width: 100%;
     }
 
     .nav-link {
-        font-size: 18px;
+        font-size: 16px;
         display: block;
         width: 100%;
         border-bottom: 1px solid #f0f0f0;
@@ -283,22 +295,72 @@ header {
 
     .btn-apply-main {
         margin-left: 0;
-        width: auto;
+        width: 100%;
         text-align: center;
-        margin-top: 0;
-        padding: 7px 12px;
-        font-size: 11px;
+        margin-top: 10px;
+        padding: 12px 18px;
+        font-size: 14px;
+        box-sizing: border-box;
     }
 
     .btn-login-main {
         margin-left: 0;
         width: 100%;
         text-align: center;
-        margin-top: 10px;
+        margin-top: 8px;
+        padding: 11px 18px;
+        font-size: 14px;
+        box-sizing: border-box;
     }
 
     .top-banner {
         display: none;
         /* Removed alert on mobile view */
     }
+}
+
+@media (max-width: 576px) {
+    header {
+        padding: 10px 14px;
+    }
+
+    .logo img,
+    .logo-img {
+        height: 34px !important;
+        max-width: 135px;
+    }
+
+    .menu-toggle {
+        font-size: 22px;
+        width: 36px;
+        height: 36px;
+    }
+
+    .header-right {
+        width: 86%;
+        max-width: 320px;
+        padding: 65px 20px 30px;
+    }
+
+    .nav-link {
+        font-size: 15px;
+    }
+}
+
+/* Global Responsive Utilities */
+img, video, canvas, svg {
+    max-width: 100%;
+    height: auto;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent horizontal overflow body-wide */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
 }
