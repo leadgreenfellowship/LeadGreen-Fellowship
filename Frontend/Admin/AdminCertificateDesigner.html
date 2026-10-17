@@ -11,6 +11,8 @@
     <!-- PDF Lib for Realtime Preview & Rendering -->
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script src="https://unpkg.com/@pdf-lib/fontkit@0.0.4/dist/fontkit.umd.min.js"></script>
+    <!-- PDF.js for rendering uploaded PDF certificate templates -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
     <style>
         @font-face {
@@ -441,6 +443,47 @@
             color: #991B1B;
             border: 1px solid #FECACA;
         }
+
+        .btn-test-pdf {
+            background: #FFFFFF;
+            color: var(--primary-green);
+            border: 1.5px solid var(--primary-green);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-test-pdf:hover {
+            background: var(--light-green);
+            transform: translateY(-1px);
+        }
+
+        .btn-quick-load {
+            background: #F3F4F6;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 7px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-quick-load:hover {
+            background: #E5E7EB;
+            color: var(--primary-green);
+            border-color: var(--primary-green);
+        }
     </style>
 </head>
 
@@ -496,14 +539,32 @@
                     <span id="templateStatusBadge" class="status-badge default">Default System Design</span>
                 </div>
 
-                <!-- 2. Template Image Upload -->
+                <!-- 2. Template Image/PDF Upload -->
                 <div>
-                    <label style="font-size: 13px; font-weight: 700; margin-bottom: 8px; display: block;">2. Upload New Template Design</label>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <label style="font-size: 13px; font-weight: 700; display: block;">2. Upload New Template Design</label>
+                        <span style="font-size: 11px; background: #DCFCE7; color: #15803D; padding: 2px 7px; border-radius: 4px; font-weight: 700;">
+                            <i class="fa-solid fa-file-pdf"></i> PDF & Image
+                        </span>
+                    </div>
                     <div class="upload-dropzone" id="dropZone" onclick="document.getElementById('templateFileInput').click()">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
-                        <h4 id="dropzoneTitle">Click to Browse or Drop Image</h4>
-                        <p id="dropzoneDesc">Supports PNG, JPG, or WebP (1570 × 1123 px recommended)</p>
-                        <input type="file" id="templateFileInput" accept="image/png, image/jpeg, image/webp" style="display: none;">
+                        <i class="fa-solid fa-cloud-arrow-up" id="dropzoneIcon"></i>
+                        <h4 id="dropzoneTitle">Click to Browse or Drop PDF / Image</h4>
+                        <p id="dropzoneDesc">Supports PDF, PNG, JPG, or WebP (Vector PDF or 1570 × 1123 px)</p>
+                        <input type="file" id="templateFileInput" accept=".pdf, application/pdf, image/png, image/jpeg, image/webp" style="display: none;">
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; flex-wrap: wrap; gap: 6px;">
+                        <button type="button" class="btn-quick-load" id="btnLoadLocalPdf" onclick="loadProjectTemplatePdf()">
+                            <i class="fa-solid fa-file-pdf" style="color: #EF4444;"></i>
+                            <span>Use Frontend/certificate_template_en.pdf</span>
+                        </button>
+                        <span id="pdfPageControls" style="display: none; font-size: 12px; color: var(--text-muted); align-items: center; gap: 6px;">
+                            <span>Page:</span>
+                            <button type="button" class="btn-nudge" onclick="changePdfPage(-1)">‹</button>
+                            <span id="pdfPageDisplay" style="font-weight: 700; color: var(--text-main);">1 / 1</span>
+                            <button type="button" class="btn-nudge" onclick="changePdfPage(1)">›</button>
+                        </span>
                     </div>
                 </div>
 
@@ -562,7 +623,13 @@
                         <i class="fa-solid fa-eye" style="color: var(--primary-green);"></i>
                         <span id="previewTitleText">Live Preview (English Template)</span>
                     </span>
-                    <span style="font-size: 12px; color: #6B7280;" id="canvasDimInfo">1570 × 1123 px</span>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <button type="button" class="btn-test-pdf" onclick="testDownloadPreviewPdf()" title="Download sample PDF certificate with current placement">
+                            <i class="fa-solid fa-file-arrow-down"></i>
+                            <span>Test Download PDF</span>
+                        </button>
+                        <span style="font-size: 12px; color: #6B7280;" id="canvasDimInfo">1570 × 1123 px</span>
+                    </div>
                 </div>
                 <div class="canvas-container">
                     <canvas id="designerCanvas" width="1570" height="1123"></canvas>
@@ -617,7 +684,12 @@
                     yPos: 534,
                     fontSize: 54,
                     isCustom: false,
-                    fileToUpload: null
+                    fileToUpload: null,
+                    isPdf: false,
+                    pdfDoc: null,
+                    pdfArrayBuffer: null,
+                    pdfCurrentPage: 1,
+                    pdfTotalPages: 1
                 },
                 FR: {
                     activeData: null,
@@ -626,7 +698,12 @@
                     yPos: 536,
                     fontSize: 54,
                     isCustom: false,
-                    fileToUpload: null
+                    fileToUpload: null,
+                    isPdf: false,
+                    pdfDoc: null,
+                    pdfArrayBuffer: null,
+                    pdfCurrentPage: 1,
+                    pdfTotalPages: 1
                 }
             }
         };
@@ -750,14 +827,20 @@
             const badge = document.getElementById('templateStatusBadge');
             if (t.isCustom) {
                 badge.className = "status-badge custom";
-                badge.innerHTML = '<i class="fa-solid fa-circle-check"></i> Custom Admin Template (Active)';
+                badge.innerHTML = t.isPdf 
+                    ? '<i class="fa-solid fa-file-circle-check"></i> Custom PDF Template (Active)'
+                    : '<i class="fa-solid fa-circle-check"></i> Custom Admin Template (Active)';
             } else {
                 badge.className = "status-badge default";
                 badge.innerHTML = '<i class="fa-solid fa-certificate"></i> Built-in Official Template';
             }
 
             document.getElementById('previewTitleText').innerText = `Live Preview (${state.currentLang === 'EN' ? 'English Template' : 'French Template'})`;
-            document.getElementById('dropzoneTitle').innerText = t.isCustom ? "Replace Template Design" : "Upload New Template Design";
+            document.getElementById('dropzoneTitle').innerText = t.isCustom 
+                ? (t.isPdf ? `Active PDF: ${(t.fileToUpload?.name || 'Template.pdf')}` : "Replace Template Design") 
+                : "Upload New Template Design";
+            
+            updatePdfPageControls();
         }
 
         // Language Switcher
@@ -808,6 +891,57 @@
             renderPreview();
         };
 
+        // Setup PDF.js worker
+        let pdfWorkerReady = false;
+        async function setupPdfJsWorker() {
+            if (pdfWorkerReady || !window.pdfjsLib) return;
+            try {
+                const workerUrl = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                const res = await fetch(workerUrl);
+                if (res.ok) {
+                    const blob = new Blob([await res.text()], { type: 'application/javascript' });
+                    window.pdfjsLib.GlobalWorkerOptions.workerSrc = URL.createObjectURL(blob);
+                    pdfWorkerReady = true;
+                    return;
+                }
+            } catch (e) {
+                console.warn("Could not load worker as Blob, using direct URL:", e);
+            }
+            window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+            pdfWorkerReady = true;
+        }
+
+        // Render PDF page to high-res canvas image
+        async function renderPdfPageToImage(pdf, pageNum = 1) {
+            const page = await pdf.getPage(pageNum);
+            const unscaledViewport = page.getViewport({ scale: 1.0 });
+            
+            // Ultra-crisp vector rasterization (targeting at least 1570 width or native DPI)
+            const renderScale = Math.max(1570 / unscaledViewport.width, 2.0);
+            const viewport = page.getViewport({ scale: renderScale });
+            
+            const offCanvas = document.createElement('canvas');
+            offCanvas.width = Math.round(viewport.width);
+            offCanvas.height = Math.round(viewport.height);
+            const offCtx = offCanvas.getContext('2d');
+            
+            await page.render({
+                canvasContext: offCtx,
+                viewport: viewport
+            }).promise;
+            
+            // Draw into standard 1570 x 1123 canvas space
+            const targetCanvas = document.createElement('canvas');
+            targetCanvas.width = 1570;
+            targetCanvas.height = 1123;
+            const targetCtx = targetCanvas.getContext('2d');
+            targetCtx.drawImage(offCanvas, 0, 0, 1570, 1123);
+            
+            const dataUrl = targetCanvas.toDataURL('image/jpeg', 0.94);
+            const img = await loadImage(dataUrl);
+            return { dataUrl, img, width: targetCanvas.width, height: targetCanvas.height };
+        }
+
         // File Upload Handling
         const fileInput = document.getElementById('templateFileInput');
         const dropZone = document.getElementById('dropZone');
@@ -833,31 +967,239 @@
             if (file) handleSelectedFile(file);
         });
 
-        function handleSelectedFile(file) {
-            if (!file.type.startsWith('image/')) {
-                showAlert('Please select an image file (PNG, JPG, or WebP).', 'error');
+        async function handleSelectedFile(file) {
+            const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+            const isImage = file.type.startsWith('image/');
+
+            if (!isPdf && !isImage) {
+                showAlert('Please select a PDF document (.pdf) or image file (PNG, JPG, or WebP).', 'error');
                 return;
             }
 
-            const reader = new FileReader();
-            reader.onload = async (evt) => {
-                const dataUrl = evt.target.result;
-                const img = await loadImage(dataUrl);
-                
-                const t = state.templates[state.currentLang];
-                t.activeData = dataUrl;
-                t.imgElement = img;
-                t.isCustom = true;
-                t.fileToUpload = file;
+            const dropzoneTitle = document.getElementById('dropzoneTitle');
+            const dropzoneDesc = document.getElementById('dropzoneDesc');
+            const dropzoneIcon = document.getElementById('dropzoneIcon');
 
-                document.getElementById('dropzoneTitle').innerText = file.name;
-                document.getElementById('dropzoneDesc').innerText = `${img.width} × ${img.height} px (${(file.size / 1024).toFixed(1)} KB)`;
-                syncUI();
-                renderPreview();
-                showAlert(`Loaded "${file.name}". Click "Publish to Live Portal" to make it active for all fellows!`, 'success');
-            };
-            reader.readAsDataURL(file);
+            if (isPdf) {
+                dropzoneTitle.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Rendering PDF Template...';
+                dropzoneDesc.innerText = 'Extracting high-resolution vector page...';
+                dropzoneIcon.className = 'fa-solid fa-file-pdf';
+                dropzoneIcon.style.color = '#EF4444';
+
+                try {
+                    await setupPdfJsWorker();
+                    const arrayBuffer = await file.arrayBuffer();
+                    const loadingTask = window.pdfjsLib.getDocument({ data: arrayBuffer });
+                    const pdf = await loadingTask.promise;
+
+                    const { dataUrl, img } = await renderPdfPageToImage(pdf, 1);
+
+                    const t = state.templates[state.currentLang];
+                    t.activeData = dataUrl;
+                    t.imgElement = img;
+                    t.isCustom = true;
+                    t.fileToUpload = file;
+                    t.isPdf = true;
+                    t.pdfDoc = pdf;
+                    t.pdfArrayBuffer = arrayBuffer;
+                    t.pdfCurrentPage = 1;
+                    t.pdfTotalPages = pdf.numPages;
+
+                    dropzoneTitle.innerText = file.name;
+                    dropzoneDesc.innerText = `PDF Template (${pdf.numPages} page${pdf.numPages > 1 ? 's' : ''}) • ${(file.size / 1024).toFixed(1)} KB • Ultra Crisp`;
+                    dropzoneIcon.className = 'fa-solid fa-file-circle-check';
+                    dropzoneIcon.style.color = 'var(--primary-green)';
+
+                    updatePdfPageControls();
+                    syncUI();
+                    renderPreview();
+                    showAlert(`Loaded PDF template "${file.name}". Position the fellow name using the sliders, then click "Publish to Live Portal"!`, 'success');
+                } catch (err) {
+                    console.error("Error processing PDF:", err);
+                    showAlert("Failed to process PDF template: " + err.message, "error");
+                    dropzoneTitle.innerText = "Click to Browse or Drop PDF / Image";
+                    dropzoneDesc.innerText = "Supports PDF, PNG, JPG, or WebP";
+                    dropzoneIcon.className = "fa-solid fa-cloud-arrow-up";
+                    dropzoneIcon.style.color = "var(--primary-green)";
+                }
+            } else {
+                // Image file
+                const reader = new FileReader();
+                reader.onload = async (evt) => {
+                    const dataUrl = evt.target.result;
+                    const img = await loadImage(dataUrl);
+                    
+                    const t = state.templates[state.currentLang];
+                    t.activeData = dataUrl;
+                    t.imgElement = img;
+                    t.isCustom = true;
+                    t.fileToUpload = file;
+                    t.isPdf = false;
+                    t.pdfDoc = null;
+                    t.pdfArrayBuffer = null;
+                    t.pdfCurrentPage = 1;
+                    t.pdfTotalPages = 1;
+
+                    dropzoneTitle.innerText = file.name;
+                    dropzoneDesc.innerText = `${img.width} × ${img.height} px (${(file.size / 1024).toFixed(1)} KB)`;
+                    dropzoneIcon.className = 'fa-solid fa-image';
+                    dropzoneIcon.style.color = 'var(--primary-green)';
+
+                    updatePdfPageControls();
+                    syncUI();
+                    renderPreview();
+                    showAlert(`Loaded image "${file.name}". Calibrate fellow name placement and click "Publish to Live Portal"!`, 'success');
+                };
+                reader.readAsDataURL(file);
+            }
         }
+
+        // Quick button to load repository certificate_template_en.pdf
+        window.loadProjectTemplatePdf = async function() {
+            const btn = document.getElementById('btnLoadLocalPdf');
+            const origHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading template...';
+            try {
+                const res = await fetch('../certificate_template_en.pdf');
+                if (!res.ok) throw new Error("Could not find ../certificate_template_en.pdf");
+                const blob = await res.blob();
+                const file = new File([blob], "certificate_template_en.pdf", { type: "application/pdf" });
+                await handleSelectedFile(file);
+            } catch (e) {
+                console.warn("Could not auto-fetch local PDF:", e);
+                showAlert("Could not auto-fetch ../certificate_template_en.pdf directly. Please click the upload area above and select your PDF file.", "error");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = origHtml;
+            }
+        };
+
+        // Multi-page PDF page switcher
+        window.changePdfPage = async function(delta) {
+            const t = state.templates[state.currentLang];
+            if (!t.pdfDoc || t.pdfTotalPages <= 1) return;
+
+            let newPage = t.pdfCurrentPage + delta;
+            if (newPage < 1) newPage = 1;
+            if (newPage > t.pdfTotalPages) newPage = t.pdfTotalPages;
+            if (newPage === t.pdfCurrentPage) return;
+
+            t.pdfCurrentPage = newPage;
+            const { dataUrl, img } = await renderPdfPageToImage(t.pdfDoc, newPage);
+            t.activeData = dataUrl;
+            t.imgElement = img;
+            updatePdfPageControls();
+            renderPreview();
+        };
+
+        function updatePdfPageControls() {
+            const t = state.templates[state.currentLang];
+            const controls = document.getElementById('pdfPageControls');
+            const display = document.getElementById('pdfPageDisplay');
+            if (t.isPdf && t.pdfTotalPages > 1) {
+                controls.style.display = 'inline-flex';
+                display.innerText = `${t.pdfCurrentPage} / ${t.pdfTotalPages}`;
+            } else {
+                controls.style.display = 'none';
+            }
+        }
+
+        // Test Download PDF
+        window.testDownloadPreviewPdf = async function() {
+            const currentLang = state.currentLang;
+            const t = state.templates[currentLang];
+            const sampleName = (document.getElementById('sampleNameInput').value || "Jane Sample-Fellow").trim();
+
+            try {
+                const { PDFDocument, rgb, StandardFonts } = window.PDFLib;
+                const pdfDoc = await PDFDocument.create();
+                if (window.fontkit) pdfDoc.registerFontkit(window.fontkit);
+
+                let page = null;
+                const width = 1570;
+                const height = 1123;
+
+                // If original PDF buffer is available, copy the donor vector page directly
+                if (t.isPdf && t.pdfArrayBuffer) {
+                    try {
+                        const donorPdf = await PDFDocument.load(t.pdfArrayBuffer);
+                        const pageIndex = Math.max(0, (t.pdfCurrentPage || 1) - 1);
+                        const [copiedPage] = await pdfDoc.copyPages(donorPdf, [pageIndex]);
+                        page = pdfDoc.addPage(copiedPage);
+                    } catch (pdfErr) {
+                        console.warn("Direct PDF donor copy failed, embedding rendered template:", pdfErr);
+                    }
+                }
+
+                // Fallback: draw rendered template image onto new page
+                if (!page) {
+                    page = pdfDoc.addPage([width, height]);
+                    const imgSrc = t.activeData || t.defaultSrc;
+                    const imgBytes = await fetch(imgSrc).then(r => r.arrayBuffer());
+                    let bgImage = null;
+                    try {
+                        bgImage = await pdfDoc.embedJpg(imgBytes);
+                    } catch (e1) {
+                        bgImage = await pdfDoc.embedPng(imgBytes);
+                    }
+                    page.drawImage(bgImage, { x: 0, y: 0, width: width, height: height });
+                }
+
+                // Load AwesomeScript font if available
+                let font = null;
+                try {
+                    const fontBytes = await fetch('../awesome.regular.ttf').then(r => r.arrayBuffer());
+                    font = await pdfDoc.embedFont(fontBytes);
+                } catch (e) {
+                    font = await pdfDoc.embedFont(StandardFonts.TimesRomanBold);
+                }
+
+                let fontSize = t.fontSize || 54;
+                let textWidth = font.widthOfTextAtSize(sampleName, fontSize);
+                const maxNameWidth = 1100;
+                if (textWidth > maxNameWidth) {
+                    fontSize = Math.floor(fontSize * (maxNameWidth / textWidth));
+                    textWidth = font.widthOfTextAtSize(sampleName, fontSize);
+                }
+
+                const pdfX = (width - textWidth) / 2;
+                const pdfY = height - t.yPos - 21;
+
+                page.drawText(sampleName, {
+                    x: pdfX,
+                    y: pdfY,
+                    size: fontSize,
+                    font: font,
+                    color: rgb(0.08, 0.1, 0.12)
+                });
+
+                // Test verification ID
+                const codeFont = await pdfDoc.embedFont(StandardFonts.Courier);
+                page.drawText('ID: LG-SAMPLE-TEST', {
+                    x: 70,
+                    y: 35,
+                    size: 11,
+                    font: codeFont,
+                    color: rgb(0.5, 0.55, 0.6)
+                });
+
+                const pdfBytes = await pdfDoc.save();
+                const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Test_Certificate_${currentLang}_Preview.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showAlert("Test PDF generated & downloaded successfully!", "success");
+            } catch (err) {
+                console.error("Test PDF error:", err);
+                showAlert("Could not generate test PDF: " + err.message, "error");
+            }
+        };
 
         // Publish to Live Portal
         window.publishDesign = async function() {
@@ -886,13 +1228,13 @@
 
                 // Handle template upload
                 if (t.isCustom && t.activeData) {
-                    // 1. Save data URI (compressed high-efficiency format)
                     let storageUrl = null;
 
-                    // 2. Try upload to Firebase Storage as well
+                    // 1. Upload original file to Firebase Storage if selected
                     if (t.fileToUpload) {
                         try {
-                            const ext = t.fileToUpload.name.split('.').pop() || 'png';
+                            const isPdf = t.fileToUpload.type === 'application/pdf' || t.fileToUpload.name.toLowerCase().endsWith('.pdf');
+                            const ext = isPdf ? 'pdf' : (t.fileToUpload.name.split('.').pop() || 'png');
                             const storageRef = ref(storage, `certificate_templates/template_${currentLang.toLowerCase()}_${Date.now()}.${ext}`);
                             await uploadBytes(storageRef, t.fileToUpload);
                             storageUrl = await getDownloadURL(storageRef);
@@ -914,19 +1256,33 @@
 
                     if (currentLang === 'EN') {
                         updatePayload.templateDataEn = finalDataUrl;
-                        if (storageUrl) updatePayload.templateUrlEn = storageUrl;
+                        if (storageUrl) {
+                            if (t.isPdf) {
+                                updatePayload.templatePdfUrlEn = storageUrl;
+                            } else {
+                                updatePayload.templateUrlEn = storageUrl;
+                            }
+                        }
                     } else {
                         updatePayload.templateDataFr = finalDataUrl;
-                        if (storageUrl) updatePayload.templateUrlFr = storageUrl;
+                        if (storageUrl) {
+                            if (t.isPdf) {
+                                updatePayload.templatePdfUrlFr = storageUrl;
+                            } else {
+                                updatePayload.templateUrlFr = storageUrl;
+                            }
+                        }
                     }
                 } else if (!t.isCustom) {
                     // Reset custom template keys in Firestore
                     if (currentLang === 'EN') {
                         updatePayload.templateDataEn = null;
                         updatePayload.templateUrlEn = null;
+                        updatePayload.templatePdfUrlEn = null;
                     } else {
                         updatePayload.templateDataFr = null;
                         updatePayload.templateUrlFr = null;
+                        updatePayload.templatePdfUrlFr = null;
                     }
                 }
 
@@ -961,10 +1317,16 @@
             t.activeData = null;
             t.fileToUpload = null;
             t.isCustom = false;
+            t.isPdf = false;
+            t.pdfDoc = null;
+            t.pdfArrayBuffer = null;
+            t.pdfCurrentPage = 1;
+            t.pdfTotalPages = 1;
             t.yPos = currentLang === 'EN' ? 534 : 536;
             t.fontSize = 54;
             t.imgElement = await loadImage(t.defaultSrc);
 
+            updatePdfPageControls();
             syncUI();
             renderPreview();
             showAlert(`Reset to default ${currentLang} template. Click "Publish to Live Portal" to apply live.`, 'success');
