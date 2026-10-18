@@ -1069,7 +1069,7 @@
                         <div class="name-actions-row">
                             <button type="button" class="btn-text-action" onclick="setNameCase('title')">Title Case</button>
                             <span class="dot-separator">&middot;</span>
-                            <button type="button" class="btn-text-action" onclick="setNameCase('upper')">UPPERCASE</button>
+                            <button type="button" class="btn-text-action" onclick="setNameCase('lower')">lowercase</button>
                             <span class="dot-separator">&middot;</span>
                             <button type="button" class="btn-text-action" onclick="resetDefaultName()">Reset</button>
                         </div>
@@ -1608,9 +1608,23 @@
             unpaidCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
+        // Helper: Convert string to clean Title Case (capitalized initial, lowercase subsequent letters)
+        function toTitleCase(str) {
+            if (!str) return '';
+            return str
+                .toLowerCase()
+                .replace(/(^|[\s\-\.\/'])([a-z\u00C0-\u017F])/g, (m, p1, p2) => p1 + p2.toUpperCase())
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
         function handlePaidSuccess(record, docId) {
+            const rawName = (record.fullName || "Esteemed Fellow").trim();
+            const formattedName = toTitleCase(rawName);
+
             window.appState.verifiedFellow = {
-                fullName: record.fullName || "Esteemed Fellow",
+                fullName: formattedName,
+                rawName: rawName,
                 email: record.email,
                 reference: record.paymentReference || docId || "LG-CERT",
                 amount: record.amount,
@@ -1954,8 +1968,10 @@
             let val = input.value.trim();
             if (casing === 'upper') {
                 input.value = val.toUpperCase();
+            } else if (casing === 'lower') {
+                input.value = val.toLowerCase();
             } else if (casing === 'title') {
-                input.value = val.toLowerCase().replace(/(^|\s|-)\S/g, l => l.toUpperCase());
+                input.value = toTitleCase(val);
             }
             renderCanvas();
         };
@@ -1964,7 +1980,7 @@
             const defaultName = window.appState.verifiedFellow?.fullName || "LeadGreen Fellow";
             const input = document.getElementById('customNameInput');
             if (input) {
-                input.value = defaultName;
+                input.value = toTitleCase(defaultName);
                 renderCanvas();
             }
         };
