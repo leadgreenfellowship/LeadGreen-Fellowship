@@ -1692,12 +1692,31 @@
             copyText(dict.liCertNameValue);
         };
 
+        // Language Switcher Controller
+        function switchLanguage(lang) {
+            window.appState.language = (lang === 'FR') ? 'FR' : 'EN';
+            const isFr = window.appState.language === 'FR';
+            const btnEn = document.getElementById('btnLangEn');
+            const btnFr = document.getElementById('btnLangFr');
+            if (btnEn) {
+                btnEn.classList.toggle('active', !isFr);
+                btnEn.setAttribute('aria-selected', !isFr ? 'true' : 'false');
+            }
+            if (btnFr) {
+                btnFr.classList.toggle('active', isFr);
+                btnFr.setAttribute('aria-selected', isFr ? 'true' : 'false');
+            }
+            applyLanguage(window.appState.language);
+            renderCanvas();
+        }
+        window.switchLanguage = switchLanguage;
+
         // Check URL Query Parameters on Load
         function checkUrlParamsAndInit() {
             const urlParams = new URLSearchParams(window.location.search);
             const langParam = (urlParams.get('lang') || urlParams.get('language') || '').toUpperCase();
             if (langParam === 'FR' || langParam === 'FRENCH') {
-                window.switchLanguage('FR');
+                switchLanguage('FR');
             } else {
                 applyLanguage(window.appState.language || 'EN');
             }
@@ -2003,24 +2022,6 @@
 
             if (overlay) overlay.style.display = 'none';
         }
-
-        // Controls: Language Toggle
-        window.switchLanguage = function (lang) {
-            window.appState.language = (lang === 'FR') ? 'FR' : 'EN';
-            const isFr = window.appState.language === 'FR';
-            const btnEn = document.getElementById('btnLangEn');
-            const btnFr = document.getElementById('btnLangFr');
-            if (btnEn) {
-                btnEn.classList.toggle('active', !isFr);
-                btnEn.setAttribute('aria-selected', !isFr ? 'true' : 'false');
-            }
-            if (btnFr) {
-                btnFr.classList.toggle('active', isFr);
-                btnFr.setAttribute('aria-selected', isFr ? 'true' : 'false');
-            }
-            applyLanguage(window.appState.language);
-            renderCanvas();
-        };
 
         // Controls: Name Input Listener
         document.getElementById('customNameInput').addEventListener('input', () => {
