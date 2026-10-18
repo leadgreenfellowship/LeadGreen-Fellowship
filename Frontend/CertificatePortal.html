@@ -4,17 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeadGreen Fellowship — Official Certificate Generator</title>
+    <title>LeadGreen Fellowship — Certificate Studio & Credential Registry</title>
+    <meta name="description" content="Official LeadGreen Fellowship Certificate of Completion verification and generation portal. Verify climate leadership credentials and download official certificates.">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- Canvas Confetti for Celebration -->
+    <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
     <!-- PDF Lib & FontKit -->
@@ -32,28 +33,25 @@
         }
 
         :root {
-            --primary: #138A56;
-            --primary-dark: #0D623D;
-            --primary-light: #E8F5EE;
-            --primary-hover: #10774A;
-            --accent-gold: #F59E0B;
-            --accent-gold-dark: #D97706;
-            --accent-gold-light: #FEF3C7;
-            --text-dark: #111827;
-            --text-muted: #4B5563;
-            --text-light: #9CA3AF;
-            --bg-page: #F8FAFC;
-            --card-bg: #FFFFFF;
-            --border: #E2E8F0;
-            --border-hover: #CBD5E1;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            --shadow-premium: 0 25px 50px -12px rgba(19, 138, 86, 0.15);
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 16px;
-            --radius-xl: 24px;
+            /* Climate & Environmental Editorial Palette (tasteskill v2) */
+            --ground: #F6F8F5;
+            --surface: #FFFFFF;
+            --stage-bg: #EAEFEA;
+            --ink: #0D2B1D;
+            --ink-muted: #3F574A;
+            --ink-subtle: #6D8275;
+            --brand: #0E8549;
+            --brand-dark: #0A6337;
+            --brand-tint: #EAF4EE;
+            --amber-bg: #FDF9F0;
+            --amber-border: #F0D7A7;
+            --amber-ink: #8A5308;
+            --amber-button: #C87808;
+            --border: #D8E2D7;
+            --border-light: #E7EEE6;
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
         }
 
         * {
@@ -62,28 +60,34 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #F0FDF4 0%, #F8FAFC 40%, #ECFDF5 100%);
-            color: var(--text-dark);
+            background-color: var(--ground);
+            color: var(--ink);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Top Navigation Bar */
-        .navbar {
-            background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        /* =============================================
+           TOP NAVIGATION
+        ============================================= */
+        .portal-nav {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 32px;
             position: sticky;
             top: 0;
-            z-index: 100;
-            padding: 14px 28px;
+            z-index: 50;
         }
 
-        .navbar-inner {
+        .nav-inner {
             max-width: 1400px;
             margin: 0 auto;
             display: flex;
@@ -91,786 +95,612 @@
             align-items: center;
         }
 
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: var(--text-dark);
-            font-weight: 700;
-            font-size: 17px;
-        }
-
-        .nav-brand img {
-            height: 38px;
-            width: auto;
-        }
-
-        .nav-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--primary-light);
-            color: var(--primary);
-            font-size: 12px;
-            font-weight: 600;
-            padding: 5px 12px;
-            border-radius: 20px;
-            border: 1px solid rgba(19, 138, 86, 0.15);
-        }
-
-        .nav-badge i {
-            font-size: 11px;
-        }
-
-        .nav-links {
+        .nav-brand-group {
             display: flex;
             align-items: center;
             gap: 16px;
-        }
-
-        .nav-link-btn {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-muted);
             text-decoration: none;
-            padding: 8px 14px;
-            border-radius: var(--radius-sm);
-            transition: all 0.2s ease;
         }
 
-        .nav-link-btn:hover {
-            color: var(--primary);
-            background: var(--primary-light);
+        .nav-brand-img {
+            height: 42px;
+            width: auto;
+            display: block;
+            object-fit: contain;
         }
 
-        /* Main Container */
-        .main-container {
+        .nav-registry-tag {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--ink-muted);
+            border-left: 1px solid var(--border);
+            padding-left: 16px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--ink-muted);
+            text-decoration: none;
+            transition: color 0.15s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--brand);
+        }
+
+        /* =============================================
+           MAIN SPLIT-SCREEN CONTAINER
+        ============================================= */
+        .portal-main {
             flex: 1;
             max-width: 1400px;
             width: 100%;
             margin: 0 auto;
-            padding: 32px 24px 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            padding: 40px 32px 80px;
         }
 
-        /* -------------------------------------------------------------
-           PHASE 1: VERIFICATION SCREEN
-        ------------------------------------------------------------- */
-        .verification-wrapper {
-            max-width: 520px;
-            margin: 40px auto;
-            width: 100%;
-        }
-
-        .card-auth {
-            background: var(--card-bg);
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-premium);
-            border: 1px solid var(--border);
-            overflow: hidden;
-            animation: fadeIn 0.4s ease-out;
-        }
-
-        .auth-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 36px 30px;
-            text-align: center;
-            position: relative;
-        }
-
-        .auth-header-icon {
-            width: 64px;
-            height: 64px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(8px);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            margin: 0 auto 16px;
-            color: #FEF08A;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .auth-header h1 {
-            font-size: 24px;
-            font-weight: 800;
-            margin-bottom: 6px;
-            letter-spacing: -0.02em;
-        }
-
-        .auth-header p {
-            font-size: 14px;
-            opacity: 0.92;
-            max-width: 380px;
-            margin: 0 auto;
-        }
-
-        .auth-body {
-            padding: 36px 32px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 8px;
-        }
-
-        .input-group {
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-light);
-            font-size: 16px;
-            transition: color 0.2s;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 14px 16px 14px 46px;
-            font-size: 15px;
-            border-radius: var(--radius-md);
-            border: 1.5px solid var(--border);
-            background: #FAFAFA;
-            color: var(--text-dark);
-            font-family: inherit;
-            outline: none;
-            transition: all 0.2s;
-        }
-
-        .form-input:focus {
-            background: #FFFFFF;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(19, 138, 86, 0.12);
-        }
-
-        .btn-verify {
-            width: 100%;
-            padding: 15px 20px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
-            color: white;
-            border: none;
-            border-radius: var(--radius-md);
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            box-shadow: 0 4px 12px rgba(19, 138, 86, 0.25);
-        }
-
-        .btn-verify:hover {
-            background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-dark) 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(19, 138, 86, 0.35);
-        }
-
-        .btn-verify:active {
-            transform: translateY(0);
-        }
-
-        .btn-verify:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Unpaid Alert Box */
-        .unpaid-card {
-            display: none;
-            margin-top: 24px;
-            background: #FFFBEB;
-            border: 1.5px solid #FCD34D;
-            border-radius: var(--radius-md);
-            padding: 20px;
-            animation: slideDown 0.3s ease;
-        }
-
-        .unpaid-header {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .unpaid-header i {
-            color: #D97706;
-            font-size: 20px;
-            margin-top: 2px;
-        }
-
-        .unpaid-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: #92400E;
-        }
-
-        .unpaid-desc {
-            font-size: 13px;
-            color: #78350F;
-            line-height: 1.5;
-            margin-bottom: 16px;
-        }
-
-        .btn-pay-now {
-            width: 100%;
-            padding: 12px 18px;
-            background: #D97706;
-            color: white;
-            text-decoration: none;
-            border-radius: var(--radius-sm);
-            font-size: 14px;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: background 0.2s;
-        }
-
-        .btn-pay-now:hover {
-            background: #B45309;
-        }
-
-        .auth-footer {
-            margin-top: 24px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-            text-align: center;
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-
-        .auth-footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .auth-footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* -------------------------------------------------------------
-           PHASE 2: CERTIFICATE STUDIO
-        ------------------------------------------------------------- */
-        .studio-wrapper {
-            display: none;
-            animation: fadeIn 0.4s ease-out;
-        }
-
-        .studio-header {
-            background: white;
-            border-radius: var(--radius-lg);
-            padding: 24px 30px;
-            margin-bottom: 24px;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-sm);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        .fellow-welcome h2 {
-            font-size: 22px;
-            font-weight: 800;
-            color: var(--text-dark);
-            letter-spacing: -0.01em;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .fellow-welcome p {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
-        .fellow-status-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: #ECFDF5;
-            color: #065F46;
-            border: 1px solid #A7F3D0;
-            padding: 6px 14px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .fellow-status-pill .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #10B981;
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
-        }
-
-        .btn-change-email {
-            background: transparent;
-            border: 1px solid var(--border);
-            padding: 7px 14px;
-            border-radius: var(--radius-sm);
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-change-email:hover {
-            border-color: var(--text-muted);
-            color: var(--text-dark);
-            background: #F1F5F9;
-        }
-
-        /* Studio Grid */
-        .studio-grid {
+        .split-grid {
             display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 28px;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 40px;
             align-items: start;
         }
 
-        /* Responsive Adaptations Across Devices */
-        @media (max-width: 1080px) {
-            .studio-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 12px 18px;
-            }
-
-            .nav-brand img {
-                height: 32px;
-            }
-
-            .nav-badge {
-                font-size: 11px;
-                padding: 4px 10px;
-            }
-
-            .nav-link-btn {
-                padding: 6px 10px;
-                font-size: 12px;
-            }
-
-            .main-container {
-                padding: 24px 16px;
-            }
-
-            .auth-header {
-                padding: 32px 24px 28px;
-            }
-
-            .auth-header h1 {
-                font-size: 21px;
-            }
-
-            .auth-body {
-                padding: 28px 20px;
-            }
-
-            .studio-header {
-                padding: 20px 20px;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 16px;
-            }
-
-            .fellow-welcome h2 {
-                font-size: 19px;
-            }
-
-            .canvas-stage-wrapper {
-                padding: 14px;
-                min-height: 280px;
-            }
-
-            .controls-card {
-                padding: 20px 18px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .navbar {
-                padding: 10px 14px;
-            }
-
-            .nav-brand img {
-                height: 28px;
-            }
-
-            .nav-badge {
-                display: none;
-            }
-
-            .nav-link-btn {
-                padding: 5px 10px;
-                font-size: 11.5px;
-            }
-
-            .main-container {
-                padding: 16px 12px;
-            }
-
-            .card-auth {
-                border-radius: var(--radius-md);
-            }
-
-            .auth-header {
-                padding: 26px 18px 22px;
-            }
-
-            .auth-header h1 {
-                font-size: 19px;
-            }
-
-            .auth-body {
-                padding: 22px 16px;
-            }
-
-            .form-input {
-                font-size: 14px;
-                padding: 12px 14px 12px 42px;
-            }
-
-            .btn-verify {
-                font-size: 14px;
-                padding: 13px 16px;
-            }
-
-            .unpaid-card {
-                padding: 16px 14px;
-            }
-
-            .studio-header {
-                padding: 16px 14px;
-            }
-
-            .studio-header > div:last-child {
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            .canvas-card-header {
-                padding: 12px 16px;
-            }
-
-            .canvas-stage-wrapper {
-                padding: 10px;
-                min-height: 220px;
-            }
-
-            .controls-card {
-                padding: 18px 14px;
-                gap: 18px;
-            }
-
-            .btn-download-pdf,
-            .btn-download-png,
-            .btn-linkedin {
-                padding: 12px 14px;
-                font-size: 13.5px;
-            }
-        }
-
-        /* Canvas Card */
-        .canvas-card {
-            background: white;
-            border-radius: var(--radius-lg);
+        /* =============================================
+           LEFT: CERTIFICATE CANVAS STAGE
+        ============================================= */
+        .stage-card {
+            background: var(--surface);
             border: 1px solid var(--border);
-            box-shadow: var(--shadow-md);
+            border-radius: var(--radius-lg);
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            position: sticky;
+            top: 96px;
         }
 
-        .canvas-card-header {
-            padding: 16px 22px;
-            background: #F8FAFC;
+        .stage-header {
+            padding: 16px 24px;
+            background: var(--surface);
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .canvas-card-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--text-dark);
+        .stage-title-wrap {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
-        .canvas-stage-wrapper {
-            padding: 24px;
-            background: #F1F5F9;
+        .stage-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--brand);
+        }
+
+        .stage-heading {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--ink);
+        }
+
+        /* Language Switcher Tabs */
+        .lang-tabs {
+            display: flex;
+            background: var(--ground);
+            padding: 3px;
+            border-radius: var(--radius-sm);
+            gap: 2px;
+            border: 1px solid var(--border);
+        }
+
+        .lang-btn {
+            border: none;
+            background: transparent;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink-muted);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-family: inherit;
+        }
+
+        .lang-btn.active {
+            background: var(--surface);
+            color: var(--brand);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .lang-btn:hover:not(.active) {
+            color: var(--ink);
+        }
+
+        /* Recessed Canvas Stage Viewport */
+        .stage-viewport {
+            background: var(--stage-bg);
+            padding: 28px;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 480px;
+            min-height: 440px;
             position: relative;
         }
 
         #certCanvas {
             max-width: 100%;
             height: auto;
-            border-radius: 4px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            background: white;
-            transition: opacity 0.2s;
+            border-radius: 2px;
+            box-shadow: 0 8px 24px rgba(13, 43, 29, 0.08);
+            background: #FFFFFF;
+            transition: opacity 0.2s ease;
         }
 
-        .canvas-loading-overlay {
+        .stage-loading-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(234, 239, 234, 0.85);
             display: none;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             gap: 12px;
-            z-index: 5;
+            z-index: 10;
         }
 
-        /* Controls Panel */
-        .controls-card {
-            background: white;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-md);
-            padding: 28px 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 22px;
-        }
-
-        .control-section-title {
+        .stage-loading-overlay p {
             font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .stage-footer {
+            padding: 14px 24px;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--ink-subtle);
+        }
+
+        .stage-spec {
+            font-weight: 500;
+        }
+
+        .stage-badge {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 6px;
+            font-weight: 500;
+            color: var(--ink-muted);
         }
 
-        /* Language Toggle Tabs */
-        .lang-tabs {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            background: #F1F5F9;
-            padding: 4px;
+        /* =============================================
+           RIGHT: CONTROL & VERIFICATION PANEL
+        ============================================= */
+        .panel-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 36px 32px;
+        }
+
+        .panel-kicker {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--brand);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .panel-heading {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 30px;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.25;
+            margin-bottom: 12px;
+        }
+
+        .panel-lead {
+            font-size: 15px;
+            color: var(--ink-muted);
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        /* Field Form */
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .field-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 6px;
+        }
+
+        .field-hint {
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--ink-subtle);
+        }
+
+        .field-input {
+            width: 100%;
+            padding: 13px 16px;
+            font-size: 15px;
+            font-family: inherit;
+            color: var(--ink);
+            background: #FFFFFF;
+            border: 1.5px solid var(--border);
             border-radius: var(--radius-md);
+            outline: none;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .field-input:focus {
+            border-color: var(--brand);
+            box-shadow: 0 0 0 3px var(--brand-tint);
+        }
+
+        .field-input::placeholder {
+            color: var(--ink-subtle);
+        }
+
+        /* Solid Buttons (taste-skill compliant: flat, deliberate) */
+        .btn-solid-primary {
+            width: 100%;
+            padding: 14px 20px;
+            background: var(--brand);
+            color: #FFFFFF;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background 0.15s ease;
+            font-family: inherit;
+        }
+
+        .btn-solid-primary:hover {
+            background: var(--brand-dark);
+        }
+
+        .btn-solid-primary:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        .btn-outline-primary {
+            width: 100%;
+            padding: 13px 20px;
+            background: #FFFFFF;
+            color: var(--ink);
+            font-size: 14px;
+            font-weight: 600;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.15s ease;
+            font-family: inherit;
+        }
+
+        .btn-outline-primary:hover {
+            border-color: var(--brand);
+            color: var(--brand);
+            background: var(--brand-tint);
+        }
+
+        .btn-linkedin-action {
+            width: 100%;
+            padding: 12px 20px;
+            background: #0A66C2;
+            color: #FFFFFF;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.15s ease;
+            font-family: inherit;
+        }
+
+        .btn-linkedin-action:hover {
+            background: #084E96;
+        }
+
+        /* Unpaid Notice (Climate / Amber tone step) */
+        .notice-card-amber {
+            background: var(--amber-bg);
+            border: 1px solid var(--amber-border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .notice-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--amber-ink);
+            margin-bottom: 8px;
+        }
+
+        .notice-text {
+            font-size: 13px;
+            color: var(--amber-ink);
+            line-height: 1.55;
+            margin-bottom: 16px;
+        }
+
+        .btn-amber-action {
+            display: block;
+            width: 100%;
+            padding: 11px 16px;
+            background: var(--amber-button);
+            color: #FFFFFF;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            transition: opacity 0.15s ease;
+        }
+
+        .btn-amber-action:hover {
+            opacity: 0.92;
+        }
+
+        .notice-footer-text {
+            font-size: 12px;
+            text-align: center;
+            margin-top: 10px;
+            color: var(--amber-ink);
+        }
+
+        .notice-footer-text a {
+            color: var(--amber-ink);
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        /* Sample Demonstration Prompt */
+        .sample-prompt {
+            border-top: 1px solid var(--border-light);
+            padding-top: 20px;
+            margin-top: 24px;
+            font-size: 13px;
+            color: var(--ink-muted);
+        }
+
+        .sample-prompt p {
+            margin-bottom: 8px;
+        }
+
+        .btn-link-action {
+            background: none;
+            border: none;
+            padding: 0;
+            color: var(--brand);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
             gap: 4px;
         }
 
-        .lang-tab-btn {
-            border: none;
-            background: transparent;
-            padding: 10px 14px;
+        .btn-link-action:hover {
+            text-decoration: underline;
+        }
+
+        .panel-footer-note {
+            font-size: 12px;
+            color: var(--ink-subtle);
+            line-height: 1.6;
+            margin-top: 24px;
+            border-top: 1px solid var(--border-light);
+            padding-top: 16px;
+        }
+
+        .panel-footer-note a {
+            color: var(--brand);
+            text-decoration: none;
+        }
+
+        .panel-footer-note a:hover {
+            text-decoration: underline;
+        }
+
+        /* =============================================
+           VERIFIED CREDENTIAL PANEL (State B)
+        ============================================= */
+        .verified-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--brand);
             font-size: 13px;
             font-weight: 600;
-            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .credential-box {
+            background: var(--ground);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px 18px;
+            margin-bottom: 24px;
+        }
+
+        .credential-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cred-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--ink-subtle);
+            margin-bottom: 4px;
+        }
+
+        .cred-id {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .btn-copy-chip {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--ink-muted);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 12px;
             border-radius: var(--radius-sm);
             cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .lang-tab-btn.active {
-            background: white;
-            color: var(--primary);
-            box-shadow: var(--shadow-sm);
-        }
-
-        /* Name Inputs & Casing */
-        .name-input-wrapper {
-            position: relative;
-        }
-
-        .name-input {
-            width: 100%;
-            padding: 12px 14px;
-            font-size: 15px;
-            font-weight: 600;
-            border-radius: var(--radius-sm);
-            border: 1.5px solid var(--border);
-            color: var(--text-dark);
+            gap: 6px;
+            transition: all 0.15s ease;
             font-family: inherit;
-            outline: none;
-            transition: border-color 0.2s;
         }
 
-        .name-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(19, 138, 86, 0.1);
+        .btn-copy-chip:hover {
+            border-color: var(--brand);
+            color: var(--brand);
         }
 
+        .control-group {
+            margin-bottom: 24px;
+        }
 
-
-        /* Uniform Design Badge */
-        .uniform-badge {
+        .name-actions-row {
             display: flex;
             align-items: center;
-            gap: 10px;
-            background: #F0FDF4;
-            border: 1px solid rgba(19, 138, 86, 0.2);
-            padding: 10px 14px;
-            border-radius: var(--radius-sm);
-            font-size: 13px;
-            color: var(--primary-dark);
-            margin-top: 10px;
-        }
-
-        .uniform-badge i {
-            color: var(--primary);
-            font-size: 15px;
-        }
-
-        /* Export Action Buttons */
-        .actions-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             margin-top: 8px;
         }
 
-        .btn-download-pdf {
-            width: 100%;
-            padding: 14px 18px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
-            color: white;
+        .btn-text-action {
+            background: none;
             border: none;
-            border-radius: var(--radius-md);
-            font-size: 15px;
-            font-weight: 700;
+            padding: 0;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--ink-subtle);
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            box-shadow: 0 4px 12px rgba(19, 138, 86, 0.25);
-            transition: all 0.2s;
+            font-family: inherit;
+            transition: color 0.15s ease;
         }
 
-        .btn-download-pdf:hover {
-            background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-dark) 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 18px rgba(19, 138, 86, 0.35);
+        .btn-text-action:hover {
+            color: var(--brand);
         }
 
-        .btn-download-png {
-            width: 100%;
-            padding: 12px 18px;
-            background: #FFFFFF;
-            color: var(--primary);
-            border: 1.5px solid var(--primary);
+        .dot-separator {
+            color: var(--border);
+            font-size: 12px;
+        }
+
+        .standard-notice {
+            background: var(--brand-tint);
+            border: 1px solid rgba(14, 133, 73, 0.2);
             border-radius: var(--radius-md);
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
+            padding: 12px 16px;
+            font-size: 13px;
+            color: var(--brand-dark);
+            margin-bottom: 24px;
+            line-height: 1.5;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            align-items: flex-start;
             gap: 10px;
-            transition: all 0.2s;
         }
 
-        .btn-download-png:hover {
-            background: var(--primary-light);
+        .standard-notice i {
+            margin-top: 2px;
+            color: var(--brand);
         }
 
-        .btn-linkedin {
-            width: 100%;
-            padding: 11px 18px;
-            background: #0A66C2;
-            color: white;
+        .download-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .panel-footer-meta {
+            border-top: 1px solid var(--border-light);
+            padding-top: 18px;
+        }
+
+        .btn-switch-fellow {
+            background: none;
             border: none;
-            border-radius: var(--radius-md);
-            font-size: 14px;
-            font-weight: 600;
+            padding: 0;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--ink-subtle);
             cursor: pointer;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: background 0.2s;
+            gap: 6px;
+            font-family: inherit;
+            transition: color 0.15s ease;
         }
 
-        .btn-linkedin:hover {
-            background: #004182;
+        .btn-switch-fellow:hover {
+            color: var(--brand);
         }
 
-        /* Spinners */
-        .spinner {
-            width: 18px;
-            height: 18px;
-            border: 2px solid rgba(255, 255, 255, 0.35);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        .spinner-dark {
-            border: 2px solid rgba(19, 138, 86, 0.2);
-            border-top-color: var(--primary);
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* LinkedIn Modal */
+        /* =============================================
+           MODAL & TOAST
+        ============================================= */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            display: none;
+            background: rgba(13, 43, 29, 0.6);
+            display: flex;
             justify-content: center;
             align-items: center;
             z-index: 200;
@@ -878,13 +708,13 @@
         }
 
         .modal-card {
-            background: white;
+            background: var(--surface);
             border-radius: var(--radius-lg);
-            max-width: 480px;
+            max-width: 500px;
             width: 100%;
-            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.15);
             overflow: hidden;
-            animation: fadeIn 0.3s ease;
         }
 
         .modal-header {
@@ -897,292 +727,429 @@
         }
 
         .modal-header h3 {
-            font-size: 17px;
-            font-weight: 700;
+            font-size: 16px;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .btn-close-modal {
+        .btn-modal-close {
             background: transparent;
             border: none;
             color: white;
-            font-size: 18px;
+            font-size: 20px;
             cursor: pointer;
             opacity: 0.8;
+            transition: opacity 0.15s ease;
         }
 
-        .btn-close-modal:hover {
+        .btn-modal-close:hover {
             opacity: 1;
         }
 
         .modal-body {
             padding: 24px;
             font-size: 14px;
-            color: var(--text-dark);
-            line-height: 1.6;
+            color: var(--ink-muted);
+            line-height: 1.55;
         }
 
-        .modal-field {
-            background: #F8FAFC;
+        .modal-field-block {
+            margin-top: 14px;
+        }
+
+        .modal-field-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--ink-subtle);
+            margin-bottom: 4px;
+        }
+
+        .modal-field-box {
+            background: var(--ground);
             border: 1px solid var(--border);
             border-radius: var(--radius-sm);
             padding: 10px 14px;
-            margin: 10px 0;
-            font-family: monospace;
-            font-size: 13px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-size: 13px;
+            color: var(--ink);
         }
 
-        .btn-copy-field {
+        .btn-copy-mini {
             background: transparent;
             border: none;
-            color: var(--primary);
+            color: var(--brand);
             font-weight: 600;
-            cursor: pointer;
             font-size: 12px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-copy-mini:hover {
+            text-decoration: underline;
+        }
+
+        /* Toast Notification */
+        .toast-forest {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--ink);
+            color: #FFFFFF;
+            padding: 12px 20px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.25s ease;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+            pointer-events: none;
+        }
+
+        .toast-forest.show {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .toast-forest i {
+            color: #48BB78;
+        }
+
+        /* Spinners */
+        .spinner-white {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .spinner-forest {
+            width: 24px;
+            height: 24px;
+            border: 2.5px solid rgba(14, 133, 73, 0.2);
+            border-top-color: var(--brand);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* =============================================
+           RESPONSIVE DESIGN
+        ============================================= */
+        @media (max-width: 1024px) {
+            .split-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .stage-card {
+                position: static;
+            }
+
+            .stage-viewport {
+                min-height: 320px;
+                padding: 18px;
+            }
+
+            .portal-main {
+                padding: 24px 20px 60px;
+            }
+
+            .panel-card {
+                padding: 28px 24px;
+            }
+
+            .panel-heading {
+                font-size: 26px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .portal-nav {
+                padding: 12px 16px;
+            }
+
+            .nav-registry-tag {
+                display: none;
+            }
+
+            .nav-brand-img {
+                height: 34px;
+            }
+
+            .stage-viewport {
+                min-height: 220px;
+                padding: 12px;
+            }
+
+            .panel-card {
+                padding: 22px 16px;
+            }
+
+            .panel-heading {
+                font-size: 22px;
+            }
+
+            .stage-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Sticky Navbar -->
-    <nav class="navbar">
-        <div class="navbar-inner">
-            <a href="index.html" class="nav-brand">
-                <img src="Logo name green.png" alt="LeadGreen Logo" onerror="this.src='https://via.placeholder.com/140x40?text=LeadGreen'">
-            </a>
-            <div class="nav-links">
-                <span class="nav-badge">
-                    <i class="fa-solid fa-shield-halved"></i>
-                    Official Verification Portal
-                </span>
-                <a href="CertificatePayment.html" class="nav-link-btn">Payment Page</a>
+    <!-- Top Navigation -->
+    <nav class="portal-nav">
+        <div class="nav-inner">
+            <div class="nav-brand-group">
+                <a href="index.html">
+                    <img src="Logo name green.png" alt="LeadGreen Fellowship" class="nav-brand-img" onerror="this.src='https://via.placeholder.com/140x40?text=LeadGreen'">
+                </a>
+                <span class="nav-registry-tag">Credential Registry & Certificate Studio</span>
+            </div>
+            <div class="nav-actions">
+                <a href="CertificatePayment.html" class="nav-link">Payment Page</a>
+                <a href="index.html" class="nav-link">Home</a>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="main-container">
+    <!-- Main Split-Screen Container -->
+    <main class="portal-main">
+        <div class="split-grid">
 
-        <!-- =========================================================
-             PHASE 1: VERIFICATION SCREEN
-        ========================================================== -->
-        <div class="verification-wrapper" id="verificationSection">
-            <div class="card-auth">
-                <div class="auth-header">
-                    <div class="auth-header-icon">
-                        <i class="fa-solid fa-award"></i>
+            <!-- Left: Certificate Live Stage -->
+            <section class="stage-card" aria-label="Certificate Preview">
+                <div class="stage-header">
+                    <div class="stage-title-wrap">
+                        <span class="stage-indicator"></span>
+                        <span class="stage-heading">Certificate Live Preview</span>
                     </div>
-                    <h1>LeadGreen Certificate Portal</h1>
-                    <p>Enter your registered email address to verify your certificate status and generate your credential.</p>
+                    <div class="lang-tabs" role="tablist" aria-label="Certificate Language">
+                        <button type="button" class="lang-btn active" id="btnLangEn" onclick="switchLanguage('EN')" role="tab" aria-selected="true">English</button>
+                        <button type="button" class="lang-btn" id="btnLangFr" onclick="switchLanguage('FR')" role="tab" aria-selected="false">Français</button>
+                    </div>
                 </div>
 
-                <div class="auth-body">
-                    <form id="verifyForm">
-                        <label class="form-label" for="fellowEmail">Fellow Email Address</label>
-                        <div class="input-group">
+                <div class="stage-viewport">
+                    <div class="stage-loading-overlay" id="canvasLoadingOverlay">
+                        <div class="spinner-forest"></div>
+                        <p>Rendering Certificate...</p>
+                    </div>
+                    <canvas id="certCanvas" width="1570" height="1123"></canvas>
+                </div>
+
+                <div class="stage-footer">
+                    <span class="stage-spec" id="templateResolutionNotice">1570 × 1123 HD Vector Precision</span>
+                    <span class="stage-badge">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        Official Fellowship Standard
+                    </span>
+                </div>
+            </section>
+
+            <!-- Right: Interactive Control Panel -->
+            <section class="panel-card" aria-label="Credential Controls">
+
+                <!-- STATE A: UNVERIFIED / LOOKUP -->
+                <div id="unverifiedPanel">
+                    <p class="panel-kicker">Fellowship Credential Registry</p>
+                    <h1 class="panel-heading">Verify & Issue Your Certificate</h1>
+                    <p class="panel-lead">
+                        Enter your registered email address to verify your completion record and download your official credential.
+                    </p>
+
+                    <form id="verifyForm" class="auth-form">
+                        <div>
+                            <label for="fellowEmail" class="field-label">
+                                <span>Fellow Email Address</span>
+                            </label>
                             <input
                                 type="email"
                                 id="fellowEmail"
-                                class="form-input"
-                                placeholder="e.g. yourname@gmail.com"
+                                class="field-input"
+                                placeholder="e.g. fellow@example.com"
                                 required
                                 autocomplete="email"
                             >
-                            <i class="fa-regular fa-envelope input-icon"></i>
                         </div>
 
-                        <button type="submit" class="btn-verify" id="btnVerify">
-                            <span id="btnVerifyText">Verify & Generate Certificate</span>
-                            <i class="fa-solid fa-arrow-right" id="btnVerifyIcon"></i>
-                            <div class="spinner" id="btnVerifySpinner" style="display: none;"></div>
+                        <button type="submit" class="btn-solid-primary" id="btnVerify">
+                            <span id="btnVerifyText">Verify Record</span>
+                            <div class="spinner-white" id="btnVerifySpinner" style="display: none;"></div>
                         </button>
                     </form>
 
-                    <!-- Unpaid Alert Banner -->
-                    <div class="unpaid-card" id="unpaidCard">
-                        <div class="unpaid-header">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-                            <div>
-                                <div class="unpaid-title">Certificate Registration Required</div>
-                                <div class="unpaid-desc" id="unpaidDescText">
-                                    We could not find a confirmed certificate registration for <strong id="unpaidEmailSpan">this email</strong>. To generate your official, verifiable certificate, please complete your registration.
-                                </div>
-                            </div>
-                        </div>
-
-                        <a href="CertificatePayment.html" class="btn-pay-now" id="btnPayNowLink">
-                            <i class="fa-solid fa-credit-card"></i>
-                            <span>Complete Certificate Payment ($1.99)</span>
+                    <!-- Unpaid Alert Notice -->
+                    <div class="notice-card-amber" id="unpaidCard" style="display: none;">
+                        <div class="notice-title">Certificate Registration Required</div>
+                        <p class="notice-text">
+                            No confirmed certificate registration was found for <strong id="unpaidEmailSpan">this email</strong>. To generate your official, verifiable certificate, please complete your registration.
+                        </p>
+                        <a href="CertificatePayment.html" class="btn-amber-action" id="btnPayNowLink">
+                            Complete Certificate Registration ($1.99)
                         </a>
-
-                        <div style="margin-top: 12px; font-size: 12px; text-align: center; color: #92400E;">
-                            Paid with a different email? <a href="#" onclick="focusEmailInput(event)" style="color: #92400E; font-weight: 700; text-decoration: underline;">Try another address</a>
-                        </div>
+                        <p class="notice-footer-text">
+                            Paid with another email? <a href="#" onclick="focusEmailInput(event)">Try a different address</a>
+                        </p>
                     </div>
 
-                    <div class="auth-footer">
-                        Need help or have questions? <a href="mailto:support@leadgreenfellowship.com">Contact Fellow Support</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- =========================================================
-             PHASE 2: INTERACTIVE CERTIFICATE STUDIO
-        ========================================================== -->
-        <div class="studio-wrapper" id="studioSection">
-            <!-- Studio Header -->
-            <div class="studio-header">
-                <div class="fellow-welcome">
-                    <h2 id="studioGreeting">
-                        Congratulations, Fellow!
-                        <i class="fa-solid fa-circle-check" style="color: #10B981; font-size: 20px;"></i>
-                    </h2>
-                    <p>Your LeadGreen Fellowship certificate of completion is verified and ready to customize & download.</p>
-                </div>
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <div class="fellow-status-pill">
-                        <span class="dot"></span>
-                        <span id="fellowRefBadge">Verified Record</span>
-                    </div>
-                    <button class="btn-change-email" id="btnSignOut">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <span>Switch Fellow</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Studio Grid -->
-            <div class="studio-grid">
-                <!-- Left: Live Certificate Canvas -->
-                <div class="canvas-card">
-                    <div class="canvas-card-header">
-                        <div class="canvas-card-title">
-                            <i class="fa-solid fa-eye" style="color: var(--primary);"></i>
-                            <span>Live Certificate Preview</span>
-                        </div>
-                        <div style="font-size: 12px; color: var(--text-light);">
-                            <span id="templateResolutionNotice">1570 × 1123 High-Definition</span>
-                        </div>
+                    <!-- Sample Demonstration Link -->
+                    <div class="sample-prompt">
+                        <p>Previewing the portal or testing certificate layout?</p>
+                        <button type="button" class="btn-link-action" onclick="loadSamplePreview()">
+                            Load interactive sample preview &rarr;
+                        </button>
                     </div>
 
-                    <div class="canvas-stage-wrapper">
-                        <div class="canvas-loading-overlay" id="canvasLoadingOverlay">
-                            <div class="spinner spinner-dark" style="width: 32px; height: 32px; border-width: 3px;"></div>
-                            <div style="font-size: 14px; font-weight: 600; color: var(--text-dark);">Rendering Certificate...</div>
-                        </div>
-                        <canvas id="certCanvas" width="1570" height="1123"></canvas>
+                    <div class="panel-footer-note">
+                        Official credential records maintained by the LeadGreen Fellowship Academic Secretariat. Need assistance? <a href="mailto:support@leadgreenfellowship.com">Contact Fellow Support</a>.
                     </div>
                 </div>
 
-                <!-- Right: Customization Controls -->
-                <div class="controls-card">
-                    <!-- Template Language Selector -->
-                    <div>
-                        <div class="control-section-title">
-                            <span>1. Certificate Language</span>
-                            <span style="font-size: 11px; text-transform: none; color: var(--text-light);">Switch anytime</span>
-                        </div>
-                        <div class="lang-tabs">
-                            <button type="button" class="lang-tab-btn active" id="btnLangEn" onclick="switchLanguage('EN')">
-                                <i class="fa-solid fa-globe"></i>
-                                <span>English</span>
-                            </button>
-                            <button type="button" class="lang-tab-btn" id="btnLangFr" onclick="switchLanguage('FR')">
-                                <i class="fa-solid fa-language"></i>
-                                <span>Français</span>
+                <!-- STATE B: VERIFIED FELLOW STUDIO -->
+                <div id="verifiedPanel" style="display: none;">
+                    <div class="verified-kicker">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Confirmed Fellow Record</span>
+                    </div>
+                    <h1 class="panel-heading" id="studioGreeting">Congratulations, Fellow!</h1>
+                    <p class="panel-lead">
+                        Your completion record is verified. Review your name formatting and download your official credentials below.
+                    </p>
+
+                    <!-- Credential Reference Box -->
+                    <div class="credential-box">
+                        <div class="credential-row">
+                            <div>
+                                <span class="cred-label">Credential Verification ID</span>
+                                <span class="cred-id" id="credIdDisplay">LG-CERT-XXXXX</span>
+                            </div>
+                            <button type="button" class="btn-copy-chip" onclick="copyVerificationLink()">
+                                <i class="fa-regular fa-copy"></i> Copy Link
                             </button>
                         </div>
                     </div>
 
                     <!-- Fellow Name Customization -->
-                    <div>
-                        <div class="control-section-title">
-                            <span>2. Fellow Name on Certificate</span>
+                    <div class="control-group">
+                        <label for="customNameInput" class="field-label">
+                            <span>Recipient Name on Certificate</span>
+                            <span class="field-hint">Updates live on preview</span>
+                        </label>
+                        <input type="text" id="customNameInput" class="field-input" placeholder="Full Name">
+                        <div class="name-actions-row">
+                            <button type="button" class="btn-text-action" onclick="setNameCase('title')">Title Case</button>
+                            <span class="dot-separator">&middot;</span>
+                            <button type="button" class="btn-text-action" onclick="setNameCase('upper')">UPPERCASE</button>
+                            <span class="dot-separator">&middot;</span>
+                            <button type="button" class="btn-text-action" onclick="resetDefaultName()">Reset</button>
                         </div>
-                        <div class="name-input-wrapper">
-                            <input type="text" id="customNameInput" class="name-input" placeholder="Enter Full Name">
-                        </div>
-
                     </div>
 
-                    <!-- Uniform Design Notice -->
-                    <div class="uniform-badge">
+                    <!-- Standard Notice -->
+                    <div class="standard-notice">
                         <i class="fa-solid fa-certificate"></i>
-                        <span>Official fellowship script typography and calibrated layout applied automatically.</span>
+                        <span>Calibrated official fellowship calligraphy and vector layout applied automatically.</span>
                     </div>
 
-                    <!-- Action Downloads -->
-                    <div class="actions-group">
-                        <button type="button" class="btn-download-pdf" id="btnDownloadPdf" onclick="downloadOfficialPdf()">
+                    <!-- Download Actions -->
+                    <div class="download-stack">
+                        <button type="button" class="btn-solid-primary" id="btnDownloadPdf" onclick="downloadOfficialPdf()">
                             <i class="fa-solid fa-file-pdf"></i>
                             <span id="btnPdfText">Download Official PDF</span>
                         </button>
 
-                        <button type="button" class="btn-download-png" id="btnDownloadPng" onclick="downloadHighResPng()">
+                        <button type="button" class="btn-outline-primary" id="btnDownloadPng" onclick="downloadHighResPng()">
                             <i class="fa-solid fa-image"></i>
                             <span>Download High-Res Image (PNG)</span>
                         </button>
 
-                        <button type="button" class="btn-linkedin" onclick="openLinkedInModal()">
+                        <button type="button" class="btn-linkedin-action" onclick="openLinkedInModal()">
                             <i class="fa-brands fa-linkedin"></i>
-                            <span>Add to LinkedIn Profile</span>
+                            <span>Add Credential to LinkedIn</span>
+                        </button>
+                    </div>
+
+                    <div class="panel-footer-meta">
+                        <button type="button" class="btn-switch-fellow" id="btnSignOut">
+                            <i class="fa-solid fa-arrow-left"></i> Check another fellow email
                         </button>
                     </div>
                 </div>
-            </div>
-        </div>
 
+            </section>
+        </div>
     </main>
 
     <!-- LinkedIn Helper Modal -->
-    <div class="modal-overlay" id="linkedInModal">
+    <div class="modal-overlay" id="linkedInModal" style="display: none;">
         <div class="modal-card">
             <div class="modal-header">
                 <h3><i class="fa-brands fa-linkedin"></i> Add Certificate to LinkedIn</h3>
-                <button type="button" class="btn-close-modal" onclick="closeLinkedInModal()">&times;</button>
+                <button type="button" class="btn-modal-close" onclick="closeLinkedInModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <p>Enhance your LinkedIn profile with your verified LeadGreen credential:</p>
+                <p>Add your verified LeadGreen credential to your LinkedIn profile with these details:</p>
 
-                <div style="margin-top: 14px;">
-                    <strong>Certification Name:</strong>
-                    <div class="modal-field">
+                <div class="modal-field-block">
+                    <span class="modal-field-label">Certification Name</span>
+                    <div class="modal-field-box">
                         <span id="liCertName">LeadGreen Fellowship - Certificate of Completion</span>
-                        <button class="btn-copy-field" onclick="copyText('LeadGreen Fellowship - Certificate of Completion')">Copy</button>
+                        <button type="button" class="btn-copy-mini" onclick="copyText('LeadGreen Fellowship - Certificate of Completion')">Copy</button>
                     </div>
                 </div>
 
-                <div>
-                    <strong>Issuing Organization:</strong>
-                    <div class="modal-field">
+                <div class="modal-field-block">
+                    <span class="modal-field-label">Issuing Organization</span>
+                    <div class="modal-field-box">
                         <span>LeadGreen Fellowship</span>
-                        <button class="btn-copy-field" onclick="copyText('LeadGreen Fellowship')">Copy</button>
+                        <button type="button" class="btn-copy-mini" onclick="copyText('LeadGreen Fellowship')">Copy</button>
                     </div>
                 </div>
 
-                <div>
-                    <strong>Credential ID:</strong>
-                    <div class="modal-field">
+                <div class="modal-field-block">
+                    <span class="modal-field-label">Credential ID</span>
+                    <div class="modal-field-box">
                         <span id="liCertId">LG-CERT-XXXX</span>
-                        <button class="btn-copy-field" onclick="copyText(document.getElementById('liCertId').innerText)">Copy</button>
+                        <button type="button" class="btn-copy-mini" onclick="copyText(document.getElementById('liCertId').innerText)">Copy</button>
                     </div>
                 </div>
 
-                <div style="margin-top: 20px;">
-                    <a href="https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME" target="_blank" class="btn-linkedin" style="text-decoration:none;">
+                <div style="margin-top: 22px;">
+                    <a href="https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME" target="_blank" class="btn-linkedin-action" style="text-decoration:none;">
                         <i class="fa-brands fa-linkedin"></i>
                         <span>Open LinkedIn Certifications</span>
                     </a>
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-forest" id="toastNotification">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toastText">Action completed</span>
     </div>
 
     <!-- Firebase & Core Generator Logic -->
@@ -1392,7 +1359,7 @@
                 onSnapshot(doc(db, "certificate_payments", "GLOBAL_LAYOUT"), (snap) => {
                     if (snap.exists()) {
                         const changed = applyLayoutData(snap.data(), null);
-                        if (changed && window.appState.verifiedFellow) {
+                        if (changed) {
                             renderCanvas();
                         }
                     }
@@ -1401,7 +1368,7 @@
                 onSnapshot(doc(db, "certificate_payments", "GLOBAL_LAYOUT_EN"), (snap) => {
                     if (snap.exists()) {
                         const changed = applyLayoutData(snap.data(), 'EN');
-                        if (changed && window.appState.verifiedFellow && window.appState.language === 'EN') {
+                        if (changed && window.appState.language === 'EN') {
                             renderCanvas();
                         }
                     }
@@ -1410,7 +1377,7 @@
                 onSnapshot(doc(db, "certificate_payments", "GLOBAL_LAYOUT_FR"), (snap) => {
                     if (snap.exists()) {
                         const changed = applyLayoutData(snap.data(), 'FR');
-                        if (changed && window.appState.verifiedFellow && window.appState.language === 'FR') {
+                        if (changed && window.appState.language === 'FR') {
                             renderCanvas();
                         }
                     }
@@ -1439,7 +1406,7 @@
                 console.warn("Could not preload font for pdf:", e);
             }
 
-            // Eagerly preload default template images in background
+            // Eagerly preload default template images in background and render initial canvas
             try {
                 const enSrc = window.appState.customTemplateEn || 'certificate_template_en.png';
                 const frSrc = window.appState.customTemplateFr || 'certificate_template.png';
@@ -1449,6 +1416,7 @@
                 ]).then(([enImg, frImg]) => {
                     if (enImg) window.appState.templateImageEn = enImg;
                     if (frImg) window.appState.templateImageFr = frImg;
+                    renderCanvas();
                 });
             } catch (err) {
                 console.error("Error preloading template assets:", err);
@@ -1461,9 +1429,12 @@
         function checkUrlParamsAndInit() {
             const urlParams = new URLSearchParams(window.location.search);
             const emailParam = urlParams.get('email');
+            const demoParam = urlParams.get('demo') || urlParams.get('preview');
             if (emailParam) {
                 document.getElementById('fellowEmail').value = emailParam.trim();
                 executeVerification(emailParam.trim());
+            } else if (demoParam === '1' || demoParam === 'true') {
+                window.loadSamplePreview();
             }
         }
 
@@ -1486,13 +1457,11 @@
             const normalizedEmail = email.toLowerCase().trim();
             const btnVerify = document.getElementById('btnVerify');
             const btnText = document.getElementById('btnVerifyText');
-            const btnIcon = document.getElementById('btnVerifyIcon');
             const spinner = document.getElementById('btnVerifySpinner');
             const unpaidCard = document.getElementById('unpaidCard');
 
             btnVerify.disabled = true;
-            btnText.innerText = "Verifying Payment Record...";
-            btnIcon.style.display = 'none';
+            btnText.innerText = "Verifying Record...";
             spinner.style.display = 'block';
             unpaidCard.style.display = 'none';
 
@@ -1516,8 +1485,7 @@
                 alert("Error connecting to verification server. Please check your internet connection and try again.");
             } finally {
                 btnVerify.disabled = false;
-                btnText.innerText = "Verify & Generate Certificate";
-                btnIcon.style.display = 'inline-block';
+                btnText.innerText = "Verify Record";
                 spinner.style.display = 'none';
             }
         }
@@ -1545,30 +1513,41 @@
             // Trigger Confetti Celebration
             try {
                 confetti({
-                    particleCount: 80,
-                    spread: 70,
+                    particleCount: 75,
+                    spread: 60,
                     origin: { y: 0.6 }
                 });
             } catch (e) { }
 
-            // Transition to Phase 2
-            document.getElementById('verificationSection').style.display = 'none';
-            const studio = document.getElementById('studioSection');
-            studio.style.display = 'block';
+            // Transition from State A to State B
+            document.getElementById('unverifiedPanel').style.display = 'none';
+            document.getElementById('verifiedPanel').style.display = 'block';
 
             // Populate Fellow Data
             const displayName = window.appState.verifiedFellow.fullName;
-            document.getElementById('studioGreeting').innerHTML = `
-                Congratulations, ${escapeHtml(displayName)}!
-                <i class="fa-solid fa-circle-check" style="color: #10B981; font-size: 22px;"></i>
-            `;
-            document.getElementById('fellowRefBadge').innerText = `Ref: ${window.appState.verifiedFellow.reference}`;
+            document.getElementById('studioGreeting').innerText = `Congratulations, ${displayName}!`;
+            document.getElementById('credIdDisplay').innerText = window.appState.verifiedFellow.reference;
             document.getElementById('customNameInput').value = displayName;
             document.getElementById('liCertId').innerText = window.appState.verifiedFellow.reference;
 
-            // Render Certificate
+            // Re-render Certificate with fellow's name
             renderCanvas();
+            window.showToast("Fellow credential verified successfully");
         }
+
+        window.handlePaidSuccess = handlePaidSuccess;
+
+        // Sample Preview Helper
+        window.loadSamplePreview = function () {
+            handlePaidSuccess({
+                fullName: "Dr. Alexandria Morgan",
+                email: "fellow@leadgreenfellowship.org",
+                paymentReference: "LG-FELLOW-2026-9042",
+                amount: "1.99",
+                currency: "USD"
+            }, "LG-DEMO-RECORD");
+            window.showToast("Sample preview loaded");
+        };
 
         // Real-Time Canvas Rendering Engine
         async function renderCanvas() {
@@ -1606,16 +1585,14 @@
             } else {
                 ctx.fillStyle = "#FFFFFF";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.strokeStyle = "#138A56";
+                ctx.strokeStyle = "#0E8549";
                 ctx.lineWidth = 14;
                 ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
-                ctx.strokeStyle = "#F59E0B";
-                ctx.lineWidth = 3;
-                ctx.strokeRect(34, 34, canvas.width - 68, canvas.height - 68);
             }
 
             // Prepare Fellow Name
-            const name = (document.getElementById('customNameInput').value || "LeadGreen Fellow").trim();
+            const customInput = document.getElementById('customNameInput');
+            const name = (customInput && customInput.value ? customInput.value : (state.verifiedFellow ? state.verifiedFellow.fullName : "LeadGreen Fellow")).trim();
 
             // Official Script Font with Dynamic Admin Size
             let fontSize = isEnglish ? (state.defaultFontSizeEn || 54) : (state.defaultFontSizeFr || 54);
@@ -1643,7 +1620,7 @@
             const certRef = state.verifiedFellow?.reference || '';
             if (certRef) {
                 ctx.font = "12px 'Inter', monospace";
-                ctx.fillStyle = "#94A3B8";
+                ctx.fillStyle = "#6B7280";
                 ctx.textAlign = "left";
                 ctx.fillText(`ID: ${certRef}`, 70, canvas.height - 40);
             }
@@ -1656,8 +1633,14 @@
             window.appState.language = lang;
             const btnEn = document.getElementById('btnLangEn');
             const btnFr = document.getElementById('btnLangFr');
-            if (btnEn) btnEn.classList.toggle('active', lang === 'EN');
-            if (btnFr) btnFr.classList.toggle('active', lang === 'FR');
+            if (btnEn) {
+                btnEn.classList.toggle('active', lang === 'EN');
+                btnEn.setAttribute('aria-selected', lang === 'EN');
+            }
+            if (btnFr) {
+                btnFr.classList.toggle('active', lang === 'FR');
+                btnFr.setAttribute('aria-selected', lang === 'FR');
+            }
             renderCanvas();
         };
 
@@ -1669,10 +1652,12 @@
         // Sign Out / Switch Fellow
         document.getElementById('btnSignOut').addEventListener('click', () => {
             window.appState.verifiedFellow = null;
-            document.getElementById('studioSection').style.display = 'none';
-            document.getElementById('verificationSection').style.display = 'block';
+            document.getElementById('verifiedPanel').style.display = 'none';
+            document.getElementById('unverifiedPanel').style.display = 'block';
             document.getElementById('fellowEmail').value = '';
+            document.getElementById('customNameInput').value = '';
             document.getElementById('unpaidCard').style.display = 'none';
+            renderCanvas();
         });
 
         // -------------------------------------------------------------
@@ -1689,6 +1674,7 @@
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
+            window.showToast("High-resolution certificate downloaded");
         };
 
         // -------------------------------------------------------------
@@ -1843,6 +1829,7 @@
                 a.click();
                 document.body.removeChild(a);
                 window.URL.revokeObjectURL(url);
+                window.showToast("Official Vector PDF downloaded");
 
             } catch (err) {
                 console.error("PDF generation failed:", err);
@@ -1851,6 +1838,54 @@
                 btn.disabled = false;
                 btnText.innerText = "Download Official PDF";
             }
+        };
+
+        // Name Formatting Quick Tools
+        window.setNameCase = function (casing) {
+            const input = document.getElementById('customNameInput');
+            if (!input || !input.value) return;
+            let val = input.value.trim();
+            if (casing === 'upper') {
+                input.value = val.toUpperCase();
+            } else if (casing === 'title') {
+                input.value = val.toLowerCase().replace(/(^|\s|-)\S/g, l => l.toUpperCase());
+            }
+            renderCanvas();
+        };
+
+        window.resetDefaultName = function () {
+            const defaultName = window.appState.verifiedFellow?.fullName || "LeadGreen Fellow";
+            const input = document.getElementById('customNameInput');
+            if (input) {
+                input.value = defaultName;
+                renderCanvas();
+            }
+        };
+
+        // Share & Link Copy Helpers
+        window.copyVerificationLink = function () {
+            const email = window.appState.verifiedFellow?.email || '';
+            const origin = window.location.origin;
+            const path = window.location.pathname;
+            const link = email ? `${origin}${path}?email=${encodeURIComponent(email)}` : window.location.href;
+            navigator.clipboard.writeText(link).then(() => {
+                window.showToast("Credential verification link copied");
+            }).catch(() => {
+                prompt("Copy your certificate link:", link);
+            });
+        };
+
+        // Toast Notification Helper
+        window.showToast = function (msg) {
+            const toast = document.getElementById('toastNotification');
+            const toastText = document.getElementById('toastText');
+            if (!toast || !toastText) return;
+            toastText.innerText = msg;
+            toast.classList.add('show');
+            clearTimeout(window.toastTimer);
+            window.toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
         };
 
         // LinkedIn Modal Helper
@@ -1864,7 +1899,7 @@
 
         window.copyText = function (text) {
             navigator.clipboard.writeText(text).then(() => {
-                alert("Copied to clipboard!");
+                window.showToast("Copied to clipboard");
             });
         };
 
@@ -1875,12 +1910,6 @@
             input.focus();
             input.select();
         };
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
     </script>
 </body>
 
