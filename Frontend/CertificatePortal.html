@@ -941,11 +941,11 @@
                 <a href="index.html">
                     <img src="Logo name green.png" alt="LeadGreen Fellowship" class="nav-brand-img" onerror="this.src='https://via.placeholder.com/140x40?text=LeadGreen'">
                 </a>
-                <span class="nav-registry-tag">Credential Registry & Certificate Studio</span>
+                <span class="nav-registry-tag" id="navRegistryTag">Credential Registry & Certificate Studio</span>
             </div>
             <div class="nav-actions">
-                <a href="CertificatePayment.html" class="nav-link">Payment Page</a>
-                <a href="index.html" class="nav-link">Home</a>
+                <a href="CertificatePayment.html" class="nav-link" id="navPaymentLink">Payment Page</a>
+                <a href="index.html" class="nav-link" id="navHomeLink">Home</a>
             </div>
         </div>
     </nav>
@@ -959,7 +959,7 @@
                 <div class="stage-header">
                     <div class="stage-title-wrap">
                         <span class="stage-indicator"></span>
-                        <span class="stage-heading">Certificate Live Preview</span>
+                        <span class="stage-heading" id="stageHeading">Certificate Live Preview</span>
                     </div>
                     <div class="lang-tabs" role="tablist" aria-label="Certificate Language">
                         <button type="button" class="lang-btn active" id="btnLangEn" onclick="switchLanguage('EN')" role="tab" aria-selected="true">English</button>
@@ -970,16 +970,16 @@
                 <div class="stage-viewport">
                     <div class="stage-loading-overlay" id="canvasLoadingOverlay">
                         <div class="spinner-forest"></div>
-                        <p>Rendering Certificate...</p>
+                        <p id="canvasLoadingText">Rendering Certificate...</p>
                     </div>
                     <canvas id="certCanvas" width="1570" height="1123"></canvas>
                 </div>
 
                 <div class="stage-footer">
                     <span class="stage-spec" id="templateResolutionNotice">1570 × 1123 HD Vector Precision</span>
-                    <span class="stage-badge">
+                    <span class="stage-badge" id="stageBadge">
                         <i class="fa-solid fa-shield-halved"></i>
-                        Official Fellowship Standard
+                        <span id="stageBadgeText">Official Fellowship Standard</span>
                     </span>
                 </div>
             </section>
@@ -989,15 +989,15 @@
 
                 <!-- STATE A: UNVERIFIED / LOOKUP -->
                 <div id="unverifiedPanel">
-                    <p class="panel-kicker">Fellowship Credential Registry</p>
-                    <h1 class="panel-heading">Verify & Issue Your Certificate</h1>
-                    <p class="panel-lead">
+                    <p class="panel-kicker" id="unverifiedKicker">Fellowship Credential Registry</p>
+                    <h1 class="panel-heading" id="unverifiedHeading">Verify & Issue Your Certificate</h1>
+                    <p class="panel-lead" id="unverifiedLead">
                         Enter your name or email to verify your payment record and download your official credential.
                     </p>
 
                     <form id="verifyForm" class="auth-form">
                         <div>
-                            <label for="fellowEmail" class="field-label">
+                            <label for="fellowEmail" class="field-label" id="fellowEmailLabel">
                                 <span>Fellow Name or Email Address</span>
                             </label>
                             <input
@@ -1018,31 +1018,31 @@
 
                     <!-- Unpaid Alert Notice -->
                     <div class="notice-card-amber" id="unpaidCard" style="display: none;">
-                        <div class="notice-title">Certificate Registration Required</div>
-                        <p class="notice-text">
-                            No confirmed certificate registration was found for <strong id="unpaidEmailSpan">this record</strong>. To generate your official, verifiable certificate, please complete your registration.
+                        <div class="notice-title" id="unpaidNoticeTitle">Certificate Registration Required</div>
+                        <p class="notice-text" id="unpaidNoticeText">
+                            <span id="unpaidNoticePrefix">No confirmed certificate registration was found for </span><strong id="unpaidEmailSpan">this record</strong>. <span id="unpaidNoticeSuffix">To generate your official, verifiable certificate, please complete your registration.</span>
                         </p>
                         <a href="CertificatePayment.html" class="btn-amber-action" id="btnPayNowLink">
                             Complete Certificate Registration ($1.99)
                         </a>
-                        <p class="notice-footer-text">
-                            Registered with another name or email? <a href="#" onclick="focusEmailInput(event)">Try a different search</a>
+                        <p class="notice-footer-text" id="unpaidNoticeFooter">
+                            <span id="noticeFooterPrefix">Registered with another name or email? </span><a href="#" onclick="focusEmailInput(event)" id="noticeFooterLink">Try a different search</a>
                         </p>
                     </div>
 
-                    <div class="panel-footer-note">
+                    <div class="panel-footer-note" id="unverifiedFooterNote">
                         Official credential records maintained by the LeadGreen Fellowship Academic Secretariat. Need assistance? <a href="mailto:support@leadgreenfellowship.com">Contact Fellow Support</a>.
                     </div>
                 </div>
 
                 <!-- STATE B: VERIFIED FELLOW STUDIO -->
                 <div id="verifiedPanel" style="display: none;">
-                    <div class="verified-kicker">
+                    <div class="verified-kicker" id="verifiedKicker">
                         <i class="fa-solid fa-circle-check"></i>
-                        <span>Confirmed Fellow Record</span>
+                        <span id="verifiedKickerText">Confirmed Fellow Record</span>
                     </div>
                     <h1 class="panel-heading" id="studioGreeting">Congratulations, Fellow!</h1>
-                    <p class="panel-lead">
+                    <p class="panel-lead" id="verifiedLead">
                         Your completion record is verified. Review your name formatting and download your official credentials below.
                     </p>
 
@@ -1050,35 +1050,35 @@
                     <div class="credential-box">
                         <div class="credential-row">
                             <div>
-                                <span class="cred-label">Credential Verification ID</span>
+                                <span class="cred-label" id="credLabel">Credential Verification ID</span>
                                 <span class="cred-id" id="credIdDisplay">LG-CERT-XXXXX</span>
                             </div>
-                            <button type="button" class="btn-copy-chip" onclick="copyVerificationLink()">
-                                <i class="fa-regular fa-copy"></i> Copy Link
+                            <button type="button" class="btn-copy-chip" id="btnCopyLink" onclick="copyVerificationLink()">
+                                <i class="fa-regular fa-copy"></i> <span id="btnCopyLinkText">Copy Link</span>
                             </button>
                         </div>
                     </div>
 
                     <!-- Fellow Name Customization -->
                     <div class="control-group">
-                        <label for="customNameInput" class="field-label">
-                            <span>Recipient Name on Certificate</span>
-                            <span class="field-hint">Updates live on preview</span>
+                        <label for="customNameInput" class="field-label" id="customNameLabel">
+                            <span id="customNameLabelText">Recipient Name on Certificate</span>
+                            <span class="field-hint" id="customNameHint">Updates live on preview</span>
                         </label>
                         <input type="text" id="customNameInput" class="field-input" placeholder="Full Name">
                         <div class="name-actions-row">
-                            <button type="button" class="btn-text-action" onclick="setNameCase('title')">Title Case</button>
+                            <button type="button" class="btn-text-action" id="btnCaseTitle" onclick="setNameCase('title')">Title Case</button>
                             <span class="dot-separator">&middot;</span>
-                            <button type="button" class="btn-text-action" onclick="setNameCase('lower')">lowercase</button>
+                            <button type="button" class="btn-text-action" id="btnCaseLower" onclick="setNameCase('lower')">lowercase</button>
                             <span class="dot-separator">&middot;</span>
-                            <button type="button" class="btn-text-action" onclick="resetDefaultName()">Reset</button>
+                            <button type="button" class="btn-text-action" id="btnCaseReset" onclick="resetDefaultName()">Reset</button>
                         </div>
                     </div>
 
                     <!-- Standard Notice -->
                     <div class="standard-notice">
                         <i class="fa-solid fa-certificate"></i>
-                        <span>Calibrated official fellowship calligraphy and vector layout applied automatically.</span>
+                        <span id="standardNoticeText">Calibrated official fellowship calligraphy and vector layout applied automatically.</span>
                     </div>
 
                     <!-- Download Actions -->
@@ -1090,18 +1090,18 @@
 
                         <button type="button" class="btn-outline-primary" id="btnDownloadPng" onclick="downloadHighResPng()">
                             <i class="fa-solid fa-image"></i>
-                            <span>Download High-Res Image (PNG)</span>
+                            <span id="btnPngText">Download High-Res Image (PNG)</span>
                         </button>
 
-                        <button type="button" class="btn-linkedin-action" onclick="openLinkedInModal()">
+                        <button type="button" class="btn-linkedin-action" id="btnLinkedInAction" onclick="openLinkedInModal()">
                             <i class="fa-brands fa-linkedin"></i>
-                            <span>Add Credential to LinkedIn</span>
+                            <span id="btnLinkedInText">Add Credential to LinkedIn</span>
                         </button>
                     </div>
 
                     <div class="panel-footer-meta">
                         <button type="button" class="btn-switch-fellow" id="btnSignOut">
-                            <i class="fa-solid fa-arrow-left"></i> Check another fellow email
+                            <i class="fa-solid fa-arrow-left"></i> <span id="btnSignOutText">Check another fellow email</span>
                         </button>
                     </div>
                 </div>
@@ -1114,40 +1114,40 @@
     <div class="modal-overlay" id="linkedInModal" style="display: none;">
         <div class="modal-card">
             <div class="modal-header">
-                <h3><i class="fa-brands fa-linkedin"></i> Add Certificate to LinkedIn</h3>
+                <h3 id="liModalHeading"><i class="fa-brands fa-linkedin"></i> <span id="liModalHeadingText">Add Certificate to LinkedIn</span></h3>
                 <button type="button" class="btn-modal-close" onclick="closeLinkedInModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <p>Add your verified LeadGreen credential to your LinkedIn profile with these details:</p>
+                <p id="liModalLead">Add your verified LeadGreen credential to your LinkedIn profile with these details:</p>
 
                 <div class="modal-field-block">
-                    <span class="modal-field-label">Certification Name</span>
+                    <span class="modal-field-label" id="liFieldCertName">Certification Name</span>
                     <div class="modal-field-box">
                         <span id="liCertName">LeadGreen Fellowship - Certificate of Completion</span>
-                        <button type="button" class="btn-copy-mini" onclick="copyText('LeadGreen Fellowship - Certificate of Completion')">Copy</button>
+                        <button type="button" class="btn-copy-mini" id="liCopyCertBtn" onclick="copyLiCertName()">Copy</button>
                     </div>
                 </div>
 
                 <div class="modal-field-block">
-                    <span class="modal-field-label">Issuing Organization</span>
+                    <span class="modal-field-label" id="liFieldIssuer">Issuing Organization</span>
                     <div class="modal-field-box">
-                        <span>LeadGreen Fellowship</span>
-                        <button type="button" class="btn-copy-mini" onclick="copyText('LeadGreen Fellowship')">Copy</button>
+                        <span id="liIssuerName">LeadGreen Fellowship</span>
+                        <button type="button" class="btn-copy-mini" id="liCopyIssuerBtn" onclick="copyText('LeadGreen Fellowship')">Copy</button>
                     </div>
                 </div>
 
                 <div class="modal-field-block">
-                    <span class="modal-field-label">Credential ID</span>
+                    <span class="modal-field-label" id="liFieldCredId">Credential ID</span>
                     <div class="modal-field-box">
                         <span id="liCertId">LG-CERT-XXXX</span>
-                        <button type="button" class="btn-copy-mini" onclick="copyText(document.getElementById('liCertId').innerText)">Copy</button>
+                        <button type="button" class="btn-copy-mini" id="liCopyCredBtn" onclick="copyText(document.getElementById('liCertId').innerText)">Copy</button>
                     </div>
                 </div>
 
                 <div style="margin-top: 22px;">
                     <a href="https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME" target="_blank" class="btn-linkedin-action" style="text-decoration:none;">
                         <i class="fa-brands fa-linkedin"></i>
-                        <span>Open LinkedIn Certifications</span>
+                        <span id="liOpenLinkedInBtnText">Open LinkedIn Certifications</span>
                     </a>
                 </div>
             </div>
@@ -1449,9 +1449,259 @@
 
         preloadTemplates();
 
+        // -------------------------------------------------------------
+        // INTERNATIONALIZATION (I18N) DICTIONARY & LANGUAGE ADAPTER
+        // -------------------------------------------------------------
+        const I18N = {
+            EN: {
+                navTag: "Credential Registry & Certificate Studio",
+                navPayment: "Payment Page",
+                navHome: "Home",
+                stageHeading: "Certificate Live Preview",
+                canvasLoadingText: "Rendering Certificate...",
+                resolutionNotice: "1570 × 1123 HD Vector Precision",
+                stageBadgeText: "Official Fellowship Standard",
+                unverifiedKicker: "Fellowship Credential Registry",
+                unverifiedHeading: "Verify & Issue Your Certificate",
+                unverifiedLead: "Enter your name or email to verify your payment record and download your official credential.",
+                fellowEmailLabel: "Fellow Name or Email Address",
+                fellowEmailPlaceholder: "e.g. your full name or registered email",
+                btnVerifyText: "Verify Record",
+                btnVerifyLoading: "Verifying Record...",
+                unpaidNoticeTitle: "Certificate Registration Required",
+                unpaidNoticePrefix: "No confirmed certificate registration was found for ",
+                unpaidNoticeSuffix: "To generate your official, verifiable certificate, please complete your registration.",
+                btnPayNow: "Complete Certificate Registration ($1.99)",
+                noticeFooterPrefix: "Registered with another name or email? ",
+                noticeFooterLink: "Try a different search",
+                footerNote: 'Official credential records maintained by the LeadGreen Fellowship Academic Secretariat. Need assistance? <a href="mailto:support@leadgreenfellowship.com">Contact Fellow Support</a>.',
+                verifiedKicker: "Confirmed Fellow Record",
+                greetingTemplate: (name) => `Congratulations, ${name}!`,
+                verifiedLead: "Your completion record is verified. Review your name formatting and download your official credentials below.",
+                credLabel: "Credential Verification ID",
+                btnCopyLinkText: "Copy Link",
+                customNameLabel: "Recipient Name on Certificate",
+                customNameHint: "Updates live on preview",
+                customNamePlaceholder: "Full Name",
+                caseTitle: "Title Case",
+                caseLower: "lowercase",
+                caseReset: "Reset",
+                standardNoticeText: "Calibrated official fellowship calligraphy and vector layout applied automatically.",
+                btnPdfText: "Download Official PDF",
+                btnPdfGenerating: "Building Vector PDF...",
+                btnPngText: "Download High-Res Image (PNG)",
+                btnLinkedInText: "Add Credential to LinkedIn",
+                btnSignOutText: "Check another fellow email",
+                liModalHeading: "Add Certificate to LinkedIn",
+                liModalLead: "Add your verified LeadGreen credential to your LinkedIn profile with these details:",
+                liFieldCertName: "Certification Name",
+                liCertNameValue: "LeadGreen Fellowship - Certificate of Completion",
+                liFieldIssuer: "Issuing Organization",
+                liIssuerNameValue: "LeadGreen Fellowship",
+                liFieldCredId: "Credential ID",
+                liCopyBtn: "Copy",
+                liOpenBtnText: "Open LinkedIn Certifications",
+                toastLinkCopied: "Credential verification link copied",
+                toastVerified: "Fellow credential verified successfully",
+                toastPdfGenerating: "Generating your high-resolution official vector PDF...",
+                toastPdfDone: "Official Vector PDF downloaded",
+                toastPngDone: "High-resolution certificate downloaded",
+                toastTextCopied: "Copied to clipboard"
+            },
+            FR: {
+                navTag: "Registre des Titres et Studio de Certificats",
+                navPayment: "Page de Paiement",
+                navHome: "Accueil",
+                stageHeading: "Aperçu du Certificat en Direct",
+                canvasLoadingText: "Génération du certificat en cours...",
+                resolutionNotice: "Précision Vectorielle HD 1570 × 1123",
+                stageBadgeText: "Norme Officielle de la Bourse",
+                unverifiedKicker: "Registre des Titres de la Bourse",
+                unverifiedHeading: "Vérifiez et Téléchargez Votre Certificat",
+                unverifiedLead: "Entrez votre nom ou votre e-mail pour vérifier votre paiement et télécharger votre certificat officiel.",
+                fellowEmailLabel: "Nom du Boursier ou Adresse E-mail",
+                fellowEmailPlaceholder: "ex. votre nom complet ou e-mail enregistré",
+                btnVerifyText: "Vérifier le Dossier",
+                btnVerifyLoading: "Vérification du dossier...",
+                unpaidNoticeTitle: "Enregistrement du Certificat Requis",
+                unpaidNoticePrefix: "Aucun enregistrement de certificat confirmé n'a été trouvé pour ",
+                unpaidNoticeSuffix: "Pour générer votre certificat officiel et vérifiable, veuillez compléter votre enregistrement.",
+                btnPayNow: "Compléter l'Enregistrement du Certificat (1,99 $)",
+                noticeFooterPrefix: "Inscrit avec un autre nom ou e-mail ? ",
+                noticeFooterLink: "Essayez une autre recherche",
+                footerNote: 'Dossiers officiels gérés par le Secrétariat Académique de la Bourse LeadGreen. Besoin d\'aide ? <a href="mailto:support@leadgreenfellowship.com">Contactez le Support des Boursiers</a>.',
+                verifiedKicker: "Dossier de Boursier Confirmé",
+                greetingTemplate: (name) => `Félicitations, ${name} !`,
+                verifiedLead: "Votre statut de diplômé est vérifié. Vérifiez l'affichage de votre nom et téléchargez vos attestations officielles ci-dessous.",
+                credLabel: "ID de Vérification du Certificat",
+                btnCopyLinkText: "Copier le Lien",
+                customNameLabel: "Nom du Récipiendaire sur le Certificat",
+                customNameHint: "Mise à jour en direct sur l'aperçu",
+                customNamePlaceholder: "Nom Complet",
+                caseTitle: "Casse du Titre",
+                caseLower: "minuscules",
+                caseReset: "Réinitialiser",
+                standardNoticeText: "Calligraphie officielle de la bourse et mise en page vectorielle appliquées automatiquement.",
+                btnPdfText: "Télécharger le PDF Officiel",
+                btnPdfGenerating: "Création du PDF Vectoriel...",
+                btnPngText: "Télécharger l'Image Haute Résolution (PNG)",
+                btnLinkedInText: "Ajouter le Certificat à LinkedIn",
+                btnSignOutText: "Vérifier un autre nom ou e-mail",
+                liModalHeading: "Ajouter le Certificat à LinkedIn",
+                liModalLead: "Ajoutez vos compétences vérifiées LeadGreen à votre profil LinkedIn avec ces informations :",
+                liFieldCertName: "Nom de la Certification",
+                liCertNameValue: "Bourse LeadGreen - Certificat de Réussite",
+                liFieldIssuer: "Organisme Émetteur",
+                liIssuerNameValue: "Bourse LeadGreen",
+                liFieldCredId: "ID du Titre",
+                liCopyBtn: "Copier",
+                liOpenBtnText: "Ouvrir les Certifications LinkedIn",
+                toastLinkCopied: "Lien de vérification copié",
+                toastVerified: "Dossier de boursier vérifié avec succès",
+                toastPdfGenerating: "Génération de votre PDF officiel vectoriel haute résolution...",
+                toastPdfDone: "PDF Vectoriel Officiel téléchargé",
+                toastPngDone: "Certificat haute résolution téléchargé",
+                toastTextCopied: "Copié dans le presse-papiers"
+            }
+        };
+
+        function applyLanguage(lang) {
+            const dict = I18N[lang] || I18N.EN;
+            document.documentElement.lang = lang.toLowerCase();
+
+            // Nav Elements
+            const elNavTag = document.getElementById('navRegistryTag');
+            if (elNavTag) elNavTag.innerText = dict.navTag;
+            const elNavPay = document.getElementById('navPaymentLink');
+            if (elNavPay) elNavPay.innerText = dict.navPayment;
+            const elNavHome = document.getElementById('navHomeLink');
+            if (elNavHome) elNavHome.innerText = dict.navHome;
+
+            // Stage Elements
+            const elStageHeading = document.getElementById('stageHeading');
+            if (elStageHeading) elStageHeading.innerText = dict.stageHeading;
+            const elCanvasLoad = document.getElementById('canvasLoadingText');
+            if (elCanvasLoad) elCanvasLoad.innerText = dict.canvasLoadingText;
+            const elResNotice = document.getElementById('templateResolutionNotice');
+            if (elResNotice) elResNotice.innerText = dict.resolutionNotice;
+            const elBadgeText = document.getElementById('stageBadgeText');
+            if (elBadgeText) elBadgeText.innerText = dict.stageBadgeText;
+
+            // State A: Unverified Panel
+            const elUnvKicker = document.getElementById('unverifiedKicker');
+            if (elUnvKicker) elUnvKicker.innerText = dict.unverifiedKicker;
+            const elUnvHeading = document.getElementById('unverifiedHeading');
+            if (elUnvHeading) elUnvHeading.innerText = dict.unverifiedHeading;
+            const elUnvLead = document.getElementById('unverifiedLead');
+            if (elUnvLead) elUnvLead.innerText = dict.unverifiedLead;
+            const elEmailLabel = document.querySelector('label[for="fellowEmail"] span');
+            if (elEmailLabel) elEmailLabel.innerText = dict.fellowEmailLabel;
+            const elFellowEmail = document.getElementById('fellowEmail');
+            if (elFellowEmail) elFellowEmail.placeholder = dict.fellowEmailPlaceholder;
+            const elBtnVerifyText = document.getElementById('btnVerifyText');
+            if (elBtnVerifyText) elBtnVerifyText.innerText = dict.btnVerifyText;
+
+            // Unpaid Alert Card
+            const elUnpaidTitle = document.getElementById('unpaidNoticeTitle');
+            if (elUnpaidTitle) elUnpaidTitle.innerText = dict.unpaidNoticeTitle;
+            const elUnpaidPrefix = document.getElementById('unpaidNoticePrefix');
+            if (elUnpaidPrefix) elUnpaidPrefix.innerText = dict.unpaidNoticePrefix;
+            const elUnpaidSuffix = document.getElementById('unpaidNoticeSuffix');
+            if (elUnpaidSuffix) elUnpaidSuffix.innerText = dict.unpaidNoticeSuffix;
+            const elPayNowLink = document.getElementById('btnPayNowLink');
+            if (elPayNowLink) elPayNowLink.innerText = dict.btnPayNow;
+            const elNoticePrefix = document.getElementById('noticeFooterPrefix');
+            if (elNoticePrefix) elNoticePrefix.innerText = dict.noticeFooterPrefix;
+            const elNoticeLink = document.getElementById('noticeFooterLink');
+            if (elNoticeLink) elNoticeLink.innerText = dict.noticeFooterLink;
+            const elUnvFooter = document.getElementById('unverifiedFooterNote');
+            if (elUnvFooter) elUnvFooter.innerHTML = dict.footerNote;
+
+            // State B: Verified Panel
+            const elVerKicker = document.getElementById('verifiedKickerText');
+            if (elVerKicker) elVerKicker.innerText = dict.verifiedKicker;
+            updateStudioGreeting();
+            const elVerLead = document.getElementById('verifiedLead');
+            if (elVerLead) elVerLead.innerText = dict.verifiedLead;
+            const elCredLabel = document.getElementById('credLabel');
+            if (elCredLabel) elCredLabel.innerText = dict.credLabel;
+            const elBtnCopyText = document.getElementById('btnCopyLinkText');
+            if (elBtnCopyText) elBtnCopyText.innerText = dict.btnCopyLinkText;
+            const elNameLabel = document.getElementById('customNameLabelText');
+            if (elNameLabel) elNameLabel.innerText = dict.customNameLabel;
+            const elNameHint = document.getElementById('customNameHint');
+            if (elNameHint) elNameHint.innerText = dict.customNameHint;
+            const elCustomInput = document.getElementById('customNameInput');
+            if (elCustomInput) elCustomInput.placeholder = dict.customNamePlaceholder;
+
+            // Name Casing Buttons
+            const elCaseTitle = document.getElementById('btnCaseTitle');
+            if (elCaseTitle) elCaseTitle.innerText = dict.caseTitle;
+            const elCaseLower = document.getElementById('btnCaseLower');
+            if (elCaseLower) elCaseLower.innerText = dict.caseLower;
+            const elCaseReset = document.getElementById('btnCaseReset');
+            if (elCaseReset) elCaseReset.innerText = dict.caseReset;
+
+            // Standard Notice & Download Stack
+            const elStdNotice = document.getElementById('standardNoticeText');
+            if (elStdNotice) elStdNotice.innerText = dict.standardNoticeText;
+            const elBtnPdfText = document.getElementById('btnPdfText');
+            if (elBtnPdfText) elBtnPdfText.innerText = dict.btnPdfText;
+            const elBtnPngText = document.getElementById('btnPngText');
+            if (elBtnPngText) elBtnPngText.innerText = dict.btnPngText;
+            const elBtnLinkedInText = document.getElementById('btnLinkedInText');
+            if (elBtnLinkedInText) elBtnLinkedInText.innerText = dict.btnLinkedInText;
+            const elBtnSignOutText = document.getElementById('btnSignOutText');
+            if (elBtnSignOutText) elBtnSignOutText.innerText = dict.btnSignOutText;
+
+            // LinkedIn Modal
+            const elLiHeading = document.getElementById('liModalHeadingText');
+            if (elLiHeading) elLiHeading.innerText = dict.liModalHeading;
+            const elLiLead = document.getElementById('liModalLead');
+            if (elLiLead) elLiLead.innerText = dict.liModalLead;
+            const elLiFieldCert = document.getElementById('liFieldCertName');
+            if (elLiFieldCert) elLiFieldCert.innerText = dict.liFieldCertName;
+            const elLiCertName = document.getElementById('liCertName');
+            if (elLiCertName) elLiCertName.innerText = dict.liCertNameValue;
+            const elLiFieldIssuer = document.getElementById('liFieldIssuer');
+            if (elLiFieldIssuer) elLiFieldIssuer.innerText = dict.liFieldIssuer;
+            const elLiIssuer = document.getElementById('liIssuerName');
+            if (elLiIssuer) elLiIssuer.innerText = dict.liIssuerNameValue;
+            const elLiFieldCred = document.getElementById('liFieldCredId');
+            if (elLiFieldCred) elLiFieldCred.innerText = dict.liFieldCredId;
+            const elLiCopyCert = document.getElementById('liCopyCertBtn');
+            if (elLiCopyCert) elLiCopyCert.innerText = dict.liCopyBtn;
+            const elLiCopyIssuer = document.getElementById('liCopyIssuerBtn');
+            if (elLiCopyIssuer) elLiCopyIssuer.innerText = dict.liCopyBtn;
+            const elLiCopyCred = document.getElementById('liCopyCredBtn');
+            if (elLiCopyCred) elLiCopyCred.innerText = dict.liCopyBtn;
+            const elLiOpenBtn = document.getElementById('liOpenLinkedInBtnText');
+            if (elLiOpenBtn) elLiOpenBtn.innerText = dict.liOpenBtnText;
+        }
+
+        function updateStudioGreeting() {
+            const elGreeting = document.getElementById('studioGreeting');
+            if (!elGreeting) return;
+            const dict = I18N[window.appState.language || 'EN'] || I18N.EN;
+            const name = window.appState.verifiedFellow?.fullName || (window.appState.language === 'FR' ? "Boursier" : "Fellow");
+            elGreeting.innerText = dict.greetingTemplate(name);
+        }
+
+        window.copyLiCertName = function () {
+            const dict = I18N[window.appState.language || 'EN'] || I18N.EN;
+            copyText(dict.liCertNameValue);
+        };
+
         // Check URL Query Parameters on Load
         function checkUrlParamsAndInit() {
             const urlParams = new URLSearchParams(window.location.search);
+            const langParam = (urlParams.get('lang') || urlParams.get('language') || '').toUpperCase();
+            if (langParam === 'FR' || langParam === 'FRENCH') {
+                window.switchLanguage('FR');
+            } else {
+                applyLanguage(window.appState.language || 'EN');
+            }
+
             const queryParam = urlParams.get('email') || urlParams.get('name') || urlParams.get('q');
             const demoParam = urlParams.get('demo') || urlParams.get('preview');
             if (queryParam) {
@@ -1490,8 +1740,9 @@
             const spinner = document.getElementById('btnVerifySpinner');
             const unpaidCard = document.getElementById('unpaidCard');
 
+            const dict = I18N[window.appState.language || 'EN'] || I18N.EN;
             btnVerify.disabled = true;
-            btnText.innerText = "Verifying Record...";
+            btnText.innerText = dict.btnVerifyLoading;
             spinner.style.display = 'block';
             unpaidCard.style.display = 'none';
 
@@ -1588,8 +1839,9 @@
                 console.error("Verification error:", err);
                 alert("Error connecting to verification server. Please check your internet connection and try again.");
             } finally {
+                const dict = I18N[window.appState.language || 'EN'] || I18N.EN;
                 btnVerify.disabled = false;
-                btnText.innerText = "Verify Record";
+                btnText.innerText = dict.btnVerifyText;
                 spinner.style.display = 'none';
             }
         }
@@ -1601,9 +1853,11 @@
 
             unpaidEmailSpan.innerText = identifier;
             const isEmail = identifier.includes('@');
+            const lang = window.appState.language || 'EN';
+            const langParam = lang === 'FR' ? '&lang=fr' : '';
             btnPayNowLink.href = isEmail 
-                ? `CertificatePayment.html?email=${encodeURIComponent(identifier)}` 
-                : `CertificatePayment.html?name=${encodeURIComponent(identifier)}`;
+                ? `CertificatePayment.html?email=${encodeURIComponent(identifier)}${langParam}` 
+                : `CertificatePayment.html?name=${encodeURIComponent(identifier)}${langParam}`;
             unpaidCard.style.display = 'block';
             unpaidCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
@@ -1646,14 +1900,15 @@
 
             // Populate Fellow Data
             const displayName = window.appState.verifiedFellow.fullName;
-            document.getElementById('studioGreeting').innerText = `Congratulations, ${displayName}!`;
+            updateStudioGreeting();
             document.getElementById('credIdDisplay').innerText = window.appState.verifiedFellow.reference;
             document.getElementById('customNameInput').value = displayName;
             document.getElementById('liCertId').innerText = window.appState.verifiedFellow.reference;
 
             // Re-render Certificate with fellow's name
             renderCanvas();
-            window.showToast("Fellow credential verified successfully");
+            const dict = I18N[window.appState.language || 'EN'] || I18N.EN;
+            window.showToast(dict.toastVerified);
         }
 
         window.handlePaidSuccess = handlePaidSuccess;
@@ -1751,17 +2006,19 @@
 
         // Controls: Language Toggle
         window.switchLanguage = function (lang) {
-            window.appState.language = lang;
+            window.appState.language = (lang === 'FR') ? 'FR' : 'EN';
+            const isFr = window.appState.language === 'FR';
             const btnEn = document.getElementById('btnLangEn');
             const btnFr = document.getElementById('btnLangFr');
             if (btnEn) {
-                btnEn.classList.toggle('active', lang === 'EN');
-                btnEn.setAttribute('aria-selected', lang === 'EN');
+                btnEn.classList.toggle('active', !isFr);
+                btnEn.setAttribute('aria-selected', !isFr ? 'true' : 'false');
             }
             if (btnFr) {
-                btnFr.classList.toggle('active', lang === 'FR');
-                btnFr.setAttribute('aria-selected', lang === 'FR');
+                btnFr.classList.toggle('active', isFr);
+                btnFr.setAttribute('aria-selected', isFr ? 'true' : 'false');
             }
+            applyLanguage(window.appState.language);
             renderCanvas();
         };
 
@@ -1785,7 +2042,8 @@
         // EXPORT: DOWNLOAD HIGH-RESOLUTION PNG
         // -------------------------------------------------------------
         window.downloadHighResPng = function () {
-            const name = (document.getElementById('customNameInput').value || 'LeadGreen_Fellow').trim();
+            const dict = I18N[window.appState.language || 'EN'] || I18N.EN;
+            const name = (document.getElementById('customNameInput').value || (window.appState.language === 'FR' ? 'Boursier_LeadGreen' : 'LeadGreen_Fellow')).trim();
             const cleanName = name.replace(/[^a-zA-Z0-9_-]/g, '_');
             const dataUrl = canvas.toDataURL('image/png', 1.0);
 
@@ -1795,17 +2053,18 @@
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-            window.showToast("High-resolution certificate downloaded");
+            window.showToast(dict.toastPngDone);
         };
 
         // -------------------------------------------------------------
         // EXPORT: DOWNLOAD OFFICIAL PDF (pdf-lib)
         // -------------------------------------------------------------
         window.downloadOfficialPdf = async function () {
+            const dict = I18N[window.appState.language || 'EN'] || I18N.EN;
             const btn = document.getElementById('btnDownloadPdf');
             const btnText = document.getElementById('btnPdfText');
             btn.disabled = true;
-            btnText.innerText = "Building Vector PDF...";
+            btnText.innerText = dict.btnPdfGenerating;
 
             try {
                 const { PDFDocument, rgb, StandardFonts } = window.PDFLib;
@@ -1950,14 +2209,15 @@
                 a.click();
                 document.body.removeChild(a);
                 window.URL.revokeObjectURL(url);
-                window.showToast("Official Vector PDF downloaded");
+                window.showToast(dict.toastPdfDone);
 
             } catch (err) {
                 console.error("PDF generation failed:", err);
                 alert("Could not generate PDF: " + err.message);
             } finally {
+                const dict = I18N[window.appState.language || 'EN'] || I18N.EN;
                 btn.disabled = false;
-                btnText.innerText = "Download Official PDF";
+                btnText.innerText = dict.btnPdfText;
             }
         };
 
@@ -1977,7 +2237,7 @@
         };
 
         window.resetDefaultName = function () {
-            const defaultName = window.appState.verifiedFellow?.fullName || "LeadGreen Fellow";
+            const defaultName = window.appState.verifiedFellow?.fullName || (window.appState.language === 'FR' ? "Boursier LeadGreen" : "LeadGreen Fellow");
             const input = document.getElementById('customNameInput');
             if (input) {
                 input.value = toTitleCase(defaultName);
@@ -1988,13 +2248,19 @@
         // Share & Link Copy Helpers
         window.copyVerificationLink = function () {
             const email = window.appState.verifiedFellow?.email || '';
+            const lang = window.appState.language || 'EN';
             const origin = window.location.origin;
             const path = window.location.pathname;
-            const link = email ? `${origin}${path}?email=${encodeURIComponent(email)}` : window.location.href;
+            const params = [];
+            if (email) params.push(`email=${encodeURIComponent(email)}`);
+            if (lang === 'FR') params.push('lang=fr');
+            const queryString = params.length ? `?${params.join('&')}` : '';
+            const link = `${origin}${path}${queryString}`;
+            const dict = I18N[lang] || I18N.EN;
             navigator.clipboard.writeText(link).then(() => {
-                window.showToast("Credential verification link copied");
+                window.showToast(dict.toastLinkCopied);
             }).catch(() => {
-                prompt("Copy your certificate link:", link);
+                prompt(lang === 'FR' ? "Copiez votre lien de vérification :" : "Copy your certificate link:", link);
             });
         };
 
