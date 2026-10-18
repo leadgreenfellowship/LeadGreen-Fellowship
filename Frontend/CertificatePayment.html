@@ -4,25 +4,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeadGreen - Official Certificate Registration</title>
+    <title>LeadGreen Fellowship — Official Certificate Registration</title>
+    <meta name="description" content="Register your completion record for the LeadGreen Fellowship and issue your verified 300 DPI climate leadership credential.">
+
+    <script>document.documentElement.classList.add('js')</script>
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        @font-face {
+            font-family: 'The Seasons Light';
+            src: url('fonts/The Seasons Light.ttf') format('truetype');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+
         :root {
-            --primary-green: #138A56;
-            --light-green: #E8F5EE;
-            --hover-green: #F0F9F4;
-            --text-main: #111827;
-            --text-muted: #4B5563;
-            --text-light: #9CA3AF;
-            --border-color: #E5E7EB;
-            --bg-body: #F3F4F6;
-            --accent: #22c55e;
+            --ground: #F3F4F6;
+            --surface: #FFFFFF;
+            --surface-subtle: #EAEBEC;
+            --dark-forest: #063D22;
+            --leadgreen: #0A5C33;
+            --leadgreen-light: #E7F0EB;
+            --ink: #111827;
+            --ink-muted: #374151;
+            --ink-subtle: #4B5563;
+            --border-ui: #9CA3AF;
+            --radius-card: 16px;
+            --radius-btn: 8px;
+
+            /* Motion tokens */
+            --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+            --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+            --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
+            --t-press: 140ms;
+            --t-hover: 180ms;
+            --t-ui: 240ms;
+            --t-reveal: 800ms;
         }
 
         * {
@@ -32,284 +56,824 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--ground);
+            color: var(--ink);
+            min-height: 100svh;
+            line-height: 1.6;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        p {
+            max-width: 60ch;
+        }
+
+        /* Motion layer */
+        @media (prefers-reduced-motion: no-preference) {
+            .js [data-rise] {
+                opacity: 0;
+                transform: translateY(18px);
+                animation: riseUp var(--t-reveal) var(--ease-out) forwards;
+                animation-delay: calc(var(--i, 0) * 80ms + 100ms);
+            }
+
+            .js [data-reveal] {
+                opacity: 0;
+                transform: translateY(22px);
+                transition: opacity 700ms var(--ease-out), transform 800ms var(--ease-out);
+            }
+
+            .js [data-reveal].is-in {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        @keyframes riseUp {
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .js [data-rise],
+            .js [data-reveal] {
+                opacity: 1 !important;
+                transform: none !important;
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* Top Brand Navigation */
+        .brand-nav {
+            padding: 14px 32px;
+            background: var(--surface);
             display: flex;
-            justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            background-image: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-        }
-
-        .container {
-            background-color: #FFFFFF;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            width: 100%;
-            max-width: 500px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .header {
-            background-color: var(--primary-green);
-            color: white;
-            padding: 30px 20px;
-            text-align: center;
-            position: relative;
-        }
-
-        .header img {
-            height: 40px;
-            margin-bottom: 15px;
-            filter: brightness(0) invert(1);
-        }
-
-        .header h1 {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .header p {
-            font-size: 14px;
-            font-weight: 400;
-            opacity: 0.9;
-        }
-
-        .content {
-            padding: 30px;
-        }
-
-        .benefits-list {
-            margin-bottom: 25px;
-            background: var(--hover-green);
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid var(--light-green);
-        }
-
-        .benefit-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 15px;
-            font-size: 14px;
-            line-height: 1.5;
-            color: var(--text-muted);
-        }
-
-        .benefit-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .benefit-item i {
-            color: var(--primary-green);
-            margin-top: 3px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text-main);
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 15px;
-            color: var(--text-main);
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary-green);
-            box-shadow: 0 0 0 3px rgba(19, 138, 86, 0.1);
-        }
-
-        .form-group select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 15px;
-            color: var(--text-main);
-            background-color: white;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            cursor: pointer;
-        }
-
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--primary-green);
-            box-shadow: 0 0 0 3px rgba(19, 138, 86, 0.1);
-        }
-
-        .form-group .hint {
-            font-size: 12px;
-            color: var(--text-light);
-            margin-top: 5px;
-        }
-
-        .price-box {
-            display: flex;
             justify-content: space-between;
+            position: relative;
+            z-index: 20;
+        }
+
+        .brand-nav-left {
+            display: flex;
             align-items: center;
-            padding: 15px 20px;
-            background: #F9FAFB;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 25px;
+            gap: 16px;
         }
 
-        .price-label {
-            font-size: 15px;
+        .brand-logo {
+            height: 38px;
+            width: auto;
+            display: block;
+        }
+
+        .brand-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .portal-nav-link {
+            color: var(--leadgreen);
+            text-decoration: none;
+            font-size: 14px;
             font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color var(--t-hover) ease;
         }
 
-        .price-amount {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--primary-green);
+        .portal-nav-link:hover {
+            color: var(--dark-forest);
         }
 
-        .btn-pay {
-            width: 100%;
-            background-color: var(--primary-green);
-            color: white;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
+        /* Hero Registration Stage */
+        .hero-section {
+            padding: 24px 32px 48px;
+            max-width: 1240px;
+            margin: 0 auto;
+        }
+
+        .hero-header {
+            text-align: center;
+            max-width: 820px;
+            margin: 0 auto 24px;
+        }
+
+        .hero-title {
+            font-family: 'The Seasons Light', 'Cormorant Garamond', Georgia, serif;
+            font-size: 44px;
+            font-weight: 400;
+            color: var(--dark-forest);
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+            margin-bottom: 10px;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--ink-muted);
+            line-height: 1.5;
+            max-width: 60ch;
+            margin: 0 auto;
+        }
+
+        .hero-jump-cta {
+            display: none;
+            margin: 16px auto 0;
+            background: var(--leadgreen);
+            color: #FFFFFF;
+            text-decoration: none;
             font-size: 16px;
             font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-            display: flex;
+            padding: 12px 24px;
+            border-radius: var(--radius-btn);
+            align-items: center;
             justify-content: center;
+            gap: 8px;
+            min-height: 46px;
+            max-width: 320px;
+        }
+
+        /* Two Column Stage */
+        .stage-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+
+        /* Specimen Stage (Left) */
+        .specimen-card {
+            background: var(--surface);
+            border-radius: var(--radius-card);
+            padding: 28px;
+        }
+
+        .specimen-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .specimen-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--leadgreen);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .specimen-badge {
+            background: var(--leadgreen-light);
+            color: var(--leadgreen);
+            font-size: 14px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 999px;
+        }
+
+        .preview-viewport {
+            position: relative;
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #E5E7EB;
+        }
+
+        .preview-viewport img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .preview-name-overlay {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 51.2%;
+            text-align: center;
+            transform: translateY(-50%);
+            font-family: 'The Seasons Light', 'Cormorant Garamond', Georgia, serif;
+            font-size: 24px;
+            font-weight: 300;
+            color: #111827;
+            padding: 0 16px;
+            pointer-events: none;
+        }
+
+        .specimen-meta-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+            background: var(--surface-subtle);
+            padding: 14px 16px;
+            border-radius: 8px;
+        }
+
+        .meta-item {
+            text-align: left;
+        }
+
+        .meta-title {
+            font-size: 14px;
+            color: var(--ink-muted);
+            font-weight: 600;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .meta-val {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        /* Dossier Form Card (Right) */
+        .dossier-card {
+            background: var(--surface);
+            border-radius: var(--radius-card);
+            padding: 28px 28px 24px;
+        }
+
+        .dossier-title {
+            font-family: 'The Seasons Light', 'Cormorant Garamond', Georgia, serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--dark-forest);
+            margin-bottom: 6px;
+            line-height: 1.25;
+        }
+
+        .dossier-desc {
+            font-size: 16px;
+            color: var(--ink-muted);
+            margin-bottom: 18px;
+            max-width: 60ch;
+        }
+
+        .email-prefill-box {
+            background: var(--leadgreen-light);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--leadgreen);
+            margin-bottom: 16px;
+            display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .btn-pay:hover {
-            background-color: #0f6c44;
+        .field-group {
+            margin-bottom: 16px;
         }
 
-        .btn-pay:active {
-            transform: scale(0.98);
+        .field-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 6px;
         }
 
-        .btn-pay:disabled {
-            background-color: var(--text-light);
+        input.field-input,
+        select.field-select {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            font-family: inherit;
+            color: var(--ink);
+            background: #FFFFFF;
+            border: 1px solid var(--border-ui);
+            border-radius: 8px;
+            transition: border-color var(--t-hover) ease;
+        }
+
+        input.field-input:focus,
+        select.field-select:focus {
+            outline: 2px solid var(--leadgreen);
+            border-color: transparent;
+        }
+
+        .field-caption {
+            font-size: 14px;
+            color: var(--ink-muted);
+            margin-top: 4px;
+        }
+
+        /* Transparent Pricing Box */
+        .price-summary-box {
+            background: var(--surface-subtle);
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin: 16px 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .price-summary-left {
+            text-align: left;
+        }
+
+        .price-summary-label {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--ink);
+            display: block;
+        }
+
+        .price-summary-sub {
+            font-size: 14px;
+            color: var(--ink-muted);
+        }
+
+        .price-summary-tag {
+            font-family: 'The Seasons Light', 'Cormorant Garamond', Georgia, serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--leadgreen);
+            white-space: nowrap;
+        }
+
+        /* Primary Action Button */
+        .btn-checkout {
+            width: 100%;
+            background-color: var(--leadgreen);
+            color: #FFFFFF;
+            padding: 14px 20px;
+            border: none;
+            border-radius: var(--radius-btn);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: transform var(--t-press) var(--ease-out), background-color var(--t-hover) ease;
+            min-height: 48px;
+        }
+
+        .btn-checkout:hover {
+            background-color: var(--dark-forest);
+            transform: translateY(-1px);
+        }
+
+        .btn-checkout:active {
+            transform: translateY(0);
+        }
+
+        .btn-checkout:disabled {
+            background-color: var(--border-ui);
             cursor: not-allowed;
             transform: none;
         }
 
-        .secure-badge {
+        .security-guarantee {
+            margin-top: 14px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--ink-muted);
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 8px;
+        }
+
+        .security-guarantee i {
+            color: var(--leadgreen);
+        }
+
+        .portal-redirect-block {
+            margin-top: 20px;
+            padding-top: 16px;
+            background: var(--surface-subtle);
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--ink-muted);
+        }
+
+        .portal-redirect-block a {
+            color: var(--leadgreen);
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
             gap: 6px;
-            margin-top: 15px;
-            font-size: 12px;
-            color: var(--text-light);
+            margin-top: 4px;
+            font-size: 14px;
+        }
+
+        .portal-redirect-block a:hover {
+            color: var(--dark-forest);
+            text-decoration: underline;
+        }
+
+        /* Proof & Accreditation Section (Editorial Split) */
+        .proof-section {
+            background-color: var(--dark-forest);
+            color: #FFFFFF;
+            padding: 72px 32px;
+        }
+
+        .proof-container {
+            max-width: 1240px;
+            margin: 0 auto;
+        }
+
+        .section-headline-light {
+            font-family: 'The Seasons Light', 'Cormorant Garamond', Georgia, serif;
+            font-size: 44px;
+            font-weight: 400;
+            color: #FFFFFF;
+            line-height: 1.2;
+            margin-bottom: 12px;
             text-align: center;
         }
 
-        .secure-badge i {
-            color: var(--text-light);
-        }
-
-        /* Success screen */
-        #success-screen {
-            display: none;
+        .section-desc-light {
+            font-size: 18px;
+            color: #D1D5DB;
             text-align: center;
-            padding: 40px 20px;
+            max-width: 60ch;
+            margin: 0 auto 48px;
         }
 
-        .success-icon {
-            width: 80px;
-            height: 80px;
-            background: var(--light-green);
-            color: var(--primary-green);
-            border-radius: 50%;
+        .proof-editorial-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.35fr;
+            gap: 40px;
+            align-items: stretch;
+        }
+
+        .charter-panel {
+            background: #0A5C33;
+            padding: 40px 32px;
+            border-radius: 12px;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 36px;
-            margin: 0 auto 20px;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        #success-screen h2 {
+        .charter-seal {
+            font-size: 38px;
+            color: #A7F3D0;
+            margin-bottom: 20px;
+        }
+
+        .charter-heading {
+            font-family: 'The Seasons Light', 'Cormorant Garamond', Georgia, serif;
             font-size: 24px;
+            font-weight: 400;
+            color: #FFFFFF;
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        .charter-text {
+            font-size: 16px;
+            color: #E5E7EB;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            max-width: 50ch;
+        }
+
+        .charter-stamp {
+            font-size: 14px;
+            color: #A7F3D0;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .proof-specs-sheet {
+            background: #0D4E2D;
+            padding: 36px 32px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            justify-content: center;
+        }
+
+        .proof-spec-row {
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .spec-detail-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 4px;
+        }
+
+        .spec-detail-desc {
+            font-size: 16px;
+            color: #E5E7EB;
+            line-height: 1.5;
+            max-width: 54ch;
+        }
+
+        /* Action Footage & Fellows Section */
+        .fellows-section {
+            padding: 72px 32px;
+            max-width: 1240px;
+            margin: 0 auto;
+        }
+
+        .section-headline-dark {
+            font-family: 'The Seasons Light', 'Cormorant Garamond', Georgia, serif;
+            font-size: 44px;
+            font-weight: 400;
+            color: var(--dark-forest);
+            line-height: 1.2;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .section-desc-dark {
+            font-size: 18px;
+            color: var(--ink-muted);
+            text-align: center;
+            max-width: 60ch;
+            margin: 0 auto 44px;
+        }
+
+        .video-container {
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            background: #111827;
+            margin-bottom: 48px;
+        }
+
+        .nature-video {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .alumni-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .alumni-card {
+            background: var(--surface);
+            border-radius: var(--radius-card);
+            padding: 24px;
+        }
+
+        .alumni-photo-wrap {
+            width: 100%;
+            height: 240px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #E5E7EB;
+            margin-bottom: 18px;
+        }
+
+        .alumni-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .alumni-name {
+            font-family: 'The Seasons Light', 'Cormorant Garamond', Georgia, serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--dark-forest);
+            margin-bottom: 4px;
+        }
+
+        .alumni-role {
+            font-size: 14px;
+            color: var(--leadgreen);
             font-weight: 700;
             margin-bottom: 10px;
-            color: var(--text-main);
         }
 
-        #success-screen p {
-            color: var(--text-muted);
-            line-height: 1.6;
-            margin-bottom: 25px;
+        .alumni-quote {
+            font-size: 16px;
+            color: var(--ink-muted);
+            line-height: 1.5;
+            max-width: 50ch;
         }
 
-        /* Loader */
-        .loader {
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 3px solid #fff;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
+        /* FAQ Section */
+        .faq-section {
+            background: var(--surface);
+            padding: 72px 32px;
+        }
+
+        .faq-container {
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .faq-accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .faq-item {
+            background: var(--ground);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .faq-summary {
+            padding: 20px 24px;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--ink);
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .faq-summary::-webkit-details-marker {
             display: none;
         }
 
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
+        .faq-summary i {
+            color: var(--leadgreen);
+            transition: transform var(--t-ui) var(--ease-out);
+        }
+
+        .faq-item[open] .faq-summary i {
+            transform: rotate(180deg);
+        }
+
+        .faq-content {
+            padding: 0 24px 20px;
+            font-size: 16px;
+            color: var(--ink-muted);
+            line-height: 1.6;
+            max-width: 60ch;
+        }
+
+        /* Secretariat Footer */
+        .academic-footer {
+            background: #111827;
+            color: #FFFFFF;
+            padding: 60px 32px 36px;
+        }
+
+        .footer-container {
+            max-width: 1240px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 44px;
+        }
+
+        .footer-brand h4 {
+            font-family: 'The Seasons Light', 'Cormorant Garamond', Georgia, serif;
+            font-size: 24px;
+            margin-bottom: 12px;
+            color: #FFFFFF;
+        }
+
+        .footer-brand p {
+            color: #D1D5DB;
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 44ch;
+        }
+
+        .footer-column h5 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 14px;
+            letter-spacing: 0.05em;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column a {
+            color: #D1D5DB;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color var(--t-hover) ease;
+        }
+
+        .footer-column a:hover {
+            color: #FFFFFF;
+        }
+
+        .footer-bottom {
+            padding-top: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #9CA3AF;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-bottom a {
+            color: #D1D5DB;
+            text-decoration: none;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .stage-grid {
+                grid-template-columns: 1fr;
             }
 
-            100% {
-                transform: rotate(360deg);
+            .proof-editorial-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .alumni-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
             }
         }
 
-        /* Mobile Responsiveness */
-        @media (max-width: 480px) {
-            .content {
-                padding: 20px;
+        @media (max-width: 768px) {
+            .brand-nav {
+                padding: 14px 18px;
             }
 
-            .header {
-                padding: 25px 15px;
+            .hero-section {
+                padding: 24px 16px 40px;
             }
 
-            .header h1 {
-                font-size: 19px;
+            .hero-title {
+                font-size: 34px;
             }
 
-            .benefit-item {
-                font-size: 13px;
+            .hero-jump-cta {
+                display: flex;
             }
 
-            .price-amount {
-                font-size: 18px;
+            .proof-section,
+            .fellows-section,
+            .faq-section {
+                padding: 48px 16px;
             }
 
-            .price-box {
-                padding: 12px 15px;
+            .section-headline-light,
+            .section-headline-dark {
+                font-size: 34px;
+            }
+
+            .specimen-card,
+            .dossier-card {
+                padding: 20px 16px;
+            }
+
+            .specimen-meta-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .video-container {
+                height: 240px;
+            }
+
+            .nature-video {
+                height: 240px;
             }
         }
     </style>
@@ -317,132 +881,433 @@
 
 <body>
 
-    <div class="container" id="main-container">
-        <!-- Main Form Screen -->
-        <div id="form-screen">
-            <div class="header">
-                <img src="Logo name green.png" alt="LeadGreen Logo" onerror="this.style.display='none'">
-                <h1>Make Your LeadGreen Journey Official</h1>
-                <p>Claim Your Verified Certificate</p>
+    <!-- Top Navigation -->
+    <header class="brand-nav">
+        <div class="brand-nav-left">
+            <a href="index.html" aria-label="LeadGreen Home">
+                <img src="Logo name green.png" alt="LeadGreen Official Emblem" class="brand-logo" onerror="this.style.display='none'">
+            </a>
+        </div>
+        <div class="brand-nav-right">
+            <a href="CertificatePortal.html" class="portal-nav-link" id="navPortalLink">
+                <span>Verify Existing Credential</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Registration Stage -->
+        <section class="hero-section">
+            <div class="hero-header">
+                <h1 class="hero-title" data-rise style="--i:0">Official Credential Registration</h1>
+                <p class="hero-subtitle" data-rise style="--i:1">
+                    Register your completion record for the LeadGreen Fellowship and issue your verified institutional credential.
+                </p>
+                <a href="#fellowshipPaymentForm" class="hero-jump-cta" data-rise style="--i:2">
+                    <span>Register Completion ($1.99)</span>
+                    <i class="fa-solid fa-arrow-down"></i>
+                </a>
             </div>
 
-            <div class="content">
-                <div class="benefits-list">
-                    <h3 style="margin-bottom:15px; font-size:16px; color:var(--primary-green);">Why Claim Your
-                        Certificate?</h3>
-                    <div class="benefit-item">
-                        <i class="fa-solid fa-gift"></i>
-                        <div><strong>Unlock Premium Value:</strong> The knowledge, coaching, and resources you gained in
-                            the LeadGreen fellowship are valued at over <strong>$5,000</strong>. Secure this lifetime
-                            asset today for less than the cost of a cup of coffee.</div>
+            <div class="stage-grid">
+                <!-- Left: Live Interactive Specimen Diploma -->
+                <div class="specimen-card" data-ui="true" data-rise style="--i:3">
+                    <div class="specimen-top">
+                        <span class="specimen-label">
+                            <i class="fa-solid fa-stamp"></i>
+                            Official Diploma Specimen
+                        </span>
+                        <span class="specimen-badge" id="specimenEditionBadge">English Master (EN)</span>
                     </div>
-                    <div class="benefit-item">
-                        <i class="fa-solid fa-globe"></i>
-                        <div><strong>Validate Your Community Impact:</strong> This isn't just paper. It is a verifiable
-                            testament to the real-world climate action you’ve championed and the change you've created
-                            in your community.</div>
+
+                    <div class="preview-viewport">
+                        <img id="specimenBaseImage" src="certificate_template_en.png" alt="LeadGreen Official Certificate Template">
+                        <div id="livePreviewName" class="preview-name-overlay">Your Name on Credential</div>
                     </div>
-                    <div class="benefit-item">
-                        <i class="fa-solid fa-briefcase"></i>
-                        <div><strong>Boost Your Professional Profile:</strong> Perfect for LinkedIn & CVs. Show
-                            employers and grant-makers that you are a serious, certified environmental leader.</div>
-                    </div>
-                    <div class="benefit-item">
-                        <i class="fa-solid fa-users"></i>
-                        <div><strong>Lifetime Alumni Network:</strong> Securing your certificate grants you official
-                            Alumni status, opening doors to exclusive funding, mentorship, and lifelong networking.
+
+                    <div class="specimen-meta-row">
+                        <div class="meta-item">
+                            <span class="meta-title">Issuing Body</span>
+                            <span class="meta-val">LeadGreen Institute</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-title">Specification</span>
+                            <span class="meta-val">300 DPI Archival PDF</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-title">Registry Status</span>
+                            <span class="meta-val">Immediate Verification</span>
                         </div>
                     </div>
-                    <div class="benefit-item">
-                        <i class="fa-solid fa-rocket"></i>
-                        <div><strong>Unlock Global Opportunities:</strong> Stand out from the crowd and gain a
-                            competitive edge for green jobs, grants, and international scholarships.</div>
-                    </div>
                 </div>
 
-                <div style="margin-bottom: 25px;">
-                    <h2 style="font-size: 18px; font-weight: 700; color: var(--primary-green); margin-bottom: 10px;">
-                        LeadGreen Fellowship Certificate</h2>
+                <!-- Right: Dossier Registration & Checkout -->
+                <div class="dossier-card" data-rise style="--i:4">
+                    <h2 class="dossier-title">Fellowship Accreditation Record</h2>
+                    <p class="dossier-desc">
+                        Provide your registration email to record your graduation status and proceed to secure checkout.
+                    </p>
+
+                    <div id="emailNoticeBanner" class="email-prefill-box" style="display: none;">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Graduation record recognized for: <strong id="recognizedEmailText"></strong></span>
+                    </div>
+
+                    <form id="fellowshipPaymentForm" onsubmit="handleLanguageRouting(event)">
+                        <div class="field-group">
+                            <label for="fellowEmailInput" class="field-label">Registered Fellowship Email</label>
+                            <input type="email" id="fellowEmailInput" class="field-input" placeholder="fellow@example.com" required autocomplete="email">
+                            <div class="field-caption">Enter the email associated with your fellowship participation.</div>
+                        </div>
+
+                        <div class="field-group">
+                            <label for="fellowNameInput" class="field-label">Fellow Name on Diploma (Optional Preview)</label>
+                            <input type="text" id="fellowNameInput" class="field-input" placeholder="e.g. Samuel Okoya" autocomplete="name">
+                            <div class="field-caption">Watch your official diploma specimen update on the left as you type.</div>
+                        </div>
+
+                        <div class="field-group">
+                            <label for="languageSelect" class="field-label">Official Edition & Language</label>
+                            <select id="languageSelect" class="field-select" required onchange="updateSpecimenLanguage(this.value)">
+                                <option value="EN" selected>English Master Edition (EN)</option>
+                                <option value="FR">Édition Officielle en Français (FR)</option>
+                            </select>
+                            <div class="field-caption">Select the language for your credential and checkout portal.</div>
+                        </div>
+
+                        <div class="price-summary-box">
+                            <div class="price-summary-left">
+                                <span class="price-summary-label">Accreditation & Registry Fee</span>
+                                <span class="price-summary-sub">One-time archival issuance</span>
+                            </div>
+                            <span class="price-summary-tag">$1.99 USD</span>
+                        </div>
+
+                        <button type="submit" class="btn-checkout" id="submitPaymentBtn">
+                            <span>Proceed to Official Checkout</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+
+                        <div class="security-guarantee">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <span>Secure international checkout processed via Coachli Gateway</span>
+                        </div>
+
+                        <div class="portal-redirect-block">
+                            <span>Already completed your registration fee?</span><br>
+                            <a href="CertificatePortal.html" id="linkToGenerator">
+                                <span>Access Certificate Studio</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Proof & Accreditation Standards (Asymmetric Layout) -->
+        <section class="proof-section">
+            <div class="proof-container">
+                <h2 class="section-headline-light" data-reveal>Institutional Credential Architecture</h2>
+                <p class="section-desc-light" data-reveal>
+                    Every LeadGreen Fellowship certificate is crafted under rigorous academic standards for global recognition.
+                </p>
+
+                <div class="proof-editorial-layout">
+                    <div class="charter-panel" data-reveal>
+                        <div>
+                            <div class="charter-seal"><i class="fa-solid fa-award"></i></div>
+                            <h3 class="charter-heading">Official Climate Leadership Accreditation</h3>
+                            <p class="charter-text">
+                                Issued under the authority of the LeadGreen Academic Secretariat, verifying competencies in environmental governance, grassroots action, and ecological innovation.
+                            </p>
+                        </div>
+                        <div class="charter-stamp">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Verifiable Global Credential Standard</span>
+                        </div>
+                    </div>
+
+                    <div class="proof-specs-sheet">
+                        <div class="proof-spec-row" data-reveal>
+                            <h3 class="spec-detail-title">Permanent Registry Ledger</h3>
+                            <p class="spec-detail-desc">Indexed with a verified registration record for instant validation by prospective partners and academic institutions worldwide.</p>
+                        </div>
+
+                        <div class="proof-spec-row" data-reveal>
+                            <h3 class="spec-detail-title">300 DPI Archival Resolution</h3>
+                            <p class="spec-detail-desc">Rendered using vector mathematics to ensure crisp typographical clarity suitable for framing and physical documentation.</p>
+                        </div>
+
+                        <div class="proof-spec-row" data-reveal>
+                            <h3 class="spec-detail-title">Dual Executive Signatures</h3>
+                            <p class="spec-detail-desc">Formally authorized and validated by the Executive Director and Academic Secretariat of the LeadGreen Climate Fellowship.</p>
+                        </div>
+
+                        <div class="proof-spec-row" data-reveal>
+                            <h3 class="spec-detail-title">Global Career Integration</h3>
+                            <p class="spec-detail-desc">Formats cleanly for LinkedIn Licenses & Certifications, grant proposals, and international curriculum vitae.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Atmospheric Video & Alumni Spotlight -->
+        <section class="fellows-section">
+            <h2 class="section-headline-dark" data-reveal>Fellows in Action Across Africa</h2>
+            <p class="section-desc-dark" data-reveal>
+                Joining over 200 environmental changemakers advancing sustainable agriculture, conservation, and climate resilience.
+            </p>
+
+            <div class="video-container" data-reveal>
+                <video autoplay muted loop playsinline preload="metadata" poster="assets/deers-at-rehabilitation-center-thenmala-poster.jpg" class="nature-video" aria-hidden="true">
+                    <source src="assets/deers-at-rehabilitation-center-thenmala.webm" type="video/webm">
+                </video>
+            </div>
+
+            <div class="alumni-grid">
+                <div class="alumni-card" data-reveal>
+                    <div class="alumni-photo-wrap">
+                        <img src="samuel.jpg" alt="Samuel, LeadGreen Fellow" class="alumni-photo">
+                    </div>
+                    <h3 class="alumni-name">Samuel</h3>
+                    <div class="alumni-role">Climate Adaptation Fellow</div>
+                    <p class="alumni-quote">
+                        The credential provided documented verification of my community research, validating my grassroots work with international funding partners.
+                    </p>
                 </div>
 
-                <form onsubmit="handleLanguageRouting(event)">
-                    <div id="emailNotice" style="display: none; background: #E8F5EE; border: 1px solid #138A56; padding: 10px 14px; border-radius: 8px; font-size: 13px; color: #138A56; margin-bottom: 20px;">
-                        <i class="fa-solid fa-circle-user"></i> Registering for: <strong id="displayEmail"></strong>
+                <div class="alumni-card" data-reveal>
+                    <div class="alumni-photo-wrap">
+                        <img src="Okoya.jpeg" alt="Okoya, LeadGreen Fellow" class="alumni-photo">
                     </div>
+                    <h3 class="alumni-name">Okoya</h3>
+                    <div class="alumni-role">Clean Energy & Mobilization Lead</div>
+                    <p class="alumni-quote">
+                        Having our diplomas accessible in both English and French enabled cross-border collaboration across regional environmental networks.
+                    </p>
+                </div>
 
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label for="fellowEmailInput">Your Registered Email</label>
-                        <input type="email" id="fellowEmailInput" placeholder="Enter your fellowship email" required style="width: 100%; padding: 12px 15px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 15px;">
+                <div class="alumni-card" data-reveal>
+                    <div class="alumni-photo-wrap">
+                        <img src="Markson.png" alt="Markson, LeadGreen Fellow" class="alumni-photo">
                     </div>
+                    <h3 class="alumni-name">Markson</h3>
+                    <div class="alumni-role">Community Reforestation Director</div>
+                    <p class="alumni-quote">
+                        The permanent registry verification allowed our consortium to confirm credentials directly without administrative delays.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-                    <div class="form-group" style="margin-bottom: 25px;">
-                        <label for="languageSelect">Preferred Language / Langue Préférée</label>
-                        <select id="languageSelect" required>
-                            <option value="">-- Select Language --</option>
-                            <option value="EN">English</option>
-                            <option value="FR">Français (French)</option>
-                        </select>
-                    </div>
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <div class="faq-container">
+                <h2 class="section-headline-dark" data-reveal>Registration Inquiries</h2>
+                <p class="section-desc-dark" data-reveal>
+                    Answers to common questions regarding fellowship accreditation and credential generation.
+                </p>
 
-                    <div class="price-box" style="display:flex; justify-content:space-between; align-items:center;">
-                        <span class="price-label">Certificate Fee</span>
-                        <span class="price-amount" style="font-size: 20px;">$1.99 USD</span>
-                    </div>
+                <div class="faq-accordion">
+                    <details class="faq-item" open data-reveal>
+                        <summary class="faq-summary">
+                            <span>What does the $1.99 USD registration fee support?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </summary>
+                        <div class="faq-content">
+                            The fee covers real-time cryptographic verification, secure high-resolution cloud PDF rendering, and lifetime registry record hosting across our international fellow directory.
+                        </div>
+                    </details>
 
-                    <button type="submit" class="btn-pay">
-                        <span>Pay for Certificate</span>
-                    </button>
+                    <details class="faq-item" data-reveal>
+                        <summary class="faq-summary">
+                            <span>Can I adjust the name formatting after completing payment?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </summary>
+                        <div class="faq-content">
+                            Yes. In the Certificate Studio, you can format your name in Title Case, lowercase, or adjust accents directly on the live generator before generating your final file.
+                        </div>
+                    </details>
 
-                    <div class="secure-badge">
-                        <i class="fa-solid fa-lock"></i> Secured securely via Coachli
-                    </div>
+                    <details class="faq-item" data-reveal>
+                        <summary class="faq-summary">
+                            <span>Are both English and French editions available?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </summary>
+                        <div class="faq-content">
+                            Yes. You can select your preferred edition during registration. Both English and French credential templates are authorized and permanently verifiable.
+                        </div>
+                    </details>
 
-                    <div style="text-align: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border-color); font-size: 14px; color: var(--text-muted);">
-                        Already completed your payment? <br>
-                        <a href="CertificatePortal.html" id="linkToGenerator" style="color: var(--primary-green); font-weight: 700; text-decoration: none; display: inline-block; margin-top: 6px;">
-                            Go to Certificate Generator <i class="fa-solid fa-arrow-right" style="font-size: 12px;"></i>
-                        </a>
-                    </div>
-                </form>
+                    <details class="faq-item" data-reveal>
+                        <summary class="faq-summary">
+                            <span>How rapidly do I receive access to my credential?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </summary>
+                        <div class="faq-content">
+                            Access is immediate. Upon payment confirmation through Coachli, you are redirected directly to the Certificate Studio where your document is generated for instant download.
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+    </main>
 
-                <script>
-                    window.addEventListener('DOMContentLoaded', () => {
-                        const params = new URLSearchParams(window.location.search);
-                        const email = params.get('email') || localStorage.getItem('leadgreen_fellow_email') || '';
-                        if (email) {
-                            document.getElementById('fellowEmailInput').value = email;
-                            document.getElementById('displayEmail').innerText = email;
-                            document.getElementById('emailNotice').style.display = 'block';
-                            document.getElementById('linkToGenerator').href = `CertificatePortal.html?email=${encodeURIComponent(email)}`;
-                        }
-                    });
+    <!-- Footer -->
+    <footer class="academic-footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h4>LeadGreen Fellowship</h4>
+                    <p>
+                        Equipping African leaders with climate education, sustainable enterprise strategies, and ecological governance.
+                    </p>
+                </div>
+                <div class="footer-column">
+                    <h5>Credential Services</h5>
+                    <ul>
+                        <li><a href="CertificatePayment.html">Register Completion</a></li>
+                        <li><a href="CertificatePortal.html">Certificate Studio</a></li>
+                        <li><a href="CertificatePortal.html">Registry Verification</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h5>Academic Secretariat</h5>
+                    <ul>
+                        <li><a href="index.html">Fellowship Home</a></li>
+                        <li><a href="index.html#about">Leadership Council</a></li>
+                        <li><a href="mailto:leadgreenfellow@gmail.com">Contact Secretariat</a></li>
+                    </ul>
+                </div>
+            </div>
 
-                    window.handleLanguageRouting = function (e) {
-                        e.preventDefault();
-
-                        const emailInput = document.getElementById('fellowEmailInput').value.trim();
-                        if (emailInput) {
-                            localStorage.setItem('leadgreen_fellow_email', emailInput);
-                        }
-
-                        const btn = e.target.querySelector('button[type="submit"]');
-                        btn.innerHTML = '<span>Redirecting to Checkout...</span>';
-                        btn.disabled = true;
-
-                        const language = document.getElementById('languageSelect').value;
-
-                        if (language === 'FR') {
-                            window.location.href = 'https://coachli.co/leadgreenfellow/PR-92c968f5eb';
-                        } else {
-                            window.location.href = 'https://coachli.co/leadgreenfellow/PR-d8af185b84';
-                        }
-                    };
-                </script>
+            <div class="footer-bottom">
+                <p>&copy; 2024–2025 LeadGreen Fellowship. All rights reserved.</p>
+                <p>Footage: <a href="https://commons.wikimedia.org/wiki/File:Deers_at_rehabilitation_center,_Thenmala.webm" target="_blank" rel="noopener">“Deers at rehabilitation center, Thenmala”</a> by Vis M, <a href="https://creativecommons.org/licenses/by-sa/4.0" target="_blank" rel="noopener">CC BY-SA 4.0</a>.</p>
             </div>
         </div>
+    </footer>
 
-    </div>
+    <!-- Interactive Script -->
+    <script>
+        function toTitleCase(str) {
+            if (!str) return '';
+            return str
+                .toLowerCase()
+                .split(' ')
+                .map(word => word ? word.charAt(0).toUpperCase() + word.slice(1) : '')
+                .join(' ');
+        }
 
+        function updateSpecimenLanguage(lang) {
+            const specimenImg = document.getElementById('specimenBaseImage');
+            const badge = document.getElementById('specimenEditionBadge');
+
+            if (lang === 'FR') {
+                specimenImg.src = 'certificate_template.png';
+                badge.innerText = 'Édition Officielle (FR)';
+            } else {
+                specimenImg.src = 'certificate_template_en.png';
+                badge.innerText = 'English Master (EN)';
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            // Scroll reveal observer
+            if ('IntersectionObserver' in window) {
+                const io = new IntersectionObserver((entries) => {
+                    for (const entry of entries) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-in');
+                            io.unobserve(entry.target);
+                        }
+                    }
+                }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
+
+                document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+            } else {
+                document.querySelectorAll('[data-reveal]').forEach((el) => el.classList.add('is-in'));
+            }
+
+            const params = new URLSearchParams(window.location.search);
+            const emailParam = params.get('email') || localStorage.getItem('leadgreen_fellow_email') || '';
+            const nameParam = params.get('name') || localStorage.getItem('leadgreen_fellow_name') || '';
+            const langParam = (params.get('lang') || 'EN').toUpperCase();
+
+            const emailInput = document.getElementById('fellowEmailInput');
+            const nameInput = document.getElementById('fellowNameInput');
+            const langSelect = document.getElementById('languageSelect');
+            const displayEmail = document.getElementById('recognizedEmailText');
+            const noticeBanner = document.getElementById('emailNoticeBanner');
+            const liveName = document.getElementById('livePreviewName');
+            const portalLink = document.getElementById('linkToGenerator');
+            const navPortalLink = document.getElementById('navPortalLink');
+
+            if (langParam === 'FR') {
+                langSelect.value = 'FR';
+                updateSpecimenLanguage('FR');
+            } else {
+                langSelect.value = 'EN';
+                updateSpecimenLanguage('EN');
+            }
+
+            if (emailParam) {
+                emailInput.value = emailParam;
+                displayEmail.innerText = emailParam;
+                noticeBanner.style.display = 'flex';
+                portalLink.href = `CertificatePortal.html?email=${encodeURIComponent(emailParam)}`;
+                navPortalLink.href = `CertificatePortal.html?email=${encodeURIComponent(emailParam)}`;
+            }
+
+            if (nameParam) {
+                nameInput.value = nameParam;
+                liveName.innerText = toTitleCase(nameParam);
+            }
+
+            nameInput.addEventListener('input', (e) => {
+                const val = e.target.value.trim();
+                liveName.innerText = val ? toTitleCase(val) : 'Your Name on Credential';
+            });
+
+            emailInput.addEventListener('input', (e) => {
+                const val = e.target.value.trim();
+                if (val) {
+                    portalLink.href = `CertificatePortal.html?email=${encodeURIComponent(val)}`;
+                    navPortalLink.href = `CertificatePortal.html?email=${encodeURIComponent(val)}`;
+                }
+            });
+        });
+
+        window.handleLanguageRouting = function (e) {
+            e.preventDefault();
+
+            const emailInput = document.getElementById('fellowEmailInput').value.trim();
+            const nameInput = document.getElementById('fellowNameInput').value.trim();
+            const language = document.getElementById('languageSelect').value;
+
+            if (emailInput) {
+                localStorage.setItem('leadgreen_fellow_email', emailInput);
+            }
+            if (nameInput) {
+                localStorage.setItem('leadgreen_fellow_name', nameInput);
+            }
+
+            const btn = document.getElementById('submitPaymentBtn');
+            btn.innerHTML = '<span>Redirecting to Coachli Gateway...</span><i class="fa-solid fa-spinner fa-spin"></i>';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                if (language === 'FR') {
+                    window.location.href = 'https://coachli.co/leadgreenfellow/PR-92c968f5eb';
+                } else {
+                    window.location.href = 'https://coachli.co/leadgreenfellow/PR-d8af185b84';
+                }
+            }, 300);
+        };
+    </script>
 </body>
 
 </html>
