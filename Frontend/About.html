@@ -4,1284 +4,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leadgreen Website</title>
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
+    <title>About LeadGreen — Our Story, Vision & Pan-African Mission</title>
+    <meta name="description" content="Discover why the LeadGreen Fellowship was founded in 2023: unlocking the potential of young Africans to become stewards of their environment and champions of sustainable innovation.">
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800;900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Master Global Stylesheet -->
     <link rel="stylesheet" href="global.css">
+
     <style>
-        /* Hero Section */
-        .hero {
-            position: relative;
-            width: 100%;
-            height: 650px;
-            /* Local image for hero section */
-            background-image: url('91a53a1a5b52f60084020a8aafca7745.jpg');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            align-items: flex-end;
-            justify-content: flex-start;
-        }
+        /* ==========================================================================
+           ABOUT PAGE BESPOKE EDITORIAL STYLES
+           ========================================================================== */
 
-        .hero-card {
-            background-color: #14532D;
-            /* Deep Forest Green */
-            width: 65%;
-            padding: 60px 80px;
-            box-sizing: border-box;
-            max-width: 1000px;
-        }
-
-        .hero-tags {
-            font-family: 'Inter', sans-serif;
-            font-size: 13px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 24px;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .tag-highlight {
-            color: #6EE7B7;
-            /* Light mint green */
-        }
-
-        .tag-separator {
-            color: #ffffff;
-            font-size: 12px;
-            opacity: 0.9;
-            margin-top: -2px;
-        }
-
-        .hero-headline {
-            font-family: 'Inter', sans-serif;
-            font-size: 58px;
-            font-weight: 900;
-            /* Extra bold */
-            color: #ffffff;
-            line-height: 1.1;
-            letter-spacing: -1.5px;
-            max-width: 800px;
-        }
-
-        /* Responsive Layout Overrides */
-        @media (max-width: 992px) {
-            .hero {
-                height: 500px;
-            }
-
-            .hero-card {
-                width: 90%;
-                padding: 40px;
-            }
-
-            .hero-headline {
-                font-size: 42px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .hero {
-                height: 400px;
-            }
-
-            .hero-card {
-                width: 100%;
-                /* Full width on mobile */
-                padding: 30px 20px;
-            }
-
-            .hero-headline {
-                font-size: 32px;
-                letter-spacing: -0.5px;
-            }
-
-            .hero-tags {
-                font-size: 11px;
-                gap: 10px;
-            }
-        }
-
-        /* Info Section */
-        .info-section {
-            background-color: var(--bg-light);
-            padding: 90px 5%;
-            display: flex;
-            justify-content: center;
-        }
-
-        .info-container {
-            display: flex;
-            max-width: 1200px;
-            width: 100%;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .info-left {
-            flex: 1;
-            padding-right: 20px;
-        }
-
-        .info-tag {
-            color: #16A34A;
-            font-size: 12px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 25px;
-            display: block;
-        }
-
-        .info-headline {
-            font-family: 'Inter', sans-serif;
-            font-size: 40px;
-            font-weight: 800;
-            color: #333333;
-            line-height: 1.25;
-            margin-bottom: 30px;
-            letter-spacing: -0.5px;
-        }
-
-        .info-headline-green {
-            color: #16A34A;
-        }
-
-        .info-text {
-            color: #4a4a4a;
-            font-size: 15px;
-            line-height: 1.6;
-            margin-bottom: 24px;
-        }
-
-        .info-right {
-            flex: 0.9;
-            background-color: #ce2038;
-            border-radius: 6px;
-            padding: 60px 50px;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 10px 30px rgba(206, 32, 56, 0.15);
-        }
-
-        .info-stat {
-            font-family: 'Inter', sans-serif;
-            color: #ffffff;
-            font-size: 34px;
-            font-weight: 700;
-            line-height: 1.4;
-            letter-spacing: -0.5px;
-        }
-
-        /* Responsive info section */
-        @media (max-width: 902px) {
-            .info-container {
-                flex-direction: column;
-                gap: 50px;
-            }
-
-            .info-left {
-                padding-right: 0;
-            }
-
-            .info-right {
-                width: 100%;
-                flex: none;
-                padding: 40px 30px;
-            }
-
-            .info-headline {
-                font-size: 32px;
-            }
-
-            .info-stat {
-                font-size: 26px;
-            }
-        }
-
-        /* Our Impact Section */
-        .impact-section {
-            background: linear-gradient(145deg, #FFFFFF 0%, #F0F9F4 100%);
-            padding: 90px 5%;
+        /* About Hero */
+        .about-hero {
+            padding: 80px 0 64px;
+            background-color: var(--ground);
             text-align: center;
         }
 
-        .impact-headline {
-            font-family: 'Inter', sans-serif;
-            font-size: 44px;
-            font-weight: 800;
-            color: #111111;
-            margin-bottom: 25px;
-            letter-spacing: -1px;
-        }
-
-        .impact-desc {
-            font-family: 'Inter', sans-serif;
-            font-size: 17px;
-            color: #555555;
-            max-width: 850px;
-            margin: 0 auto 60px auto;
-            line-height: 1.6;
-            text-align: center;
-        }
-
-        .impact-grid {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            max-width: 1200px;
+        .about-hero-content {
+            max-width: 860px;
             margin: 0 auto;
-            flex-wrap: wrap;
-        }
-
-        .impact-card {
             display: flex;
             flex-direction: column;
             align-items: center;
-            flex: 1;
-            min-width: 220px;
-        }
-
-        .impact-icon-wrapper {
-            width: 130px;
-            height: 130px;
-            background-color: rgba(19, 138, 86, 0.06);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 25px;
-            transition: transform 0.3s ease-in-out;
-            box-shadow: 0 4px 15px rgba(19, 138, 86, 0.05);
-        }
-
-        .impact-icon-wrapper:hover {
-            transform: translateY(-8px);
-        }
-
-        .impact-icon-wrapper i {
-            font-size: 48px;
-            color: #138A56;
-        }
-
-        .impact-number {
-            font-family: 'Inter', sans-serif;
-            font-size: 38px;
-            font-weight: 900;
-            color: #111111;
-            margin-bottom: 8px;
-            line-height: 1;
-            letter-spacing: -0.5px;
-        }
-
-        .impact-label {
-            font-family: 'Inter', sans-serif;
-            font-size: 16px;
-            font-weight: 600;
-            color: #777777;
-            line-height: 1.4;
-        }
-
-        /* Responsive Impact section */
-        @media (max-width: 900px) {
-            .impact-grid {
-                gap: 50px 30px;
-            }
-
-            .impact-card {
-                min-width: 40%;
-            }
-
-            .impact-headline {
-                font-size: 38px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .impact-card {
-                min-width: 100%;
-            }
-
-            .impact-headline {
-                font-size: 34px;
-            }
-        }
-
-        /* Testimonial Section */
-        .testimonial-section {
-            background-color: #ffffff;
-            padding: 100px 5%;
-            display: flex;
-            justify-content: center;
-        }
-
-        .testimo-container {
-            display: flex;
-            max-width: 1200px;
-            width: 100%;
-            gap: 80px;
-            align-items: flex-start;
-        }
-
-        /* Left Side: Avatar */
-        .testimo-left {
-            flex: 0 0 40%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .testimo-image {
-            width: 100%;
-            height: 500px;
-            border-radius: 12px;
-            background-size: cover;
-            background-position: center;
-            margin-bottom: 20px;
-        }
-
-        .testimo-name {
-            font-size: 18px;
-            font-weight: 700;
-            color: #333333;
-            margin-bottom: 5px;
-        }
-
-        .testimo-details {
-            font-size: 14px;
-            color: #666666;
-        }
-
-        /* Right Side: Content */
-        .testimo-right {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .testimo-quote-block {
-            display: flex;
-            align-items: flex-start;
             gap: 20px;
-            margin-bottom: 25px;
         }
 
-        .quote-icon i {
-            font-size: 55px;
-            color: #138A56;
-            line-height: 1;
-            margin-top: -10px;
+        .about-hero-title {
+            font-size: clamp(2.6rem, 5vw, 4.2rem);
+            color: var(--ink);
+            line-height: 1.08;
         }
 
-        .quote-text {
-            font-family: 'Inter', sans-serif;
-            font-style: italic;
-            font-size: 28px;
-            font-weight: 600;
-            color: #138A56;
-            line-height: 1.4;
-            letter-spacing: -0.5px;
+        .about-hero-title span {
+            color: var(--brand);
         }
 
-        .testimo-body {
-            font-size: 16px;
-            color: #333333;
-            line-height: 1.6;
-            margin-bottom: 40px;
-        }
-
-        .impact-card-gray {
-            background-color: #F8F9FA;
-            border-radius: 8px;
-            padding: 30px 40px;
-            margin-bottom: 40px;
-            border-left: 4px solid #138A56;
-        }
-
-        .card-title-green {
-            font-size: 14px;
-            font-weight: 800;
-            color: #138A56;
-            margin-bottom: 15px;
-            letter-spacing: 1.5px;
-        }
-
-        .card-body {
-            font-size: 15px;
-            color: #333333;
+        .about-hero-lead {
+            font-size: clamp(1.15rem, 1.8vw, 1.35rem);
+            color: var(--ink-soft);
             line-height: 1.6;
         }
 
-        .testimo-cta {
+        /* Narrative Story Section */
+        .story-section {
+            background-color: var(--surface);
+            padding: 96px 0;
+        }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: 5fr 7fr;
+            gap: 64px;
+            align-items: start;
+        }
+
+        .story-callout {
+            background-color: var(--brand-light);
+            border-radius: var(--radius-lg);
+            padding: 40px 32px;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             gap: 20px;
-            flex-wrap: wrap;
         }
 
-        .btn-apply-now-large {
-            background-color: #138A56;
-            color: #ffffff;
-            text-decoration: none;
-            padding: 14px 28px;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 14px;
-            letter-spacing: 1px;
-            transition: background-color 0.2s;
-        }
-
-        .btn-apply-now-large:hover {
-            background-color: #14532D;
-        }
-
-        .link-more-stories {
-            background-color: #FDF6F0;
-            color: #138A56;
-            text-decoration: none;
-            padding: 14px 24px;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 15px;
-            transition: opacity 0.2s;
-        }
-
-        .link-more-stories:hover {
-            opacity: 0.85;
-        }
-
-        /* Responsive Testimonial */
-        @media (max-width: 900px) {
-            .testimo-container {
-                flex-direction: column;
-                gap: 50px;
-            }
-
-            .testimo-image {
-                height: 400px;
-            }
-
-            .quote-text {
-                font-size: 24px;
-            }
-        }
-
-        /* Slideshow Specific */
-        .testimonial-section {
-            padding: 100px 5%;
-        }
-
-        .slideshow-container {
-            max-width: 1200px;
-            position: relative;
-            margin: auto;
-        }
-
-        .mySlides {
-            display: none;
-        }
-
-        .slideshow-prev,
-        .slideshow-next {
-            cursor: pointer;
-            position: absolute;
-            top: 50%;
-            width: auto;
-            margin-top: -30px;
-            padding: 16px;
-            color: #138A56;
-            font-weight: bold;
-            font-size: 30px;
-            transition: 0.3s ease;
-            border-radius: 50%;
-            user-select: none;
-            text-decoration: none;
-        }
-
-        .slideshow-next {
-            right: -70px;
-        }
-
-        .slideshow-prev {
-            left: -70px;
-        }
-
-        .slideshow-prev:hover,
-        .slideshow-next:hover {
-            background-color: rgba(19, 138, 86, 0.1);
-        }
-
-        .slideshow-dots {
-            margin-top: 40px;
-        }
-
-        .dot {
-            cursor: pointer;
-            height: 12px;
-            width: 12px;
-            margin: 0 6px;
-            background-color: #ddd;
-            border-radius: 50%;
-            display: inline-block;
-            transition: background-color 0.6s ease;
-        }
-
-        .active-dot,
-        .dot:hover {
-            background-color: #138A56;
-        }
-
-        .fade {
-            animation-name: fade;
-            animation-duration: 0.8s;
-        }
-
-        @keyframes fade {
-            from {
-                opacity: .4
-            }
-
-            to {
-                opacity: 1
-            }
-        }
-
-        @media (max-width: 1350px) {
-            .slideshow-prev {
-                left: -10px;
-                background-color: rgba(255, 255, 255, 0.7);
-            }
-
-            .slideshow-next {
-                right: -10px;
-                background-color: rgba(255, 255, 255, 0.7);
-            }
-        }
-
-        /* Redesigned Premium Cohorts Section */
-        .cohorts-section {
-            background-color: #FAFAFA;
-            /* Soft light background */
-            padding: 120px 5%;
-            display: flex;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cohorts-glow {
-            position: absolute;
-            top: -100px;
-            left: -150px;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(19, 138, 86, 0.08) 0%, rgba(19, 138, 86, 0) 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .cohorts-container {
-            display: flex;
-            max-width: 1250px;
-            width: 100%;
-            gap: 80px;
-            align-items: center;
-            z-index: 1;
-        }
-
-        .cohorts-text-col {
-            flex: 1;
-            text-align: left;
-        }
-
-        .cohorts-headline {
-            font-family: 'Inter', sans-serif;
-            font-size: 46px;
-            font-weight: 900;
-            color: #222222;
-            margin-bottom: 25px;
-            line-height: 1.15;
-            letter-spacing: -1px;
-        }
-
-        .cohorts-headline span {
-            color: #138A56;
-        }
-
-        .cohorts-subheadline {
-            font-size: 18px;
-            color: #666666;
-            line-height: 1.7;
-            margin-bottom: 45px;
-            max-width: 500px;
-        }
-
-        .cohort-list {
-            flex: 1.2;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .cohort-card {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 35px 40px;
-            border-radius: 16px;
-            background-color: #FFFFFF;
-            border: 1px solid #EEEEEE;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .cohort-card:hover {
-            transform: translateX(10px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-        }
-
-        .cohort-card.open {
-            background-color: #FFFFFF;
-            border: 1px solid rgba(19, 138, 86, 0.3);
-            box-shadow: 0 10px 30px rgba(19, 138, 86, 0.08);
-        }
-
-        .cohort-card.open:hover {
-            box-shadow: 0 15px 40px rgba(19, 138, 86, 0.12);
-        }
-
-        .cohort-info {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .cohort-title {
-            font-size: 22px;
-            font-weight: 800;
-            color: #222222;
-            letter-spacing: 0.5px;
-        }
-
-        .cohort-card.closed .cohort-title,
-        .cohort-card.closed .cohort-dates {
-            color: #888888;
-        }
-
-        .cohort-dates {
-            font-size: 16px;
-            color: #555555;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .cohort-dates i {
-            color: #138A56;
-        }
-
-        .cohort-status-text {
-            font-size: 16px;
-            font-weight: 700;
-            color: #888888;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .btn-cohort-open {
-            background: linear-gradient(135deg, #138A56 0%, #16A34A 100%);
-            color: #FFFFFF;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 30px;
-            font-weight: 800;
-            font-size: 13px;
-            letter-spacing: 1.5px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(19, 138, 86, 0.4);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .btn-cohort-open:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(19, 138, 86, 0.6);
-        }
-
-        .btn-cohorts-apply {
-            display: inline-block;
-            background-color: #138A56;
-            color: #FFFFFF;
-            text-decoration: none;
-            padding: 18px 40px;
-            border-radius: 30px;
-            font-weight: 800;
-            font-size: 15px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(19, 138, 86, 0.3);
-            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-        }
-
-        .btn-cohorts-apply:hover {
-            background-color: #14532D;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(19, 138, 86, 0.5);
-        }
-
-        @media (max-width: 900px) {
-            .cohorts-container {
-                flex-direction: column;
-                text-align: center;
-                gap: 50px;
-            }
-
-            .cohorts-text-col {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .cohort-card:hover {
-                transform: translateX(0);
-                transform: translateY(-5px);
-            }
-        }
-
-        @media (max-width: 576px) {
-            .cohorts-headline {
-                font-size: 32px;
-            }
-
-            .cohort-list {
-                width: 100%;
-            }
-
-            .cohort-card {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 20px;
-                padding: 30px 25px;
-            }
-
-            .btn-cohort-open {
-                width: 100%;
-            }
-        }
-
-        /* ----- Clean Layout: Who Is This For Section ----- */
-        .who-section {
-            background-color: #FFFFFF;
-            padding: 110px 5%;
-            display: flex;
-            justify-content: center;
-        }
-
-        .who-container {
-            max-width: 1250px;
-            width: 100%;
-            text-align: left;
-        }
-
-        .who-content {
-            max-width: 950px;
-        }
-
-        .who-label {
-            font-family: 'Inter', sans-serif;
-            font-size: 16px;
-            font-weight: 800;
-            color: #138A56;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            margin-bottom: 22px;
-        }
-
-        .who-headline {
-            font-family: 'Inter', sans-serif;
-            font-size: 48px;
-            font-weight: 800;
-            color: #1a1a1a;
-            margin-bottom: 25px;
-            letter-spacing: -1.2px;
+        .story-callout h3 {
+            font-size: 1.6rem;
+            color: var(--brand-dark);
             line-height: 1.2;
         }
 
-        .who-body {
-            font-family: 'Inter', sans-serif;
-            font-size: 20px;
-            font-weight: 400;
-            color: #4a4a4a;
-            line-height: 1.6;
-            margin-bottom: 50px;
+        .story-callout p {
+            font-size: 1rem;
+            color: var(--ink-soft);
+            line-height: 1.65;
         }
 
-        /* Clean Accordion */
-        .faq-accordion {
-            margin-top: 50px;
-            border-top: 1px dashed #cccccc;
+        .story-prose p {
+            font-size: 1.12rem;
+            line-height: 1.75;
+            color: var(--ink);
+            margin-bottom: 24px;
         }
 
-        .faq-item {
-            border-bottom: 1px dashed #cccccc;
+        /* Zig-Zag Pillar Rows */
+        .pillars-manifesto {
+            background-color: var(--ground);
+            padding: 96px 0;
         }
 
-        .faq-question {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
+        .pillar-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 56px;
             align-items: center;
-            background: none;
-            border: none;
-            padding: 30px 0;
-            cursor: pointer;
-            text-align: left;
-            font-family: 'Inter', sans-serif;
-            font-size: 22px;
-            font-weight: 700;
-            color: #1a1a1a;
+            margin-bottom: 80px;
         }
 
-        .faq-question:hover {
-            color: #138A56;
+        .pillar-row:last-child {
+            margin-bottom: 0;
         }
 
-        .faq-icon {
-            font-size: 22px;
-            color: #1a1a1a;
-            transition: transform 0.3s ease;
+        .pillar-row.reverse {
+            direction: rtl;
         }
 
-        .faq-item.active .faq-icon {
-            transform: rotate(45deg);
-            color: #138A56;
+        .pillar-row.reverse > * {
+            direction: ltr;
         }
 
-        .faq-item.active .faq-question {
-            color: #138A56;
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        .faq-answer p {
-            font-size: 18px;
-            color: #555555;
-            line-height: 1.6;
-            padding-bottom: 30px;
-            margin: 0;
-        }
-
-        @media (max-width: 576px) {
-            .who-headline {
-                font-size: 32px;
-            }
-
-            .faq-question {
-                font-size: 17px;
-            }
-        }
-
-        /* ----- Footer Section ----- */
-        footer.site-footer {
-            background-color: #1a1816;
-            color: #E0E0E0;
-            padding: 80px 5% 40px 5%;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 40px;
-            margin-bottom: 60px;
-        }
-
-        .footer-col {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .footer-col:first-child {
-            flex: 1.5;
-        }
-
-        .footer-col h4 {
-            color: #FFFFFF;
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 25px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .footer-text {
-            font-size: 15px;
-            line-height: 1.8;
-            color: #BBBBBB;
-            margin-bottom: 20px;
-        }
-
-        /* Social Icons */
-        .social-icons {
-            display: flex;
-            gap: 12px;
-            margin-top: 25px;
-        }
-
-        .social-link {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 44px;
-            height: 44px;
-            background-color: #2E2A27;
-            color: #FFFFFF;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 18px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-
-        .social-link:hover {
-            background-color: #138A56;
-            transform: translateY(-3px);
-        }
-
-        /* Footer Links */
-        .footer-links {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .footer-links a {
-            color: #FFFFFF;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            transition: color 0.2s ease;
-        }
-
-        .footer-links a:hover {
-            color: #138A56;
-        }
-
-        .footer-bottom {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding-top: 30px;
-            border-top: 1px solid #2E2A27;
-            text-align: center;
-            font-size: 14px;
-            color: #888888;
-        }
-
-        .footer-bottom strong {
-            color: #FFFFFF;
-            font-weight: 600;
-        }
-
-        .footer-bottom a {
-            color: #888888;
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        .footer-bottom a:hover {
-            color: #FFFFFF;
-        }
-
-        @media (max-width: 768px) {
-            .footer-container {
-                flex-direction: column;
-            }
-        }
-
-        /* ----- Video Section ----- */
-        .video-section {
-            background-color: #F4F7F9;
-            padding: 80px 5%;
-        }
-
-        .video-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .video-card {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .video-wrapper {
+        .pillar-image-wrap {
             position: relative;
-            width: 100%;
-            padding-top: 56.25%;
-            /* 16:9 Aspect Ratio */
-            background-color: #000;
+            height: 380px;
+            border-radius: var(--radius-lg);
             overflow: hidden;
+            background-color: var(--surface-alt);
         }
 
-        .youtube-player {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .youtube-player::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 120px;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
-            z-index: 1;
-        }
-
-        .youtube-player::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 120px;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
-            z-index: 1;
-        }
-
-        .yt-top-overlay {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            z-index: 10;
-        }
-
-        .yt-logo-circle {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #FFF;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #000;
-            font-size: 18px;
-        }
-
-        .yt-title {
-            display: flex;
-            flex-direction: column;
-            color: #FFF;
-            font-family: 'Inter', Arial, sans-serif;
-        }
-
-        .yt-title strong {
-            font-size: 18px;
-            line-height: 1.2;
-            font-weight: 700;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-        }
-
-        .yt-title span {
-            font-size: 13px;
-            opacity: 0.9;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-        }
-
-        .yt-play-btn {
-            background-color: #138A56;
-            color: #FFF;
-            width: 68px;
-            height: 48px;
-            border-radius: 12px;
-            border: none;
-            font-size: 32px;
-            cursor: pointer;
-            z-index: 10;
-            transition: background-color 0.2s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .yt-play-btn:hover {
-            background-color: #14532D;
-        }
-
-        .yt-subtitle-text {
-            position: absolute;
-            bottom: 60px;
+        .pillar-image-wrap img {
             width: 100%;
-            text-align: center;
-            color: #FFF;
-            font-size: 22px;
-            font-family: 'Inter', Arial, sans-serif;
-            font-weight: 800;
-            line-height: 1.3;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 1);
-            z-index: 10;
-        }
-
-        .yt-bottom-overlay {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-            left: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            z-index: 10;
-        }
-
-        .yt-share-btn {
-            background-color: rgba(0, 0, 0, 0.6);
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            font-size: 18px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .yt-watch-on {
-            background-color: rgba(0, 0, 0, 0.8);
-            color: #FFF;
-            padding: 8px 15px;
-            border-radius: 4px;
-            font-family: 'Inter', Arial, sans-serif;
-            font-weight: 600;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .video-caption {
-            font-family: 'Inter', sans-serif;
-            font-size: 16px;
-            color: #1a1a1a;
-            text-align: center;
-            margin-top: 15px;
-        }
-
-        .video-section {
-            background-color: rgba(13, 100, 62, 0.05);
-            /* Soft brand Green */
-            padding: 80px 5%;
-            display: flex;
-            justify-content: center;
-        }
-
-        /* Zig Zag Section */
-        .zig-zag-section {
-            padding: 80px 5%;
-            font-family: 'Inter', sans-serif;
-            color: #1a1a1a;
-            background-color: #ffffff;
-        }
-
-        .zig-zag-intro {
-            max-width: 900px;
-            margin: 0 auto 80px auto;
-            font-size: 20px;
-            line-height: 1.6;
-            text-align: left;
-        }
-
-        .zig-zag-row {
-            display: flex;
-            max-width: 1250px;
-            margin: 0 auto 60px auto;
-            align-items: center;
-            gap: 60px;
-        }
-
-        .zig-zag-row.reverse {
-            flex-direction: row-reverse;
-        }
-
-        .zig-zag-image {
-            flex: 1;
-            border-radius: 4px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-        }
-
-        .zig-zag-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-            aspect-ratio: 4 / 3;
+            height: 100%;
             object-fit: cover;
+            transition: transform var(--transition-slow);
         }
 
-        .zig-zag-text {
-            flex: 1;
-            padding: 10px;
+        .pillar-image-wrap:hover img {
+            transform: scale(1.04);
         }
 
-        .zz-highlight {
-            background-color: #138A56;
-            color: white;
-            display: inline-block;
-            padding: 2px 8px;
-            font-size: 32px;
+        .pillar-text-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .pillar-tag {
+            font-family: var(--font-display);
+            font-size: 0.82rem;
             font-weight: 800;
+            color: var(--brand);
             text-transform: uppercase;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
+            letter-spacing: 0.08em;
         }
 
-        .zz-body {
-            font-size: 20px;
-            line-height: 1.6;
-            color: #1a1a1a;
+        .pillar-heading {
+            font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+            color: var(--ink);
+            line-height: 1.15;
         }
 
-        @media (max-width: 900px) {
+        .pillar-body {
+            font-size: 1.05rem;
+            color: var(--ink-soft);
+            line-height: 1.7;
+        }
 
-            .zig-zag-row,
-            .zig-zag-row.reverse {
-                flex-direction: column;
-                gap: 30px;
+        /* Continental Reach Stats */
+        .reach-section {
+            background-color: var(--surface-dark);
+            color: #FFFFFF;
+            padding: 96px 0;
+        }
+
+        .reach-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 56px;
+            align-items: center;
+        }
+
+        .reach-metric-box {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .metric-cell .metric-num {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--brand-mint-bright);
+            line-height: 1;
+        }
+
+        .metric-cell .metric-label {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-top: 8px;
+        }
+
+        .metric-cell .metric-desc {
+            font-size: 0.82rem;
+            color: var(--ink-inverse-soft);
+            margin-top: 4px;
+        }
+
+        /* Responsive */
+        @media (max-width: 960px) {
+            .story-grid {
+                grid-template-columns: 1fr;
+                gap: 36px;
+            }
+
+            .pillar-row, .pillar-row.reverse {
+                grid-template-columns: 1fr;
+                gap: 32px;
+                direction: ltr;
+            }
+
+            .pillar-image-wrap {
+                height: 300px;
+            }
+
+            .reach-grid {
+                grid-template-columns: 1fr;
+                gap: 36px;
+            }
+        }
+
+        @media (max-width: 580px) {
+            .pillar-image-wrap {
+                height: 240px;
+            }
+
+            .reach-metric-box {
+                grid-template-columns: 1fr;
+                gap: 24px;
+                padding: 28px 20px;
             }
         }
     </style>
@@ -1289,228 +251,352 @@
 
 <body>
 
-    <!-- Top Attention Banner -->
-    <div class="top-banner">
-        <span>Applications are OPEN for the 2026 Leadgreen Leaders Program!</span>
-        <div class="top-banner-actions">
-            <button class="close-banner" aria-label="Close banner">X</button>
+    <!-- Top Attention Ribbon -->
+    <aside class="announcement-banner" id="announcementBanner" aria-label="Program Announcement">
+        <div class="banner-content">
+            <span class="banner-badge">About LeadGreen</span>
+            <span>Unlocking the agency of African youth through structured climate action since 2023.</span>
+            <a href="Fellowspage.html" class="banner-link">Meet Fellows &rarr;</a>
         </div>
-    </div>
-
-    <!-- Main Header -->
-    <header>
-        <a href="index.html" class="logo">
-            <img src="Logo name green.png" alt="Leadgreen Fellowship Logo"
-                style="height: 65px; width: auto; display: block; object-fit: contain;">
-        </a>
-
-        <button class="menu-toggle" aria-label="Toggle navigation">
-            <i class="fa-solid fa-bars"></i>
+        <button class="banner-close" onclick="document.getElementById('announcementBanner').style.display='none'" aria-label="Close banner">
+            <i class="fa-solid fa-xmark"></i>
         </button>
+    </aside>
 
-        <div class="header-right" id="navMenu">
-            <!-- Main navigation links -->
-            <nav class="main-nav">
+    <!-- Master Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <a href="index.html" class="brand-logo-wrap" aria-label="LeadGreen Fellowship Home">
+                <img src="Logo name green.png" alt="LeadGreen Fellowship Logo" class="brand-logo-img">
+                <div class="brand-tag-editorial">
+                    <span class="brand-title">LEADGREEN</span>
+                    <span class="brand-subtitle">Learn &bull; Act &bull; Measure &bull; Lead</span>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="desktop-nav" aria-label="Primary Navigation">
                 <a href="index.html" class="nav-link">Home</a>
-                <a href="About.html" class="nav-link" style="color: #1a1a1a; font-weight: 700;">About</a>
+                <a href="About.html" class="nav-link active">About</a>
                 <a href="Fellowspage.html" class="nav-link">Meet Fellows</a>
+                <a href="index.html#curriculum" class="nav-link">Curriculum</a>
                 <a href="index.html#impact" class="nav-link">Impact</a>
-                <a href="index.html#faq" class="nav-link">FAQ</a>
-
-
+                <a href="index.html#faq" class="nav-link">FAQs</a>
             </nav>
+
+            <!-- Actions -->
+            <div class="header-actions">
+                <a href="CertificatePortal.html" class="btn btn-outline btn-sm">Certificate Studio</a>
+                <a href="Apply.html" class="btn btn-primary btn-sm">Apply for Fellowship</a>
+                <button class="menu-toggle" id="openDrawerBtn" aria-label="Open mobile navigation menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
         </div>
     </header>
 
-    <!-- About Us Page Header -->
-    <section class="about-hero"
-        style="padding: 100px 5%; text-align: center; background-color: #FAFAFA; border-bottom: 1px solid #EAEAEA;">
-        <span class="info-tag" style="display: inline-block; margin-bottom: 15px;">OUR STORY</span>
-        <h1 class="who-headline" style="max-width: 800px; margin: 0 auto; margin-bottom: 25px;">
-            Building a community of <span class="info-headline-green">limitless leaders.</span></h1>
-        <p class="who-body" style="max-width: 700px; margin: 0 auto;">
-            The Leadgreen fellowship was founded on the belief that raw talent is evenly distributed, but opportunity is
-            not. We exist to bridge that gap.
-        </p>
-    </section>
-
-    <!-- Our Story Zig-Zag Section -->
-    <section class="zig-zag-section">
-        <p class="zig-zag-intro">
-            LeadGreen was founded in 2023 with a simple realization: Africa has the youngest population in the world and
-            is the continent most vulnerable to social challenges and climate change. Yet, young people often lack the
-            structured support to lead the transition.<br><br>We bridge that gap. We believe that leadership isn't a
-            title—it's an action. Our organization exists to unlock the potential of African youth to become stewards of
-            their environment.
-        </p>
-
-        <!-- Vision Row -->
-        <div class="zig-zag-row">
-            <div class="zig-zag-image">
-                <img src="Younf5.png" alt="Vision">
+    <!-- Mobile Drawer Overlay -->
+    <div class="mobile-drawer-overlay" id="mobileDrawer">
+        <div class="mobile-drawer">
+            <div>
+                <div class="drawer-header">
+                    <img src="Logo name green.png" alt="LeadGreen Logo" style="height: 38px; width: auto;">
+                    <button class="drawer-close" id="closeDrawerBtn" aria-label="Close menu">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <nav class="drawer-nav">
+                    <a href="index.html" class="drawer-link">Home</a>
+                    <a href="About.html" class="drawer-link active">About Fellowship</a>
+                    <a href="Fellowspage.html" class="drawer-link">Meet Fellows Directory</a>
+                    <a href="index.html#curriculum" class="drawer-link">12-Week Curriculum</a>
+                    <a href="index.html#impact" class="drawer-link">Verified Impact</a>
+                    <a href="index.html#faq" class="drawer-link">Eligibility & FAQs</a>
+                </nav>
             </div>
-            <div class="zig-zag-text">
-                <div class="zz-highlight">VISION</div>
-                <p class="zz-body">We envision an Africa where every young person, in every community, possesses the
-                    agency, tools, and opportunity to shape a sustainable and thriving future—for themselves and for
-                    generations to come.</p>
+            <div class="drawer-footer">
+                <a href="Apply.html" class="btn btn-primary" style="width: 100%;">Apply for Fellowship</a>
+                <a href="CertificatePortal.html" class="btn btn-secondary" style="width: 100%;">Certificate Registry</a>
             </div>
         </div>
+    </div>
 
-        <!-- Mission Row -->
-        <div class="zig-zag-row reverse">
-            <div class="zig-zag-image">
-                <img src="Young2.png" alt="Mission">
-            </div>
-            <div class="zig-zag-text">
-                <div class="zz-highlight">MISSION</div>
-                <p class="zz-body">To accelerate African-led climate solutions by strategically investing in the
-                    leadership of youth and the innovation of grassroots communities.</p>
-            </div>
-        </div>
-
-        <!-- Value Statement Row -->
-        <div class="zig-zag-row">
-            <div class="zig-zag-image">
-                <img src="../The Glow Report.jpg" alt="Value Statement">
-            </div>
-            <div class="zig-zag-text">
-                <div class="zz-highlight">VALUE STATEMENT</div>
-                <p class="zz-body">We exist to accelerate homegrown African climate solutions by investing in the agency
-                    of youth leaders and the ingenuity of grassroots innovators. We are building a global, inclusive,
-                    and empathetic community that operates with zero tolerance for discrimination, hate, or prejudice.
-                </p>
-            </div>
-        </div>
-    </section>
-
-
-
-
-
-
-
-
-    <!-- Footer Section (Redesigned Edition) -->
-    <footer
-        style="background-color: #0c1824; color: #ffffff; padding: 80px 5% 40px; font-family: 'Inter', sans-serif; border-top: 4px solid var(--primary-green);">
-        <div
-            style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 60px;">
-            <!-- Brand Column -->
-            <div style="flex: 2; min-width: 300px;">
-                <h2
-                    style="font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 800; color: #6EE7B7; margin-bottom: 12px; letter-spacing: 1px;">
-                    LEADGREEN</h2>
-                <h4
-                    style="font-size: 13px; font-weight: 700; color: #34D399; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 2px;">
-                    Learn. Act. Measure. Lead.</h4>
-                <p style="color: #9CA3AF; font-size: 15px; line-height: 1.7; max-width: 350px;">
-                    Building a network of young African changemakers taking measurable action for a greener Africa.
-                </p>
-            </div>
-
-            <!-- Links Column -->
-            <div style="flex: 1;">
-                <h4
-                    style="font-size: 16px; font-weight: 700; color: #ffffff; margin-bottom: 25px; letter-spacing: 0.5px;">
-                    Navigation</h4>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <a href="index.html"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Home</a>
-                    <a href="About.html"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">About</a>
-                    <a href="#" style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Fellowship</a>
-                    <a href="Fellowspage.html"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Meet
-                        Fellows</a>
-                    <a href="index.html#impact"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Impact</a>
-                    <a href="index.html#faq"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">FAQ</a>
-                    <a href="#"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s; cursor: not-allowed; opacity: 0.6;"
-                        title="Applications are closed">Apply (Closed)</a>
+    <main>
+        <!-- ==========================================================================
+             HERO SECTION: THE ABOUT MANIFESTO
+             ========================================================================== -->
+        <section class="about-hero">
+            <div class="container">
+                <div class="about-hero-content">
+                    <span class="badge badge-brand">OUR ORIGIN & VALUES</span>
+                    <h1 class="about-hero-title">
+                        Building a Pan-African Community of <span>Limitless Climate Leaders.</span>
+                    </h1>
+                    <p class="about-hero-lead">
+                        The LeadGreen Fellowship was founded on the fundamental belief that raw talent is evenly distributed across Africa, but opportunity is not. We exist to bridge that gap.
+                    </p>
                 </div>
             </div>
+        </section>
 
-        </div>
+        <!-- ==========================================================================
+             STORY SECTION: WHY LEADGREEN WAS FOUNDED
+             ========================================================================== -->
+        <section class="story-section">
+            <div class="container">
+                <div class="story-grid">
+                    
+                    <div class="story-callout">
+                        <span class="badge badge-ochre">FOUNDED IN 2023</span>
+                        <h3>Leadership Is An Action, Not A Title.</h3>
+                        <p>
+                            Africa is home to the youngest demographic in the world. Yet across our cities and rural communities, youth face the steepest economic challenges and the most severe environmental crises.
+                        </p>
+                        <p>
+                            We built LeadGreen to turn eco-anxiety into community agency: equipping students and young professionals with the practical skills and networks needed to lead real environmental change.
+                        </p>
+                    </div>
 
-        <!-- Base Copyright Row -->
-        <div
-            style="max-width: 1200px; margin: 60px auto 0; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
-            <div style="color: #9CA3AF; font-size: 14px;">
-                &copy; 2026 LeadGreen. All rights reserved.
+                    <div class="story-prose">
+                        <p>
+                            LeadGreen began with a clear realization: African youth do not need another theoretical seminar. They need structured platforms where learning transforms immediately into field evidence.
+                        </p>
+                        <p>
+                            Since our first cohort, we have prioritized localized, grassroots execution. Our fellows do not merely write essays on renewable energy or municipal plastic waste—they organize collection networks, build biodigesters, run afforestation drives, and engage municipal councils.
+                        </p>
+                        <p>
+                            Today, LeadGreen unites changemakers from 54 African nations into a cohesive, supportive peer community that operates with zero financial barrier for deserving candidates.
+                        </p>
+                    </div>
+
+                </div>
             </div>
-            <div class="social-icons" style="display: flex; gap: 18px;">
-                <a href="#" style="color: #9CA3AF; font-size: 18px; transition: 0.2s;"
-                    onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i
-                        class="fa-brands fa-twitter"></i></a>
-                <a href="#" style="color: #9CA3AF; font-size: 18px; transition: 0.2s;"
-                    onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i
-                        class="fa-brands fa-instagram"></i></a>
-                <a href="#" style="color: #9CA3AF; font-size: 18px; transition: 0.2s;"
-                    onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i
-                        class="fa-brands fa-linkedin-in"></i></a>
+        </section>
+
+        <!-- ==========================================================================
+             PILLARS MANIFESTO: VISION, MISSION & VALUES (ZIG-ZAG)
+             ========================================================================== -->
+        <section class="pillars-manifesto">
+            <div class="container">
+                
+                <!-- Row 1: Vision -->
+                <div class="pillar-row">
+                    <div class="pillar-image-wrap">
+                        <img src="Younf5.png" alt="Young African changemakers shaping sustainable communities">
+                    </div>
+                    <div class="pillar-text-wrap">
+                        <span class="pillar-tag">OUR VISION</span>
+                        <h2 class="pillar-heading">A Thriving, Ecologically Sustainable Africa.</h2>
+                        <p class="pillar-body">
+                            We envision an Africa where every young person, in every community, possesses the agency, tools, and opportunity to shape an ecologically sustainable and thriving future—for themselves and for generations to come.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Row 2: Mission -->
+                <div class="pillar-row reverse">
+                    <div class="pillar-image-wrap">
+                        <img src="Young2.png" alt="Grassroots climate solutions in action">
+                    </div>
+                    <div class="pillar-text-wrap">
+                        <span class="pillar-tag">OUR MISSION</span>
+                        <h2 class="pillar-heading">Accelerating African-Led Climate Solutions.</h2>
+                        <p class="pillar-body">
+                            To accelerate homegrown African climate action by strategically investing in the leadership of youth and the innovation of grassroots communities through rigorous training, verified field missions, and ongoing peer mentorship.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Row 3: Value Statement -->
+                <div class="pillar-row">
+                    <div class="pillar-image-wrap">
+                        <img src="The Glow Report.jpg" alt="LeadGreen inclusive community report">
+                    </div>
+                    <div class="pillar-text-wrap">
+                        <span class="pillar-tag">OUR CORE VALUES</span>
+                        <h2 class="pillar-heading">Integrity, Inclusivity, and Bias Towards Action.</h2>
+                        <p class="pillar-body">
+                            We operate with zero tolerance for discrimination, hate, or prejudice. We believe in open knowledge, radical empathy, scientific integrity, and unyielding support for changemakers from low-income and first-generation backgrounds.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             CONTINENTAL REACH & METHODOLOGY
+             ========================================================================== -->
+        <section class="reach-section">
+            <div class="container">
+                <div class="reach-grid">
+                    <div>
+                        <span class="badge badge-ochre" style="margin-bottom: 16px;">CONTINENTAL SCOPE</span>
+                        <h2 style="font-size: clamp(2.2rem, 3.8vw, 3.2rem); color: #FFFFFF; line-height: 1.15; margin-bottom: 20px;">
+                            Uniting Emerging Leaders Across 54 African Countries.
+                        </h2>
+                        <p style="font-size: 1.05rem; line-height: 1.65; color: var(--ink-inverse-soft);">
+                            From Dakar to Nairobi, Cairo to Cape Town, LeadGreen connects young environmental champions across linguistic, cultural, and national boundaries into a unified front for planetary stewardship.
+                        </p>
+                        <div style="margin-top: 32px; display: flex; gap: 16px; flex-wrap: wrap;">
+                            <a href="Fellowspage.html" class="btn btn-primary">
+                                <i class="fa-solid fa-users"></i> Explore Fellow Directory
+                            </a>
+                            <a href="Apply.html" class="btn btn-secondary" style="background: rgba(255,255,255,0.08); color: #FFFFFF; border: none;">
+                                Apply for Next Cohort
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="reach-metric-box">
+                        <div class="metric-cell">
+                            <div class="metric-num">54</div>
+                            <div class="metric-label">African Nations</div>
+                            <div class="metric-desc">Fellows representing all sub-regions.</div>
+                        </div>
+
+                        <div class="metric-cell">
+                            <div class="metric-num">2,000+</div>
+                            <div class="metric-label">Alumni Network</div>
+                            <div class="metric-desc">Graduates leading environmental projects.</div>
+                        </div>
+
+                        <div class="metric-cell">
+                            <div class="metric-num">500+</div>
+                            <div class="metric-label">Action Missions</div>
+                            <div class="metric-desc">Documented community interventions.</div>
+                        </div>
+
+                        <div class="metric-cell">
+                            <div class="metric-num">100%</div>
+                            <div class="metric-label">Tuition-Free</div>
+                            <div class="metric-desc">Removing financial barriers for youth.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             CTA SECTION
+             ========================================================================== -->
+        <section class="section" style="background-color: var(--ground); text-align: center;">
+            <div class="container">
+                <div style="max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                    <span class="badge badge-brand">READY TO LEAD?</span>
+                    <h2>Become A Part of Africa's Climate Vanguard</h2>
+                    <p class="lead">
+                        Applications for oncoming cohorts take less than 10 minutes to submit. If you are passionate about community climate solutions, we invite you to join us.
+                    </p>
+                    <div style="display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 8px;">
+                        <a href="Apply.html" class="btn btn-primary btn-lg">Start Application</a>
+                        <a href="Fellowspage.html" class="btn btn-secondary btn-lg">Browse Alumni</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==========================================================================
+         GLOBAL ARCHITECTURAL FOOTER
+         ========================================================================== -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-top">
+                
+                <div class="footer-brand">
+                    <h3>LEADGREEN</h3>
+                    <div class="footer-motto">Learn &bull; Act &bull; Measure &bull; Lead</div>
+                    <p>
+                        Empowering young African changemakers across 54 countries with practical environmental leadership, dedicated mentorship, and verified community impact.
+                    </p>
+                    <div class="footer-social-row">
+                        <a href="#" class="footer-social-icon" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" class="footer-social-icon" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" class="footer-social-icon" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="footer-social-icon" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Navigation</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html" class="footer-link">Home</a></li>
+                        <li><a href="About.html" class="footer-link">About LeadGreen</a></li>
+                        <li><a href="Fellowspage.html" class="footer-link">Meet the Fellows</a></li>
+                        <li><a href="Apply.html" class="footer-link">Fellowship Application</a></li>
+                        <li><a href="index.html#curriculum" class="footer-link">Curriculum</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Credentials & Portals</h4>
+                    <ul class="footer-links">
+                        <li><a href="CertificatePortal.html" class="footer-link">Certificate Studio</a></li>
+                        <li><a href="CertificatePortal.html#verify" class="footer-link">Verify Credentials</a></li>
+                        <li><a href="Fellowspage.html" class="footer-link">Alumni Directory</a></li>
+                        <li><a href="CertificatePayment.html" class="footer-link">Official Payment</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Fellowship HQ</h4>
+                    <p style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 12px;">
+                        Pan-African Environmental Initiative<br>
+                        54 African Nations Network
+                    </p>
+                    <p style="font-size: 0.85rem; color: var(--brand-mint-bright);">
+                        <i class="fa-solid fa-envelope"></i> admissions@leadgreen.org
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Big Typographic Brand Wordmark -->
+            <div class="footer-wordmark-wrap">
+                <div class="footer-wordmark">LEADGREEN</div>
+            </div>
+
+            <div class="footer-bottom">
+                <div>
+                    &copy; 2026 LeadGreen Fellowship. All rights reserved. Pan-African Environmental Action.
+                </div>
+                <div class="footer-bottom-links">
+                    <a href="About.html">Terms of Fellowship</a>
+                    <a href="About.html">Privacy Policy</a>
+                    <a href="CertificatePortal.html">Credential Verification</a>
+                </div>
             </div>
         </div>
     </footer>
 
+    <!-- Interactive Scripts -->
     <script>
+        // Drawer Toggle
+        const openDrawerBtn = document.getElementById('openDrawerBtn');
+        const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+        const mobileDrawer = document.getElementById('mobileDrawer');
 
-
-        // Accordion functionality
-        document.addEventListener('DOMContentLoaded', () => {
-            const faqItems = document.querySelectorAll('.faq-item');
-
-            faqItems.forEach(item => {
-                const questionButton = item.querySelector('.faq-question');
-
-                questionButton.addEventListener('click', () => {
-                    // Close other items (optional, makes it accordion-style)
-                    faqItems.forEach(otherItem => {
-                        if (otherItem !== item && otherItem.classList.contains('active')) {
-                            otherItem.classList.remove('active');
-                            otherItem.querySelector('.faq-answer').style.maxHeight = null;
-                        }
-                    });
-
-                    // Toggle current item
-                    item.classList.toggle('active');
-                    const answer = item.querySelector('.faq-answer');
-
-                    if (item.classList.contains('active')) {
-                        answer.style.maxHeight = answer.scrollHeight + "px";
-                    } else {
-                        answer.style.maxHeight = null;
-                    }
-                });
+        if (openDrawerBtn && mobileDrawer) {
+            openDrawerBtn.addEventListener('click', () => {
+                mobileDrawer.classList.add('active');
             });
-        });
+        }
 
-        // Mobile Navigation Toggle
-        const menuToggle = document.querySelector('.menu-toggle');
-        const headerRight = document.getElementById('navMenu');
+        if (closeDrawerBtn && mobileDrawer) {
+            closeDrawerBtn.addEventListener('click', () => {
+                mobileDrawer.classList.remove('active');
+            });
+        }
 
-        if (menuToggle && headerRight) {
-            menuToggle.addEventListener('click', () => {
-                headerRight.classList.toggle('active');
-                const icon = menuToggle.querySelector('i');
-                if (headerRight.classList.contains('active')) {
-                    icon.classList.remove('fa-bars');
-                    icon.classList.add('fa-xmark');
-                } else {
-                    icon.classList.remove('fa-xmark');
-                    icon.classList.add('fa-bars');
+        if (mobileDrawer) {
+            mobileDrawer.addEventListener('click', (e) => {
+                if (e.target === mobileDrawer) {
+                    mobileDrawer.classList.remove('active');
                 }
             });
         }
     </script>
-</body>
 
+</body>
 </html>
