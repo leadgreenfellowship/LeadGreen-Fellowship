@@ -19,6 +19,20 @@
 
     <style>
         @font-face {
+            font-family: 'The Seasons Light';
+            src: url('../TheSeasons-Light.ttf') format('truetype');
+            font-weight: 300;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'The Seasons';
+            src: url('../TheSeasons-Light.ttf') format('truetype');
+            font-weight: 300;
+            font-style: normal;
+        }
+
+        @font-face {
             font-family: 'AwesomeScript';
             src: url('../awesome.regular.ttf') format('truetype');
             font-weight: normal;
@@ -842,7 +856,7 @@
             // Draw Sample Fellow Name
             const sampleName = (document.getElementById('sampleNameInput').value || "Jane Sample-Fellow").trim();
             const fontSize = parseInt(document.getElementById('sizeSlider').value);
-            ctx.font = `${fontSize}px 'AwesomeScript', cursive`;
+            ctx.font = `300 ${fontSize}px 'The Seasons Light', 'The Seasons', serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillStyle = '#111827';
@@ -1198,10 +1212,10 @@
                     page.drawImage(bgImage, { x: 0, y: 0, width: width, height: height });
                 }
 
-                // Load AwesomeScript font if available
+                // Load The Seasons Light font if available
                 let font = null;
                 try {
-                    const fontBytes = await fetch('../awesome.regular.ttf').then(r => r.arrayBuffer());
+                    const fontBytes = await fetch('../TheSeasons-Light.ttf').then(r => r.arrayBuffer());
                     font = await pdfDoc.embedFont(fontBytes);
                 } catch (e) {
                     font = await pdfDoc.embedFont(StandardFonts.TimesRomanBold);

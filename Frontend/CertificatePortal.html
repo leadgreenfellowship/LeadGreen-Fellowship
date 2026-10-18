@@ -26,6 +26,22 @@
 
     <style>
         @font-face {
+            font-family: 'The Seasons Light';
+            src: url('TheSeasons-Light.ttf') format('truetype');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'The Seasons';
+            src: url('TheSeasons-Light.ttf') format('truetype');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
             font-family: 'AwesomeScript';
             src: url('awesome.regular.ttf') format('truetype');
             font-weight: normal;
@@ -1396,14 +1412,30 @@
                 console.warn("Initial GLOBAL_LAYOUT fetch error:", e);
             }
 
-            // Preload Awesome font arrayBuffer for official PDF export
+            // Preload The Seasons Light font arrayBuffer for official PDF export
             try {
-                const fontRes = await fetch('awesome.regular.ttf');
+                const fontRes = await fetch('TheSeasons-Light.ttf');
                 if (fontRes.ok) {
                     window.appState.fontBytes = await fontRes.arrayBuffer();
+                } else {
+                    const fallbackRes = await fetch('awesome.regular.ttf');
+                    if (fallbackRes.ok) window.appState.fontBytes = await fallbackRes.arrayBuffer();
                 }
             } catch (e) {
                 console.warn("Could not preload font for pdf:", e);
+            }
+
+            // Ensure webfont is fully primed before first render
+            try {
+                if (document.fonts) {
+                    await Promise.all([
+                        document.fonts.load("300 54px 'The Seasons Light'"),
+                        document.fonts.load("300 54px 'The Seasons'")
+                    ]);
+                    await document.fonts.ready;
+                }
+            } catch (e) {
+                console.warn("Font ready check error:", e);
             }
 
             // Eagerly preload default template images in background and render initial canvas
@@ -1594,16 +1626,16 @@
             const customInput = document.getElementById('customNameInput');
             const name = (customInput && customInput.value ? customInput.value : (state.verifiedFellow ? state.verifiedFellow.fullName : "LeadGreen Fellow")).trim();
 
-            // Official Script Font with Dynamic Admin Size
+            // Official "The Seasons Light" Font with Dynamic Admin Size
             let fontSize = isEnglish ? (state.defaultFontSizeEn || 54) : (state.defaultFontSizeFr || 54);
-            ctx.font = `${fontSize}px 'AwesomeScript', cursive`;
+            ctx.font = `300 ${fontSize}px 'The Seasons Light', 'The Seasons', serif`;
 
             // Auto-fit font size if recipient name is long
             const maxNameWidth = 1100;
             const textMetrics = ctx.measureText(name);
             if (textMetrics.width > maxNameWidth) {
                 fontSize = Math.floor(fontSize * (maxNameWidth / textMetrics.width));
-                ctx.font = `${fontSize}px 'AwesomeScript', cursive`;
+                ctx.font = `300 ${fontSize}px 'The Seasons Light', 'The Seasons', serif`;
             }
 
             ctx.textAlign = 'center';
@@ -1766,13 +1798,13 @@
                     }
                 }
 
-                // 4. Embed Font (Uniform AwesomeScript with Standard fallback)
+                // 4. Embed Font (Uniform The Seasons Light with Standard fallback)
                 let nameFont = null;
                 if (window.appState.fontBytes) {
                     try {
                         nameFont = await pdfDoc.embedFont(window.appState.fontBytes);
                     } catch (e) {
-                        console.warn("Failed embedding AwesomeScript font in PDF, falling back to TimesRomanBold", e);
+                        console.warn("Failed embedding The Seasons Light font in PDF, falling back to TimesRomanBold", e);
                     }
                 }
 
