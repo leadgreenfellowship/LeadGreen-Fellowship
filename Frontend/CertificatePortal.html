@@ -992,21 +992,21 @@
                     <p class="panel-kicker">Fellowship Credential Registry</p>
                     <h1 class="panel-heading">Verify & Issue Your Certificate</h1>
                     <p class="panel-lead">
-                        Enter your registered email address to verify your completion record and download your official credential.
+                        Enter your name or email to verify your payment record and download your official credential.
                     </p>
 
                     <form id="verifyForm" class="auth-form">
                         <div>
                             <label for="fellowEmail" class="field-label">
-                                <span>Fellow Email Address</span>
+                                <span>Fellow Name or Email Address</span>
                             </label>
                             <input
-                                type="email"
+                                type="text"
                                 id="fellowEmail"
                                 class="field-input"
-                                placeholder="e.g. fellow@example.com"
+                                placeholder="e.g. your full name or registered email"
                                 required
-                                autocomplete="email"
+                                autocomplete="name email"
                             >
                         </div>
 
@@ -1020,22 +1020,14 @@
                     <div class="notice-card-amber" id="unpaidCard" style="display: none;">
                         <div class="notice-title">Certificate Registration Required</div>
                         <p class="notice-text">
-                            No confirmed certificate registration was found for <strong id="unpaidEmailSpan">this email</strong>. To generate your official, verifiable certificate, please complete your registration.
+                            No confirmed certificate registration was found for <strong id="unpaidEmailSpan">this record</strong>. To generate your official, verifiable certificate, please complete your registration.
                         </p>
                         <a href="CertificatePayment.html" class="btn-amber-action" id="btnPayNowLink">
                             Complete Certificate Registration ($1.99)
                         </a>
                         <p class="notice-footer-text">
-                            Paid with another email? <a href="#" onclick="focusEmailInput(event)">Try a different address</a>
+                            Registered with another name or email? <a href="#" onclick="focusEmailInput(event)">Try a different search</a>
                         </p>
-                    </div>
-
-                    <!-- Sample Demonstration Link -->
-                    <div class="sample-prompt">
-                        <p>Previewing the portal or testing certificate layout?</p>
-                        <button type="button" class="btn-link-action" onclick="loadSamplePreview()">
-                            Load interactive sample preview &rarr;
-                        </button>
                     </div>
 
                     <div class="panel-footer-note">
@@ -1460,11 +1452,11 @@
         // Check URL Query Parameters on Load
         function checkUrlParamsAndInit() {
             const urlParams = new URLSearchParams(window.location.search);
-            const emailParam = urlParams.get('email');
+            const queryParam = urlParams.get('email') || urlParams.get('name') || urlParams.get('q');
             const demoParam = urlParams.get('demo') || urlParams.get('preview');
-            if (emailParam) {
-                document.getElementById('fellowEmail').value = emailParam.trim();
-                executeVerification(emailParam.trim());
+            if (queryParam) {
+                document.getElementById('fellowEmail').value = queryParam.trim();
+                executeVerification(queryParam.trim());
             } else if (demoParam === '1' || demoParam === 'true') {
                 window.loadSamplePreview();
             }
@@ -1479,14 +1471,20 @@
         // Verification Form Submit
         document.getElementById('verifyForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('fellowEmail').value.trim();
-            if (email) {
-                executeVerification(email);
+            const queryVal = document.getElementById('fellowEmail').value.trim();
+            if (queryVal) {
+                executeVerification(queryVal);
             }
         });
 
-        async function executeVerification(email) {
-            const normalizedEmail = email.toLowerCase().trim();
+        window.executeVerification = executeVerification;
+
+        async function executeVerification(rawQuery) {
+            const input = rawQuery ? rawQuery.trim() : '';
+            if (!input) return;
+
+            const normalizedQuery = input.toLowerCase();
+            const isEmail = input.includes('@');
             const btnVerify = document.getElementById('btnVerify');
             const btnText = document.getElementById('btnVerifyText');
             const spinner = document.getElementById('btnVerifySpinner');
@@ -1499,18 +1497,92 @@
 
             try {
                 const paymentsRef = collection(db, "certificate_payments");
-                const q = query(paymentsRef, where("email", "==", normalizedEmail), limit(1));
-                const querySnapshot = await getDocs(q);
+                let matchedDoc = null;
+                let matchedId = null;
 
-                if (querySnapshot.empty) {
-                    handleUnpaidStatus(normalizedEmail);
-                } else {
-                    const data = querySnapshot.docs[0].data();
-                    if (data.status === 'paid' || data.status === 'successful') {
-                        handlePaidSuccess(data, querySnapshot.docs[0].id);
-                    } else {
-                        handleUnpaidStatus(normalizedEmail);
+                // 1. Direct fast query if query is an email address
+                if (isEmail) {
+                    try {
+                        const q = query(paymentsRef, where("email", "==", normalizedQuery), limit(1));
+                        const querySnapshot = await getDocs(q);
+                        if (!querySnapshot.empty) {
+                            const d = querySnapshot.docs[0].data();
+                            if (d.status === 'paid' || d.status === 'successful' || !d.status) {
+                                matchedDoc = d;
+                                matchedId = querySnapshot.docs[0].id;
+                            }
+                        }
+                    } catch (emailQueryErr) {
+                        console.warn("Direct email query error, falling back to full scan:", emailQueryErr);
                     }
+                }
+
+                // 2. Name search or fallback collection scan
+                if (!matchedDoc) {
+                    const allSnap = await getDocs(paymentsRef);
+                    const cleanQuery = normalizedQuery.replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
+                    const queryWords = cleanQuery.split(' ').filter(w => w.length > 1);
+
+                    let bestCandidate = null;
+                    let bestScore = 0;
+
+                    allSnap.forEach(docSnap => {
+                        if (docSnap.id.startsWith('GLOBAL_LAYOUT')) return;
+                        const data = docSnap.data();
+                        const isPaid = (data.status === 'paid' || data.status === 'successful' || !data.status);
+                        if (!isPaid) return;
+
+                        const docEmail = (data.email || '').toLowerCase().trim();
+                        const docName = (data.fullName || '').toLowerCase().trim();
+                        const cleanDocName = docName.replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
+
+                        // Exact email match
+                        if (docEmail === normalizedQuery) {
+                            matchedDoc = data;
+                            matchedId = docSnap.id;
+                            return;
+                        }
+
+                        // Exact name match
+                        if (cleanDocName === cleanQuery) {
+                            matchedDoc = data;
+                            matchedId = docSnap.id;
+                            return;
+                        }
+
+                        // Substring match
+                        if (cleanDocName && cleanQuery && (cleanDocName.includes(cleanQuery) || cleanQuery.includes(cleanDocName))) {
+                            if (bestScore < 10) {
+                                bestCandidate = { data, id: docSnap.id };
+                                bestScore = 10;
+                            }
+                        }
+
+                        // Word-token match (all words in search query appear in name)
+                        if (queryWords.length > 0) {
+                            let matchCount = 0;
+                            for (const word of queryWords) {
+                                if (cleanDocName.includes(word) || docEmail.includes(word)) {
+                                    matchCount++;
+                                }
+                            }
+                            if (matchCount === queryWords.length && matchCount > bestScore) {
+                                bestCandidate = { data, id: docSnap.id };
+                                bestScore = matchCount;
+                            }
+                        }
+                    });
+
+                    if (!matchedDoc && bestCandidate) {
+                        matchedDoc = bestCandidate.data;
+                        matchedId = bestCandidate.id;
+                    }
+                }
+
+                if (matchedDoc) {
+                    handlePaidSuccess(matchedDoc, matchedId);
+                } else {
+                    handleUnpaidStatus(input);
                 }
             } catch (err) {
                 console.error("Verification error:", err);
@@ -1522,13 +1594,16 @@
             }
         }
 
-        function handleUnpaidStatus(email) {
+        function handleUnpaidStatus(identifier) {
             const unpaidCard = document.getElementById('unpaidCard');
             const unpaidEmailSpan = document.getElementById('unpaidEmailSpan');
             const btnPayNowLink = document.getElementById('btnPayNowLink');
 
-            unpaidEmailSpan.innerText = email;
-            btnPayNowLink.href = `CertificatePayment.html?email=${encodeURIComponent(email)}`;
+            unpaidEmailSpan.innerText = identifier;
+            const isEmail = identifier.includes('@');
+            btnPayNowLink.href = isEmail 
+                ? `CertificatePayment.html?email=${encodeURIComponent(identifier)}` 
+                : `CertificatePayment.html?name=${encodeURIComponent(identifier)}`;
             unpaidCard.style.display = 'block';
             unpaidCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
