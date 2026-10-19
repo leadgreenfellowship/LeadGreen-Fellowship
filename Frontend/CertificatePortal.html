@@ -410,8 +410,15 @@
         }
 
         .btn-solid-primary:disabled {
-            opacity: 0.65;
+            background: #9ca3af;
+            color: #ffffff;
             cursor: not-allowed;
+            opacity: 0.7;
+            box-shadow: none;
+        }
+
+        .btn-solid-primary:disabled:hover {
+            background: #9ca3af;
         }
 
         .btn-outline-primary {
@@ -436,6 +443,21 @@
             border-color: var(--brand);
             color: var(--brand);
             background: var(--brand-tint);
+        }
+
+        .btn-outline-primary:disabled {
+            background: #f3f4f6;
+            color: #9ca3af;
+            border-color: #e5e7eb;
+            cursor: not-allowed;
+            opacity: 0.7;
+            box-shadow: none;
+        }
+
+        .btn-outline-primary:disabled:hover {
+            background: #f3f4f6;
+            border-color: #e5e7eb;
+            color: #9ca3af;
         }
 
         .btn-linkedin-action {
@@ -1083,14 +1105,19 @@
 
                     <!-- Download Actions -->
                     <div class="download-stack">
-                        <button type="button" class="btn-solid-primary" id="btnDownloadPdf" onclick="downloadOfficialPdf()">
+                        <div class="standard-notice" style="background: #F3F4F6; border: 1px solid #E5E7EB; color: #4B5563; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-circle-info" style="color: #6B7280;"></i>
+                            <span id="deactivatedNoticeText">Certificate downloading is currently deactivated. You can add your verified credential directly to LinkedIn below.</span>
+                        </div>
+
+                        <button type="button" class="btn-solid-primary" id="btnDownloadPdf" disabled aria-disabled="true" style="display: none !important;" onclick="return false;">
                             <i class="fa-solid fa-file-pdf"></i>
-                            <span id="btnPdfText">Download Official PDF</span>
+                            <span id="btnPdfText">Download Official PDF (Deactivated)</span>
                         </button>
 
-                        <button type="button" class="btn-outline-primary" id="btnDownloadPng" onclick="downloadHighResPng()">
+                        <button type="button" class="btn-outline-primary" id="btnDownloadPng" disabled aria-disabled="true" style="display: none !important;" onclick="return false;">
                             <i class="fa-solid fa-image"></i>
-                            <span id="btnPngText">Download High-Res Image (PNG)</span>
+                            <span id="btnPngText">Download High-Res Image (PNG) (Deactivated)</span>
                         </button>
 
                         <button type="button" class="btn-linkedin-action" id="btnLinkedInAction" onclick="openLinkedInModal()">
@@ -1487,9 +1514,10 @@
                 caseLower: "lowercase",
                 caseReset: "Reset",
                 standardNoticeText: "Calibrated official fellowship calligraphy and vector layout applied automatically.",
-                btnPdfText: "Download Official PDF",
+                deactivatedNoticeText: "Certificate downloading is currently paused. You can still add your verified credential directly to LinkedIn below.",
+                btnPdfText: "Download Official PDF (Deactivated)",
                 btnPdfGenerating: "Building Vector PDF...",
-                btnPngText: "Download High-Res Image (PNG)",
+                btnPngText: "Download High-Res Image (PNG) (Deactivated)",
                 btnLinkedInText: "Add Credential to LinkedIn",
                 btnSignOutText: "Check another fellow email",
                 liModalHeading: "Add Certificate to LinkedIn",
@@ -1542,9 +1570,10 @@
                 caseLower: "minuscules",
                 caseReset: "Réinitialiser",
                 standardNoticeText: "Calligraphie officielle de la bourse et mise en page vectorielle appliquées automatiquement.",
-                btnPdfText: "Télécharger le PDF Officiel",
+                deactivatedNoticeText: "Le téléchargement d'attestation est actuellement suspendu. Vous pouvez ajouter votre certification à LinkedIn ci-dessous.",
+                btnPdfText: "Télécharger le PDF Officiel (Désactivé)",
                 btnPdfGenerating: "Création du PDF Vectoriel...",
-                btnPngText: "Télécharger l'Image Haute Résolution (PNG)",
+                btnPngText: "Télécharger l'Image Haute Résolution (PNG) (Désactivé)",
                 btnLinkedInText: "Ajouter le Certificat à LinkedIn",
                 btnSignOutText: "Vérifier un autre nom ou e-mail",
                 liModalHeading: "Ajouter le Certificat à LinkedIn",
@@ -1645,8 +1674,14 @@
             // Standard Notice & Download Stack
             const elStdNotice = document.getElementById('standardNoticeText');
             if (elStdNotice) elStdNotice.innerText = dict.standardNoticeText;
+            const elDeactNotice = document.getElementById('deactivatedNoticeText');
+            if (elDeactNotice) elDeactNotice.innerText = dict.deactivatedNoticeText;
+            const elBtnPdf = document.getElementById('btnDownloadPdf');
+            if (elBtnPdf) elBtnPdf.disabled = true;
             const elBtnPdfText = document.getElementById('btnPdfText');
             if (elBtnPdfText) elBtnPdfText.innerText = dict.btnPdfText;
+            const elBtnPng = document.getElementById('btnDownloadPng');
+            if (elBtnPng) elBtnPng.disabled = true;
             const elBtnPngText = document.getElementById('btnPngText');
             if (elBtnPngText) elBtnPngText.innerText = dict.btnPngText;
             const elBtnLinkedInText = document.getElementById('btnLinkedInText');
@@ -2040,186 +2075,16 @@
         });
 
         // -------------------------------------------------------------
-        // EXPORT: DOWNLOAD HIGH-RESOLUTION PNG
+        // EXPORT: CERTIFICATE DOWNLOADING DEACTIVATED
         // -------------------------------------------------------------
         window.downloadHighResPng = function () {
-            const dict = I18N[window.appState.language || 'EN'] || I18N.EN;
-            const name = (document.getElementById('customNameInput').value || (window.appState.language === 'FR' ? 'Boursier_LeadGreen' : 'LeadGreen_Fellow')).trim();
-            const cleanName = name.replace(/[^a-zA-Z0-9_-]/g, '_');
-            const dataUrl = canvas.toDataURL('image/png', 1.0);
-
-            const a = document.createElement('a');
-            a.href = dataUrl;
-            a.download = `LeadGreen_Certificate_${window.appState.language}_${cleanName}.png`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            window.showToast(dict.toastPngDone);
+            window.showToast(window.appState.language === 'FR' ? 'Le téléchargement de certificat est actuellement désactivé.' : 'Certificate downloading is currently deactivated.');
+            return false;
         };
 
-        // -------------------------------------------------------------
-        // EXPORT: DOWNLOAD OFFICIAL PDF (pdf-lib)
-        // -------------------------------------------------------------
-        window.downloadOfficialPdf = async function () {
-            const dict = I18N[window.appState.language || 'EN'] || I18N.EN;
-            const btn = document.getElementById('btnDownloadPdf');
-            const btnText = document.getElementById('btnPdfText');
-            btn.disabled = true;
-            btnText.innerText = dict.btnPdfGenerating;
-
-            try {
-                const { PDFDocument, rgb, StandardFonts } = window.PDFLib;
-                const pdfDoc = await PDFDocument.create();
-                if (window.fontkit) pdfDoc.registerFontkit(window.fontkit);
-
-                const width = canvas.width;  // 1570
-                const height = canvas.height; // 1123
-                let page = null;
-
-                const isEnglish = window.appState.language === 'EN';
-                const customSrc = isEnglish ? window.appState.customTemplateEn : window.appState.customTemplateFr;
-                const defaultPdf = isEnglish ? 'certificate_template_en.pdf' : 'certificate_template_fr.pdf';
-                const defaultPng = isEnglish ? 'certificate_template_en.png' : 'certificate_template.png';
-
-                // 1. Check custom uploaded template (could be PDF or Image data URL)
-                if (customSrc) {
-                    try {
-                        let arrayBuffer = null;
-                        if (customSrc.startsWith('data:')) {
-                            const base64Part = customSrc.split(',')[1];
-                            const binaryStr = atob(base64Part);
-                            const bytes = new Uint8Array(binaryStr.length);
-                            for (let i = 0; i < binaryStr.length; i++) {
-                                bytes[i] = binaryStr.charCodeAt(i);
-                            }
-                            arrayBuffer = bytes.buffer;
-                        } else {
-                            const r = await fetch(customSrc);
-                            arrayBuffer = await r.arrayBuffer();
-                        }
-
-                        const header = String.fromCharCode(...new Uint8Array(arrayBuffer.slice(0, 5)));
-                        if (header === '%PDF-') {
-                            const donorPdf = await PDFDocument.load(arrayBuffer);
-                            const [donorPage] = await pdfDoc.copyPages(donorPdf, [0]);
-                            page = pdfDoc.addPage(donorPage);
-                        } else {
-                            page = pdfDoc.addPage([width, height]);
-                            let bgImage = null;
-                            try {
-                                bgImage = await pdfDoc.embedJpg(arrayBuffer);
-                            } catch (e1) {
-                                bgImage = await pdfDoc.embedPng(arrayBuffer);
-                            }
-                            if (bgImage) {
-                                page.drawImage(bgImage, { x: 0, y: 0, width, height });
-                            }
-                        }
-                    } catch (customErr) {
-                        console.warn("Could not embed custom template into PDF, trying defaults:", customErr);
-                    }
-                }
-
-                // 2. Fallback to repository vector PDF donor template
-                if (!page) {
-                    try {
-                        const pdfRes = await fetch(defaultPdf);
-                        if (pdfRes.ok) {
-                            const pdfBytes = await pdfRes.arrayBuffer();
-                            const donorPdf = await PDFDocument.load(pdfBytes);
-                            const [donorPage] = await pdfDoc.copyPages(donorPdf, [0]);
-                            page = pdfDoc.addPage(donorPage);
-                        }
-                    } catch (pdfErr) {
-                        console.warn("Could not copy default PDF template, trying PNG fallback:", pdfErr);
-                    }
-                }
-
-                // 3. Fallback to default PNG template image
-                if (!page) {
-                    page = pdfDoc.addPage([width, height]);
-                    try {
-                        const imgBytes = await fetch(defaultPng).then(r => r.arrayBuffer());
-                        const bgImage = await pdfDoc.embedPng(imgBytes);
-                        page.drawImage(bgImage, { x: 0, y: 0, width, height });
-                    } catch (pngErr) {
-                        console.warn("Could not embed fallback PNG:", pngErr);
-                    }
-                }
-
-                // 4. Embed Font (Uniform The Seasons Light with Standard fallback)
-                let nameFont = null;
-                if (window.appState.fontBytes) {
-                    try {
-                        nameFont = await pdfDoc.embedFont(window.appState.fontBytes);
-                    } catch (e) {
-                        console.warn("Failed embedding The Seasons Light font in PDF, falling back to TimesRomanBold", e);
-                    }
-                }
-
-                if (!nameFont) {
-                    nameFont = await pdfDoc.embedFont(StandardFonts.TimesRomanBold);
-                }
-
-                // 5. Draw Fellow Name with dynamic sizing and auto-fit
-                const name = (document.getElementById('customNameInput').value || 'LeadGreen Fellow').trim();
-                let fontSize = isEnglish ? (window.appState.defaultFontSizeEn || 54) : (window.appState.defaultFontSizeFr || 54);
-                let textWidth = nameFont.widthOfTextAtSize(name, fontSize);
-                const maxNameWidth = 1100;
-                if (textWidth > maxNameWidth) {
-                    fontSize = Math.floor(fontSize * (maxNameWidth / textWidth));
-                    textWidth = nameFont.widthOfTextAtSize(name, fontSize);
-                }
-
-                // Convert Canvas Y (from top) to PDF Y (from bottom)
-                const verticalPos = isEnglish ? window.appState.defaultVerticalPosEn : window.appState.defaultVerticalPosFr;
-                const pdfX = (width - textWidth) / 2;
-                const pdfY = height - verticalPos - 21;
-
-                page.drawText(name, {
-                    x: pdfX,
-                    y: pdfY,
-                    size: fontSize,
-                    font: nameFont,
-                    color: rgb(0.08, 0.1, 0.12)
-                });
-
-                // 6. Draw Verification ID
-                const ref = window.appState.verifiedFellow?.reference || '';
-                if (ref) {
-                    const codeFont = await pdfDoc.embedFont(StandardFonts.Courier);
-                    page.drawText(`ID: ${ref}`, {
-                        x: 70,
-                        y: 35,
-                        size: 11,
-                        font: codeFont,
-                        color: rgb(0.5, 0.55, 0.6)
-                    });
-                }
-
-                // 7. Save & Download
-                const pdfBytes = await pdfDoc.save();
-                const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-                const url = window.URL.createObjectURL(blob);
-
-                const cleanName = name.replace(/[^a-zA-Z0-9_-]/g, '_');
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `LeadGreen_Certificate_${window.appState.language}_${cleanName}.pdf`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(url);
-                window.showToast(dict.toastPdfDone);
-
-            } catch (err) {
-                console.error("PDF generation failed:", err);
-                alert("Could not generate PDF: " + err.message);
-            } finally {
-                const dict = I18N[window.appState.language || 'EN'] || I18N.EN;
-                btn.disabled = false;
-                btnText.innerText = dict.btnPdfText;
-            }
+        window.downloadOfficialPdf = function () {
+            window.showToast(window.appState.language === 'FR' ? 'Le téléchargement de certificat est actuellement désactivé.' : 'Certificate downloading is currently deactivated.');
+            return false;
         };
 
         // Name Formatting Quick Tools
