@@ -482,6 +482,18 @@
             background: #084E96;
         }
 
+        .btn-linkedin-action:disabled {
+            background: #9ca3af;
+            color: #ffffff;
+            cursor: not-allowed;
+            opacity: 0.7;
+            box-shadow: none;
+        }
+
+        .btn-linkedin-action:disabled:hover {
+            background: #9ca3af;
+        }
+
         /* Unpaid Notice (Climate / Amber tone step) */
         .notice-card-amber {
             background: var(--amber-bg);
@@ -1110,17 +1122,17 @@
                             <span id="deactivatedNoticeText">Certificate downloading is available upon graduation</span>
                         </div>
 
-                        <button type="button" class="btn-solid-primary" id="btnDownloadPdf" disabled aria-disabled="true" style="display: none !important;" onclick="return false;">
+                        <button type="button" class="btn-solid-primary" id="btnDownloadPdf" disabled aria-disabled="true" title="Certificate downloading is available upon graduation" onclick="return false;">
                             <i class="fa-solid fa-file-pdf"></i>
-                            <span id="btnPdfText">Download Official PDF (Deactivated)</span>
+                            <span id="btnPdfText">Download Official PDF</span>
                         </button>
 
-                        <button type="button" class="btn-outline-primary" id="btnDownloadPng" disabled aria-disabled="true" style="display: none !important;" onclick="return false;">
+                        <button type="button" class="btn-outline-primary" id="btnDownloadPng" disabled aria-disabled="true" title="Certificate downloading is available upon graduation" onclick="return false;">
                             <i class="fa-solid fa-image"></i>
-                            <span id="btnPngText">Download High-Res Image (PNG) (Deactivated)</span>
+                            <span id="btnPngText">Download High-Res Image (PNG)</span>
                         </button>
 
-                        <button type="button" class="btn-linkedin-action" id="btnLinkedInAction" onclick="openLinkedInModal()">
+                        <button type="button" class="btn-linkedin-action" id="btnLinkedInAction" disabled aria-disabled="true" title="Adding credential to LinkedIn is available upon graduation" onclick="return false;">
                             <i class="fa-brands fa-linkedin"></i>
                             <span id="btnLinkedInText">Add Credential to LinkedIn</span>
                         </button>
@@ -1515,9 +1527,9 @@
                 caseReset: "Reset",
                 standardNoticeText: "Calibrated official fellowship calligraphy and vector layout applied automatically.",
                 deactivatedNoticeText: "Certificate downloading is available upon graduation",
-                btnPdfText: "Download Official PDF (Deactivated)",
+                btnPdfText: "Download Official PDF",
                 btnPdfGenerating: "Building Vector PDF...",
-                btnPngText: "Download High-Res Image (PNG) (Deactivated)",
+                btnPngText: "Download High-Res Image (PNG)",
                 btnLinkedInText: "Add Credential to LinkedIn",
                 btnSignOutText: "Check another fellow email",
                 liModalHeading: "Add Certificate to LinkedIn",
@@ -1571,9 +1583,9 @@
                 caseReset: "Réinitialiser",
                 standardNoticeText: "Calligraphie officielle de la bourse et mise en page vectorielle appliquées automatiquement.",
                 deactivatedNoticeText: "Le téléchargement du certificat sera disponible lors de la remise des diplômes.",
-                btnPdfText: "Télécharger le PDF Officiel (Désactivé)",
+                btnPdfText: "Télécharger le PDF Officiel",
                 btnPdfGenerating: "Création du PDF Vectoriel...",
-                btnPngText: "Télécharger l'Image Haute Résolution (PNG) (Désactivé)",
+                btnPngText: "Télécharger l'Image Haute Résolution (PNG)",
                 btnLinkedInText: "Ajouter le Certificat à LinkedIn",
                 btnSignOutText: "Vérifier un autre nom ou e-mail",
                 liModalHeading: "Ajouter le Certificat à LinkedIn",
@@ -1684,6 +1696,8 @@
             if (elBtnPng) elBtnPng.disabled = true;
             const elBtnPngText = document.getElementById('btnPngText');
             if (elBtnPngText) elBtnPngText.innerText = dict.btnPngText;
+            const elBtnLinkedIn = document.getElementById('btnLinkedInAction');
+            if (elBtnLinkedIn) elBtnLinkedIn.disabled = true;
             const elBtnLinkedInText = document.getElementById('btnLinkedInText');
             if (elBtnLinkedInText) elBtnLinkedInText.innerText = dict.btnLinkedInText;
             const elBtnSignOutText = document.getElementById('btnSignOutText');
@@ -2143,9 +2157,10 @@
             }, 3500);
         };
 
-        // LinkedIn Modal Helper
+        // LinkedIn Modal Helper (Inactive)
         window.openLinkedInModal = function () {
-            document.getElementById('linkedInModal').style.display = 'flex';
+            window.showToast(window.appState.language === 'FR' ? 'L\'ajout du certificat à LinkedIn sera disponible lors de la remise des diplômes.' : 'Adding credential to LinkedIn is available upon graduation.');
+            return false;
         };
 
         window.closeLinkedInModal = function () {
