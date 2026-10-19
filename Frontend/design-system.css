@@ -1,13 +1,13 @@
 /**
- * LeadGreen Fellowship — Unified Climate & Nature Design System (v2.0)
- * Built on tasteskill v2 anti-slop guidelines.
+ * LeadGreen Fellowship — Unified Climate & Nature Design System (v3.0)
+ * Curated Earth & Solar Palette (tasteskill v2 anti-slop guidelines)
  *
- * Core Brand Palette:
- *   - Primary: #0A8334 (Deep Leaf Green)
- *   - Secondary: #80B918 (Solar Sprout Lime — <5% high-energy action accent)
- *   - Tertiary / Ink: #0C1824 (Midnight Canopy — 16:1 contrast text & deep fields)
+ * Core Color Harmonization:
+ *   - Primary: #0A8334 (Deep Botanical Leaf — Growth, Climate Stewardship, Living Foliage)
+ *   - Secondary: #C98A2C (Warm Solar Amber / Harvest Ochre — Sunlight, Achievement, Credential Seal)
+ *   - Tertiary / Ink: #111E16 (Deep Pine Peat / Evergreen Carbon — 16.5:1 Contrast, Organic Authority)
  *
- * Fonts:
+ * Typography:
  *   - Display / Headings: 'The Seasons Light', 'The Seasons', Georgia, serif
  *   - UI / Forms / Body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif
  */
@@ -38,46 +38,40 @@
    2. DESIGN TOKENS (:root)
    ========================================================================== */
 :root {
-    /* Brand Foundation */
-    --lg-green-primary: #0A8334;       /* Deep Leaf Green */
-    --lg-green-dark: #075C24;          /* Deep Forest (Headers, Hovers) */
-    --lg-green-deep: #0C1824;          /* Midnight Canopy (Tertiary) */
-    --lg-green-light: #EBF3EA;         /* Soft Leaf Mist (Badges, Highlight Boxes) */
-    --lg-green-hover: #F2F7F1;         /* Pale Dew Background Tint */
+    /* Brand Foundation (Harmonized Triad) */
+    --lg-primary: #0A8334;             /* Primary: Deep Botanical Leaf */
+    --lg-primary-dark: #075C24;        /* Deep Forest (Headers, Hovers) */
+    --lg-primary-light: #EEF5ED;       /* Pale Leaf Tint (Badges, Highlight Boxes) */
+    --lg-primary-hover: #F2F8F1;       /* Soft Dew Tint */
 
-    /* Secondary Accent (<5% Proportion Rule) */
-    --lg-accent-sprout: #80B918;       /* Solar Sprout Lime */
-    --lg-accent-sprout-hover: #72A615; /* Deeper Sprout on Hover */
-    --lg-accent-sprout-ink: #0C1824;   /* High-contrast ink for Sprout CTAs */
+    /* Secondary: Warm Solar Amber / Harvest Ochre */
+    --lg-secondary: #C98A2C;           /* Secondary: Solar Amber / Gold Seal */
+    --lg-secondary-hover: #B47820;     /* Deeper Amber for Hovers */
+    --lg-secondary-light: #FDF6E8;     /* Warm Solar Mist */
+    --lg-secondary-dark: #8E5912;      /* Deep Ochre Ink for Accent Text */
 
-    /* Accent & Status Colors */
-    --lg-gold: #F59E0B;                /* Registry Seal Brass */
-    --lg-gold-light: #FEF3C7;          /* Soft Amber Ground */
-    --lg-gold-dark: #B45309;           /* Amber Ink */
-    --lg-red: #EF4444;                 /* Validation Error */
-    --lg-red-light: #FEE2E2;           /* Error Ground */
-
-    /* Neutral Inks (Based on Tertiary #0C1824) */
-    --lg-ink: #0C1824;                 /* Midnight Canopy (Headings, 16:1 Contrast) */
-    --lg-ink-muted: #354B40;           /* Pine Shadow (Readable body, labels - 6.5:1 contrast) */
-    --lg-ink-subtle: #5A7064;          /* Lichen Slate (Metadata & Hints - 5:1 contrast) */
-    --lg-ink-light: #9BB0A3;           /* Disabled / Placeholders */
+    /* Tertiary / Inks: Deep Pine Peat (Organic Carbon) */
+    --lg-tertiary: #111E16;            /* Tertiary: Deep Pine Peat (16.5:1 Contrast) */
+    --lg-ink: #111E16;                 /* Primary Carbon Text */
+    --lg-ink-muted: #384A3E;           /* Pine Shadow (Readable body copy - 6.5:1 contrast) */
+    --lg-ink-subtle: #5C7263;          /* Lichen Slate (Metadata & Captions - 5:1 contrast) */
+    --lg-ink-light: #9BB0A1;           /* Placeholders & Disabled */
 
     /* Neutral Surfaces & Grounds */
-    --lg-surface: #FFFFFF;             /* Crisp Mineral Surface */
-    --lg-surface-alt: #EBF3EA;         /* Soft Leaf Tint */
-    --lg-surface-subtle: #F6F9F5;      /* Morning Dew Page Ground */
-    --lg-border: #DCE7DB;              /* Lichen Border */
-    --lg-border-dark: #C2D5C0;         /* Interactive Border */
+    --lg-surface: #FFFFFF;             /* Pure Mineral Surface */
+    --lg-surface-alt: #EEF5ED;         /* Pale Leaf Mist */
+    --lg-surface-subtle: #F7FAF7;      /* Morning Dew Page Ground */
+    --lg-border: #D8E5D7;              /* Lichen Mineral Border */
+    --lg-border-dark: #BACFBA;         /* Interactive Border */
 
     /* Typography Families */
     --lg-font-display: 'The Seasons Light', 'The Seasons', 'Playfair Display', Georgia, serif;
     --lg-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
     /* Typographic Scale (Strict 5 Hierarchy Steps) */
-    --lg-size-display: clamp(34px, 4.5vw, 52px);  /* Line-height: 1.05 */
+    --lg-size-display: clamp(34px, 4.5vw, 52px);  /* Line-height: 1.08 */
     --lg-size-heading: clamp(22px, 2.5vw, 30px);  /* Line-height: 1.2 */
-    --lg-size-lead: 19px;                        /* Line-height: 1.5 */
+    --lg-size-lead: 18px;                        /* Line-height: 1.55 */
     --lg-size-body: 16px;                        /* Line-height: 1.6 */
     --lg-size-small: 13px;                       /* Line-height: 1.45 */
 
@@ -88,9 +82,9 @@
     --lg-radius-pill: 9999px;
 
     /* Elevation */
-    --lg-shadow-sm: 0 1px 3px rgba(12, 24, 36, 0.05);
-    --lg-shadow-card: 0 10px 30px rgba(12, 24, 36, 0.06), 0 2px 6px rgba(12, 24, 36, 0.02);
-    --lg-shadow-sprout: 0 4px 16px rgba(128, 185, 24, 0.35);
+    --lg-shadow-sm: 0 1px 3px rgba(17, 30, 22, 0.05);
+    --lg-shadow-card: 0 12px 32px rgba(17, 30, 22, 0.06), 0 2px 6px rgba(17, 30, 22, 0.02);
+    --lg-shadow-hover: 0 16px 40px rgba(17, 30, 22, 0.1);
 
     /* Animation & Timing */
     --lg-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -129,7 +123,7 @@ body.lg-theme {
     font-family: var(--lg-font-display);
     font-size: var(--lg-size-display);
     font-weight: 300;
-    line-height: 1.05;
+    line-height: 1.08;
     color: var(--lg-ink);
     letter-spacing: -0.025em;
     text-wrap: balance;
@@ -140,7 +134,7 @@ body.lg-theme {
     font-size: var(--lg-size-heading);
     font-weight: 400;
     line-height: 1.2;
-    color: var(--lg-green-primary);
+    color: var(--lg-primary);
 }
 
 .lg-title-sans {
@@ -154,7 +148,7 @@ body.lg-theme {
 .lg-text-lead {
     font-size: var(--lg-size-lead);
     color: var(--lg-ink-muted);
-    line-height: 1.5;
+    line-height: 1.55;
 }
 
 .lg-text-muted {
@@ -180,11 +174,12 @@ body.lg-theme {
 }
 
 .lg-card-header {
-    background: linear-gradient(135deg, var(--lg-green-primary) 0%, #064E1F 100%);
+    background: linear-gradient(135deg, var(--lg-primary) 0%, #05481C 100%);
     color: #FFFFFF;
     padding: 32px 26px;
     text-align: center;
     position: relative;
+    border-bottom: 2px solid var(--lg-secondary);
 }
 
 .lg-card-header img {
@@ -212,7 +207,7 @@ body.lg-theme {
     font-size: var(--lg-size-small);
     font-weight: 400;
     opacity: 0.94;
-    color: #EBF3EA;
+    color: #EEF5ED;
 }
 
 .lg-card-body {
@@ -245,7 +240,7 @@ body.lg-theme {
 }
 
 .lg-benefit-item i {
-    color: var(--lg-green-primary);
+    color: var(--lg-primary);
     font-size: 15px;
     margin-top: 3px;
     flex-shrink: 0;
@@ -287,7 +282,7 @@ body.lg-theme {
 .lg-input:focus,
 .lg-select:focus {
     outline: none;
-    border-color: var(--lg-green-primary);
+    border-color: var(--lg-primary);
     box-shadow: 0 0 0 3px rgba(10, 131, 52, 0.16);
 }
 
@@ -313,15 +308,15 @@ body.lg-theme {
 }
 
 .lg-notice-green {
-    background: var(--lg-green-light);
-    border: 1px solid var(--lg-green-primary);
-    color: var(--lg-green-dark);
+    background: var(--lg-primary-light);
+    border: 1px solid var(--lg-primary);
+    color: var(--lg-primary-dark);
 }
 
 .lg-notice-amber {
-    background: var(--lg-gold-light);
-    border: 1px solid var(--lg-gold);
-    color: var(--lg-gold-dark);
+    background: var(--lg-secondary-light);
+    border: 1px solid var(--lg-secondary);
+    color: var(--lg-secondary-dark);
 }
 
 /* ==========================================================================
@@ -332,7 +327,7 @@ body.lg-theme {
     justify-content: space-between;
     align-items: center;
     padding: 16px 20px;
-    background: var(--lg-green-hover);
+    background: var(--lg-primary-hover);
     border-radius: var(--lg-radius-sm);
     border: 1px solid var(--lg-border);
     margin-bottom: 24px;
@@ -348,7 +343,7 @@ body.lg-theme {
     font-family: var(--lg-font-sans);
     font-size: 22px;
     font-weight: 800;
-    color: var(--lg-green-primary);
+    color: var(--lg-primary);
 }
 
 /* ==========================================================================
@@ -380,48 +375,40 @@ body.lg-theme {
     width: 100%;
 }
 
-/* High-Conversion Sprout CTA (Secondary Accent <5% rule) */
-.lg-btn-sprout,
+/* Primary Action: Deep Botanical Leaf with Gold Accent Line */
 .lg-btn-primary {
-    background-color: var(--lg-accent-sprout);
-    color: var(--lg-accent-sprout-ink);
-    box-shadow: 0 2px 8px rgba(128, 185, 24, 0.25);
-}
-
-.lg-btn-sprout:hover,
-.lg-btn-primary:hover {
-    background-color: var(--lg-accent-sprout-hover);
-    box-shadow: var(--lg-shadow-sprout);
-}
-
-/* Deep Forest Button (Alternative Primary) */
-.lg-btn-forest {
-    background-color: var(--lg-green-primary);
+    background-color: var(--lg-primary);
     color: #FFFFFF;
+    box-shadow: 0 4px 14px rgba(10, 131, 52, 0.28);
 }
 
-.lg-btn-forest:hover {
-    background-color: var(--lg-green-dark);
-    box-shadow: 0 4px 12px rgba(10, 131, 52, 0.25);
+.lg-btn-primary:hover {
+    background-color: var(--lg-primary-dark);
+    box-shadow: 0 6px 18px rgba(10, 131, 52, 0.35);
 }
 
-.lg-btn-secondary {
-    background-color: var(--lg-gold);
-    color: #0C1824;
+/* Secondary Action: Warm Solar Amber (Achievement & Seals) */
+.lg-btn-secondary,
+.lg-btn-amber {
+    background-color: var(--lg-secondary);
+    color: #FFFFFF;
+    box-shadow: 0 4px 14px rgba(201, 138, 44, 0.25);
 }
 
-.lg-btn-secondary:hover {
-    background-color: #D97706;
+.lg-btn-secondary:hover,
+.lg-btn-amber:hover {
+    background-color: var(--lg-secondary-hover);
+    box-shadow: 0 6px 18px rgba(201, 138, 44, 0.35);
 }
 
 .lg-btn-outline {
     background-color: #FFFFFF;
-    color: var(--lg-green-primary);
-    border: 1.5px solid var(--lg-green-primary);
+    color: var(--lg-primary);
+    border: 1.5px solid var(--lg-primary);
 }
 
 .lg-btn-outline:hover {
-    background-color: var(--lg-green-light);
+    background-color: var(--lg-primary-light);
 }
 
 .lg-btn:disabled {
@@ -445,42 +432,11 @@ body.lg-theme {
 }
 
 .lg-trust-badge i {
-    color: var(--lg-green-primary);
+    color: var(--lg-primary);
 }
 
 /* ==========================================================================
-   10. BILINGUAL LANGUAGE TABS
-   ========================================================================== */
-.lg-lang-tabs {
-    display: inline-flex;
-    background: var(--lg-surface-subtle);
-    padding: 3px;
-    border-radius: var(--lg-radius-sm);
-    gap: 2px;
-    border: 1px solid var(--lg-border);
-}
-
-.lg-lang-btn {
-    border: none;
-    background: transparent;
-    padding: 6px 14px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--lg-ink-subtle);
-    border-radius: 4px;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all var(--lg-transition-fast);
-}
-
-.lg-lang-btn.active {
-    background: #FFFFFF;
-    color: var(--lg-green-primary);
-    box-shadow: var(--lg-shadow-sm);
-}
-
-/* ==========================================================================
-   11. RESPONSIVENESS
+   10. RESPONSIVENESS
    ========================================================================== */
 @media (max-width: 480px) {
     .lg-card-container {
