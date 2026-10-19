@@ -1,6 +1,11 @@
 /**
- * LeadGreen Fellowship — Unified Design System (v1.0)
- * Hybrid Refinement: Harmonizing established card layouts with editorial excellence.
+ * LeadGreen Fellowship — Unified Climate & Nature Design System (v2.0)
+ * Built on tasteskill v2 anti-slop guidelines.
+ *
+ * Core Brand Palette:
+ *   - Primary: #0A8334 (Deep Leaf Green)
+ *   - Secondary: #80B918 (Solar Sprout Lime — <5% high-energy action accent)
+ *   - Tertiary / Ink: #0C1824 (Midnight Canopy — 16:1 contrast text & deep fields)
  *
  * Fonts:
  *   - Display / Headings: 'The Seasons Light', 'The Seasons', Georgia, serif
@@ -33,44 +38,48 @@
    2. DESIGN TOKENS (:root)
    ========================================================================== */
 :root {
-    /* Brand Colors (Living Canopy System) */
-    --lg-green-primary: #0A8334;       /* Primary: Deep Leaf Green */
-    --lg-green-secondary: #80B918;     /* Secondary: Solar Sprout Lime (Accent <5%) */
-    --lg-green-dark: #08692A;          /* Deep Forest (Headers, Hovers) */
-    --lg-green-deep: #0C1824;          /* Tertiary: Midnight Canopy (Accents, Dark Fields) */
-    --lg-green-light: #EBF3EA;         /* Pale Leaf Tint (Badges, Highlight Boxes) */
-    --lg-green-hover: #F2F7F1;         /* Soft Background Tint */
+    /* Brand Foundation */
+    --lg-green-primary: #0A8334;       /* Deep Leaf Green */
+    --lg-green-dark: #075C24;          /* Deep Forest (Headers, Hovers) */
+    --lg-green-deep: #0C1824;          /* Midnight Canopy (Tertiary) */
+    --lg-green-light: #EBF3EA;         /* Soft Leaf Mist (Badges, Highlight Boxes) */
+    --lg-green-hover: #F2F7F1;         /* Pale Dew Background Tint */
+
+    /* Secondary Accent (<5% Proportion Rule) */
+    --lg-accent-sprout: #80B918;       /* Solar Sprout Lime */
+    --lg-accent-sprout-hover: #72A615; /* Deeper Sprout on Hover */
+    --lg-accent-sprout-ink: #0C1824;   /* High-contrast ink for Sprout CTAs */
 
     /* Accent & Status Colors */
-    --lg-gold: #F59E0B;                /* Seal Brass / Amber Highlight */
+    --lg-gold: #F59E0B;                /* Registry Seal Brass */
     --lg-gold-light: #FEF3C7;          /* Soft Amber Ground */
     --lg-gold-dark: #B45309;           /* Amber Ink */
     --lg-red: #EF4444;                 /* Validation Error */
     --lg-red-light: #FEE2E2;           /* Error Ground */
 
-    /* Neutral Inks (Based on Midnight Canopy #0C1824) */
-    --lg-ink: #0C1824;                 /* Midnight Canopy (Headings, Main Text - 16:1 contrast) */
-    --lg-ink-muted: #354B40;           /* Pine Shadow (Readable body, labels - 6:1 contrast) */
-    --lg-ink-subtle: #5A7064;          /* Lichen Slate (Secondary Metadata & Hints - 5:1 contrast) */
-    --lg-ink-light: #8E9F94;           /* Disabled / Placeholders */
+    /* Neutral Inks (Based on Tertiary #0C1824) */
+    --lg-ink: #0C1824;                 /* Midnight Canopy (Headings, 16:1 Contrast) */
+    --lg-ink-muted: #354B40;           /* Pine Shadow (Readable body, labels - 6.5:1 contrast) */
+    --lg-ink-subtle: #5A7064;          /* Lichen Slate (Metadata & Hints - 5:1 contrast) */
+    --lg-ink-light: #9BB0A3;           /* Disabled / Placeholders */
 
     /* Neutral Surfaces & Grounds */
-    --lg-surface: #FFFFFF;             /* Crisp Card & Modal Background */
-    --lg-surface-alt: #EBF3EA;         /* Leaf Mist / Secondary Surface */
+    --lg-surface: #FFFFFF;             /* Crisp Mineral Surface */
+    --lg-surface-alt: #EBF3EA;         /* Soft Leaf Tint */
     --lg-surface-subtle: #F6F9F5;      /* Morning Dew Page Ground */
-    --lg-border: #DCE7DB;              /* Organic Lichen Border */
-    --lg-border-dark: #C4D3C2;         /* Input & Interactive Border */
+    --lg-border: #DCE7DB;              /* Lichen Border */
+    --lg-border-dark: #C2D5C0;         /* Interactive Border */
 
     /* Typography Families */
     --lg-font-display: 'The Seasons Light', 'The Seasons', 'Playfair Display', Georgia, serif;
     --lg-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
     /* Typographic Scale (Strict 5 Hierarchy Steps) */
-    --lg-size-display: clamp(32px, 4vw, 48px);  /* Line-height: 1.15 */
-    --lg-size-heading: clamp(22px, 2.5vw, 28px);/* Line-height: 1.25 */
-    --lg-size-lead: 18px;                       /* Line-height: 1.5 */
-    --lg-size-body: 16px;                       /* Line-height: 1.6 */
-    --lg-size-small: 14px;                      /* Line-height: 1.45 */
+    --lg-size-display: clamp(34px, 4.5vw, 52px);  /* Line-height: 1.05 */
+    --lg-size-heading: clamp(22px, 2.5vw, 30px);  /* Line-height: 1.2 */
+    --lg-size-lead: 19px;                        /* Line-height: 1.5 */
+    --lg-size-body: 16px;                        /* Line-height: 1.6 */
+    --lg-size-small: 13px;                       /* Line-height: 1.45 */
 
     /* Spacing & Radii */
     --lg-radius-sm: 6px;
@@ -78,10 +87,10 @@
     --lg-radius-lg: 16px;
     --lg-radius-pill: 9999px;
 
-    /* Shadows (Soft Elevations with Midnight Tint) */
+    /* Elevation */
     --lg-shadow-sm: 0 1px 3px rgba(12, 24, 36, 0.05);
-    --lg-shadow-card: 0 10px 30px rgba(12, 24, 36, 0.05), 0 2px 6px rgba(12, 24, 36, 0.02);
-    --lg-shadow-popover: 0 16px 36px rgba(12, 24, 36, 0.12);
+    --lg-shadow-card: 0 10px 30px rgba(12, 24, 36, 0.06), 0 2px 6px rgba(12, 24, 36, 0.02);
+    --lg-shadow-sprout: 0 4px 16px rgba(128, 185, 24, 0.35);
 
     /* Animation & Timing */
     --lg-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -120,17 +129,18 @@ body.lg-theme {
     font-family: var(--lg-font-display);
     font-size: var(--lg-size-display);
     font-weight: 300;
-    line-height: 1.15;
-    color: var(--lg-green-dark);
-    letter-spacing: -0.01em;
+    line-height: 1.05;
+    color: var(--lg-ink);
+    letter-spacing: -0.025em;
+    text-wrap: balance;
 }
 
 .lg-title-heading {
     font-family: var(--lg-font-display);
     font-size: var(--lg-size-heading);
     font-weight: 400;
-    line-height: 1.25;
-    color: var(--lg-green-dark);
+    line-height: 1.2;
+    color: var(--lg-green-primary);
 }
 
 .lg-title-sans {
@@ -156,7 +166,7 @@ body.lg-theme {
 }
 
 /* ==========================================================================
-   5. SIGNATURE CARD CONTAINER (The Familiar LeadGreen Card)
+   5. SIGNATURE CARD CONTAINER
    ========================================================================== */
 .lg-card-container {
     background-color: var(--lg-surface);
@@ -164,15 +174,15 @@ body.lg-theme {
     box-shadow: var(--lg-shadow-card);
     border: 1px solid var(--lg-border);
     width: 100%;
-    max-width: 520px;
+    max-width: 530px;
     overflow: hidden;
     margin: 0 auto;
 }
 
 .lg-card-header {
-    background-color: var(--lg-green-dark);
+    background: linear-gradient(135deg, var(--lg-green-primary) 0%, #064E1F 100%);
     color: #FFFFFF;
-    padding: 30px 24px;
+    padding: 32px 26px;
     text-align: center;
     position: relative;
 }
@@ -192,7 +202,8 @@ body.lg-theme {
     font-weight: 400;
     margin-bottom: 8px;
     color: #FFFFFF;
-    line-height: 1.25;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
 }
 
 .lg-card-header p,
@@ -200,8 +211,8 @@ body.lg-theme {
     font-family: var(--lg-font-sans);
     font-size: var(--lg-size-small);
     font-weight: 400;
-    opacity: 0.92;
-    color: #EAF5EE;
+    opacity: 0.94;
+    color: #EBF3EA;
 }
 
 .lg-card-body {
@@ -212,10 +223,10 @@ body.lg-theme {
    6. BENEFIT ITEMS & FEATURE BOXES
    ========================================================================== */
 .lg-highlight-box {
-    background: var(--lg-green-hover);
+    background: var(--lg-surface-alt);
     padding: 20px 22px;
     border-radius: var(--lg-radius-md);
-    border: 1px solid var(--lg-green-light);
+    border: 1px solid rgba(10, 131, 52, 0.16);
     margin-bottom: 24px;
 }
 
@@ -264,7 +275,7 @@ body.lg-theme {
 .lg-select {
     width: 100%;
     padding: 13px 16px;
-    border: 1px solid var(--lg-border-dark);
+    border: 1px solid var(--lg-border);
     border-radius: var(--lg-radius-sm);
     font-family: var(--lg-font-sans);
     font-size: 15px;
@@ -277,7 +288,7 @@ body.lg-theme {
 .lg-select:focus {
     outline: none;
     border-color: var(--lg-green-primary);
-    box-shadow: 0 0 0 3px rgba(14, 133, 73, 0.15);
+    box-shadow: 0 0 0 3px rgba(10, 131, 52, 0.16);
 }
 
 .lg-input::placeholder {
@@ -285,7 +296,7 @@ body.lg-theme {
 }
 
 .lg-hint {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--lg-ink-subtle);
     margin-top: 6px;
 }
@@ -321,7 +332,7 @@ body.lg-theme {
     justify-content: space-between;
     align-items: center;
     padding: 16px 20px;
-    background: var(--lg-surface-alt);
+    background: var(--lg-green-hover);
     border-radius: var(--lg-radius-sm);
     border: 1px solid var(--lg-border);
     margin-bottom: 24px;
@@ -351,7 +362,7 @@ body.lg-theme {
     padding: 14px 22px;
     font-family: var(--lg-font-sans);
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 700;
     border-radius: var(--lg-radius-sm);
     text-decoration: none;
     cursor: pointer;
@@ -369,32 +380,34 @@ body.lg-theme {
     width: 100%;
 }
 
+/* High-Conversion Sprout CTA (Secondary Accent <5% rule) */
+.lg-btn-sprout,
 .lg-btn-primary {
+    background-color: var(--lg-accent-sprout);
+    color: var(--lg-accent-sprout-ink);
+    box-shadow: 0 2px 8px rgba(128, 185, 24, 0.25);
+}
+
+.lg-btn-sprout:hover,
+.lg-btn-primary:hover {
+    background-color: var(--lg-accent-sprout-hover);
+    box-shadow: var(--lg-shadow-sprout);
+}
+
+/* Deep Forest Button (Alternative Primary) */
+.lg-btn-forest {
     background-color: var(--lg-green-primary);
     color: #FFFFFF;
 }
 
-.lg-btn-primary:hover {
+.lg-btn-forest:hover {
     background-color: var(--lg-green-dark);
-    box-shadow: 0 4px 14px rgba(10, 131, 52, 0.25);
-}
-
-.lg-btn-sprout,
-.lg-btn-action {
-    background-color: var(--lg-green-secondary);
-    color: var(--lg-ink);
-    font-weight: 700;
-}
-
-.lg-btn-sprout:hover,
-.lg-btn-action:hover {
-    background-color: #72A615;
-    box-shadow: 0 4px 16px rgba(128, 185, 24, 0.35);
+    box-shadow: 0 4px 12px rgba(10, 131, 52, 0.25);
 }
 
 .lg-btn-secondary {
     background-color: var(--lg-gold);
-    color: #000000;
+    color: #0C1824;
 }
 
 .lg-btn-secondary:hover {
