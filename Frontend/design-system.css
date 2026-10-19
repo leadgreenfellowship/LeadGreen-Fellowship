@@ -33,12 +33,13 @@
    2. DESIGN TOKENS (:root)
    ========================================================================== */
 :root {
-    /* Brand Colors */
-    --lg-green-primary: #0E8549;       /* Signature LeadGreen Emerald */
-    --lg-green-dark: #0A6337;          /* Deep Forest (Headers, Hovers) */
-    --lg-green-deep: #063D22;          /* Night Forest (Accents, Dark Fields) */
-    --lg-green-light: #EAF5EE;         /* Pale Leaf Tint (Badges, Highlight Boxes) */
-    --lg-green-hover: #F0F9F4;         /* Soft Background Tint */
+    /* Brand Colors (Living Canopy System) */
+    --lg-green-primary: #0A8334;       /* Primary: Deep Leaf Green */
+    --lg-green-secondary: #80B918;     /* Secondary: Solar Sprout Lime (Accent <5%) */
+    --lg-green-dark: #08692A;          /* Deep Forest (Headers, Hovers) */
+    --lg-green-deep: #0C1824;          /* Tertiary: Midnight Canopy (Accents, Dark Fields) */
+    --lg-green-light: #EBF3EA;         /* Pale Leaf Tint (Badges, Highlight Boxes) */
+    --lg-green-hover: #F2F7F1;         /* Soft Background Tint */
 
     /* Accent & Status Colors */
     --lg-gold: #F59E0B;                /* Seal Brass / Amber Highlight */
@@ -47,18 +48,18 @@
     --lg-red: #EF4444;                 /* Validation Error */
     --lg-red-light: #FEE2E2;           /* Error Ground */
 
-    /* Neutral Inks */
-    --lg-ink: #111827;                 /* High-contrast Carbon (Headings, Main Text) */
-    --lg-ink-muted: #374151;           /* Slate Ink (Readable body, labels - 7:1 contrast) */
-    --lg-ink-subtle: #4B5563;          /* Secondary Metadata & Hints (5:1 contrast) */
-    --lg-ink-light: #9CA3AF;           /* Disabled / Placeholders */
+    /* Neutral Inks (Based on Midnight Canopy #0C1824) */
+    --lg-ink: #0C1824;                 /* Midnight Canopy (Headings, Main Text - 16:1 contrast) */
+    --lg-ink-muted: #354B40;           /* Pine Shadow (Readable body, labels - 6:1 contrast) */
+    --lg-ink-subtle: #5A7064;          /* Lichen Slate (Secondary Metadata & Hints - 5:1 contrast) */
+    --lg-ink-light: #8E9F94;           /* Disabled / Placeholders */
 
     /* Neutral Surfaces & Grounds */
     --lg-surface: #FFFFFF;             /* Crisp Card & Modal Background */
-    --lg-surface-alt: #F9FAFB;         /* Secondary Surface / Table Stripes */
-    --lg-surface-subtle: #F3F4F6;      /* Page Ground / Section Contrast */
-    --lg-border: #E5E7EB;              /* Clean Divider & Card Border */
-    --lg-border-dark: #D1D5DB;         /* Input & Interactive Border */
+    --lg-surface-alt: #EBF3EA;         /* Leaf Mist / Secondary Surface */
+    --lg-surface-subtle: #F6F9F5;      /* Morning Dew Page Ground */
+    --lg-border: #DCE7DB;              /* Organic Lichen Border */
+    --lg-border-dark: #C4D3C2;         /* Input & Interactive Border */
 
     /* Typography Families */
     --lg-font-display: 'The Seasons Light', 'The Seasons', 'Playfair Display', Georgia, serif;
@@ -77,10 +78,10 @@
     --lg-radius-lg: 16px;
     --lg-radius-pill: 9999px;
 
-    /* Shadows (Familiar Soft Elevations) */
-    --lg-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-    --lg-shadow-card: 0 10px 25px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.02);
-    --lg-shadow-popover: 0 16px 36px rgba(13, 43, 29, 0.12);
+    /* Shadows (Soft Elevations with Midnight Tint) */
+    --lg-shadow-sm: 0 1px 3px rgba(12, 24, 36, 0.05);
+    --lg-shadow-card: 0 10px 30px rgba(12, 24, 36, 0.05), 0 2px 6px rgba(12, 24, 36, 0.02);
+    --lg-shadow-popover: 0 16px 36px rgba(12, 24, 36, 0.12);
 
     /* Animation & Timing */
     --lg-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -375,7 +376,20 @@ body.lg-theme {
 
 .lg-btn-primary:hover {
     background-color: var(--lg-green-dark);
-    box-shadow: 0 4px 12px rgba(14, 133, 73, 0.2);
+    box-shadow: 0 4px 14px rgba(10, 131, 52, 0.25);
+}
+
+.lg-btn-sprout,
+.lg-btn-action {
+    background-color: var(--lg-green-secondary);
+    color: var(--lg-ink);
+    font-weight: 700;
+}
+
+.lg-btn-sprout:hover,
+.lg-btn-action:hover {
+    background-color: #72A615;
+    box-shadow: 0 4px 16px rgba(128, 185, 24, 0.35);
 }
 
 .lg-btn-secondary {
