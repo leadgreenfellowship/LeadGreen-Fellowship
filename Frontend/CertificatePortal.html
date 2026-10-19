@@ -1107,7 +1107,7 @@
                     <div class="download-stack">
                         <div class="standard-notice" style="background: #F3F4F6; border: 1px solid #E5E7EB; color: #4B5563; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
                             <i class="fa-solid fa-circle-info" style="color: #6B7280;"></i>
-                            <span id="deactivatedNoticeText">Certificate downloading is currently deactivated. You can add your verified credential directly to LinkedIn below.</span>
+                            <span id="deactivatedNoticeText">Certificate downloading is available upon graduation</span>
                         </div>
 
                         <button type="button" class="btn-solid-primary" id="btnDownloadPdf" disabled aria-disabled="true" style="display: none !important;" onclick="return false;">
@@ -1514,7 +1514,7 @@
                 caseLower: "lowercase",
                 caseReset: "Reset",
                 standardNoticeText: "Calibrated official fellowship calligraphy and vector layout applied automatically.",
-                deactivatedNoticeText: "Certificate downloading is currently paused. You can still add your verified credential directly to LinkedIn below.",
+                deactivatedNoticeText: "Certificate downloading is available upon graduation",
                 btnPdfText: "Download Official PDF (Deactivated)",
                 btnPdfGenerating: "Building Vector PDF...",
                 btnPngText: "Download High-Res Image (PNG) (Deactivated)",
@@ -1570,7 +1570,7 @@
                 caseLower: "minuscules",
                 caseReset: "Réinitialiser",
                 standardNoticeText: "Calligraphie officielle de la bourse et mise en page vectorielle appliquées automatiquement.",
-                deactivatedNoticeText: "Le téléchargement d'attestation est actuellement suspendu. Vous pouvez ajouter votre certification à LinkedIn ci-dessous.",
+                deactivatedNoticeText: "Le téléchargement du certificat sera disponible lors de la remise des diplômes.",
                 btnPdfText: "Télécharger le PDF Officiel (Désactivé)",
                 btnPdfGenerating: "Création du PDF Vectoriel...",
                 btnPngText: "Télécharger l'Image Haute Résolution (PNG) (Désactivé)",
@@ -2078,12 +2078,12 @@
         // EXPORT: CERTIFICATE DOWNLOADING DEACTIVATED
         // -------------------------------------------------------------
         window.downloadHighResPng = function () {
-            window.showToast(window.appState.language === 'FR' ? 'Le téléchargement de certificat est actuellement désactivé.' : 'Certificate downloading is currently deactivated.');
+            window.showToast(window.appState.language === 'FR' ? 'Le téléchargement du certificat sera disponible lors de la remise des diplômes.' : 'Certificate downloading is available upon graduation.');
             return false;
         };
 
         window.downloadOfficialPdf = function () {
-            window.showToast(window.appState.language === 'FR' ? 'Le téléchargement de certificat est actuellement désactivé.' : 'Certificate downloading is currently deactivated.');
+            window.showToast(window.appState.language === 'FR' ? 'Le téléchargement du certificat sera disponible lors de la remise des diplômes.' : 'Certificate downloading is available upon graduation.');
             return false;
         };
 
