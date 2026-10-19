@@ -1,0 +1,479 @@
+/**
+ * LeadGreen Fellowship — Unified Design System (v1.0)
+ * Hybrid Refinement: Harmonizing established card layouts with editorial excellence.
+ *
+ * Fonts:
+ *   - Display / Headings: 'The Seasons Light', 'The Seasons', Georgia, serif
+ *   - UI / Forms / Body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif
+ */
+
+/* ==========================================================================
+   1. FONT FACES & IMPORTS
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@font-face {
+    font-family: 'The Seasons Light';
+    src: url('TheSeasons-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'The Seasons';
+    src: url('TheSeasons-Regular.ttf') format('truetype'),
+         url('TheSeasons-Light.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ==========================================================================
+   2. DESIGN TOKENS (:root)
+   ========================================================================== */
+:root {
+    /* Brand Colors */
+    --lg-green-primary: #0E8549;       /* Signature LeadGreen Emerald */
+    --lg-green-dark: #0A6337;          /* Deep Forest (Headers, Hovers) */
+    --lg-green-deep: #063D22;          /* Night Forest (Accents, Dark Fields) */
+    --lg-green-light: #EAF5EE;         /* Pale Leaf Tint (Badges, Highlight Boxes) */
+    --lg-green-hover: #F0F9F4;         /* Soft Background Tint */
+
+    /* Accent & Status Colors */
+    --lg-gold: #F59E0B;                /* Seal Brass / Amber Highlight */
+    --lg-gold-light: #FEF3C7;          /* Soft Amber Ground */
+    --lg-gold-dark: #B45309;           /* Amber Ink */
+    --lg-red: #EF4444;                 /* Validation Error */
+    --lg-red-light: #FEE2E2;           /* Error Ground */
+
+    /* Neutral Inks */
+    --lg-ink: #111827;                 /* High-contrast Carbon (Headings, Main Text) */
+    --lg-ink-muted: #374151;           /* Slate Ink (Readable body, labels - 7:1 contrast) */
+    --lg-ink-subtle: #4B5563;          /* Secondary Metadata & Hints (5:1 contrast) */
+    --lg-ink-light: #9CA3AF;           /* Disabled / Placeholders */
+
+    /* Neutral Surfaces & Grounds */
+    --lg-surface: #FFFFFF;             /* Crisp Card & Modal Background */
+    --lg-surface-alt: #F9FAFB;         /* Secondary Surface / Table Stripes */
+    --lg-surface-subtle: #F3F4F6;      /* Page Ground / Section Contrast */
+    --lg-border: #E5E7EB;              /* Clean Divider & Card Border */
+    --lg-border-dark: #D1D5DB;         /* Input & Interactive Border */
+
+    /* Typography Families */
+    --lg-font-display: 'The Seasons Light', 'The Seasons', 'Playfair Display', Georgia, serif;
+    --lg-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+    /* Typographic Scale (Strict 5 Hierarchy Steps) */
+    --lg-size-display: clamp(32px, 4vw, 48px);  /* Line-height: 1.15 */
+    --lg-size-heading: clamp(22px, 2.5vw, 28px);/* Line-height: 1.25 */
+    --lg-size-lead: 18px;                       /* Line-height: 1.5 */
+    --lg-size-body: 16px;                       /* Line-height: 1.6 */
+    --lg-size-small: 14px;                      /* Line-height: 1.45 */
+
+    /* Spacing & Radii */
+    --lg-radius-sm: 6px;
+    --lg-radius-md: 10px;
+    --lg-radius-lg: 16px;
+    --lg-radius-pill: 9999px;
+
+    /* Shadows (Familiar Soft Elevations) */
+    --lg-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+    --lg-shadow-card: 0 10px 25px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.02);
+    --lg-shadow-popover: 0 16px 36px rgba(13, 43, 29, 0.12);
+
+    /* Animation & Timing */
+    --lg-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --lg-transition-fast: 0.15s ease;
+    --lg-transition-normal: 0.25s var(--lg-ease-out);
+}
+
+/* ==========================================================================
+   3. CSS RESET & GLOBAL BASICS
+   ========================================================================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body.lg-theme {
+    font-family: var(--lg-font-sans);
+    background-color: var(--lg-surface-subtle);
+    color: var(--lg-ink);
+    font-size: var(--lg-size-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+/* ==========================================================================
+   4. TYPOGRAPHY UTILITIES
+   ========================================================================== */
+.lg-title-display {
+    font-family: var(--lg-font-display);
+    font-size: var(--lg-size-display);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--lg-green-dark);
+    letter-spacing: -0.01em;
+}
+
+.lg-title-heading {
+    font-family: var(--lg-font-display);
+    font-size: var(--lg-size-heading);
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--lg-green-dark);
+}
+
+.lg-title-sans {
+    font-family: var(--lg-font-sans);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--lg-ink);
+}
+
+.lg-text-lead {
+    font-size: var(--lg-size-lead);
+    color: var(--lg-ink-muted);
+    line-height: 1.5;
+}
+
+.lg-text-muted {
+    color: var(--lg-ink-subtle);
+}
+
+.lg-text-small {
+    font-size: var(--lg-size-small);
+}
+
+/* ==========================================================================
+   5. SIGNATURE CARD CONTAINER (The Familiar LeadGreen Card)
+   ========================================================================== */
+.lg-card-container {
+    background-color: var(--lg-surface);
+    border-radius: var(--lg-radius-lg);
+    box-shadow: var(--lg-shadow-card);
+    border: 1px solid var(--lg-border);
+    width: 100%;
+    max-width: 520px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.lg-card-header {
+    background-color: var(--lg-green-dark);
+    color: #FFFFFF;
+    padding: 30px 24px;
+    text-align: center;
+    position: relative;
+}
+
+.lg-card-header img {
+    height: 40px;
+    width: auto;
+    margin-bottom: 14px;
+    filter: brightness(0) invert(1);
+    display: inline-block;
+}
+
+.lg-card-header h1,
+.lg-card-header .lg-header-title {
+    font-family: var(--lg-font-display);
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 8px;
+    color: #FFFFFF;
+    line-height: 1.25;
+}
+
+.lg-card-header p,
+.lg-card-header .lg-header-sub {
+    font-family: var(--lg-font-sans);
+    font-size: var(--lg-size-small);
+    font-weight: 400;
+    opacity: 0.92;
+    color: #EAF5EE;
+}
+
+.lg-card-body {
+    padding: 32px 28px;
+}
+
+/* ==========================================================================
+   6. BENEFIT ITEMS & FEATURE BOXES
+   ========================================================================== */
+.lg-highlight-box {
+    background: var(--lg-green-hover);
+    padding: 20px 22px;
+    border-radius: var(--lg-radius-md);
+    border: 1px solid var(--lg-green-light);
+    margin-bottom: 24px;
+}
+
+.lg-benefit-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--lg-ink-muted);
+}
+
+.lg-benefit-item:last-child {
+    margin-bottom: 0;
+}
+
+.lg-benefit-item i {
+    color: var(--lg-green-primary);
+    font-size: 15px;
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+
+.lg-benefit-item strong {
+    color: var(--lg-ink);
+}
+
+/* ==========================================================================
+   7. FORM CONTROLS & INPUTS
+   ========================================================================== */
+.lg-form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.lg-label {
+    display: block;
+    font-size: var(--lg-size-small);
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--lg-ink);
+}
+
+.lg-input,
+.lg-select {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1px solid var(--lg-border-dark);
+    border-radius: var(--lg-radius-sm);
+    font-family: var(--lg-font-sans);
+    font-size: 15px;
+    color: var(--lg-ink);
+    background-color: #FFFFFF;
+    transition: border-color var(--lg-transition-fast), box-shadow var(--lg-transition-fast);
+}
+
+.lg-input:focus,
+.lg-select:focus {
+    outline: none;
+    border-color: var(--lg-green-primary);
+    box-shadow: 0 0 0 3px rgba(14, 133, 73, 0.15);
+}
+
+.lg-input::placeholder {
+    color: var(--lg-ink-light);
+}
+
+.lg-hint {
+    font-size: 13px;
+    color: var(--lg-ink-subtle);
+    margin-top: 6px;
+}
+
+/* Notice Banners */
+.lg-notice {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: var(--lg-radius-sm);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.lg-notice-green {
+    background: var(--lg-green-light);
+    border: 1px solid var(--lg-green-primary);
+    color: var(--lg-green-dark);
+}
+
+.lg-notice-amber {
+    background: var(--lg-gold-light);
+    border: 1px solid var(--lg-gold);
+    color: var(--lg-gold-dark);
+}
+
+/* ==========================================================================
+   8. PRICING & TRANSACTION SUMMARY
+   ========================================================================== */
+.lg-price-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: var(--lg-surface-alt);
+    border-radius: var(--lg-radius-sm);
+    border: 1px solid var(--lg-border);
+    margin-bottom: 24px;
+}
+
+.lg-price-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--lg-ink);
+}
+
+.lg-price-amount {
+    font-family: var(--lg-font-sans);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--lg-green-primary);
+}
+
+/* ==========================================================================
+   9. STANDARDIZED BUTTONS
+   ========================================================================== */
+.lg-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 22px;
+    font-family: var(--lg-font-sans);
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: var(--lg-radius-sm);
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: background-color var(--lg-transition-fast), transform 0.1s ease, box-shadow var(--lg-transition-fast);
+    min-height: 48px;
+    line-height: 1;
+}
+
+.lg-btn:active {
+    transform: scale(0.98);
+}
+
+.lg-btn-full {
+    width: 100%;
+}
+
+.lg-btn-primary {
+    background-color: var(--lg-green-primary);
+    color: #FFFFFF;
+}
+
+.lg-btn-primary:hover {
+    background-color: var(--lg-green-dark);
+    box-shadow: 0 4px 12px rgba(14, 133, 73, 0.2);
+}
+
+.lg-btn-secondary {
+    background-color: var(--lg-gold);
+    color: #000000;
+}
+
+.lg-btn-secondary:hover {
+    background-color: #D97706;
+}
+
+.lg-btn-outline {
+    background-color: #FFFFFF;
+    color: var(--lg-green-primary);
+    border: 1.5px solid var(--lg-green-primary);
+}
+
+.lg-btn-outline:hover {
+    background-color: var(--lg-green-light);
+}
+
+.lg-btn:disabled {
+    background-color: var(--lg-ink-light);
+    color: #FFFFFF;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Security / Trust Seal */
+.lg-trust-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--lg-ink-subtle);
+    text-align: center;
+}
+
+.lg-trust-badge i {
+    color: var(--lg-green-primary);
+}
+
+/* ==========================================================================
+   10. BILINGUAL LANGUAGE TABS
+   ========================================================================== */
+.lg-lang-tabs {
+    display: inline-flex;
+    background: var(--lg-surface-subtle);
+    padding: 3px;
+    border-radius: var(--lg-radius-sm);
+    gap: 2px;
+    border: 1px solid var(--lg-border);
+}
+
+.lg-lang-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--lg-ink-subtle);
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all var(--lg-transition-fast);
+}
+
+.lg-lang-btn.active {
+    background: #FFFFFF;
+    color: var(--lg-green-primary);
+    box-shadow: var(--lg-shadow-sm);
+}
+
+/* ==========================================================================
+   11. RESPONSIVENESS
+   ========================================================================== */
+@media (max-width: 480px) {
+    .lg-card-container {
+        border-radius: 12px;
+    }
+
+    .lg-card-header {
+        padding: 24px 18px;
+    }
+
+    .lg-card-header h1,
+    .lg-card-header .lg-header-title {
+        font-size: 20px;
+    }
+
+    .lg-card-body {
+        padding: 24px 18px;
+    }
+
+    .lg-price-amount {
+        font-size: 20px;
+    }
+}
