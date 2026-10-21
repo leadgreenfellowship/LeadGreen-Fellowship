@@ -17,31 +17,32 @@
     <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
+    <!-- Unified LeadGreen Design System -->
+    <link rel="stylesheet" href="design-system.css">
+
     <style>
         :root {
-            --primary: #138A56;
-            --primary-dark: #0E6B41;
-            --primary-light: #E8F5EE;
-            --primary-glow: rgba(19, 138, 86, 0.15);
-            --accent: #10B981;
-            --bg: #F0F5F1;
-            --bg-card: #FFFFFF;
-            --text: #111827;
-            --text-muted: #4B5563;
-            --text-light: #9CA3AF;
-            --border: #E5E7EB;
-            --input-border: #D1D5DB;
+            --primary: var(--brand, #0E8549);
+            --primary-dark: var(--brand-dark, #085931);
+            --primary-light: var(--brand-tint, #EAF4EE);
+            --primary-glow: rgba(14, 133, 73, 0.15);
+            --accent: var(--amber-button, #C87808);
+            --bg: var(--ground, #F4F7F4);
+            --bg-card: var(--surface, #FFFFFF);
+            --text: var(--ink, #0D2B1D);
+            --text-muted: var(--ink-muted, #3F574A);
+            --text-light: var(--ink-subtle, #6D8275);
+            --border: var(--border, #D8E2D7);
+            --input-border: var(--border, #D8E2D7);
             --error: #EF4444;
             --error-bg: #FEF2F2;
-            --warning: #F59E0B;
-            --warning-bg: #FFFBEB;
+            --warning: var(--amber-button, #C87808);
+            --warning-bg: var(--amber-bg, #FDF9F0);
             --info: #3B82F6;
             --info-bg: #EFF6FF;
             --success-bg: #ECFDF5;
-            --radius: 12px;
-            --radius-lg: 16px;
-            --shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.10);
+            --radius: var(--radius-md, 12px);
+            --radius-lg: var(--radius-lg, 16px);
         }
 
         * {
@@ -51,149 +52,21 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-sans, 'Inter', sans-serif);
             background: var(--bg);
             color: var(--text);
-            min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             flex-direction: column;
         }
 
-        /* ── Animated Background ── */
-        body::before {
-            content: '';
-            position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(ellipse at 20% 50%, rgba(19, 138, 86, 0.05) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(16, 185, 129, 0.04) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 80%, rgba(59, 130, 246, 0.03) 0%, transparent 50%);
-            animation: bgFloat 20s ease-in-out infinite;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        @keyframes bgFloat {
-
-            0%,
-            100% {
-                transform: translate(0, 0);
-            }
-
-            33% {
-                transform: translate(-2%, 1%);
-            }
-
-            66% {
-                transform: translate(1%, -1%);
-            }
-        }
-
-        /* ── Header ── */
-        .site-header {
-            background: rgba(255, 255, 255, 0.98);
-            border-bottom: 1px solid var(--border);
-            padding: 12px 5%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-        }
-
-        .logo-img {
-            height: 52px;
-            width: auto;
-            display: block;
-            object-fit: contain;
-        }
-
-        .header-nav {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
-
-        .header-nav a {
-            color: #333333;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            transition: color 0.2s;
-        }
-
-        .header-nav a:hover {
-            color: var(--primary);
-        }
-
-        .header-nav a.active {
-            color: var(--primary);
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .header-user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text);
-            background: #F3F4F6;
-            padding: 6px 14px 6px 8px;
-            border-radius: 30px;
-            border: 1px solid var(--border);
-        }
-
-        .header-user .avatar-sm {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 12px;
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 20px;
-            color: #333;
-            cursor: pointer;
-            padding: 6px;
-        }
-
         /* ── Portal Hero Banner ── */
         .portal-hero {
-            background-color: #0c1824;
-            background-image:
-                radial-gradient(circle at top right, rgba(19, 138, 86, 0.28) 0%, transparent 45%),
-                radial-gradient(circle at bottom left, rgba(19, 138, 86, 0.18) 0%, transparent 45%);
+            background-color: var(--primary-dark, #0A6337);
             color: #ffffff;
-            padding: 55px 5% 50px;
+            padding: 60px 24px 80px;
             text-align: center;
             position: relative;
-            border-bottom: 3px solid var(--primary);
         }
 
         .portal-hero-content {
@@ -205,11 +78,11 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(110, 231, 183, 0.12);
-            border: 1px solid rgba(110, 231, 183, 0.35);
-            color: #6EE7B7;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #EAF4EE;
             padding: 6px 16px;
-            border-radius: 30px;
+            border-radius: var(--radius-pill, 9999px);
             font-size: 12px;
             font-weight: 700;
             letter-spacing: 1.5px;
@@ -222,19 +95,18 @@
         }
 
         .portal-hero-title {
-            font-size: 38px;
-            font-weight: 800;
-            letter-spacing: -1px;
+            font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+            font-size: clamp(30px, 3.8vw, 44px);
+            font-weight: 700;
+            letter-spacing: -0.5px;
             line-height: 1.2;
             margin-bottom: 14px;
-            background: linear-gradient(135deg, #ffffff 60%, #6EE7B7 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #ffffff;
         }
 
         .portal-hero-desc {
             font-size: 16px;
-            color: #D1D5DB;
+            color: #D1E5DA;
             line-height: 1.6;
             max-width: 680px;
             margin: 0 auto;
@@ -292,7 +164,6 @@
             border-color: var(--primary);
             background: var(--primary);
             color: #fff;
-            box-shadow: 0 0 0 5px var(--primary-glow);
         }
 
         .stepper-step.completed .step-dot {
@@ -335,7 +206,6 @@
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
             padding: 44px 48px;
-            box-shadow: var(--shadow);
             transition: opacity 0.3s, transform 0.3s;
             animation: cardIn 0.4s cubic-bezier(.4, 0, .2, 1);
         }
@@ -394,7 +264,7 @@
             font-size: 15px;
             color: var(--text);
             background: #fff;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            transition: border-color 0.2s ease;
             outline: none;
         }
 
@@ -402,7 +272,8 @@
         .field textarea:focus,
         .field select:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px var(--primary-glow);
+            outline: 2px solid var(--primary);
+            outline-offset: 1px;
         }
 
         .field textarea {
@@ -532,7 +403,6 @@
             align-items: center;
             margin-top: 40px;
             padding-top: 28px;
-            border-top: 1px solid var(--border);
             gap: 12px;
         }
 
@@ -542,14 +412,14 @@
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: background-color 0.2s ease, transform 0.2s ease;
             border: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             text-decoration: none;
-            font-family: 'Inter', sans-serif;
+            font-family: inherit;
         }
 
         .btn-outline {
@@ -563,14 +433,13 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background: var(--primary);
             color: #fff;
-            box-shadow: 0 4px 14px rgba(19, 138, 86, 0.25);
         }
 
         .btn-primary:hover {
+            background: var(--primary-dark);
             transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(19, 138, 86, 0.3);
         }
 
         .btn-primary:active {
@@ -638,7 +507,7 @@
         .verify-icon {
             width: 72px;
             height: 72px;
-            background: linear-gradient(135deg, var(--primary-light), #C6F6D5);
+            background: var(--primary-light);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -675,15 +544,14 @@
             border: 1.5px solid var(--input-border);
             border-radius: var(--radius);
             font-size: 16px;
-            font-family: 'Inter', sans-serif;
+            font-family: inherit;
             text-align: center;
             outline: none;
-            transition: all 0.2s;
+            transition: border-color 0.2s ease;
         }
 
         .verify-input-wrap input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px var(--primary-glow);
         }
 
         /* ── Success Page ── */
@@ -695,7 +563,7 @@
         .success-check {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+            background: var(--primary);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -708,12 +576,12 @@
 
         @keyframes popIn {
             0% {
-                transform: scale(0);
+                transform: scale(0.96);
                 opacity: 0;
             }
 
             60% {
-                transform: scale(1.15);
+                transform: scale(1.04);
             }
 
             100% {
@@ -762,10 +630,10 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             transform: translateY(120%);
             opacity: 0;
-            transition: all 0.35s cubic-bezier(.4, 0, .2, 1);
+            transition: transform 0.3s ease, opacity 0.3s ease;
             z-index: 1000;
         }
 
@@ -808,7 +676,7 @@
 
         .upload-progress .bar {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
+            background: var(--primary);
             border-radius: 20px;
             width: 0%;
             transition: width 0.3s;
@@ -819,46 +687,8 @@
             display: none !important;
         }
 
-        /* ── Footer ── */
-        .site-footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 13px;
-            color: var(--text-light);
-            z-index: 1;
-            position: relative;
-        }
-
-        .site-footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
         /* ── Responsive ── */
         @media (max-width: 820px) {
-            .header-nav {
-                display: none;
-            }
-
-            .header-nav.active {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: #ffffff;
-                padding: 20px 5%;
-                border-bottom: 1px solid var(--border);
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-                gap: 16px;
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
             .portal-hero {
                 padding: 40px 20px 35px;
             }
@@ -923,38 +753,35 @@
 
 <body>
 
-    <!-- ── Header ── -->
-    <header class="site-header">
-        <a href="https://leadgreen-fellowship.web.app/" class="logo-area" title="LeadGreen Home">
-            <img src="Logo name green.png" alt="Leadgreen Fellowship Logo" class="logo-img">
-        </a>
-
-        <div class="header-right">
-            <nav class="header-nav" id="headerNav">
-                <a href="https://leadgreen-fellowship.web.app/">Home</a>
-                <a href="https://leadgreen-fellowship.web.app/About.html">About</a>
-                <a href="https://leadgreen-fellowship.web.app/Fellowspage.html">Meet Fellows</a>
-                <a href="https://leadgreen-fellowship.web.app/index.html#impact">Impact</a>
-                <a href="https://leadgreen-fellowship.web.app/index.html#faq">FAQ</a>
-            </nav>
-
-            <div class="header-user hidden" id="headerUser">
-                <div class="avatar-sm" id="headerAvatar">?</div>
-                <span id="headerName">Fellow</span>
+    <!-- Unified Top Navigation Bar -->
+    <nav class="portal-nav" aria-label="Official Navigation">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-brand-group">
+                <img src="Logo name green.png" alt="LeadGreen Fellowship" class="nav-brand-img">
+                <span class="nav-registry-tag">Project Portal</span>
+            </a>
+            <div class="nav-actions">
+                <a href="index.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Home</a>
+                <a href="About.html" class="nav-link">About</a>
+                <a href="Fellowspage.html" class="nav-link">Meet Fellows</a>
+                <a href="CertificatePortal.html" class="nav-link nav-link-btn">
+                    <i class="fa-solid fa-certificate"></i>
+                    <span>Certificate Studio</span>
+                </a>
+                <div class="header-user hidden" id="headerUser" style="display:inline-flex; align-items:center; gap:8px; background:var(--brand-tint, #EAF4EE); padding:4px 12px; border-radius:9999px;">
+                    <div class="avatar-sm" id="headerAvatar" style="width:24px; height:24px; border-radius:50%; background:var(--brand, #0E8549); color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;">?</div>
+                    <span id="headerName" style="font-size:13px; font-weight:600; color:var(--brand-dark, #0A6337);">Fellow</span>
+                </div>
             </div>
-
-            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
-                <i class="fa-solid fa-bars"></i>
-            </button>
         </div>
-    </header>
+    </nav>
 
     <!-- ── Hero Banner ── -->
     <section class="portal-hero">
         <div class="portal-hero-content">
             <div class="portal-hero-tag">
                 <i class="fa-solid fa-seedling"></i>
-                <span>Learn. Act. Measure. Lead.</span>
+                <span>Fellowship Impact Submission</span>
             </div>
             <h1 class="portal-hero-title">Fellowship Project Submission</h1>
             <p class="portal-hero-desc">Document and submit your community climate action project. Share your measurable impact, execution details, and photo evidence with the LeadGreen Fellowship Committee.</p>
@@ -963,7 +790,7 @@
 
     <!-- ── Main ── -->
     <div class="main-container">
-        <div class="form-shell">
+        <div class="form-shell" data-ui="true">
 
             <!-- ═══════ STEP 0 – Fellow Info ═══════ -->
             <div id="step0" class="card verify-card">
@@ -992,7 +819,7 @@
 
                 <!-- Revision Feedback Alert Banner -->
                 <div id="revisionBanner" class="alert hidden"
-                    style="background:#EFF6FF; border:1.5px solid #BFDBFE; color:#1E40AF; padding:18px 22px; border-radius:14px; margin-bottom:28px; box-shadow:0 4px 14px rgba(37,99,235,0.06);">
+                    style="background:#EFF6FF; border:1.5px solid #BFDBFE; color:#1E40AF; padding:18px 22px; border-radius:14px; margin-bottom:28px;">
                     <div style="display:flex; align-items:flex-start; gap:14px;">
                         <div
                             style="width:36px; height:36px; border-radius:50%; background:#DBEAFE; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
@@ -1215,15 +1042,15 @@
 
             <!-- ═══════ UNDER REVIEW STATUS CARD ═══════ -->
             <div id="inReviewCard" class="card verify-card hidden">
-                <div class="verify-icon" style="background:#F5F3FF; color:#7C3AED;">
+                <div class="verify-icon" style="background:var(--warning-bg, #FDF9F0); color:var(--warning, #C87808); border: 1px solid var(--border);">
                     <i class="fa-solid fa-hourglass-half"></i>
                 </div>
                 <h2>Project Under Review</h2>
                 <p id="inReviewDesc">You already have a project submission under review. Our administrative team is
                     currently evaluating your submission.</p>
-                <div class="success-ref" id="inReviewRef" style="background:#F5F3FF; color:#7C3AED;">REF: —</div>
+                <div class="success-ref" id="inReviewRef" style="background:var(--warning-bg, #FDF9F0); color:var(--warning, #C87808);">REF: —</div>
                 <div style="margin-top:20px; font-size:13px; color:var(--text-light); line-height:1.6;">
-                    Submitted: <strong id="inReviewDate" style="color:var(--text-main);">—</strong><br>
+                    Submitted: <strong id="inReviewDate" style="color:var(--text);">—</strong><br>
                     If revisions are requested, you will be able to update your project directly on this portal.
                 </div>
                 <button class="btn btn-outline" onclick="location.reload()" style="margin-top:26px;">
@@ -1233,13 +1060,13 @@
 
             <!-- ═══════ APPROVED STATUS CARD ═══════ -->
             <div id="approvedCard" class="card success-card hidden">
-                <div class="success-check" style="background:linear-gradient(135deg, #059669, #10B981);">
+                <div class="success-check" style="background:var(--primary, #0E8549);">
                     <i class="fa-solid fa-award"></i>
                 </div>
-                <h2 style="color:#059669;">Project Approved! 🎉</h2>
+                <h2 style="color:var(--primary, #0E8549);">Project Approved</h2>
                 <p id="approvedDesc">Congratulations! Your climate action project has been reviewed and officially
                     approved by the LeadGreen Fellowship Committee.</p>
-                <div class="success-ref" id="approvedRef" style="background:#ECFDF5; color:#059669;">REF: —</div>
+                <div class="success-ref" id="approvedRef" style="background:var(--primary-light, #EAF4EE); color:var(--primary-dark, #0A6337);">REF: —</div>
                 <p style="font-size:14px; color:var(--text-muted); margin-top:16px;">
                     You have satisfied your fellowship project requirements. Thank you for your leadership in climate
                     action!
@@ -1252,46 +1079,10 @@
         </div>
     </div>
 
-    <!-- ── Official LeadGreen Footer ── -->
-    <footer style="background-color: #0c1824; color: #ffffff; padding: 70px 5% 35px; font-family: 'Inter', sans-serif; border-top: 4px solid var(--primary); margin-top: auto;">
-        <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 50px;">
-            <!-- Brand Column -->
-            <div style="flex: 2; min-width: 280px;">
-                <h2 style="font-family: 'Inter', sans-serif; font-size: 26px; font-weight: 800; color: #6EE7B7; margin-bottom: 10px; letter-spacing: 1px;">
-                    LEADGREEN</h2>
-                <h4 style="font-size: 13px; font-weight: 700; color: #34D399; text-transform: uppercase; margin-bottom: 18px; letter-spacing: 2px;">
-                    Learn. Act. Measure. Lead.</h4>
-                <p style="color: #9CA3AF; font-size: 14px; line-height: 1.7; max-width: 350px;">
-                    Building a network of young African changemakers taking measurable action for a greener Africa.
-                </p>
-            </div>
-
-            <!-- Links Column -->
-            <div style="flex: 1;">
-                <h4 style="font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 20px; letter-spacing: 0.5px;">
-                    Navigation</h4>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                    <a href="https://leadgreen-fellowship.web.app/" style="color: #D1D5DB; text-decoration: none; font-size: 14px; transition: 0.2s;" onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Home</a>
-                    <a href="https://leadgreen-fellowship.web.app/About.html" style="color: #D1D5DB; text-decoration: none; font-size: 14px; transition: 0.2s;" onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">About</a>
-                    <a href="https://leadgreen-fellowship.web.app/Fellowspage.html" style="color: #D1D5DB; text-decoration: none; font-size: 14px; transition: 0.2s;" onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Meet Fellows</a>
-                    <a href="https://leadgreen-fellowship.web.app/index.html#impact" style="color: #D1D5DB; text-decoration: none; font-size: 14px; transition: 0.2s;" onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Impact</a>
-                    <a href="https://leadgreen-fellowship.web.app/index.html#faq" style="color: #D1D5DB; text-decoration: none; font-size: 14px; transition: 0.2s;" onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">FAQ</a>
-                    <a href="https://leadgreen-fellowship.web.app/Admin/AdminLogin.html" style="color: #D1D5DB; text-decoration: none; font-size: 14px; transition: 0.2s;" onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Admin Portal</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Base Copyright Row -->
-        <div style="max-width: 1200px; margin: 50px auto 0; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
-            <div style="color: #9CA3AF; font-size: 13px;">
-                &copy; 2026 LeadGreen Fellowship. All rights reserved.
-            </div>
-            <div class="social-icons" style="display: flex; gap: 18px;">
-                <a href="#" style="color: #9CA3AF; font-size: 16px; transition: 0.2s;" onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i class="fa-brands fa-twitter"></i></a>
-                <a href="#" style="color: #9CA3AF; font-size: 16px; transition: 0.2s;" onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#" style="color: #9CA3AF; font-size: 16px; transition: 0.2s;" onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i class="fa-brands fa-linkedin-in"></i></a>
-            </div>
-        </div>
+    <!-- ── Unified Official Footer ── -->
+    <footer style="margin-top: auto; background: var(--bg-card, #FFFFFF); padding: 36px 32px 24px; text-align: center; font-size: 12.5px; color: var(--text-light, #6D8275); line-height: 1.7;">
+        <p>&copy; 2024–2026 LeadGreen Fellowship Initiative. Conferred by the Academic & Advisory Council.</p>
+        <p>Championing youth-led environmental leadership and community resilience across Africa. Need support? <a href="mailto:support@leadgreenfellowship.com" style="color: var(--primary, #0E8549); text-decoration: none; font-weight: 600;">Contact Fellow Support</a></p>
     </footer>
 
     <!-- ── Toast ── -->

@@ -4,157 +4,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeadGreen - Certificate Payment Successful</title>
+    <title>LeadGreen Fellowship — Thank You</title>
+    <meta name="description" content="Thank you for completing your LeadGreen Fellowship certificate payment. Your record is confirmed.">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Unified LeadGreen Design System -->
+    <link rel="stylesheet" href="design-system.css">
 
     <style>
-        :root {
-            --primary-green: #138A56;
-            --light-green: #E8F5EE;
-            --text-main: #111827;
-            --text-muted: #4B5563;
-            --bg-body: #F3F4F6;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
+            background-color: var(--ground);
+            color: var(--ink);
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .thankyou-page-wrap {
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            background-image: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            padding: 48px 24px;
         }
 
-        .container {
-            background-color: #FFFFFF;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        .thankyou-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            max-width: 560px;
             width: 100%;
-            max-width: 500px;
-            padding: 40px 30px;
+            padding: 48px 40px;
             text-align: center;
         }
 
-        .success-icon {
-            width: 90px;
-            height: 90px;
-            background: var(--light-green);
-            color: var(--primary-green);
+        .thankyou-emblem {
+            width: 76px;
+            height: 76px;
+            background: var(--brand-tint);
+            color: var(--brand);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 40px;
-            margin: 0 auto 25px;
-            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            font-size: 32px;
+            margin: 0 auto 24px;
         }
 
-        @keyframes popIn {
-            0% {
-                transform: scale(0);
-                opacity: 0;
-            }
-
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        h1 {
-            font-size: 26px;
+        .thankyou-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: var(--brand-tint);
+            color: var(--brand-dark);
+            font-size: 12px;
             font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 5px 14px;
+            border-radius: var(--radius-pill);
+            margin-bottom: 16px;
+        }
+
+        .thankyou-title {
+            font-family: var(--font-display);
+            font-size: 30px;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.25;
             margin-bottom: 12px;
-            color: var(--primary-green);
         }
 
-        p {
-            font-size: 16px;
-            color: var(--text-muted);
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .highlight-box {
-            background-color: var(--light-green);
-            border: 1px solid rgba(19, 138, 86, 0.2);
-            padding: 15px;
-            border-radius: 8px;
-            margin: 25px 0;
+        .thankyou-lead {
             font-size: 15px;
-            color: var(--primary-green);
-            font-weight: 600;
+            color: var(--ink-muted);
+            line-height: 1.6;
+            margin-bottom: 24px;
         }
 
-        .btn-home {
-            display: inline-block;
-            background-color: var(--primary-green);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
+        .thankyou-body-box {
+            background: var(--surface-subtle);
+            border-radius: var(--radius-md);
+            padding: 20px 22px;
+            text-align: left;
+            font-size: 14px;
+            color: var(--ink-muted);
+            line-height: 1.6;
+            margin-bottom: 26px;
+            border: 1px solid var(--border-light);
+        }
+
+        .thankyou-body-box p {
+            margin-bottom: 12px;
+        }
+
+        .thankyou-body-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .thankyou-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .thankyou-footer {
+            margin-top: 32px;
+            padding-top: 10px;
+            font-size: 12.5px;
+            color: var(--ink-subtle);
+        }
+
+        .thankyou-footer a {
+            color: var(--brand);
             text-decoration: none;
             font-weight: 600;
-            transition: background-color 0.2s, transform 0.1s;
-            margin-top: 10px;
         }
 
-        .btn-home:hover {
-            background-color: #0f6c44;
-        }
-
-        .btn-home:active {
-            transform: scale(0.98);
-        }
-
-        .footer-note {
-            margin-top: 30px;
-            font-size: 13px;
-            color: #9CA3AF;
-        }
-
-        @media (max-width: 480px) {
-            body {
-                padding: 14px;
+        @media (max-width: 600px) {
+            .thankyou-card {
+                padding: 36px 24px;
             }
 
-            .container {
-                padding: 30px 20px;
-                border-radius: 12px;
-            }
-
-            .success-icon {
-                width: 72px;
-                height: 72px;
-                font-size: 32px;
-                margin-bottom: 18px;
-            }
-
-            h1 {
-                font-size: 22px;
-            }
-
-            p {
-                font-size: 14.5px;
-            }
-
-            .btn-home {
-                width: 100%;
-                padding: 13px 18px;
-                font-size: 15px;
+            .thankyou-title {
+                font-size: 24px;
             }
         }
     </style>
@@ -162,32 +142,62 @@
 
 <body>
 
-    <div class="container">
-        <div class="success-icon">
-            <i class="fa-solid fa-check"></i>
+    <!-- Minimal Header -->
+    <nav class="portal-nav" aria-label="Official Navigation">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-brand-group">
+                <img src="Logo name green.png" alt="LeadGreen Fellowship" class="nav-brand-img">
+                <span class="nav-registry-tag">Official Fellowship Secretariat</span>
+            </a>
+            <div class="nav-actions">
+                <a href="index.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Home</a>
+                <a href="CertificatePortal.html" class="nav-link"><i class="fa-solid fa-certificate"></i> Certificate Studio</a>
+            </div>
         </div>
+    </nav>
 
-        <h1 id="greeting-header">Payment Successful 🎉</h1>
+    <!-- Main Thank You Container -->
+    <main class="thankyou-page-wrap">
+        <div class="thankyou-card">
+            
+            <div class="thankyou-emblem">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
 
-        <div style="text-align: left; margin: 30px 0; font-size: 16px; color: var(--text-muted); line-height: 1.8;">
-            <p style="margin-bottom: 20px;">Thank you for completing your LeadGreen Fellowship certificate payment.</p>
-            <p style="margin-bottom: 20px;">Your payment has been successfully received.</p>
-            <p style="margin-bottom: 20px;">Your certificate will be processed after the fellowship verification
-                process.</p>
-            <p style="margin-bottom: 20px;">You do not need to download anything at this time.</p>
+            <div class="thankyou-badge">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Payment Received</span>
+            </div>
+
+            <h1 class="thankyou-title">Thank You, Fellow!</h1>
+            <p class="thankyou-lead">
+                Thank you for completing your LeadGreen Fellowship credential payment. Your transaction has been recorded.
+            </p>
+
+            <div class="thankyou-body-box">
+                <p><strong>Next steps for your official credential:</strong></p>
+                <p>• Your completion record is undergoing final automated verification in our registry database.</p>
+                <p>• Once verified, your serialized certificate can be customized and downloaded directly in the Certificate Studio.</p>
+                <p>• Please retain your payment confirmation receipt for your professional portfolio.</p>
+            </div>
+
+            <div class="thankyou-actions">
+                <a href="CertificatePortal.html" class="btn-solid-primary">
+                    <i class="fa-solid fa-award"></i>
+                    <span>Go to Certificate Studio</span>
+                </a>
+                <a href="index.html" class="btn-outline-primary">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Return to Home</span>
+                </a>
+            </div>
+
+            <div class="thankyou-footer">
+                Questions about your status? Contact <a href="mailto:support@leadgreenfellowship.com">Fellow Support</a>.
+            </div>
+
         </div>
-
-        <div class="highlight-box" style="margin-bottom: 30px;">
-            <i class="fa-solid fa-receipt"></i> Please keep your payment receipt for your records.
-        </div>
-
-        <a href="index.html" class="btn-home" style="width: 100%;">Return to Homepage</a>
-
-        <div class="footer-note">
-            If you have any questions, please contact our support team.
-        </div>
-    </div>
-
+    </main>
 
 </body>
 

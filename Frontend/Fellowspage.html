@@ -4,443 +4,416 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeadGreen - Meet Our Alumni</title>
+    <title>LeadGreen Fellowship — Alumni & Fellows Directory</title>
+    <meta name="description" content="Discover verified African climate leaders, alumni, and fellows leading grassroots sustainability initiatives across Africa.">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="global.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Unified LeadGreen Design System -->
+    <link rel="stylesheet" href="design-system.css">
+
     <style>
-        :root {
-            --primary-green: #0D643E;
-            --light-green: #E8F5EE;
-            --text-main: #111827;
-            --text-muted: #4B5563;
-            --text-light: #9CA3AF;
-            --border-color: #E5E7EB;
-            --bg-body: #FAFAFA;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
+            background-color: var(--ground);
+            color: var(--ink);
+            min-height: 100dvh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
         }
 
-        a {
-            text-decoration: none;
-        }
-
-        /* Hero Section */
-        .hero {
-            background-color: #11141A;
-            background-image: linear-gradient(rgba(17, 20, 26, 0.7), rgba(17, 20, 26, 0.7)), url('0258801603edef4d1517cf00c8a171de.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            color: #ffffff;
-            padding: 120px 20px;
+        /* Hero Header */
+        .directory-hero {
+            background-color: var(--brand-dark);
+            color: #FFFFFF;
+            padding: 64px 32px 72px;
             text-align: center;
         }
 
-        .hero h1 {
-            font-size: 56px;
-            font-weight: 800;
-            margin-bottom: 15px;
-            letter-spacing: -1px;
+        .hero-badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.12);
+            color: #EAF4EE;
+            padding: 6px 16px;
+            border-radius: var(--radius-pill);
+            font-size: 12.5px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .hero p {
-            font-size: 18px;
-            color: #E5E7EB;
-            max-width: 600px;
-            margin: 0 auto;
+        .directory-hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: 12px;
+            color: #FFFFFF;
         }
 
-        /* Directory Section */
-        .directory-container {
-            max-width: 1200px;
+        .directory-hero p {
+            font-size: 16.5px;
+            color: #D1E5DA;
+            max-width: 680px;
             margin: 0 auto;
-            padding: 50px 20px;
-            flex: 1;
+            line-height: 1.6;
+        }
+
+        /* Main Workspace Container */
+        .directory-wrapper {
+            max-width: 1360px;
+            margin: -32px auto 0;
+            padding: 0 32px 80px;
             width: 100%;
+            flex: 1;
+            position: relative;
+            z-index: 10;
         }
 
-        /* Toolbar */
-        .toolbar {
+        /* Search & Filter Toolbar */
+        .directory-toolbar {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            padding: 20px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 40px;
+            gap: 18px;
             flex-wrap: wrap;
-            gap: 20px;
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border-color);
+            margin-bottom: 36px;
         }
 
-        .search-wrapper {
+        .search-group {
             position: relative;
             flex: 1;
-            min-width: 250px;
-            max-width: 400px;
+            min-width: 260px;
         }
 
-        .search-wrapper i {
+        .search-group i {
             position: absolute;
-            left: 15px;
+            left: 16px;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--text-light);
+            color: var(--ink-subtle);
+            font-size: 14px;
         }
 
-        .search-wrapper input {
+        .search-field {
             width: 100%;
-            padding: 12px 15px 12px 40px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 15px;
+            padding: 12px 18px 12px 42px;
+            font-size: 14.5px;
+            font-family: inherit;
+            color: var(--ink);
+            background: var(--surface-subtle);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
             outline: none;
-            transition: 0.2s;
+            transition: border-color 0.15s ease;
         }
 
-        .search-wrapper input:focus {
-            border-color: var(--primary-green);
+        .search-field:focus {
+            border-color: var(--brand);
+            background: #FFFFFF;
         }
 
-        .filter-wrapper {
+        .filters-group {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
-        .filter-wrapper select {
-            padding: 12px 30px 12px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 15px;
-            background: white;
+        .cohort-select {
+            padding: 12px 18px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--ink);
+            background: var(--surface-subtle);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
             outline: none;
             cursor: pointer;
+            min-width: 160px;
         }
 
-        .btn-search {
+        .cohort-select:focus {
+            border-color: var(--brand);
+            background: #FFFFFF;
+        }
+
+        .btn-filter-action {
             padding: 12px 24px;
-            background-color: var(--primary-green);
-            color: white;
+            background: var(--brand);
+            color: #FFFFFF;
             border: none;
-            border-radius: 8px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.15s ease;
+            font-family: inherit;
         }
 
-        .btn-search:hover {
-            background-color: #09472b;
+        .btn-filter-action:hover {
+            background: var(--brand-dark);
         }
 
-        /* Grid */
+        /* Alumni Cards Grid */
         .alumni-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 28px;
         }
 
-        /* Card */
         .alumni-card {
-            background: white;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 30px 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 32px 24px;
             text-align: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .alumni-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+            border-color: var(--brand);
         }
 
-        .alumni-avatar {
-            width: 160px;
-            height: 160px;
+        .alumni-avatar-box {
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
-            margin: 0 auto 15px;
-            background-color: var(--light-green);
-            color: var(--primary-green);
+            margin-bottom: 20px;
+            background-color: var(--brand-tint);
+            color: var(--brand-dark);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 48px;
+            font-size: 40px;
             font-weight: 700;
             overflow: hidden;
-            border: 3px solid white;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 3px solid #FFFFFF;
         }
 
-        .alumni-avatar img {
+        .alumni-avatar-box img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
         .alumni-name {
-            font-size: 18px;
+            font-family: var(--font-display);
+            font-size: 20px;
             font-weight: 700;
-            color: var(--text-main);
+            color: var(--ink);
             margin-bottom: 8px;
+            line-height: 1.25;
         }
 
-        .alumni-cohort {
+        .alumni-cohort-badge {
             display: inline-block;
-            background-color: #F3F4F6;
-            color: var(--text-muted);
-            padding: 4px 12px;
-            border-radius: 20px;
+            background-color: var(--surface-subtle);
+            color: var(--brand-dark);
+            padding: 5px 14px;
+            border-radius: var(--radius-pill);
             font-size: 12px;
             font-weight: 600;
             letter-spacing: 0.5px;
             text-transform: uppercase;
+            border: 1px solid var(--border);
         }
 
-        #loading-state {
+        /* States */
+        #loading-state, #no-results {
             text-align: center;
-            padding: 50px;
-            color: var(--text-muted);
+            padding: 60px 20px;
+            color: var(--ink-muted);
             grid-column: 1 / -1;
+            font-size: 15px;
         }
 
-        #no-results {
-            text-align: center;
-            padding: 50px;
-            color: var(--text-muted);
-            grid-column: 1 / -1;
-            display: none;
-        }
-
+        /* Pagination */
         .pagination-container {
-            text-align: center;
-            margin-top: 40px;
+            margin-top: 48px;
             display: none;
             justify-content: center;
             align-items: center;
-            gap: 15px;
+            gap: 16px;
         }
 
-        .btn-load {
-            background: white;
-            border: 1px solid var(--border-color);
-            padding: 10px 25px;
-            border-radius: 30px;
+        .btn-page-step {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 10px 22px;
+            border-radius: var(--radius-pill);
+            font-size: 14px;
             font-weight: 600;
-            color: var(--text-main);
+            color: var(--ink);
             cursor: pointer;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-            transition: 0.2s;
+            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+            font-family: inherit;
         }
 
-        .btn-load:hover {
-            background: #F9FAFB;
+        .btn-page-step:hover:not(:disabled) {
+            border-color: var(--brand);
+            color: var(--brand);
+            background: var(--brand-tint);
         }
 
-        @media (max-width: 992px) {
-            .hero {
-                padding: 80px 20px;
-            }
-
-            .hero h1 {
-                font-size: 38px;
-            }
+        .btn-page-step:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
-        @media (max-width: 576px) {
-            .hero {
-                padding: 60px 20px;
+        .page-indicator-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--ink-muted);
+        }
+
+        /* Site Footer */
+        .portal-site-footer {
+            margin-top: auto;
+            background: var(--surface);
+            padding: 36px 32px 24px;
+            text-align: center;
+            font-size: 12.5px;
+            color: var(--ink-subtle);
+            line-height: 1.7;
+        }
+
+        .portal-site-footer a {
+            color: var(--brand);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .directory-hero {
+                padding: 48px 20px 60px;
             }
 
-            .hero h1 {
-                font-size: 32px;
-                letter-spacing: -0.5px;
+            .directory-wrapper {
+                padding: 0 20px 60px;
             }
 
-            .hero p {
-                font-size: 16px;
-            }
-
-            .toolbar {
+            .directory-toolbar {
                 flex-direction: column;
                 align-items: stretch;
             }
 
-            .filter-wrapper {
+            .filters-group {
                 flex-direction: column;
                 align-items: stretch;
             }
 
-            .btn-search {
-                width: 100%;
-            }
-
-            .alumni-card {
-                padding: 30px 20px;
+            .btn-filter-action {
+                justify-content: center;
             }
         }
     </style>
 </head>
 
 <body>
-    <!-- Main Global Header from Homepage -->
-    <header>
-        <a href="index.html" class="logo">
-            <img src="Logo name green.png" alt="Leadgreen Fellowship Logo"
-                style="height: 65px; width: auto; display: block; object-fit: contain;">
-        </a>
 
-        <button class="menu-toggle" aria-label="Toggle navigation">
-            <i class="fa-solid fa-bars"></i>
-        </button>
-
-        <div class="header-right" id="navMenu">
-            <nav class="main-nav">
-                <a href="index.html" class="nav-link">Home</a>
+    <!-- Unified Navigation Bar -->
+    <nav class="portal-nav" aria-label="Official Navigation">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-brand-group">
+                <img src="Logo name green.png" alt="LeadGreen Fellowship" class="nav-brand-img">
+                <span class="nav-registry-tag">Fellow & Alumni Registry</span>
+            </a>
+            <div class="nav-actions">
+                <a href="index.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Home</a>
                 <a href="About.html" class="nav-link">About</a>
-                <a href="Fellowspage.html" class="nav-link">Meet Fellows</a>
-                <a href="index.html#impact" class="nav-link">Impact</a>
-                <a href="index.html#faq" class="nav-link">FAQ</a>
-
-            </nav>
+                <a href="CertificatePortal.html" class="nav-link nav-link-btn">
+                    <i class="fa-solid fa-certificate"></i>
+                    <span>Certificate Studio</span>
+                </a>
+            </div>
         </div>
+    </nav>
+
+    <!-- Hero Banner -->
+    <header class="directory-hero">
+        <div class="hero-badge-pill">
+            <i class="fa-solid fa-earth-africa"></i>
+            <span>Verified Continental Climate Changemakers</span>
+        </div>
+        <h1>Meet Our Esteemed Fellows & Alumni</h1>
+        <p>Explore the certified changemakers who completed real-world environmental missions, organized grassroots cleanups, deployed renewable solutions, and champion climate resilience across Africa.</p>
     </header>
 
-    <div class="hero">
-        <h1>Meet Our Alumni</h1>
-        <p>Discover the incredible leaders driving environmental change in Africa.</p>
-    </div>
+    <!-- Main Content Area -->
+    <main class="directory-wrapper">
 
-    <main class="directory-container">
-
-        <div class="toolbar">
-            <div class="search-wrapper">
-                <i class="fa-solid fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Search by name...">
+        <!-- Search & Filter Controls -->
+        <div class="directory-toolbar">
+            <div class="search-group">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" class="search-field" placeholder="Search fellows by full name...">
             </div>
 
-            <div class="filter-wrapper">
-                <select id="cohortFilter">
-                    <option value="">All Cohorts</option>
-                    <!-- Populated dynamically -->
+            <div class="filters-group">
+                <select id="cohortFilter" class="cohort-select">
+                    <option value="">All Fellowship Cohorts</option>
                 </select>
-                <button class="btn-search" id="btnFilter">Apply</button>
+                <button type="button" class="btn-filter-action" id="btnFilter">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Filter Fellows</span>
+                </button>
             </div>
         </div>
 
+        <!-- Alumni Grid -->
         <div class="alumni-grid" id="alumniGrid">
             <div id="loading-state">
-                <i class="fa-solid fa-spinner fa-spin"
-                    style="font-size: 32px; color: var(--primary-green); margin-bottom: 15px;"></i>
-                <p>Loading alumni directory...</p>
+                <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 28px; color: var(--brand); margin-bottom: 12px; display: inline-block;"></i>
+                <p>Loading verified fellows directory...</p>
             </div>
             <div id="no-results">
-                <i class="fa-regular fa-face-frown"
-                    style="font-size: 32px; color: var(--text-light); margin-bottom: 15px;"></i>
-                <p>No alumni matched your search criteria.</p>
+                <i class="fa-regular fa-folder-open" style="font-size: 32px; color: var(--ink-subtle); margin-bottom: 12px; display: inline-block;"></i>
+                <p>No fellows found matching your search criteria. Try a different query or select "All Cohorts".</p>
             </div>
         </div>
 
+        <!-- Pagination Controls -->
         <div class="pagination-container" id="paginationContainer">
-            <button class="btn-load" id="btnPrev" disabled><i class="fa-solid fa-chevron-left"></i> Previous</button>
-            <span id="pageIndicator" style="font-weight: 600; color: var(--text-muted);">Page 1</span>
-            <button class="btn-load" id="btnNext">Next <i class="fa-solid fa-chevron-right"></i></button>
+            <button type="button" class="btn-page-step" id="btnPrev">
+                <i class="fa-solid fa-chevron-left"></i> Previous
+            </button>
+            <span class="page-indicator-text" id="pageIndicator">Page 1</span>
+            <button type="button" class="btn-page-step" id="btnNext">
+                Next <i class="fa-solid fa-chevron-right"></i>
+            </button>
         </div>
 
     </main>
 
-    <!-- Footer Section (Redesigned Edition) -->
-    <footer
-        style="background-color: #0c1824; color: #ffffff; padding: 80px 5% 40px; font-family: 'Inter', sans-serif; border-top: 4px solid var(--primary-green); margin-top: auto;">
-        <div
-            style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 60px;">
-            <!-- Brand Column -->
-            <div style="flex: 2; min-width: 300px;">
-                <h2
-                    style="font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 800; color: #6EE7B7; margin-bottom: 12px; letter-spacing: 1px;">
-                    LEADGREEN</h2>
-                <h4
-                    style="font-size: 13px; font-weight: 700; color: #34D399; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 2px;">
-                    Learn. Act. Measure. Lead.</h4>
-                <p style="color: #9CA3AF; font-size: 15px; line-height: 1.7; max-width: 350px;">
-                    Building a network of young African changemakers taking measurable action for a greener Africa.
-                </p>
-            </div>
-
-            <!-- Links Column -->
-            <div style="flex: 1;">
-                <h4
-                    style="font-size: 16px; font-weight: 700; color: #ffffff; margin-bottom: 25px; letter-spacing: 0.5px;">
-                    Navigation</h4>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <a href="index.html"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Home</a>
-                    <a href="About.html"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">About</a>
-                    <a href="#" style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Fellowship</a>
-                    <a href="Fellowspage.html"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Meet
-                        Fellows</a>
-                    <a href="index.html#impact"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Impact</a>
-                    <a href="index.html#faq"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">FAQ</a>
-                    <a href="#"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s; cursor: not-allowed; opacity: 0.6;"
-                        title="Applications are closed">Apply (Closed)</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Base Copyright Row -->
-        <div
-            style="max-width: 1200px; margin: 60px auto 0; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
-            <div style="color: #9CA3AF; font-size: 14px;">
-                &copy; 2026 LeadGreen. All rights reserved.
-            </div>
-            <div class="social-icons" style="display: flex; gap: 18px;">
-                <a href="#" style="color: #9CA3AF; font-size: 18px; transition: 0.2s;"
-                    onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i
-                        class="fa-brands fa-twitter"></i></a>
-                <a href="#" style="color: #9CA3AF; font-size: 18px; transition: 0.2s;"
-                    onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i
-                        class="fa-brands fa-instagram"></i></a>
-                <a href="#" style="color: #9CA3AF; font-size: 18px; transition: 0.2s;"
-                    onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i
-                        class="fa-brands fa-linkedin-in"></i></a>
-            </div>
-        </div>
+    <!-- Footer -->
+    <footer class="portal-site-footer">
+        <p>&copy; 2024–2026 LeadGreen Fellowship Initiative. Conferred by the Academic & Advisory Council.</p>
+        <p>Championing youth-led environmental leadership and community resilience across Africa. Need support? <a href="mailto:support@leadgreenfellowship.com">Contact Fellow Support</a></p>
     </footer>
 
-    <!-- Firebase Integration -->
+    <!-- Firebase SDKs & Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, limit, startAfter, startAt, getDocs, where } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, query, where, limit, orderBy, startAfter, startAt } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyA5lPT8Fyp265fvebWq4BelNE0dYxuWvCE",
@@ -518,7 +491,6 @@
                 if (direction === 'next' && !isInitial && lastVisibleDoc) {
                     queryConstraints.push(startAfter(lastVisibleDoc));
                 } else if (direction === 'prev') {
-                    // the first document of the target page is at index (currentPage - 1)
                     if (currentPage >= 1 && pageCursors[currentPage - 1]) {
                         queryConstraints.push(startAt(pageCursors[currentPage - 1]));
                     }
@@ -543,14 +515,19 @@
                     }
                 }
 
-                // Append Data
+                let foundCount = 0;
                 snap.forEach(doc => {
                     const data = doc.data();
                     const matchesName = !searchTerm || (data.name && data.name.toLowerCase().includes(searchTerm));
                     if (matchesName) {
                         grid.appendChild(buildCard(data));
+                        foundCount++;
                     }
                 });
+
+                if (foundCount === 0 && searchTerm) {
+                    noResults.style.display = 'block';
+                }
 
                 if (snap.docs.length > 0) {
                     lastVisibleDoc = snap.docs[snap.docs.length - 1];
@@ -572,13 +549,12 @@
             const div = document.createElement('div');
             div.className = 'alumni-card';
 
-            const safeName = escapeHTML(data.name || 'Unknown');
+            const safeName = escapeHTML(data.name || 'Esteemed Fellow');
             const safeCohort = escapeHTML(data.cohort || 'Fellow');
 
             let photoURL = data.photoURL || '';
             let photoHtml = '';
 
-            // Google Drive Link Converter
             if (photoURL.includes('drive.google.com')) {
                 const match = photoURL.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || photoURL.match(/id=([a-zA-Z0-9_-]+)/);
                 if (match && match[1]) {
@@ -588,7 +564,6 @@
 
             const initials = safeName.substring(0, 2).toUpperCase();
             if (photoURL && photoURL.trim() !== '') {
-                // Ensure photoURL is safe to use in DOM attributes, though typically it's an image
                 const safePhotoURL = photoURL.replace(/"/g, '&quot;');
                 photoHtml = `<img src="${safePhotoURL}" alt="${safeName}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                              <span style="display: none; width:100%; height:100%; align-items:center; justify-content:center;">${initials}</span>`;
@@ -597,18 +572,17 @@
             }
 
             div.innerHTML = `
-                <div class="alumni-avatar">
+                <div class="alumni-avatar-box">
                     ${photoHtml}
                 </div>
                 <h3 class="alumni-name">${safeName}</h3>
-                <span class="alumni-cohort">${safeCohort}</span>
+                <span class="alumni-cohort-badge">${safeCohort}</span>
             `;
             return div;
         }
 
         function populateCohortFilter() {
             if (cohortsPopulated) return;
-            // Hardcode common cohorts to prevent full collection reads which severely slowed down load times
             const cohorts = ["Cohort 1", "Cohort 2", "Cohort 3", "Cohort 4", "Cohort 5", "Cohort 6"];
             cohorts.forEach(c => {
                 const opt = document.createElement('option');
@@ -634,26 +608,7 @@
             }
         });
 
-        // Build grid from Firebase
         loadInitialData();
-
-        // Mobile Navigation Toggle
-        const menuToggle = document.querySelector('.menu-toggle');
-        const headerRight = document.getElementById('navMenu');
-
-        if (menuToggle && headerRight) {
-            menuToggle.addEventListener('click', () => {
-                headerRight.classList.toggle('active');
-                const icon = menuToggle.querySelector('i');
-                if (headerRight.classList.contains('active')) {
-                    icon.classList.remove('fa-bars');
-                    icon.classList.add('fa-xmark');
-                } else {
-                    icon.classList.remove('fa-xmark');
-                    icon.classList.add('fa-bars');
-                }
-            });
-        }
     </script>
 </body>
 

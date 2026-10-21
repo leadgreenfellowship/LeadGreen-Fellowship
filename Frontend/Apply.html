@@ -17,16 +17,14 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f6f4;
-            color: #111827;
+            background-color: var(--ground, #f3f6f4);
+            color: var(--ink, #111827);
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            min-height: 100dvh;
             position: relative;
             overflow-x: hidden;
         }
-
-
 
         .apply-wrapper {
             max-width: 1000px;
@@ -93,7 +91,6 @@
             background: #ffffff;
             border: 1px solid #eaeaec;
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             overflow: hidden;
         }
 
@@ -104,7 +101,6 @@
             justify-content: space-between;
             padding: 24px 40px;
             background: #ffffff;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
             position: relative;
             overflow-x: auto;
             white-space: nowrap;
@@ -158,26 +154,24 @@
             justify-content: center;
             font-size: 14px;
             font-weight: 700;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
             position: relative;
         }
 
         .step-item.active .step-circle {
-            border-color: #10b981;
-            background: #10b981;
+            border-color: var(--brand, #0E8549);
+            background: var(--brand, #0E8549);
             color: #ffffff;
             transform: scale(1.15);
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
         }
 
         .step-item.active .step-lbl {
-            color: #10b981;
+            color: var(--brand, #0E8549);
         }
 
         .step-item.completed .step-circle {
-            background: #10b981;
-            border-color: #10b981;
+            background: var(--brand, #0E8549);
+            border-color: var(--brand, #0E8549);
             color: #ffffff;
         }
 
@@ -194,7 +188,7 @@
 
         /* hide number */
         .step-item.completed .step-lbl {
-            color: #10b981;
+            color: var(--brand, #0E8549);
         }
 
         .step-separator {
@@ -266,7 +260,7 @@
             color: #1f2937;
             background-color: #f9fafb;
             font-family: inherit;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: border-color 0.2s ease, background-color 0.2s ease;
         }
 
         .form-textarea {
@@ -283,38 +277,38 @@
         .form-select:hover,
         .form-textarea:hover {
             background-color: #ffffff;
-            border-color: rgba(16, 185, 129, 0.4);
+            border-color: rgba(14, 133, 73, 0.4);
         }
 
         .form-input:focus,
         .form-select:focus,
         .form-textarea:focus {
-            outline: none;
-            border-color: #10b981;
+            outline: 2px solid var(--brand, #0E8549);
+            outline-offset: 1px;
+            border-color: var(--brand, #0E8549);
             background-color: #ffffff;
-            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
         }
 
         .file-upload-wrapper {
             position: relative;
-            border: 2px dashed rgba(16, 185, 129, 0.4);
+            border: 2px dashed rgba(14, 133, 73, 0.4);
             border-radius: 16px;
             padding: 40px 20px;
             text-align: center;
             background-color: #f9fafb;
-            transition: all 0.3s ease;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
             cursor: pointer;
         }
 
         .file-upload-wrapper:hover {
-            border-color: #10b981;
+            border-color: var(--brand, #0E8549);
             background-color: #f0fdf4;
             transform: translateY(-2px);
         }
 
         .file-upload-wrapper i {
             font-size: 40px;
-            color: #10b981;
+            color: var(--brand, #0E8549);
             margin-bottom: 15px;
             transition: transform 0.3s;
         }
@@ -330,7 +324,7 @@
         }
 
         .file-upload-wrapper p span {
-            color: #10b981;
+            color: var(--brand, #0E8549);
             font-weight: 700;
         }
 
@@ -346,7 +340,7 @@
 
         .file-name-display {
             font-size: 14px;
-            color: #10b981;
+            color: var(--brand, #0E8549);
             margin-top: 15px;
             font-weight: 700;
             display: none;
@@ -358,7 +352,7 @@
             font-size: 14px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -368,33 +362,29 @@
             border: 1px solid #d1d5db;
             background-color: #ffffff;
             color: #374151;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
         .btn:hover {
             background-color: #f9fafb;
             transform: translateY(-2px);
-            box-shadow: 0 6px 10px -1px rgba(0, 0, 0, 0.1);
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: var(--brand, #0E8549);
             border: none;
             color: #ffffff;
-            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
         }
 
         .btn-primary:hover {
+            background: var(--brand-dark, #0A6337);
             color: #fff;
             transform: translateY(-2px);
-            box-shadow: 0 15px 25px -5px rgba(16, 185, 129, 0.4);
         }
 
         .form-actions {
             display: flex;
             justify-content: space-between;
             margin-top: 40px;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
             padding-top: 30px;
         }
 
@@ -462,48 +452,67 @@
             }
         }
     </style>
+    <!-- Unified LeadGreen Design System -->
+    <link rel="stylesheet" href="design-system.css">
 </head>
 
 <body>
-    <!-- Main Global Header from Homepage -->
-    <header>
-        <a href="index.html" class="logo">
-            <img src="Logo name green.png" alt="Leadgreen Fellowship Logo"
-                style="height: 65px; width: auto; display: block; object-fit: contain;">
-        </a>
-        <button class="menu-toggle" aria-label="Toggle navigation">
-            <i class="fa-solid fa-bars"></i>
-        </button>
-        <div class="header-right" id="navMenu">
-            <nav class="main-nav">
-                <a href="index.html" class="nav-link">Home</a>
+    <!-- Unified Top Navigation Bar -->
+    <nav class="portal-nav" aria-label="Official Navigation">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-brand-group">
+                <img src="Logo name green.png" alt="LeadGreen Fellowship" class="nav-brand-img">
+                <span class="nav-registry-tag">Admissions Portal</span>
+            </a>
+            <div class="nav-actions">
+                <a href="index.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Home</a>
                 <a href="About.html" class="nav-link">About</a>
                 <a href="Fellowspage.html" class="nav-link">Meet Fellows</a>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Dark Hero Title Overlay -->
-    <div class="dark-hero">
-        <div class="hero-content">
-            <h1 class="hero-title">Join the Network of Change Makers</h1>
-            <div class="breadcrumb">
-                Application portal
+                <a href="CertificatePortal.html" class="nav-link nav-link-btn">
+                    <i class="fa-solid fa-certificate"></i>
+                    <span>Certificate Studio</span>
+                </a>
             </div>
+        </div>
+    </nav>
+
+    <!-- Emerald Editorial Hero Title -->
+    <div style="background-color: var(--brand-dark, #0A6337); color: #ffffff; padding: 60px 24px 100px; text-align: center;">
+        <div style="max-width: 900px; margin: 0 auto;">
+            <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.12); color: #EAF4EE; padding: 5px 14px; border-radius: var(--radius-pill, 9999px); font-size: 12px; font-weight: 600; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.2);">
+                <i class="fa-solid fa-seedling"></i>
+                <span>Fellowship Cohort Admissions</span>
+            </div>
+            <h1 style="font-family: var(--font-display, 'Playfair Display', Georgia, serif); font-size: clamp(32px, 4vw, 48px); font-weight: 700; color: #FFFFFF; line-height: 1.15; margin-bottom: 12px;">
+                Join the Network of African Climate Leaders
+            </h1>
+            <p style="font-size: 16.5px; color: #D1E5DA; max-width: 650px; margin: 0 auto; line-height: 1.6;">
+                Equipping young African changemakers with the skills, funding opportunities, and global networks to accelerate measurable environmental solutions.
+            </p>
         </div>
     </div>
 
-    <main class="apply-wrapper">
+    <main class="apply-wrapper" data-ui="true">
         <div
-            style="padding: 80px 40px; text-align: center; background: white; border-radius: 12px; border: 1px solid #eaeaec; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 40px;">
-            <i class="fa-solid fa-clock" style="font-size: 54px; color: #9CA3AF; margin-bottom: 20px;"></i>
-            <h2 style="font-size: 28px; font-weight: 800; color: #111827; margin-bottom: 15px;">Applications Closed</h2>
+            style="padding: 64px 36px; text-align: center; background: #FFFFFF; border-radius: var(--radius-lg, 16px); border: 1px solid var(--border, #D8E2D7); margin-bottom: 40px;">
+            <div style="width: 72px; height: 72px; border-radius: 50%; background: var(--amber-bg, #FDF9F0); color: var(--amber-button, #C87808); display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 20px; border: 1px solid var(--amber-border, #F0D7A7);">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+            </div>
+            <h2 style="font-family: var(--font-display, 'Playfair Display', Georgia, serif); font-size: 28px; font-weight: 700; color: var(--ink, #0D2B1D); margin-bottom: 12px;">Applications Currently Closed</h2>
             <p
-                style="color: #6B7280; font-size: 16px; margin-bottom: 30px; max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.6;">
-                Thank you for your interest in the LeadGreen Fellowship. The application window for the current cohort
-                is now closed. Please check back later for updates on the next cohort.
+                style="color: var(--ink-muted, #3F574A); font-size: 15.5px; margin-bottom: 28px; max-width: 540px; margin-left: auto; margin-right: auto; line-height: 1.65;">
+                Thank you for your interest in the LeadGreen Fellowship. The application cycle for the current cohort is now closed as our Academic Council evaluates submitted dossiers. Announcements for the upcoming cycle will be shared soon.
             </p>
-            <a href="index.html" class="btn btn-primary" style="text-decoration: none;">Return to Homepage</a>
+            <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+                <a href="index.html" class="btn-solid-primary" style="display: inline-flex; width: auto; padding: 12px 28px; text-decoration: none;">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Return to Home</span>
+                </a>
+                <a href="Fellowspage.html" class="btn-outline-primary" style="display: inline-flex; width: auto; padding: 12px 28px; text-decoration: none;">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Explore Fellow Directory</span>
+                </a>
+            </div>
         </div>
         <div class="form-card" style="display: none;">
 
@@ -938,74 +947,10 @@
         }
     </script>
 
-    <!-- Footer Section (Redesigned Edition) -->
-    <footer
-        style="background-color: #0c1824; color: #ffffff; padding: 80px 5% 40px; font-family: 'Inter', sans-serif; border-top: 4px solid var(--primary-green); margin-top: 60px;">
-        <div
-            style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 60px;">
-            <!-- Brand Column -->
-            <div style="flex: 2; min-width: 300px;">
-                <h2
-                    style="font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 800; color: #6EE7B7; margin-bottom: 12px; letter-spacing: 1px;">
-                    LEADGREEN</h2>
-                <h4
-                    style="font-size: 13px; font-weight: 700; color: #34D399; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 2px;">
-                    Learn. Act. Measure. Lead.</h4>
-                <p style="color: #9CA3AF; font-size: 15px; line-height: 1.7; max-width: 350px;">
-                    Building a network of young African changemakers taking measurable action for a greener Africa.
-                </p>
-            </div>
-
-            <!-- Links Column -->
-            <div style="flex: 1;">
-                <h4
-                    style="font-size: 16px; font-weight: 700; color: #ffffff; margin-bottom: 25px; letter-spacing: 0.5px;">
-                    Navigation</h4>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <a href="index.html"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Home</a>
-                    <a href="About.html"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">About</a>
-                    <a href="#" style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Fellowship</a>
-                    <a href="Fellowspage.html"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Meet
-                        Fellows</a>
-                    <a href="index.html#impact"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Impact</a>
-                    <a href="index.html#faq"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">FAQ</a>
-                    <a href="#"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s; cursor: not-allowed; opacity: 0.6;"
-                        title="Applications are closed">Apply (Closed)</a>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Base Copyright Row -->
-        <div
-            style="max-width: 1200px; margin: 60px auto 0; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
-            <div style="color: #9CA3AF; font-size: 14px;">
-                &copy; 2026 LeadGreen. All rights reserved.
-            </div>
-            <div class="social-icons" style="display: flex; gap: 18px;">
-                <a href="#" style="color: #9CA3AF; font-size: 18px; transition: 0.2s;"
-                    onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i
-                        class="fa-brands fa-twitter"></i></a>
-                <a href="#" style="color: #9CA3AF; font-size: 18px; transition: 0.2s;"
-                    onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i
-                        class="fa-brands fa-instagram"></i></a>
-                <a href="#" style="color: #9CA3AF; font-size: 18px; transition: 0.2s;"
-                    onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#9CA3AF'"><i
-                        class="fa-brands fa-linkedin-in"></i></a>
-            </div>
-        </div>
+    <!-- Site Footer -->
+    <footer style="margin-top: 60px; background: var(--surface, #FFFFFF); padding: 36px 32px 24px; text-align: center; font-size: 12.5px; color: var(--ink-subtle, #6D8275); line-height: 1.7;">
+        <p>&copy; 2024–2026 LeadGreen Fellowship Initiative. Conferred by the Academic & Advisory Council.</p>
+        <p>Championing youth-led environmental leadership and community resilience across Africa. Need support? <a href="mailto:support@leadgreenfellowship.com" style="color: var(--brand, #0E8549); text-decoration: none; font-weight: 600;">Contact Fellow Support</a></p>
     </footer>
 </body>
 

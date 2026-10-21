@@ -4,157 +4,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeadGreen - Certificate Payment Successful</title>
+    <title>LeadGreen Fellowship — Certificate Payment Confirmed</title>
+    <meta name="description" content="Official LeadGreen Fellowship Certificate Payment Confirmation. Your record is verified and ready for generation in the Certificate Studio.">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Unified LeadGreen Design System -->
+    <link rel="stylesheet" href="design-system.css">
 
     <style>
-        :root {
-            --primary-green: #138A56;
-            --light-green: #E8F5EE;
-            --text-main: #111827;
-            --text-muted: #4B5563;
-            --bg-body: #F3F4F6;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
+            background-color: var(--ground);
+            color: var(--ink);
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .success-page-wrap {
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            background-image: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            padding: 48px 24px;
         }
 
-        .container {
-            background-color: #FFFFFF;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        .success-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            max-width: 560px;
             width: 100%;
-            max-width: 500px;
-            padding: 40px 30px;
+            padding: 48px 40px;
             text-align: center;
         }
 
-        .success-icon {
-            width: 90px;
-            height: 90px;
-            background: var(--light-green);
-            color: var(--primary-green);
+        .success-emblem {
+            width: 80px;
+            height: 80px;
+            background: var(--brand-tint);
+            color: var(--brand);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 40px;
-            margin: 0 auto 25px;
+            font-size: 34px;
+            margin: 0 auto 24px;
             animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
         @keyframes popIn {
-            0% {
-                transform: scale(0);
-                opacity: 0;
-            }
-
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
+            0% { transform: scale(0.6); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
-        h1 {
-            font-size: 26px;
+        .success-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: var(--brand-tint);
+            color: var(--brand-dark);
+            font-size: 12px;
             font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--primary-green);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 5px 14px;
+            border-radius: var(--radius-pill);
+            margin-bottom: 16px;
         }
 
-        p {
-            font-size: 16px;
-            color: var(--text-muted);
-            line-height: 1.6;
-            margin-bottom: 20px;
+        .success-title {
+            font-family: var(--font-display);
+            font-size: 30px;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.25;
+            margin-bottom: 10px;
         }
 
-        .highlight-box {
-            background-color: var(--light-green);
-            border: 1px solid rgba(19, 138, 86, 0.2);
-            padding: 15px;
-            border-radius: 8px;
-            margin: 25px 0;
+        .success-subtitle {
             font-size: 15px;
-            color: var(--primary-green);
-            font-weight: 600;
+            color: var(--ink-muted);
+            line-height: 1.6;
+            margin-bottom: 24px;
         }
 
-        .btn-home {
-            display: inline-block;
-            background-color: var(--primary-green);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
+        .status-callout-box {
+            background: var(--surface-subtle);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            margin: 24px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-align: left;
+            font-size: 14px;
+            color: var(--ink);
+            border: 1px solid var(--border-light);
+        }
+
+        .status-callout-box i {
+            color: var(--brand);
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .cta-stack {
+            margin-top: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .countdown-note {
+            font-size: 13px;
+            color: var(--ink-subtle);
+            margin-top: 8px;
+        }
+
+        .countdown-num {
+            color: var(--brand);
+            font-weight: 700;
+        }
+
+        .success-footer {
+            margin-top: 32px;
+            padding-top: 10px;
+            font-size: 12.5px;
+            color: var(--ink-subtle);
+        }
+
+        .success-footer a {
+            color: var(--brand);
             text-decoration: none;
             font-weight: 600;
-            transition: background-color 0.2s, transform 0.1s;
-            margin-top: 10px;
         }
 
-        .btn-home:hover {
-            background-color: #0f6c44;
+        .success-footer a:hover {
+            text-decoration: underline;
         }
 
-        .btn-home:active {
-            transform: scale(0.98);
-        }
-
-        .footer-note {
-            margin-top: 30px;
-            font-size: 13px;
-            color: #9CA3AF;
-        }
-
-        @media (max-width: 480px) {
-            body {
-                padding: 14px;
+        @media (max-width: 600px) {
+            .success-card {
+                padding: 36px 24px;
             }
 
-            .container {
-                padding: 30px 20px;
-                border-radius: 12px;
+            .success-title {
+                font-size: 24px;
             }
 
-            .success-icon {
-                width: 72px;
-                height: 72px;
-                font-size: 32px;
-                margin-bottom: 18px;
-            }
-
-            h1 {
-                font-size: 22px;
-            }
-
-            p {
-                font-size: 14.5px;
-            }
-
-            .btn-home {
-                width: 100%;
-                padding: 13px 18px;
-                font-size: 15px;
+            .success-emblem {
+                width: 64px;
+                height: 64px;
+                font-size: 26px;
             }
         }
     </style>
@@ -162,45 +170,71 @@
 
 <body>
 
-    <div class="container">
-        <div class="success-icon">
-            <i class="fa-solid fa-check"></i>
-        </div>
-
-        <h1 id="greeting-header">Payment Successful!</h1>
-        <p id="thank-you-message">Thank you for paying for your LeadGreen certificate. Your payment has been securely
-            recorded.</p>
-
-        <div class="highlight-box">
-            <i class="fa-solid fa-certificate"></i> We will now process your certificate.
-        </div>
-
-        <p id="dynamic-message">Your personalized certificate is on the way. Welcome to the LeadGreen Alumni network!
-            Congratulations!</p>
-
-
-
-        <div style="margin: 25px 0;">
-            <a href="CertificatePortal.html" class="btn-home" id="btn-generator" style="display: inline-flex; align-items: center; gap: 8px; font-size: 16px; padding: 14px 26px; box-shadow: 0 4px 12px rgba(19, 138, 86, 0.25);">
-                <i class="fa-solid fa-award"></i>
-                <span>Generate My Certificate Now</span>
+    <!-- Minimal Header -->
+    <nav class="portal-nav" aria-label="Official Navigation">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-brand-group">
+                <img src="Logo name green.png" alt="LeadGreen Fellowship" class="nav-brand-img">
+                <span class="nav-registry-tag">Official Credential Registration</span>
             </a>
-            <div id="redirectTimerNotice" style="margin-top: 14px; font-size: 13px; color: var(--text-muted);">
-                Redirecting to Certificate Generator in <strong id="countdownNum" style="color: var(--primary-green);">5</strong>s...
+            <div class="nav-actions">
+                <a href="index.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Home</a>
+                <a href="CertificatePortal.html" class="nav-link"><i class="fa-solid fa-certificate"></i> Certificate Studio</a>
             </div>
         </div>
+    </nav>
 
-        <div class="footer-note">
-            Need help or have questions? Contact <a href="mailto:support@leadgreenfellowship.com" style="color: var(--primary-green);">Fellow Support</a>.
+    <!-- Main Confirmation Container -->
+    <main class="success-page-wrap">
+        <div class="success-card">
+            
+            <div class="success-emblem">
+                <i class="fa-solid fa-check"></i>
+            </div>
+
+            <div class="success-badge">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Payment Confirmed & Verified</span>
+            </div>
+
+            <h1 class="success-title" id="greeting-header">Payment Successful!</h1>
+            <p class="success-subtitle" id="thank-you-message">
+                Thank you for completing your LeadGreen credential registration. Your payment has been securely verified in our alumni registry.
+            </p>
+
+            <div class="status-callout-box">
+                <i class="fa-solid fa-award"></i>
+                <div>
+                    <div style="font-weight: 700; color: var(--ink);" id="callout-heading">Official Credential Access Granted</div>
+                    <div style="font-size: 13px; color: var(--ink-muted);" id="dynamic-message">
+                        Your permanent verification serial has been issued. You can now personalize, sign, and download your official certificate.
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-stack">
+                <a href="CertificatePortal.html" class="btn-solid-primary" id="btn-generator">
+                    <i class="fa-solid fa-certificate"></i>
+                    <span>Open Certificate Studio Now</span>
+                </a>
+
+                <div class="countdown-note" id="redirectTimerNotice">
+                    Redirecting to Certificate Studio in <strong class="countdown-num" id="countdownNum">5</strong>s...
+                </div>
+            </div>
+
+            <div class="success-footer">
+                Need assistance with your credential? Contact <a href="mailto:support@leadgreenfellowship.com">Fellow Support</a>.
+            </div>
+
         </div>
-    </div>
+    </main>
 
-    <!-- Firebase SDKs -->
+    <!-- Firebase SDKs & Verification Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
         import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
-        // Your Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyA5lPT8Fyp265fvebWq4BelNE0dYxuWvCE",
             authDomain: "leadgreen-fellowship.firebaseapp.com",
@@ -222,7 +256,7 @@
             const header = document.getElementById('greeting-header');
             const thankYouMsg = document.getElementById('thank-you-message');
             const dynamicMsg = document.getElementById('dynamic-message');
-            const highlightBox = document.querySelector('.highlight-box');
+            const calloutHeading = document.getElementById('callout-heading');
             const btnGenerator = document.getElementById('btn-generator');
 
             function startAutoRedirect(targetEmail) {
@@ -243,7 +277,7 @@
 
             if (name) {
                 header.innerHTML = `Payment Processing, ${name}...`;
-                thankYouMsg.innerHTML = `Please wait while we confirm your payment status...`;
+                thankYouMsg.innerHTML = `Please wait while we confirm your payment status in the fellowship registry...`;
             }
 
             if (tx_ref) {
@@ -253,26 +287,22 @@
                         const data = docSnap.data();
                         if (data.status === 'paid' || data.status === 'successful') {
                             header.innerHTML = `Payment Successful!`;
-                            header.style.color = 'var(--primary-green)';
                             thankYouMsg.innerHTML = `Thank you, <strong>${name || data.fullName || 'Fellow'}</strong>! Your payment has been securely verified.`;
-                            dynamicMsg.innerHTML = `Your official LeadGreen certificate of completion is ready to generate and download!`;
-                            highlightBox.innerHTML = `<i class="fa-solid fa-award"></i> Certificate access unlocked!`;
+                            calloutHeading.innerHTML = `Official Credential Access Granted`;
+                            dynamicMsg.innerHTML = `Your official LeadGreen certificate of completion is ready to personalize and download!`;
                             
                             const finalEmail = data.email || email;
                             startAutoRedirect(finalEmail);
                         } else {
                             header.innerHTML = `Payment Pending...`;
-                            header.style.color = '#B45309';
-                            thankYouMsg.innerHTML = `Your payment is still being processed by the provider. Please wait while we verify your transaction.`;
-                            highlightBox.innerHTML = `<i class="fa-solid fa-clock"></i> Automatic verification in progress...`;
-                            dynamicMsg.innerHTML = `You don't need to pay again. This page will automatically update once the payment is confirmed.`;
+                            thankYouMsg.innerHTML = `Your payment is currently being confirmed by the payment provider. Please wait a moment.`;
+                            calloutHeading.innerHTML = `Verification in Progress`;
+                            dynamicMsg.innerHTML = `You do not need to pay again. This page will automatically update once verified.`;
                             document.getElementById('redirectTimerNotice').style.display = 'none';
                         }
                     } else {
-                        // Document might take a moment to be saved by webhook
                         header.innerHTML = `Payment Received!`;
-                        header.style.color = 'var(--primary-green)';
-                        thankYouMsg.innerHTML = `Thank you for your payment! Please proceed to the Certificate Generator to verify and claim your certificate.`;
+                        thankYouMsg.innerHTML = `Thank you for your payment! Please proceed to the Certificate Studio to claim your official credential.`;
                         startAutoRedirect(email);
                     }
                 });

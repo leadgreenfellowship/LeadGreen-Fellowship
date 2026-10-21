@@ -7,10 +7,10 @@
     <title>LeadGreen Fellowship — Claim Official Certificate</title>
     <meta name="description" content="Official LeadGreen Fellowship Certificate of Completion registration. Verify climate leadership credentials, secure tamper-evident serialization, and join the global alumni registry.">
 
-    <!-- Google Fonts (Exact match with Certificate Portal) -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -19,197 +19,285 @@
     <link rel="stylesheet" href="design-system.css">
 
     <style>
-        /* Exact layout structure adopting Certificate Portal */
-        .portal-main {
-            flex: 1;
-            max-width: 1400px;
-            width: 100%;
+        :root {
+            --ground: var(--ground, #F4F7F4);
+            --surface: var(--surface, #FFFFFF);
+            --surface-subtle: #EDF3EC;
+            --ink: var(--ink, #0D2B1D);
+            --ink-muted: var(--ink-muted, #385043);
+            --ink-subtle: var(--ink-subtle, #687E71);
+            --brand: var(--brand, #0E8549);
+            --brand-dark: var(--brand-dark, #085931);
+            --brand-tint: var(--brand-tint, #E8F5ED);
+            --amber-accent: var(--amber-button, #C87808);
+            --amber-tint: var(--amber-bg, #FDF7EC);
+            --border: var(--border, #D8E2D7);
+            --border-light: #E2ECE1;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-pill: 9999px;
+            --font-display: var(--font-display, 'Playfair Display', Georgia, serif);
+            --font-sans: var(--font-sans, 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--ground);
+            color: var(--ink);
+            min-height: 100dvh;
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            overflow-x: hidden;
+        }
+
+        /* ========================================================
+           1. TOP NAVIGATION BAR
+           ======================================================== */
+        .portal-nav {
+            background: var(--surface);
+            padding: 16px 32px;
+            position: sticky;
+            top: 0;
+            z-index: 60;
+        }
+
+        .nav-inner {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 32px 80px;
-        }
-
-        .split-grid {
-            display: grid;
-            grid-template-columns: 1.15fr 0.85fr;
-            gap: 40px;
-            align-items: start;
-        }
-
-        /* LEFT: Certificate Preview & Narrative Stage */
-        .preview-narrative-col {
-            display: flex;
-            flex-direction: column;
-            gap: 28px;
-        }
-
-        /* Certificate Mockup Canvas Stage */
-        .cert-stage-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-card);
-        }
-
-        .cert-stage-header {
-            padding: 14px 20px;
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .stage-title-wrap {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .stage-indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--brand);
-        }
-
-        .stage-heading {
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            color: var(--ink);
-        }
-
-        .cert-stage-body {
-            background: var(--stage-bg);
-            padding: 28px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        .cert-preview-plate {
-            background: #FFFFFF;
-            width: 100%;
-            border-radius: 4px;
-            box-shadow: 0 10px 28px rgba(13, 43, 29, 0.09);
-            padding: 28px 32px;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(13, 43, 29, 0.08);
-        }
-
-        .cert-plate-watermark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0.035;
-            pointer-events: none;
-            width: 280px;
-        }
-
-        .cert-plate-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px dashed var(--border);
-            padding-bottom: 14px;
-            margin-bottom: 18px;
-        }
-
-        .cert-plate-logo {
-            height: 34px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        .cert-badge-tag {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--brand);
-            background: var(--brand-tint);
-            border: 1px solid var(--brand);
-            padding: 3px 10px;
-            border-radius: var(--radius-pill);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .cert-title-text {
-            font-family: var(--font-display);
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--ink);
-            margin-bottom: 4px;
-            line-height: 1.25;
-        }
-
-        .cert-subtitle-text {
-            font-size: 13px;
-            color: var(--ink-subtle);
-            margin-bottom: 16px;
-        }
-
-        .cert-recipient-box {
-            background: var(--ground);
-            border-left: 3px solid var(--brand);
-            padding: 12px 16px;
-            border-radius: var(--radius-sm);
-            margin-bottom: 18px;
-        }
-
-        .cert-recipient-name {
-            font-family: var(--font-display);
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--ink);
-            display: block;
-        }
-
-        .cert-recipient-sub {
-            font-size: 12px;
-            color: var(--ink-muted);
-            margin-top: 3px;
-        }
-
-        .cert-plate-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 11.5px;
-            color: var(--ink-subtle);
-            padding-top: 14px;
-            border-top: 1px dashed var(--border);
-        }
-
-        .cert-plate-footer strong {
-            color: var(--ink);
-        }
-
-        /* 4 Credential Guarantees */
-        .guarantees-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
             gap: 16px;
         }
 
-        .guarantee-item {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 18px;
+        .nav-brand-group {
             display: flex;
+            align-items: center;
             gap: 14px;
-            align-items: flex-start;
+            text-decoration: none;
         }
 
-        .guarantee-icon-box {
-            width: 36px;
-            height: 36px;
-            border-radius: var(--radius-sm);
+        .nav-brand-img {
+            height: 38px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .nav-badge-tag {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--brand-dark);
+            background: var(--brand-tint);
+            padding: 5px 14px;
+            border-radius: var(--radius-pill);
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .nav-badge-tag i {
+            color: var(--brand);
+            font-size: 11px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--ink-muted);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.15s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--brand);
+        }
+
+        .nav-link-btn {
+            background: var(--brand-tint);
+            color: var(--brand-dark);
+            padding: 8px 16px;
+            border-radius: var(--radius-pill);
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+
+        .nav-link-btn:hover {
+            background: var(--brand);
+            color: #FFFFFF;
+        }
+
+        /* ========================================================
+           2. MAIN CONTAINER & HERO INTRO
+           ======================================================== */
+        .portal-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+            width: 100%;
+        }
+
+        .hero-banner {
+            margin-bottom: 36px;
+            max-width: 840px;
+        }
+
+        .hero-pre-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--surface);
+            padding: 6px 16px;
+            border-radius: var(--radius-pill);
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 16px;
+        }
+
+        .hero-pre-badge i {
+            color: var(--brand);
+        }
+
+        .hero-headline {
+            font-family: var(--font-display);
+            font-size: clamp(28px, 3.8vw, 42px);
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.18;
+            letter-spacing: -0.02em;
+            margin-bottom: 14px;
+        }
+
+        .hero-lead {
+            font-size: 16px;
+            color: var(--ink-muted);
+            line-height: 1.65;
+            max-width: 760px;
+        }
+
+        /* ========================================================
+           3. WORKSPACE GRID (LEFT DETAILS + RIGHT CHECKOUT)
+           ======================================================== */
+        .workspace-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 36px;
+            align-items: start;
+        }
+
+        /* ========================================================
+           4. LEFT COLUMN: DETAILS & GUARANTEES
+           ======================================================== */
+        .details-column {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Value Unlocked Card */
+        .inclusions-card {
+            background: var(--amber-tint);
+            border-radius: var(--radius-lg);
+            padding: 28px 26px;
+        }
+
+        .inclusions-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .inclusions-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--amber-accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .inclusions-val-chip {
+            background: var(--surface);
+            padding: 4px 12px;
+            border-radius: var(--radius-pill);
+            font-size: 12px;
+            color: var(--amber-accent);
+            font-weight: 700;
+        }
+
+        .inclusion-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .inclusion-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 13.5px;
+            color: #5D4314;
+            line-height: 1.55;
+        }
+
+        .inclusion-row i {
+            color: var(--amber-accent);
+            margin-top: 3px;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        /* 4 Credential Guarantees */
+        .guarantees-editorial-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .guarantee-box {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 22px 20px;
+        }
+
+        .guarantee-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .guarantee-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
             background: var(--brand-tint);
             color: var(--brand);
             display: flex;
@@ -217,124 +305,595 @@
             justify-content: center;
             font-size: 15px;
             flex-shrink: 0;
-            margin-top: 2px;
         }
 
-        .guarantee-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--ink);
-            margin-bottom: 3px;
-        }
-
-        .guarantee-body {
-            font-size: 12.5px;
-            color: var(--ink-muted);
-            line-height: 1.45;
-        }
-
-        /* RIGHT: Control & Verification Panel Card */
-        .control-panel-sticky {
-            position: sticky;
-            top: 96px;
-        }
-
-        /* FAQ Grid below */
-        .faq-section {
-            margin-top: 56px;
-            border-top: 1px solid var(--border);
-            padding-top: 40px;
-        }
-
-        .faq-headline {
-            font-family: var(--font-display);
-            font-size: 26px;
+        .guarantee-heading {
+            font-size: 14.5px;
             font-weight: 700;
             color: var(--ink);
-            text-align: center;
-            margin-bottom: 24px;
         }
 
-        .faq-columns {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .faq-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 20px 22px;
-        }
-
-        .faq-question {
-            font-size: 14.5px;
-            font-weight: 600;
-            color: var(--ink);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-        }
-
-        .faq-question i {
-            color: var(--brand);
-            margin-top: 3px;
+        .guarantee-desc {
             font-size: 13px;
-        }
-
-        .faq-answer {
-            font-size: 13.5px;
             color: var(--ink-muted);
             line-height: 1.55;
         }
 
-        .portal-footer {
-            text-align: center;
-            margin-top: 48px;
+        /* Registry Standard Card */
+        .registry-standard-card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 22px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .standard-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .standard-info i {
+            color: var(--brand);
+            font-size: 20px;
+        }
+
+        .standard-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .standard-sub {
             font-size: 12.5px;
             color: var(--ink-subtle);
+        }
+
+        .standard-badge {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--brand-dark);
+            background: var(--brand-tint);
+            padding: 4px 12px;
+            border-radius: var(--radius-pill);
+        }
+
+        /* ========================================================
+           5. RIGHT COLUMN: CHECKOUT & REGISTRATION TERMINAL
+           ======================================================== */
+        .checkout-terminal-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 34px 30px;
+            position: sticky;
+            top: 88px;
+        }
+
+        .terminal-header {
+            margin-bottom: 22px;
+        }
+
+        .terminal-category-tag {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--brand);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+
+        .terminal-title {
+            font-family: var(--font-display);
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.25;
+            margin-bottom: 4px;
+        }
+
+        .terminal-sub {
+            font-size: 13px;
+            color: var(--ink-subtle);
+        }
+
+        /* Price Banner */
+        .fee-ledger-box {
+            background: var(--surface-subtle);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .fee-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .fee-subnote {
+            font-size: 11.5px;
+            color: var(--ink-subtle);
+            margin-top: 2px;
+        }
+
+        .fee-price-value {
+            font-family: var(--font-display);
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1;
+        }
+
+        .fee-currency-code {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--brand);
+            margin-left: 2px;
+        }
+
+        /* Registration Form */
+        .registration-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .status-pill-banner {
+            background: var(--brand-tint);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            color: var(--brand-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .status-pill-banner strong {
+            font-weight: 700;
+        }
+
+        .form-field-block {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field-label-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .field-label-text i {
+            color: var(--brand);
+            font-size: 12px;
+        }
+
+        .field-input-text,
+        .field-select {
+            width: 100%;
+            padding: 13px 16px;
+            font-size: 15px;
+            font-family: inherit;
+            color: var(--ink);
+            background: #FFFFFF;
+            border: 1.5px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            outline: none;
+            transition: border-color 0.15s ease;
+        }
+
+        .field-input-text:focus,
+        .field-select:focus {
+            border-color: var(--brand);
+        }
+
+        .field-input-text::placeholder {
+            color: var(--ink-subtle);
+        }
+
+        .field-helper-note {
+            font-size: 12px;
+            color: var(--ink-subtle);
+            line-height: 1.4;
+        }
+
+        /* Action Buttons */
+        .btn-register-cta {
+            width: 100%;
+            padding: 15px 20px;
+            background: var(--brand);
+            color: #FFFFFF;
+            font-size: 15.5px;
+            font-weight: 700;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background 0.15s ease;
+            font-family: inherit;
+            margin-top: 4px;
+        }
+
+        .btn-register-cta:hover {
+            background: var(--brand-dark);
+        }
+
+        .btn-register-cta:disabled {
+            background: #9BB8A7;
+            cursor: not-allowed;
+        }
+
+        .btn-currency-alt {
+            width: 100%;
+            padding: 12px 18px;
+            background: var(--surface-subtle);
+            color: var(--brand-dark);
+            font-size: 13.5px;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.15s ease;
+            font-family: inherit;
+            text-decoration: none;
+        }
+
+        .btn-currency-alt:hover {
+            background: var(--brand-tint);
+        }
+
+        /* Trust & Security Footnote */
+        .security-guarantee-seal {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--ink-subtle);
+            text-align: center;
+        }
+
+        .security-guarantee-seal i {
+            color: var(--brand);
+            font-size: 13px;
+        }
+
+        .security-guarantee-seal strong {
+            color: var(--ink);
+        }
+
+        .waiver-prompt-box {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 12.5px;
+            color: var(--ink-subtle);
+        }
+
+        .waiver-prompt-box a {
+            color: var(--amber-accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .waiver-prompt-box a:hover {
+            text-decoration: underline;
+        }
+
+        .alternate-action-box {
+            margin-top: 20px;
+            padding: 14px;
+            text-align: center;
+            font-size: 12.5px;
+            color: var(--ink-muted);
+            background: var(--surface-subtle);
+            border-radius: var(--radius-sm);
+        }
+
+        .alternate-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--brand);
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: 4px;
+            transition: color 0.15s ease;
+        }
+
+        .alternate-link:hover {
+            color: var(--brand-dark);
+            text-decoration: underline;
+        }
+
+        /* ========================================================
+           6. FAQ SECTION
+           ======================================================== */
+        .faq-wrapper {
+            margin-top: 72px;
+            padding-top: 40px;
+        }
+
+        .faq-header-wrap {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        .faq-title {
+            font-family: var(--font-display);
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+
+        .faq-sub {
+            font-size: 14.5px;
+            color: var(--ink-muted);
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .faq-item-card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 24px 24px;
+        }
+
+        .faq-q-text {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .faq-q-text i {
+            color: var(--brand);
+            font-size: 14px;
+            margin-top: 3px;
+        }
+
+        .faq-a-text {
+            font-size: 13.5px;
+            color: var(--ink-muted);
             line-height: 1.6;
         }
 
-        /* Spinner */
-        .btn-spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            border-radius: 50%;
-            border-top-color: #FFFFFF;
-            animation: spin 0.8s linear infinite;
+        /* ========================================================
+           7. FOOTER
+           ======================================================== */
+        .portal-site-footer {
+            margin-top: 72px;
+            padding: 36px 0 16px;
+            text-align: center;
+            font-size: 12.5px;
+            color: var(--ink-subtle);
+            line-height: 1.7;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .portal-site-footer a {
+            color: var(--ink-muted);
+            text-decoration: none;
+            font-weight: 600;
         }
 
+        .portal-site-footer a:hover {
+            color: var(--brand);
+        }
+
+        /* ========================================================
+           8. FEE WAIVER MODAL
+           ======================================================== */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(13, 43, 29, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            padding: 16px;
+        }
+
+        .modal-backdrop.active {
+            display: flex;
+        }
+
+        .modal-dialog-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            max-width: 500px;
+            width: 100%;
+            padding: 32px 28px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.15); /* taste-skill-ignore */
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: var(--ink-subtle);
+            cursor: pointer;
+            padding: 6px;
+        }
+
+        .modal-close-btn:hover {
+            color: var(--ink);
+        }
+
+        .modal-heading {
+            font-family: var(--font-display);
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+
+        .modal-body-text {
+            font-size: 13.5px;
+            color: var(--ink-muted);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* ========================================================
+           9. RESPONSIVE BREAKPOINTS (ALL SCREENS)
+           ======================================================== */
         @media (max-width: 960px) {
-            .split-grid {
+            .workspace-grid {
                 grid-template-columns: 1fr;
                 gap: 32px;
             }
 
-            .control-panel-sticky {
+            .checkout-terminal-card {
                 position: static;
+                order: -1; /* Place checkout prominently when stacked */
             }
 
             .portal-main {
-                padding: 24px 18px 60px;
+                padding: 32px 20px 64px;
+            }
+        }
+
+        @media (max-width: 680px) {
+            .portal-nav {
+                padding: 12px 16px;
             }
 
-            .guarantees-grid {
-                grid-template-columns: 1fr;
+            .nav-badge-tag {
+                display: none;
             }
 
-            .faq-columns {
+            .nav-brand-img {
+                height: 32px;
+            }
+
+            .nav-actions {
+                gap: 10px;
+            }
+
+            .nav-link {
+                font-size: 12.5px;
+            }
+
+            .nav-link-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            .portal-main {
+                padding: 24px 16px 48px;
+            }
+
+            .hero-banner {
+                margin-bottom: 24px;
+            }
+
+            .hero-headline {
+                font-size: clamp(24px, 6vw, 32px);
+            }
+
+            .hero-lead {
+                font-size: 14.5px;
+            }
+
+            .guarantees-editorial-grid {
                 grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .guarantee-box {
+                padding: 18px 16px;
+            }
+
+            .inclusions-card {
+                padding: 22px 18px;
+            }
+
+            .registry-standard-card {
+                padding: 18px 16px;
+            }
+
+            .checkout-terminal-card {
+                padding: 24px 18px;
+            }
+
+            .terminal-title {
+                font-size: 22px;
+            }
+
+            .fee-ledger-box {
+                padding: 14px 16px;
+            }
+
+            .fee-price-value {
+                font-size: 24px;
+            }
+
+            .field-input-text,
+            .field-select {
+                font-size: 16px; /* Prevents auto-zoom on iOS */
+                padding: 12px 14px;
+            }
+
+            .btn-register-cta {
+                padding: 14px 16px;
+                font-size: 15px;
+            }
+
+            .faq-wrapper {
+                margin-top: 48px;
+                padding-top: 24px;
+            }
+
+            .faq-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .faq-item-card {
+                padding: 20px 18px;
+            }
+
+            .modal-dialog-card {
+                padding: 24px 18px;
             }
         }
     </style>
@@ -342,346 +901,415 @@
 
 <body>
 
-    <!-- Top Navigation Bar (Adopted directly from Certificate Portal) -->
-    <nav class="portal-nav">
+    <!-- 1. Top Navigation Bar -->
+    <nav class="portal-nav" aria-label="Official Portal Navigation">
         <div class="nav-inner">
             <a href="index.html" class="nav-brand-group">
                 <img src="Logo name green.png" alt="LeadGreen Fellowship" class="nav-brand-img">
-                <span class="nav-registry-tag">Official Credential Registration</span>
+                <span class="nav-badge-tag">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Official Credential Registry</span>
+                </span>
             </a>
             <div class="nav-actions">
                 <a href="index.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Home</a>
-                <a href="CertificatePortal.html" class="nav-link"><i class="fa-solid fa-certificate"></i> Certificate Studio</a>
+                <a href="CertificatePortal.html" class="nav-link nav-link-btn">
+                    <i class="fa-solid fa-certificate"></i>
+                    <span>Certificate Studio</span>
+                </a>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content Area -->
+    <!-- 2. Main Workspace -->
     <main class="portal-main">
-        <div class="split-grid">
 
-            <!-- LEFT: Narrative, Mockup Stage & Guarantees -->
-            <div class="preview-narrative-col">
-                <div>
-                    <span class="panel-kicker"><i class="fa-solid fa-shield-halved"></i> Verified Fellowship Registry</span>
-                    <h1 class="panel-heading" style="font-size: 34px;">Make Your Climate Leadership Official</h1>
-                    <p class="panel-lead">
-                        You moved from <em>"I care about the environment"</em> to <em>"I did something about it."</em> 
-                        Claim your official serialized credential, join our public registry of verified African changemakers, and accelerate your global environmental career.
-                    </p>
-                </div>
+        <!-- Hero Narrative Banner -->
+        <header class="hero-banner">
+            <div class="hero-pre-badge">
+                <i class="fa-solid fa-award"></i>
+                <span>Cohort 2024 / 2025 · Verified Fellowship Record</span>
+            </div>
+            <h1 class="hero-headline" id="mainHeroTitle">Claim Your Official Climate Leadership Credential</h1>
+            <p class="hero-lead" id="mainHeroSubtitle">
+                You moved from caring about the environment to proving it on the ground across Africa. Complete your registration to secure your permanent serial number, join the global alumni registry, and access your verified credentials.
+            </p>
+        </header>
 
-                <!-- Certificate Canvas Preview Stage -->
-                <div class="cert-stage-card">
-                    <div class="cert-stage-header">
-                        <div class="stage-title-wrap">
-                            <span class="stage-indicator"></span>
-                            <span class="stage-heading">Official Credential Preview</span>
+        <!-- Workspace Grid (Left Inclusions & Guarantees + Right Checkout) -->
+        <div class="workspace-grid">
+
+            <!-- LEFT: Inclusions, Guarantees, and Registry Standards -->
+            <div class="details-column">
+
+                <!-- Fellowship Inclusions ($5,000+ Value Unlocked) -->
+                <section class="inclusions-card" aria-label="What Your Registration Unlocks">
+                    <div class="inclusions-header">
+                        <div class="inclusions-title">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>What Your Registration Unlocks</span>
                         </div>
-                        <span style="font-size: 11.5px; font-weight: 500; color: var(--ink-subtle);">
-                            Cohort 2024 / 2025
-                        </span>
+                        <span class="inclusions-val-chip">$5,000+ Value</span>
                     </div>
 
-                    <div class="cert-stage-body">
-                        <div class="cert-preview-plate">
-                            <img src="Logo name green.png" alt="Watermark" class="cert-plate-watermark">
-                            <div class="cert-plate-top">
-                                <img src="Logo name green.png" alt="LeadGreen Logo" class="cert-plate-logo">
-                                <span class="cert-badge-tag">
-                                    <i class="fa-solid fa-shield-halved"></i> Tamper-Evident Record
-                                </span>
-                            </div>
+                    <div class="inclusion-list">
+                        <div class="inclusion-row">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            <div><strong>Climate Leadership Curriculum:</strong> Over $5,000 worth of expert coaching, masterclasses, and climate project tools.</div>
+                        </div>
 
-                            <div class="cert-title-text">Certificate of Climate Leadership & Completion</div>
-                            <div class="cert-subtitle-text">Conferred by the LeadGreen Fellowship Academic & Advisory Council</div>
+                        <div class="inclusion-row">
+                            <i class="fa-solid fa-earth-africa"></i>
+                            <div><strong>Validated Community Impact:</strong> Authentic verification of real-world environmental action and grassroots milestones.</div>
+                        </div>
 
-                            <div class="cert-recipient-box">
-                                <span class="cert-recipient-name" id="mockupFellowName">LeadGreen Fellow</span>
-                                <div class="cert-recipient-sub" id="mockupFellowEmail">Registered Fellow • Climate Action Leader</div>
-                            </div>
-
-                            <div style="font-size: 12.5px; line-height: 1.5; color: var(--ink-muted); margin-bottom: 16px;">
-                                Awarded for successfully executing grassroots community missions, mastering renewable energy and waste systems, and championing verified environmental impact across Africa.
-                            </div>
-
-                            <div class="cert-plate-footer">
-                                <div>
-                                    <span>Serial:</span> <strong>LG-2025-VLD</strong> • <span>Status:</span> <strong style="color: var(--brand);">Official Registry Record</strong>
-                                </div>
-                                <div>
-                                    <i class="fa-solid fa-qrcode" style="font-size: 15px; margin-right: 4px; vertical-align: middle;"></i> Verifiable Online
-                                </div>
-                            </div>
+                        <div class="inclusion-row">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div><strong>Global Career Advantage:</strong> Formatted for international scholarships, COP delegations, and green venture funding.</div>
                         </div>
                     </div>
-                </div>
+                </section>
 
                 <!-- 4 Credential Guarantees -->
-                <div class="guarantees-grid">
-                    <div class="guarantee-item">
-                        <div class="guarantee-icon-box">
-                            <i class="fa-solid fa-shield-check"></i>
+                <div class="guarantees-editorial-grid">
+                    <div class="guarantee-box">
+                        <div class="guarantee-top">
+                            <div class="guarantee-icon"><i class="fa-solid fa-shield-check"></i></div>
+                            <h3 class="guarantee-heading">Permanent Registry Record</h3>
                         </div>
-                        <div>
-                            <div class="guarantee-name">Digital Registry Record</div>
-                            <div class="guarantee-body">Tamper-evident serial number verifiable online by employers, universities, and grant-makers.</div>
-                        </div>
+                        <p class="guarantee-desc">
+                            Cryptographic serial number verifiable online anytime by universities, international grant-makers, and employers.
+                        </p>
                     </div>
 
-                    <div class="guarantee-item">
-                        <div class="guarantee-icon-box">
-                            <i class="fa-brands fa-linkedin"></i>
+                    <div class="guarantee-box">
+                        <div class="guarantee-top">
+                            <div class="guarantee-icon"><i class="fa-brands fa-linkedin"></i></div>
+                            <h3 class="guarantee-heading">1-Click LinkedIn Credential</h3>
                         </div>
-                        <div>
-                            <div class="guarantee-name">LinkedIn 1-Click Credential</div>
-                            <div class="guarantee-body">Displayable under Licenses & Certifications with verified issuer badge and official URL.</div>
-                        </div>
+                        <p class="guarantee-desc">
+                            Directly addable under Licenses & Certifications with the official LeadGreen issuer badge and public verification link.
+                        </p>
                     </div>
 
-                    <div class="guarantee-item">
-                        <div class="guarantee-icon-box">
-                            <i class="fa-solid fa-users"></i>
+                    <div class="guarantee-box">
+                        <div class="guarantee-top">
+                            <div class="guarantee-icon"><i class="fa-solid fa-users-rays"></i></div>
+                            <h3 class="guarantee-heading">Lifetime Alumni Standing</h3>
                         </div>
-                        <div>
-                            <div class="guarantee-name">Lifetime Alumni Standing</div>
-                            <div class="guarantee-body">Priority access to green venture seed funds, international mentorship, and global alumni summits.</div>
-                        </div>
+                        <p class="guarantee-desc">
+                            Priority consideration for green venture seed funding, international climate delegations, and continental masterclasses.
+                        </p>
                     </div>
 
-                    <div class="guarantee-item">
-                        <div class="guarantee-icon-box">
-                            <i class="fa-solid fa-file-pdf"></i>
+                    <div class="guarantee-box">
+                        <div class="guarantee-top">
+                            <div class="guarantee-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                            <h3 class="guarantee-heading">Archival Print & Vector PDF</h3>
                         </div>
-                        <div>
-                            <div class="guarantee-name">High-Res Print & Vector PDF</div>
-                            <div class="guarantee-body">Permanent digital access to crisp print-ready certificate files formatted for framing and CVs.</div>
-                        </div>
+                        <p class="guarantee-desc">
+                            Lifetime cloud access to crystal-clear vector PDF and high-res PNG formats, formatted for framing and CV portfolios.
+                        </p>
                     </div>
                 </div>
-            </div>
 
-            <!-- RIGHT: Control & Verification Panel Card -->
-            <div class="control-panel-sticky">
-                <div class="panel-card" style="padding: 32px 28px;">
-                    <div style="border-bottom: 1px solid var(--border); padding-bottom: 18px; margin-bottom: 22px;">
-                        <span class="panel-kicker"><i class="fa-solid fa-lock"></i> Official Registration</span>
-                        <h2 class="panel-heading" style="font-size: 26px; margin-bottom: 6px;">Claim Your Credential</h2>
-                        <p class="panel-lead" style="font-size: 14px; margin-bottom: 0;">One-Time Fee • Lifetime Registry Verification Record</p>
-                    </div>
-
-                    <!-- Highlight Box ($5,000+ Value) -->
-                    <div class="lg-highlight-box">
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid rgba(14, 133, 73, 0.15);">
-                            <h3 style="font-size: 13px; font-weight: 700; color: var(--brand); text-transform: uppercase; letter-spacing: 0.5px;">
-                                <i class="fa-solid fa-certificate" style="margin-right: 6px;"></i> What Your Fee Unlocks
-                            </h3>
-                            <span style="font-size: 11.5px; font-weight: 700; color: var(--brand); background: #FFFFFF; border: 1px solid var(--brand); padding: 2px 8px; border-radius: var(--radius-pill);">
-                                $5,000+ Value
-                            </span>
-                        </div>
-
-                        <div class="lg-benefit-item">
-                            <i class="fa-solid fa-gift"></i>
-                            <div><strong>Premium Fellowship Curriculum:</strong> Over <strong>$5,000</strong> worth of expert coaching, masterclasses, and climate resources.</div>
-                        </div>
-
-                        <div class="lg-benefit-item">
-                            <i class="fa-solid fa-globe"></i>
-                            <div><strong>Validated Community Impact:</strong> Authentic proof of real-world environmental action and grassroots milestones.</div>
-                        </div>
-
-                        <div class="lg-benefit-item">
-                            <i class="fa-solid fa-briefcase"></i>
-                            <div><strong>Global Career Advantage:</strong> Optimized for LinkedIn, scholarships, COP youth delegations, and green venture funding.</div>
+                <!-- Academic Registry Standard Card -->
+                <div class="registry-standard-card">
+                    <div class="standard-info">
+                        <i class="fa-solid fa-stamp"></i>
+                        <div>
+                            <div class="standard-title">Official Fellowship Standard</div>
+                            <div class="standard-sub">Tamper-evident QR serialization · English & French dual issuance</div>
                         </div>
                     </div>
-
-                    <!-- Registration & Checkout Form -->
-                    <form onsubmit="handleLanguageRouting(event)">
-                        <!-- Pre-filled Email Alert -->
-                        <div id="emailNotice" class="status-banner" style="display: none;">
-                            <i class="fa-solid fa-circle-check"></i>
-                            <div>Recognized Fellow: <strong id="displayEmail"></strong></div>
-                        </div>
-
-                        <!-- Registered Email Field -->
-                        <div class="lg-form-group">
-                            <label class="field-label" for="fellowEmailInput">
-                                <span><i class="fa-regular fa-envelope" style="color: var(--brand); margin-right: 4px;"></i> Registered Fellowship Email</span>
-                            </label>
-                            <input type="email" id="fellowEmailInput" class="field-input" placeholder="e.g. fellow@leadgreen.org" required>
-                            <div class="field-hint" style="margin-top: 6px;">Use the email from your LeadGreen Fellowship application.</div>
-                        </div>
-
-                        <!-- Language Selection Field -->
-                        <div class="lg-form-group">
-                            <label class="field-label" for="languageSelect">
-                                <span><i class="fa-solid fa-language" style="color: var(--brand); margin-right: 4px;"></i> Preferred Certificate Language</span>
-                            </label>
-                            <select id="languageSelect" class="field-input" required style="cursor: pointer;">
-                                <option value="">-- Choose Language / Langue --</option>
-                                <option value="EN">English (EN) — Standard Official Credential</option>
-                                <option value="FR">Français (FR) — Certificat Officiel en Français</option>
-                            </select>
-                            <div class="field-hint" style="margin-top: 6px;">Your checkout and issued certificate will be in this language.</div>
-                        </div>
-
-                        <!-- Price Summary Box -->
-                        <div class="lg-price-box">
-                            <div>
-                                <div class="lg-price-label">Credential Verification Fee</div>
-                                <div style="font-size: 12px; color: var(--ink-subtle); margin-top: 2px;">One-time fee • Lifetime public registry record</div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div class="lg-price-amount">$1.99 <span style="font-size: 13px; font-weight: 600; color: var(--ink-muted);">USD</span></div>
-                            </div>
-                        </div>
-
-                        <!-- Submit CTA Button -->
-                        <button type="submit" class="btn-solid-primary" id="submitBtn">
-                            <i class="fa-solid fa-lock"></i>
-                            <span>Pay & Register Certificate ($1.99)</span>
-                        </button>
-
-                        <!-- Trust Seal -->
-                        <div class="lg-trust-badge">
-                            <i class="fa-solid fa-shield-halved"></i>
-                            <span>Encrypted 256-bit checkout securely processed by <strong>Coachli</strong></span>
-                        </div>
-
-                        <!-- Return to Portal Link -->
-                        <div style="text-align: center; margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 13.5px; color: var(--ink-muted);">
-                            Already completed your payment?
-                            <div style="margin-top: 6px;">
-                                <a href="CertificatePortal.html" id="linkToGenerator" style="color: var(--brand); font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
-                                    <span>Go to Certificate Studio</span>
-                                    <i class="fa-solid fa-arrow-right" style="font-size: 12px;"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </form>
+                    <span class="standard-badge">Conferred by Academic Council</span>
                 </div>
+
             </div>
+
+            <!-- RIGHT: Checkout Terminal Card -->
+            <aside class="checkout-terminal-card" aria-label="Official Registration & Payment Terminal">
+                <div class="terminal-header">
+                    <span class="terminal-category-tag">
+                        <i class="fa-solid fa-lock"></i>
+                        <span>Official Fellowship Gateway</span>
+                    </span>
+                    <h2 class="terminal-title">Claim Your Credential</h2>
+                    <p class="terminal-sub">One-time registration fee · Lifetime public registry serialization</p>
+                </div>
+
+                <!-- Price Ledger Box -->
+                <div class="fee-ledger-box">
+                    <div>
+                        <div class="fee-label">Credential Verification Fee</div>
+                        <div class="fee-subnote">Zero renewal fees · Permanent hosting</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span class="fee-price-value">$1.99</span>
+                        <span class="fee-currency-code">USD</span>
+                    </div>
+                </div>
+
+                <!-- Registration & Routing Form -->
+                <form id="checkoutForm" class="registration-form" onsubmit="handleRegistrationSubmit(event)">
+
+                    <!-- Recognized Fellow Email Alert -->
+                    <div id="emailNotice" class="status-pill-banner" style="display: none;">
+                        <i class="fa-solid fa-circle-check" style="color: var(--brand);"></i>
+                        <div>Recognized Fellow: <strong id="displayEmail"></strong></div>
+                    </div>
+
+                    <!-- Fellow Full Name Input -->
+                    <div class="form-field-block">
+                        <label class="field-label-text" for="fellowNameInput">
+                            <i class="fa-regular fa-user"></i>
+                            <span>Recipient Name on Certificate</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="fellowNameInput"
+                            class="field-input-text"
+                            placeholder="e.g. Dr. Alexandria Morgan"
+                            autocomplete="name"
+                            required
+                        >
+                        <div class="field-helper-note">Enter your full legal name as it should appear on your verified certificate and credential registry record.</div>
+                    </div>
+
+                    <!-- Registered Email Field -->
+                    <div class="form-field-block">
+                        <label class="field-label-text" for="fellowEmailInput">
+                            <i class="fa-regular fa-envelope"></i>
+                            <span>Registered Fellowship Email</span>
+                        </label>
+                        <input
+                            type="email"
+                            id="fellowEmailInput"
+                            class="field-input-text"
+                            placeholder="e.g. fellow@leadgreen.org"
+                            required
+                            autocomplete="email"
+                        >
+                        <div class="field-helper-note">Use the email address from your LeadGreen Fellowship application.</div>
+                    </div>
+
+                    <!-- Certificate Language Field -->
+                    <div class="form-field-block">
+                        <label class="field-label-text" for="languageSelect">
+                            <i class="fa-solid fa-language"></i>
+                            <span>Preferred Certificate Language</span>
+                        </label>
+                        <select id="languageSelect" class="field-select" required>
+                            <option value="EN">English (EN) — Standard Official Credential</option>
+                            <option value="FR">Français (FR) — Certificat Officiel en Français</option>
+                        </select>
+                        <div class="field-helper-note">Your checkout session and generated certificate will be formatted in this language.</div>
+                    </div>
+
+                    <!-- Primary Submit CTA Button (USD) -->
+                    <button type="submit" class="btn-register-cta" id="submitBtn">
+                        <i class="fa-solid fa-lock"></i>
+                        <span id="submitBtnText">Pay & Register Certificate ($1.99 USD)</span>
+                    </button>
+
+                    <!-- Alternative Direct NGN Payment Option -->
+                    <a href="https://coachli.co/leadgreenfellow/PR-92c968f5eb" class="btn-currency-alt" id="ngnPayBtn" target="_blank" rel="noopener">
+                        <i class="fa-solid fa-credit-card"></i>
+                        <span>Pay in Nigerian Naira (₦3,350 NGN)</span>
+                    </a>
+
+                    <!-- Academic Fee Waiver Prompt -->
+                    <div class="waiver-prompt-box">
+                        Experiencing financial constraints?
+                        <a href="#" onclick="openWaiverModal(event)">Request an Academic Fee Waiver</a>
+                    </div>
+
+                    <!-- Trust Seal -->
+                    <div class="security-guarantee-seal">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>256-bit bank encryption securely handled via <strong>Coachli</strong></span>
+                    </div>
+
+                    <!-- Return to Studio Option -->
+                    <div class="alternate-action-box">
+                        Already completed your payment?
+                        <div>
+                            <a href="CertificatePortal.html" id="linkToGenerator" class="alternate-link">
+                                <span>Go to Certificate Studio</span>
+                                <i class="fa-solid fa-arrow-right" style="font-size: 11px;"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </form>
+            </aside>
 
         </div>
 
-        <!-- FAQ Section: Built to match Portal styles -->
-        <div class="faq-section">
-            <h3 class="faq-headline">Frequently Asked Questions</h3>
-            <div class="faq-columns">
-                <div class="faq-card">
-                    <div class="faq-question">
+        <!-- 6. Frequently Asked Questions -->
+        <section class="faq-wrapper" aria-label="Frequently Asked Questions">
+            <div class="faq-header-wrap">
+                <h2 class="faq-title">Frequently Asked Questions</h2>
+                <p class="faq-sub">Everything you need to know about your official LeadGreen Fellowship certificate.</p>
+            </div>
+
+            <div class="faq-grid">
+                <article class="faq-item-card">
+                    <h3 class="faq-q-text">
                         <i class="fa-solid fa-circle-question"></i>
                         <span>Why is there a $1.99 verification fee?</span>
-                    </div>
-                    <div class="faq-answer">
-                        The nominal $1.99 fee covers permanent digital registry serialization, cloud hosting, and lifetime QR-code verification maintenance, allowing universities and employers to independently verify your credentials anytime.
-                    </div>
-                </div>
+                    </h3>
+                    <p class="faq-a-text">
+                        The nominal $1.99 USD fee directly covers tamper-evident digital registry serialization, lifetime cloud hosting, and cryptographic QR code verification maintenance so universities and employers can verify your credential worldwide.
+                    </p>
+                </article>
 
-                <div class="faq-card">
-                    <div class="faq-question">
+                <article class="faq-item-card">
+                    <h3 class="faq-q-text">
                         <i class="fa-solid fa-circle-question"></i>
                         <span>When will I receive my certificate?</span>
-                    </div>
-                    <div class="faq-answer">
-                        Upon successful payment, your email is immediately verified in our system. You will receive an instant confirmation receipt and direct access to the Certificate Studio to personalize, sign, and download your credential.
-                    </div>
-                </div>
+                    </h3>
+                    <p class="faq-a-text">
+                        Immediately upon completing payment! Your email is verified in our database and you will receive instant access to the Certificate Studio to preview, sign, and download your high-resolution vector PDF and print-ready files.
+                    </p>
+                </article>
 
-                <div class="faq-card">
-                    <div class="faq-question">
+                <article class="faq-item-card">
+                    <h3 class="faq-q-text">
                         <i class="fa-solid fa-circle-question"></i>
                         <span>Can I add this credential to LinkedIn?</span>
-                    </div>
-                    <div class="faq-answer">
-                        Yes! Your certificate comes with an official Credential ID that links directly to the LeadGreen public registry, enabling you to add it under the "Licenses & Certifications" section on your LinkedIn profile with 1-click.
-                    </div>
-                </div>
+                    </h3>
+                    <p class="faq-a-text">
+                        Yes! Your certificate is issued with an official Credential ID linked directly to the public LeadGreen registry. You can add it directly to your LinkedIn profile under "Licenses & Certifications" with a single click.
+                    </p>
+                </article>
 
-                <div class="faq-card">
-                    <div class="faq-question">
+                <article class="faq-item-card">
+                    <h3 class="faq-q-text">
                         <i class="fa-solid fa-circle-question"></i>
                         <span>What payment methods are supported?</span>
-                    </div>
-                    <div class="faq-answer">
-                        Payments are securely handled by Coachli, supporting international Visa, Mastercard, Verve, Apple Pay, Google Pay, and localized African mobile money options depending on your country.
-                    </div>
-                </div>
+                    </h3>
+                    <p class="faq-a-text">
+                        Payments are securely processed via Coachli, supporting international Visa, Mastercard, Verve, Apple Pay, Google Pay, and localized African mobile money options according to your country.
+                    </p>
+                </article>
             </div>
-        </div>
+        </section>
 
-        <!-- Footer Seal -->
-        <div class="portal-footer">
-            &copy; 2024–2025 LeadGreen Fellowship Initiative. All rights reserved. <br>
-            Empowering youth-led climate leadership and grassroots environmental stewardship across Africa.
-        </div>
+        <!-- 7. Footer -->
+        <footer class="portal-site-footer">
+            <p>&copy; 2024–2026 LeadGreen Fellowship Initiative. Conferred by the Academic & Advisory Council.</p>
+            <p>Advancing youth-led climate leadership and community stewardship across Africa. Need help? <a href="mailto:support@leadgreenfellowship.com">Contact Fellow Support</a></p>
+        </footer>
+
     </main>
 
-    <!-- Client Script -->
+    <!-- 8. Fee Waiver Dialog Modal -->
+    <div class="modal-backdrop" id="waiverModal" aria-modal="true" role="dialog" aria-labelledby="waiverModalTitle">
+        <div class="modal-dialog-card">
+            <button type="button" class="modal-close-btn" onclick="closeWaiverModal()" aria-label="Close dialog">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="modal-heading" id="waiverModalTitle">Academic Fee Waiver</h3>
+            <p class="modal-body-text">
+                The LeadGreen Fellowship Initiative is committed to ensuring that financial barriers never prevent deserving young changemakers from accessing their verified credentials.
+            </p>
+            <p class="modal-body-text">
+                If you are experiencing documented financial constraints or currency restrictions, please contact the Academic Secretariat directly at <a href="mailto:support@leadgreenfellowship.com?subject=Academic%20Fee%20Waiver%20Request" style="color:var(--brand); font-weight:600; text-decoration:none;">support@leadgreenfellowship.com</a> with your registered email and fellow cohort. Our committee reviews and grants waivers within 24 to 48 hours.
+            </p>
+            <button type="button" class="btn-register-cta" onclick="closeWaiverModal()" style="margin-top: 12px;">
+                <span>Understood, Return to Checkout</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Client Script: Parameter Detection, Persistence & Coachli Routing -->
     <script>
+        // DOM Ready Handler
         window.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
-            const email = (params.get('email') || localStorage.getItem('leadgreen_fellow_email') || '').trim();
-            const name = (params.get('name') || '').trim();
+            const rawEmail = (params.get('email') || localStorage.getItem('leadgreen_fellow_email') || '').trim();
+            const rawName = (params.get('name') || localStorage.getItem('leadgreen_fellow_name') || '').trim();
+            const langParam = (params.get('lang') || params.get('language') || '').toUpperCase();
 
+            const nameInput = document.getElementById('fellowNameInput');
             const emailInput = document.getElementById('fellowEmailInput');
             const displayEmail = document.getElementById('displayEmail');
             const emailNotice = document.getElementById('emailNotice');
             const linkToGenerator = document.getElementById('linkToGenerator');
-            const mockupFellowName = document.getElementById('mockupFellowName');
-            const mockupFellowEmail = document.getElementById('mockupFellowEmail');
+            const languageSelect = document.getElementById('languageSelect');
 
-            if (name && mockupFellowName) {
-                mockupFellowName.innerText = name;
-            } else if (email && mockupFellowName) {
-                const nameFromEmail = email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-                mockupFellowName.innerText = nameFromEmail;
+            if (langParam === 'FR' && languageSelect) {
+                languageSelect.value = 'FR';
             }
 
-            if (email) {
-                if (emailInput) emailInput.value = email;
-                if (displayEmail) displayEmail.innerText = email;
+            if (rawName) {
+                const formattedName = formatToTitleCase(rawName);
+                if (nameInput) nameInput.value = formattedName;
+            } else if (rawEmail) {
+                const derivedName = formatToTitleCase(rawEmail.split('@')[0].replace(/[._-]/g, ' '));
+                if (nameInput) nameInput.value = derivedName;
+            }
+
+            if (rawEmail) {
+                if (emailInput) emailInput.value = rawEmail;
+                if (displayEmail) displayEmail.innerText = rawEmail;
                 if (emailNotice) emailNotice.style.display = 'flex';
-                if (mockupFellowEmail) mockupFellowEmail.innerText = email + ' • Verified Fellow';
-                if (linkToGenerator) linkToGenerator.href = `CertificatePortal.html?email=${encodeURIComponent(email)}`;
-            }
-
-            // Real-time mockup synchronization
-            if (emailInput) {
-                emailInput.addEventListener('input', (e) => {
-                    const val = e.target.value.trim();
-                    if (val && !name) {
-                        const derivedName = val.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-                        if (mockupFellowName) mockupFellowName.innerText = derivedName;
-                        if (mockupFellowEmail) mockupFellowEmail.innerText = val + ' • Verified Fellow';
-                    }
-                });
+                if (linkToGenerator) linkToGenerator.href = `CertificatePortal.html?email=${encodeURIComponent(rawEmail)}`;
             }
         });
 
-        window.handleLanguageRouting = function (e) {
+        // Name Formatter Helper
+        function formatToTitleCase(str) {
+            if (!str) return '';
+            return str
+                .toLowerCase()
+                .replace(/(^|[\s\-\.\/'])([a-z\u00C0-\u017F])/g, (m, p1, p2) => p1 + p2.toUpperCase())
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        // Form Submit Handler
+        window.handleRegistrationSubmit = function (e) {
             e.preventDefault();
 
             const emailInput = document.getElementById('fellowEmailInput').value.trim();
+            const nameInput = document.getElementById('fellowNameInput') ? document.getElementById('fellowNameInput').value.trim() : '';
+
             if (emailInput) {
                 localStorage.setItem('leadgreen_fellow_email', emailInput);
             }
+            if (nameInput) {
+                localStorage.setItem('leadgreen_fellow_name', nameInput);
+            }
 
             const btn = document.getElementById('submitBtn');
-            if (btn) {
-                btn.innerHTML = '<span class="btn-spinner"></span> <span>Redirecting to Checkout...</span>';
+            const btnText = document.getElementById('submitBtnText');
+            if (btn && btnText) {
                 btn.disabled = true;
+                btnText.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Connecting to Secure Checkout...';
             }
 
             const language = document.getElementById('languageSelect').value;
 
+            // Direct route to official Coachli checkout
             if (language === 'FR') {
                 window.location.href = 'https://coachli.co/leadgreenfellow/PR-92c968f5eb';
             } else {
                 window.location.href = 'https://coachli.co/leadgreenfellow/PR-d8af185b84';
             }
+        };
+
+        // Modal Controls
+        window.openWaiverModal = function (e) {
+            if (e) e.preventDefault();
+            const modal = document.getElementById('waiverModal');
+            if (modal) modal.classList.add('active');
+        };
+
+        window.closeWaiverModal = function () {
+            const modal = document.getElementById('waiverModal');
+            if (modal) modal.classList.remove('active');
         };
     </script>
 </body>
