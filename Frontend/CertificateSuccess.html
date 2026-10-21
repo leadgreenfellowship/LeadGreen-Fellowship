@@ -15,154 +15,525 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+    <!-- Canvas Confetti Celebration -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
     <!-- Unified LeadGreen Design System -->
     <link rel="stylesheet" href="design-system.css">
 
     <style>
+        :root {
+            --ground: var(--ground, #F4F7F4);
+            --surface: var(--surface, #FFFFFF);
+            --surface-subtle: #EDF3EC;
+            --ink: var(--ink, #0D2B1D);
+            --ink-muted: var(--ink-muted, #385043);
+            --ink-subtle: var(--ink-subtle, #687E71);
+            --brand: var(--brand, #0E8549);
+            --brand-dark: var(--brand-dark, #085931);
+            --brand-tint: var(--brand-tint, #E8F5ED);
+            --amber-accent: var(--amber-button, #C87808);
+            --amber-tint: var(--amber-bg, #FDF7EC);
+            --border: var(--border, #D8E2D7);
+            --border-light: #E2ECE1;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-pill: 9999px;
+            --font-display: var(--font-display, 'Playfair Display', Georgia, serif);
+            --font-sans: var(--font-sans, 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
+            font-family: var(--font-sans);
             background-color: var(--ground);
             color: var(--ink);
             min-height: 100dvh;
             display: flex;
             flex-direction: column;
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            overflow-x: hidden;
         }
 
-        .success-page-wrap {
+        /* Top Navigation */
+        .portal-nav {
+            background: var(--surface);
+            padding: 16px 32px;
+            position: sticky;
+            top: 0;
+            z-index: 60;
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-brand-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .nav-brand-img {
+            height: 38px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .nav-badge-tag {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--brand-dark);
+            background: var(--brand-tint);
+            padding: 5px 14px;
+            border-radius: var(--radius-pill);
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .nav-badge-tag i {
+            color: var(--brand);
+            font-size: 11px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .nav-link {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--ink-muted);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.15s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--brand);
+        }
+
+        /* Success Page Main Shell */
+        .success-page-shell {
             flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 48px 24px;
+            padding: 48px 24px 72px;
+            width: 100%;
         }
 
-        .success-card {
+        .confirmation-container {
+            max-width: 680px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Hero Status Card */
+        .confirmation-hero-card {
             background: var(--surface);
             border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
-            max-width: 560px;
-            width: 100%;
-            padding: 48px 40px;
+            padding: 44px 36px 36px;
             text-align: center;
+            position: relative;
         }
 
-        .success-emblem {
-            width: 80px;
-            height: 80px;
+        .celebration-emblem-wrap {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 22px;
+        }
+
+        .celebration-emblem {
+            width: 84px;
+            height: 84px;
             background: var(--brand-tint);
             color: var(--brand);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 34px;
-            margin: 0 auto 24px;
-            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            font-size: 38px;
+            margin: 0 auto;
+            animation: emblemPop 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        @keyframes popIn {
-            0% { transform: scale(0.6); opacity: 0; }
+        .emblem-ring-glow {
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            border: 2px dashed rgba(14, 133, 73, 0.35);
+            animation: spinSlow 20s linear infinite;
+        }
+
+        @keyframes emblemPop {
+            0% { transform: scale(0.85); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
 
-        .success-badge {
+        @keyframes spinSlow {
+            to { transform: rotate(360deg); }
+        }
+
+        .cohort-status-pill {
             display: inline-flex;
             align-items: center;
-            gap: 7px;
+            gap: 8px;
             background: var(--brand-tint);
             color: var(--brand-dark);
             font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.6px;
-            padding: 5px 14px;
+            letter-spacing: 0.8px;
+            padding: 6px 16px;
             border-radius: var(--radius-pill);
             margin-bottom: 16px;
         }
 
-        .success-title {
+        .hero-title {
             font-family: var(--font-display);
-            font-size: 30px;
+            font-size: clamp(26px, 4vw, 36px);
             font-weight: 700;
             color: var(--ink);
-            line-height: 1.25;
-            margin-bottom: 10px;
+            line-height: 1.22;
+            letter-spacing: -0.015em;
+            margin-bottom: 12px;
         }
 
-        .success-subtitle {
+        .hero-desc {
             font-size: 15px;
             color: var(--ink-muted);
-            line-height: 1.6;
+            line-height: 1.65;
+            max-width: 540px;
+            margin: 0 auto 26px;
+        }
+
+        /* Credential Slip / Registry Ledger Card */
+        .verification-ledger-card {
+            background: var(--surface-subtle);
+            border-radius: var(--radius-md);
+            padding: 22px 24px;
+            text-align: left;
             margin-bottom: 24px;
         }
 
-        .status-callout-box {
-            background: var(--surface-subtle);
-            border-radius: var(--radius-md);
-            padding: 16px 20px;
-            margin: 24px 0;
+        .ledger-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .ledger-title-badge {
+            font-size: 11.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--brand-dark);
             display: flex;
             align-items: center;
-            gap: 12px;
-            text-align: left;
-            font-size: 14px;
-            color: var(--ink);
-            border: 1px solid var(--border-light);
+            gap: 7px;
         }
 
-        .status-callout-box i {
+        .ledger-live-status {
+            font-size: 11.5px;
+            font-weight: 700;
             color: var(--brand);
-            font-size: 20px;
-            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--surface);
+            padding: 3px 10px;
+            border-radius: var(--radius-pill);
         }
 
-        .cta-stack {
-            margin-top: 28px;
+        .live-pulse-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--brand);
+        }
+
+        .ledger-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px 18px;
+        }
+
+        .ledger-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .ledger-label {
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--ink-subtle);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ledger-val {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--ink);
+            word-break: break-word;
+        }
+
+        .ledger-val-highlight {
+            color: var(--brand-dark);
+            font-weight: 700;
+        }
+
+        /* Next Actions Stack */
+        .actions-card {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        .countdown-note {
-            font-size: 13px;
-            color: var(--ink-subtle);
-            margin-top: 8px;
-        }
-
-        .countdown-num {
-            color: var(--brand);
+        .btn-launch-studio {
+            width: 100%;
+            padding: 16px 24px;
+            background: var(--brand);
+            color: #FFFFFF;
+            font-size: 15.5px;
             font-weight: 700;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            transition: background 0.15s ease, transform 0.1s ease;
+            font-family: inherit;
         }
 
-        .success-footer {
-            margin-top: 32px;
-            padding-top: 10px;
+        .btn-launch-studio:hover {
+            background: var(--brand-dark);
+        }
+
+        .btn-launch-studio:active {
+            transform: scale(0.99);
+        }
+
+        /* Countdown & Timer Bar */
+        .countdown-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--surface-subtle);
+            padding: 10px 16px;
+            border-radius: var(--radius-sm);
             font-size: 12.5px;
             color: var(--ink-subtle);
         }
 
-        .success-footer a {
+        .countdown-text strong {
+            color: var(--brand);
+            font-weight: 700;
+        }
+
+        .btn-pause-timer {
+            background: none;
+            border: none;
+            color: var(--ink-muted);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+            padding: 2px 6px;
+            font-family: inherit;
+        }
+
+        .btn-pause-timer:hover {
+            color: var(--brand);
+        }
+
+        /* 3-Step Next Milestones Progress */
+        .milestones-strip-card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 24px 28px;
+            text-align: left;
+        }
+
+        .milestones-heading {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--ink);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .milestones-heading i {
+            color: var(--brand);
+        }
+
+        .milestones-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .milestone-box {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .milestone-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--brand-dark);
+            background: var(--brand-tint);
+            padding: 3px 8px;
+            border-radius: var(--radius-pill);
+            width: fit-content;
+        }
+
+        .milestone-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .milestone-desc {
+            font-size: 12px;
+            color: var(--ink-muted);
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        .portal-site-footer {
+            margin-top: auto;
+            padding: 32px 20px 20px;
+            text-align: center;
+            font-size: 12.5px;
+            color: var(--ink-subtle);
+            line-height: 1.7;
+        }
+
+        .portal-site-footer a {
             color: var(--brand);
             text-decoration: none;
             font-weight: 600;
         }
 
-        .success-footer a:hover {
+        .portal-site-footer a:hover {
             text-decoration: underline;
         }
 
-        @media (max-width: 600px) {
-            .success-card {
-                padding: 36px 24px;
+        /* Mobile & Tablet Responsiveness */
+        @media (max-width: 680px) {
+            .portal-nav {
+                padding: 12px 16px;
             }
 
-            .success-title {
-                font-size: 24px;
+            .nav-badge-tag {
+                display: none;
             }
 
-            .success-emblem {
-                width: 64px;
-                height: 64px;
-                font-size: 26px;
+            .nav-brand-img {
+                height: 32px;
+            }
+
+            .nav-actions {
+                gap: 10px;
+            }
+
+            .nav-link {
+                font-size: 12.5px;
+            }
+
+            .success-page-shell {
+                padding: 24px 16px 48px;
+            }
+
+            .confirmation-hero-card {
+                padding: 32px 20px 24px;
+            }
+
+            .celebration-emblem {
+                width: 68px;
+                height: 68px;
+                font-size: 28px;
+            }
+
+            .hero-title {
+                font-size: clamp(22px, 5.5vw, 28px);
+            }
+
+            .hero-desc {
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+
+            .ledger-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .verification-ledger-card {
+                padding: 18px 16px;
+            }
+
+            .btn-launch-studio {
+                padding: 14px 18px;
+                font-size: 14.5px;
+            }
+
+            .milestones-strip-card {
+                padding: 20px 18px;
+            }
+
+            .milestones-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .countdown-container {
+                flex-direction: column;
+                gap: 6px;
+                text-align: center;
             }
         }
     </style>
@@ -170,12 +541,15 @@
 
 <body>
 
-    <!-- Minimal Header -->
+    <!-- 1. Top Navigation Bar -->
     <nav class="portal-nav" aria-label="Official Navigation">
         <div class="nav-inner">
             <a href="index.html" class="nav-brand-group">
                 <img src="Logo name green.png" alt="LeadGreen Fellowship" class="nav-brand-img">
-                <span class="nav-registry-tag">Official Credential Registration</span>
+                <span class="nav-badge-tag">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Official Credential Registry</span>
+                </span>
             </a>
             <div class="nav-actions">
                 <a href="index.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Home</a>
@@ -184,51 +558,127 @@
         </div>
     </nav>
 
-    <!-- Main Confirmation Container -->
-    <main class="success-page-wrap">
-        <div class="success-card">
-            
-            <div class="success-emblem">
-                <i class="fa-solid fa-check"></i>
-            </div>
+    <!-- 2. Main Confirmation Workspace -->
+    <main class="success-page-shell">
+        <div class="confirmation-container">
 
-            <div class="success-badge">
-                <i class="fa-solid fa-shield-halved"></i>
-                <span>Payment Confirmed & Verified</span>
-            </div>
+            <!-- Hero Confirmation Card -->
+            <section class="confirmation-hero-card" aria-label="Payment Confirmation">
+                
+                <!-- Celebration Laurel Emblem -->
+                <div class="celebration-emblem-wrap">
+                    <div class="celebration-emblem">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <div class="emblem-ring-glow"></div>
+                </div>
 
-            <h1 class="success-title" id="greeting-header">Payment Successful!</h1>
-            <p class="success-subtitle" id="thank-you-message">
-                Thank you for completing your LeadGreen credential registration. Your payment has been securely verified in our alumni registry.
-            </p>
+                <!-- Verified Status Pill -->
+                <div class="cohort-status-pill">
+                    <i class="fa-solid fa-award"></i>
+                    <span>Cohort 2024 / 2025 · Verified Registration</span>
+                </div>
 
-            <div class="status-callout-box">
-                <i class="fa-solid fa-award"></i>
-                <div>
-                    <div style="font-weight: 700; color: var(--ink);" id="callout-heading">Official Credential Access Granted</div>
-                    <div style="font-size: 13px; color: var(--ink-muted);" id="dynamic-message">
-                        Your permanent verification serial has been issued. You can now personalize, sign, and download your official certificate.
+                <!-- Main Greeting Header -->
+                <h1 class="hero-title" id="greeting-header">Payment Confirmed!</h1>
+                <p class="hero-desc" id="thank-you-message">
+                    Thank you for completing your LeadGreen Fellowship credential registration. Your payment has been securely confirmed and recorded in our alumni registry.
+                </p>
+
+                <!-- Credential Verification Slip / Ledger -->
+                <div class="verification-ledger-card" data-ui="true">
+                    <div class="ledger-top-row">
+                        <span class="ledger-title-badge">
+                            <i class="fa-solid fa-stamp"></i>
+                            <span>Credential Registry Verification Slip</span>
+                        </span>
+                        <span class="ledger-live-status" id="receiptStatusBadge">
+                            <span class="live-pulse-dot"></span>
+                            <span id="callout-heading">Verified & Active</span>
+                        </span>
+                    </div>
+
+                    <div class="ledger-grid">
+                        <div class="ledger-item">
+                            <span class="ledger-label">Registered Fellow</span>
+                            <span class="ledger-val" id="receiptFellowName">LeadGreen Fellow</span>
+                        </div>
+                        <div class="ledger-item">
+                            <span class="ledger-label">Fellow Email</span>
+                            <span class="ledger-val" id="receiptFellowEmail">registered@fellowship.org</span>
+                        </div>
+                        <div class="ledger-item">
+                            <span class="ledger-label">Official Credential</span>
+                            <span class="ledger-val ledger-val-highlight">Climate Leadership & Completion</span>
+                        </div>
+                        <div class="ledger-item">
+                            <span class="ledger-label">Transaction Reference</span>
+                            <span class="ledger-val" id="receiptTxRef">LG-2025-CONFIRMED</span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="cta-stack">
-                <a href="CertificatePortal.html" class="btn-solid-primary" id="btn-generator">
-                    <i class="fa-solid fa-certificate"></i>
-                    <span>Open Certificate Studio Now</span>
-                </a>
-
-                <div class="countdown-note" id="redirectTimerNotice">
-                    Redirecting to Certificate Studio in <strong class="countdown-num" id="countdownNum">5</strong>s...
+                <!-- Status Callout -->
+                <div style="background:var(--brand-tint); border-radius:var(--radius-sm); padding:12px 18px; margin-bottom:24px; text-align:left; display:flex; align-items:center; gap:12px;">
+                    <i class="fa-solid fa-circle-check" style="color:var(--brand); font-size:18px; flex-shrink:0;"></i>
+                    <div style="font-size:13px; color:var(--brand-dark); line-height:1.5;" id="dynamic-message">
+                        Your permanent verification serial has been issued. You can now access the Certificate Studio to personalize, sign, and download your credential in vector PDF and high-res print formats.
+                    </div>
                 </div>
-            </div>
 
-            <div class="success-footer">
-                Need assistance with your credential? Contact <a href="mailto:support@leadgreenfellowship.com">Fellow Support</a>.
-            </div>
+                <!-- Actions & Countdown -->
+                <div class="actions-card">
+                    <a href="CertificatePortal.html" class="btn-launch-studio" id="btn-generator">
+                        <i class="fa-solid fa-certificate"></i>
+                        <span>Open Certificate Studio Now</span>
+                        <i class="fa-solid fa-arrow-right" style="font-size: 13px; margin-left: 2px;"></i>
+                    </a>
+
+                    <div class="countdown-container" id="redirectTimerNotice">
+                        <span class="countdown-text">
+                            Redirecting to Certificate Studio in <strong id="countdownNum">5</strong>s...
+                        </span>
+                        <button type="button" class="btn-pause-timer" id="pauseRedirectBtn" onclick="toggleRedirectPause()">
+                            Pause Auto-Redirect
+                        </button>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- 3-Milestone Next Steps Pathway -->
+            <section class="milestones-strip-card" aria-label="Next Steps Pathway">
+                <div class="milestones-heading">
+                    <i class="fa-solid fa-route"></i>
+                    <span>Your Credential Roadmap</span>
+                </div>
+                <div class="milestones-grid">
+                    <div class="milestone-box">
+                        <span class="milestone-badge"><i class="fa-solid fa-check"></i> Verification</span>
+                        <span class="milestone-title">Registration Verified</span>
+                        <span class="milestone-desc">Payment confirmed and permanent cryptographic record indexed in registry.</span>
+                    </div>
+                    <div class="milestone-box">
+                        <span class="milestone-badge"><i class="fa-solid fa-pen-nib"></i> Personalization</span>
+                        <span class="milestone-title">Personalize in Studio</span>
+                        <span class="milestone-desc">Confirm official recipient name, select English or French, and sign.</span>
+                    </div>
+                    <div class="milestone-box">
+                        <span class="milestone-badge"><i class="fa-brands fa-linkedin"></i> Credentials</span>
+                        <span class="milestone-title">Download & Share</span>
+                        <span class="milestone-desc">Download archival vector PDF and publish directly to LinkedIn certifications.</span>
+                    </div>
+                </div>
+            </section>
 
         </div>
     </main>
+
+    <!-- 3. Unified Official Footer -->
+    <footer class="portal-site-footer">
+        <p>&copy; 2024–2026 LeadGreen Fellowship Initiative. Conferred by the Academic & Advisory Council.</p>
+        <p>Championing youth-led environmental leadership and community resilience across Africa. Need help? <a href="mailto:support@leadgreenfellowship.com">Contact Fellow Support</a></p>
+    </footer>
 
     <!-- Firebase SDKs & Verification Script -->
     <script type="module">
@@ -247,10 +697,47 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        let redirectTimer = null;
+        let isPaused = false;
+        let countdownCount = 5;
+
+        // Auto-redirect pause/resume handler
+        window.toggleRedirectPause = function () {
+            const pauseBtn = document.getElementById('pauseRedirectBtn');
+            const countdownNotice = document.getElementById('redirectTimerNotice');
+
+            if (!isPaused) {
+                if (redirectTimer) clearInterval(redirectTimer);
+                isPaused = true;
+                if (pauseBtn) pauseBtn.innerText = "Resume Auto-Redirect";
+            } else {
+                isPaused = false;
+                if (pauseBtn) pauseBtn.innerText = "Pause Auto-Redirect";
+                const btnGen = document.getElementById('btn-generator');
+                const targetUrl = btnGen ? btnGen.href : 'CertificatePortal.html';
+                startCountdown(targetUrl);
+            }
+        };
+
+        function startCountdown(finalUrl) {
+            const countdownElem = document.getElementById('countdownNum');
+            if (redirectTimer) clearInterval(redirectTimer);
+
+            redirectTimer = setInterval(() => {
+                if (isPaused) return;
+                countdownCount--;
+                if (countdownElem) countdownElem.innerText = countdownCount;
+                if (countdownCount <= 0) {
+                    clearInterval(redirectTimer);
+                    window.location.href = finalUrl;
+                }
+            }, 1000);
+        }
+
         window.onload = () => {
             const params = new URLSearchParams(window.location.search);
-            const name = params.get('name') || '';
-            let email = params.get('email') || localStorage.getItem('leadgreen_fellow_email') || '';
+            const nameParam = params.get('name') || localStorage.getItem('leadgreen_fellow_name') || '';
+            let emailParam = params.get('email') || localStorage.getItem('leadgreen_fellow_email') || '';
             const tx_ref = params.get('tx_ref');
 
             const header = document.getElementById('greeting-header');
@@ -258,26 +745,54 @@
             const dynamicMsg = document.getElementById('dynamic-message');
             const calloutHeading = document.getElementById('callout-heading');
             const btnGenerator = document.getElementById('btn-generator');
+            const receiptFellowName = document.getElementById('receiptFellowName');
+            const receiptFellowEmail = document.getElementById('receiptFellowEmail');
+            const receiptTxRef = document.getElementById('receiptTxRef');
 
-            function startAutoRedirect(targetEmail) {
-                const finalUrl = targetEmail ? `CertificatePortal.html?email=${encodeURIComponent(targetEmail)}` : `CertificatePortal.html`;
-                btnGenerator.href = finalUrl;
-
-                let count = 5;
-                const countdownElem = document.getElementById('countdownNum');
-                const timer = setInterval(() => {
-                    count--;
-                    if (countdownElem) countdownElem.innerText = count;
-                    if (count <= 0) {
-                        clearInterval(timer);
-                        window.location.href = finalUrl;
-                    }
-                }, 1000);
+            // Trigger celebration confetti
+            try {
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 75,
+                        spread: 68,
+                        origin: { y: 0.55 },
+                        colors: ['#0E8549', '#085931', '#C87808', '#2D5541', '#E8F5ED']
+                    });
+                }
+            } catch (e) {
+                console.log('Confetti notification:', e);
             }
 
-            if (name) {
-                header.innerHTML = `Payment Processing, ${name}...`;
-                thankYouMsg.innerHTML = `Please wait while we confirm your payment status in the fellowship registry...`;
+            function setupSuccessView(targetName, targetEmail, targetTx) {
+                if (targetName && receiptFellowName) {
+                    receiptFellowName.innerText = targetName;
+                }
+                if (targetEmail && receiptFellowEmail) {
+                    receiptFellowEmail.innerText = targetEmail;
+                }
+                if (targetTx && receiptTxRef) {
+                    receiptTxRef.innerText = targetTx;
+                } else if (tx_ref && receiptTxRef) {
+                    receiptTxRef.innerText = tx_ref;
+                }
+
+                const finalUrl = targetEmail ? `CertificatePortal.html?email=${encodeURIComponent(targetEmail)}` : `CertificatePortal.html`;
+                if (btnGenerator) btnGenerator.href = finalUrl;
+                startCountdown(finalUrl);
+            }
+
+            if (nameParam) {
+                header.innerHTML = `Payment Confirmed, ${nameParam}!`;
+                thankYouMsg.innerHTML = `Thank you for completing your LeadGreen credential registration. Your record is officially indexed in the alumni registry.`;
+                if (receiptFellowName) receiptFellowName.innerText = nameParam;
+            }
+
+            if (emailParam && receiptFellowEmail) {
+                receiptFellowEmail.innerText = emailParam;
+            }
+
+            if (tx_ref && receiptTxRef) {
+                receiptTxRef.innerText = tx_ref;
             }
 
             if (tx_ref) {
@@ -286,29 +801,29 @@
                     if (docSnap.exists()) {
                         const data = docSnap.data();
                         if (data.status === 'paid' || data.status === 'successful') {
-                            header.innerHTML = `Payment Successful!`;
-                            thankYouMsg.innerHTML = `Thank you, <strong>${name || data.fullName || 'Fellow'}</strong>! Your payment has been securely verified.`;
-                            calloutHeading.innerHTML = `Official Credential Access Granted`;
-                            dynamicMsg.innerHTML = `Your official LeadGreen certificate of completion is ready to personalize and download!`;
+                            const confirmedName = nameParam || data.fullName || 'LeadGreen Fellow';
+                            const confirmedEmail = data.email || emailParam;
+
+                            header.innerHTML = `Payment Confirmed!`;
+                            thankYouMsg.innerHTML = `Thank you, <strong>${confirmedName}</strong>! Your payment has been securely confirmed and recorded.`;
+                            if (calloutHeading) calloutHeading.innerHTML = `Verified & Active`;
+                            if (dynamicMsg) dynamicMsg.innerHTML = `Your official LeadGreen certificate of completion is ready to personalize, sign, and download in the Studio!`;
                             
-                            const finalEmail = data.email || email;
-                            startAutoRedirect(finalEmail);
+                            setupSuccessView(confirmedName, confirmedEmail, tx_ref);
                         } else {
-                            header.innerHTML = `Payment Pending...`;
-                            thankYouMsg.innerHTML = `Your payment is currently being confirmed by the payment provider. Please wait a moment.`;
-                            calloutHeading.innerHTML = `Verification in Progress`;
-                            dynamicMsg.innerHTML = `You do not need to pay again. This page will automatically update once verified.`;
-                            document.getElementById('redirectTimerNotice').style.display = 'none';
+                            header.innerHTML = `Payment Processing...`;
+                            thankYouMsg.innerHTML = `Your payment is currently being confirmed by the payment gateway. Please wait a moment.`;
+                            if (calloutHeading) calloutHeading.innerHTML = `Verifying Transaction`;
+                            if (dynamicMsg) dynamicMsg.innerHTML = `You do not need to pay again. This page will update automatically once verified.`;
+                            const timerNotice = document.getElementById('redirectTimerNotice');
+                            if (timerNotice) timerNotice.style.display = 'none';
                         }
                     } else {
-                        header.innerHTML = `Payment Received!`;
-                        thankYouMsg.innerHTML = `Thank you for your payment! Please proceed to the Certificate Studio to claim your official credential.`;
-                        startAutoRedirect(email);
+                        setupSuccessView(nameParam || 'LeadGreen Fellow', emailParam, tx_ref || 'LG-2025-CONFIRMED');
                     }
                 });
             } else {
-                header.innerHTML = `Payment Successful!`;
-                startAutoRedirect(email);
+                setupSuccessView(nameParam || 'LeadGreen Fellow', emailParam, 'LG-2025-CONFIRMED');
             }
         };
     </script>
