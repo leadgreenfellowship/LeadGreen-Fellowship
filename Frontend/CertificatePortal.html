@@ -4,6 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Cache-Control: Prevent browser from caching stale versions -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>LeadGreen Fellowship — Certificate Studio & Credential Registry</title>
     <meta name="description" content="Official LeadGreen Fellowship Certificate of Completion verification and generation portal. Verify climate leadership credentials and download official certificates.">
 
@@ -24,7 +28,9 @@
     <!-- PDF.js for rendering uploaded PDF certificate templates -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <!-- Unified LeadGreen Design System -->
-    <link rel="stylesheet" href="design-system.css">
+    <link rel="stylesheet" href="design-system.css?v=20261023">
+    <script src="portal-nav.js?v=20261023" defer></script>
+
 
     <style>
         @font-face {
@@ -956,6 +962,88 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 6px;
+            }
+
+            .credential-row {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .credential-row > div {
+                flex: 1 1 180px;
+            }
+
+            .btn-copy-chip {
+                align-self: flex-start;
+            }
+
+            .input-with-button {
+                flex-direction: column;
+            }
+
+            .btn-lookup {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .field-input {
+                font-size: 16px !important; /* Prevents auto-zoom on iOS */
+            }
+
+            .toast-forest {
+                left: 16px;
+                right: 16px;
+                bottom: 16px;
+                justify-content: center;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .portal-main {
+                padding: 16px 12px 48px;
+            }
+
+            .stage-header {
+                padding: 12px 14px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .lang-tabs {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .lang-btn {
+                flex: 1;
+                text-align: center;
+                padding: 5px 6px;
+                font-size: 11px;
+            }
+
+            .panel-card {
+                padding: 18px 12px;
+            }
+
+            .modal-card {
+                padding: 0;
+            }
+
+            .modal-header {
+                padding: 16px 18px;
+            }
+
+            .modal-body {
+                padding: 18px 14px;
+            }
+
+            .btn-solid-primary,
+            .btn-outline-primary,
+            .btn-linkedin-action {
+                padding: 13px 14px;
+                font-size: 13.5px;
             }
         }
     </style>

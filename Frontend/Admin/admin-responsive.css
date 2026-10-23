@@ -154,10 +154,23 @@
         width: 100% !important;
     }
 
+    /* Mission Review Detail Grid: stack profile card and review tabs */
+    .detail-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+
+    .profile-card {
+        position: static !important;
+        width: 100% !important;
+        margin-bottom: 20px !important;
+    }
+
     /* Universal responsive table container */
     .table-container,
     .data-table-card,
     .card-table,
+    .table-wrap,
     .table-responsive {
         width: 100% !important;
         overflow-x: auto !important;
@@ -176,7 +189,7 @@
 @media (max-width: 576px) {
     .content,
     .main-content {
-        padding: 16px 14px !important;
+        padding: 16px 12px !important;
     }
 
     .stats-grid,
@@ -197,7 +210,10 @@
 
     .btn,
     .btn-primary,
-    .btn-secondary {
+    .btn-secondary,
+    .btn-approve,
+    .btn-revision,
+    .btn-save {
         font-size: 13.5px !important;
         padding: 10px 14px !important;
     }
@@ -211,8 +227,21 @@
         gap: 10px !important;
     }
 
+    .toolbar-actions {
+        width: 100% !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+
+    .toolbar-actions .btn {
+        flex: 1 1 calc(50% - 8px) !important;
+        justify-content: center !important;
+        text-align: center !important;
+    }
+
     .search-box,
-    .search-input-wrapper {
+    .search-input-wrapper,
+    .search-wrap {
         width: 100% !important;
     }
 
@@ -222,4 +251,51 @@
         width: 95% !important;
         padding: 20px 16px !important;
     }
+
+    /* Canvas and Designer Viewports */
+    .canvas-container {
+        min-height: 220px !important;
+        padding: 8px !important;
+    }
+
+    #designerCanvas {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    /* Prevent auto-zoom on iOS inputs */
+    input, select, textarea {
+        font-size: 16px !important;
+    }
 }
+
+/* -------------------------------------------------------------
+   EXTRA SMALL SMARTPHONES (<= 400px)
+   ------------------------------------------------------------- */
+@media (max-width: 400px) {
+    .admin-mobile-topbar {
+        height: 52px;
+        padding: 0 10px;
+    }
+
+    .admin-mobile-topbar .topbar-brand img {
+        height: 26px;
+    }
+
+    .admin-menu-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
+
+    .content,
+    .main-content {
+        padding: 12px 8px !important;
+        margin-top: 52px !important;
+    }
+
+    .toolbar-actions .btn {
+        flex: 1 1 100% !important;
+    }
+}
+

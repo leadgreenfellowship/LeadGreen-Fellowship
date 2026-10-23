@@ -4,6 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Cache-Control: Prevent browser from caching stale versions -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>About LeadGreen — Building Africa's Climate Leaders</title>
     <meta name="description" content="Learn about the LeadGreen Fellowship: our founding story, vision, mission, and continental impact championing youth-led environmental action across Africa.">
 
@@ -16,7 +20,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Unified LeadGreen Design System -->
-    <link rel="stylesheet" href="design-system.css">
+    <link rel="stylesheet" href="design-system.css?v=20261023">
+    <script src="portal-nav.js?v=20261023" defer></script>
+
 
     <style>
         body {
@@ -337,6 +343,28 @@
 
             .impact-grid-cards {
                 grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .about-hero {
+                padding: 36px 16px 44px;
+            }
+
+            .about-wrapper {
+                padding: 24px 14px 44px;
+            }
+
+            .story-intro-card, .pillar-row, .cohorts-overview-card {
+                padding: 20px 14px;
+            }
+
+            .stat-card-clean {
+                padding: 20px 14px;
+            }
+
+            .pillar-heading {
+                font-size: 21px;
             }
         }
     </style>

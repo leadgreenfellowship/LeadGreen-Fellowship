@@ -4,6 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Cache-Control: Prevent browser from caching stale versions -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>LeadGreen Fellowship — Certificate Payment Confirmed</title>
     <meta name="description" content="Official LeadGreen Fellowship Certificate Payment Confirmation. Your record is verified and ready for generation in the Certificate Studio.">
 
@@ -19,7 +23,9 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
     <!-- Unified LeadGreen Design System -->
-    <link rel="stylesheet" href="design-system.css">
+    <link rel="stylesheet" href="design-system.css?v=20261023">
+    <script src="portal-nav.js?v=20261023" defer></script>
+
 
     <style>
         :root {
@@ -534,6 +540,35 @@
                 flex-direction: column;
                 gap: 6px;
                 text-align: center;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .success-page-shell {
+                padding: 16px 10px 36px;
+            }
+
+            .confirmation-hero-card {
+                padding: 22px 14px 18px;
+            }
+
+            .celebration-emblem {
+                width: 58px;
+                height: 58px;
+                font-size: 24px;
+            }
+
+            .verification-ledger-card {
+                padding: 14px 12px;
+            }
+
+            .milestones-strip-card {
+                padding: 16px 12px;
+            }
+
+            .btn-launch-studio {
+                padding: 13px 14px;
+                font-size: 13.5px;
             }
         }
     </style>

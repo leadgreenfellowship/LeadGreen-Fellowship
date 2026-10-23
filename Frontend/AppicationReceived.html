@@ -4,6 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Cache-Control: Prevent browser from caching stale versions -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>LeadGreen Fellowship — Application Received</title>
     <meta name="description" content="Your application for the LeadGreen Fellowship has been successfully received. Review your submission details and next selection milestones.">
 
@@ -16,7 +20,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Unified LeadGreen Design System -->
-    <link rel="stylesheet" href="design-system.css">
+    <link rel="stylesheet" href="design-system.css?v=20261023">
+    <script src="portal-nav.js?v=20261023" defer></script>
+
 
     <style>
         body {
@@ -279,13 +285,35 @@
         }
 
         @media (max-width: 540px) {
+            .received-container {
+                padding: 28px 14px 60px;
+            }
+
+            .timeline-card {
+                padding: 24px 16px;
+            }
+
             .timeline-steps-grid {
                 grid-template-columns: 1fr;
+                gap: 14px;
             }
 
             .inbox-alert-card {
                 flex-direction: column;
                 align-items: flex-start;
+                padding: 20px 16px;
+            }
+
+            .actions-bar {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-action-primary,
+            .btn-action-outline {
+                width: 100%;
+                justify-content: center;
+                text-align: center;
             }
         }
     </style>

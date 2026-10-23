@@ -4,6 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Cache-Control: Prevent browser from caching stale versions -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>LeadGreen Fellowship — Alumni & Fellows Directory</title>
     <meta name="description" content="Discover verified African climate leaders, alumni, and fellows leading grassroots sustainability initiatives across Africa.">
 
@@ -16,7 +20,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Unified LeadGreen Design System -->
-    <link rel="stylesheet" href="design-system.css">
+    <link rel="stylesheet" href="design-system.css?v=20261023">
+    <script src="portal-nav.js?v=20261023" defer></script>
+
 
     <style>
         body {
@@ -323,6 +329,53 @@
 
             .btn-filter-action {
                 justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .directory-hero {
+                padding: 36px 16px 44px;
+            }
+
+            .directory-wrapper {
+                padding: 0 14px 44px;
+                margin-top: -20px;
+            }
+
+            .directory-toolbar {
+                padding: 16px 14px;
+                gap: 12px;
+                border-radius: var(--radius-md);
+            }
+
+            .search-group {
+                min-width: 100%;
+            }
+
+            .search-field {
+                font-size: 16px; /* Prevent iOS auto-zoom */
+            }
+
+            .cohort-select {
+                font-size: 16px;
+            }
+
+            .alumni-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .fellow-card {
+                padding: 18px 16px;
+            }
+
+            .pagination-container {
+                gap: 10px;
+            }
+
+            .btn-page-step {
+                padding: 8px 14px;
+                font-size: 13px;
             }
         }
     </style>
