@@ -1,2 +1,6 @@
 .vercel
 .env*
+*.mp4
+*.mov
+*.MOV
+firebase-debug.log
