@@ -387,11 +387,22 @@
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
             transition: transform 0.25s ease, box-shadow 0.25s ease;
+            cursor: pointer;
+            outline: none;
+            user-select: none;
         }
 
-        .fellows-video-card:hover {
+        .fellows-video-card:focus-visible {
+            box-shadow: 0 0 0 3px rgba(19, 138, 86, 0.45), 0 4px 20px rgba(0, 0, 0, 0.07);
+        }
+
+        .fellows-video-card:hover:not(.is-playing) {
             transform: translateY(-5px);
             box-shadow: 0 12px 36px rgba(19, 138, 86, 0.15);
+        }
+
+        .fellows-video-card.is-playing {
+            cursor: default;
         }
 
         .fellows-video-frame-wrap {
@@ -410,7 +421,7 @@
             transition: transform 0.35s ease;
         }
 
-        .fellows-video-card:hover .fellows-video-frame-wrap img {
+        .fellows-video-card:hover:not(.is-playing) .fellows-video-frame-wrap img {
             transform: scale(1.04);
         }
 
@@ -424,7 +435,7 @@
             transition: background 0.25s ease;
         }
 
-        .fellows-video-card:hover .fellows-video-play-overlay {
+        .fellows-video-card:hover:not(.is-playing) .fellows-video-play-overlay {
             background: rgba(0, 0, 0, 0.15);
         }
 
@@ -440,7 +451,7 @@
             transition: transform 0.2s ease;
         }
 
-        .fellows-video-card:hover .fellows-play-btn {
+        .fellows-video-card:hover:not(.is-playing) .fellows-play-btn {
             transform: scale(1.12);
         }
 
@@ -1905,14 +1916,14 @@
 
         <div class="fellows-video-grid">
             <!-- Video Card 1 -->
-            <a class="fellows-video-card" href="https://www.youtube.com/shorts/VB568b4nPz4" target="_blank" rel="noopener" style="text-decoration:none; display:block;">
+            <div class="fellows-video-card" data-video-id="VB568b4nPz4" role="button" tabindex="0" aria-label="Play video: Meet a LeadGreen Fellow">
                 <div class="fellows-video-frame-wrap">
                     <img
                         src="https://img.youtube.com/vi/VB568b4nPz4/hqdefault.jpg"
                         alt="LeadGreen Fellow in Action"
                         loading="lazy">
                     <div class="fellows-video-play-overlay">
-                        <div class="fellows-play-btn">
+                        <div class="fellows-play-btn" aria-hidden="true">
                             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
@@ -1922,17 +1933,17 @@
                 <div class="fellows-video-caption">
                     <p>Meet a LeadGreen Fellow — taking environmental action in their community across Africa.</p>
                 </div>
-            </a>
+            </div>
 
             <!-- Video Card 2 -->
-            <a class="fellows-video-card" href="https://www.youtube.com/shorts/VB568b4nPz4" target="_blank" rel="noopener" style="text-decoration:none; display:block;">
+            <div class="fellows-video-card" data-video-id="VB568b4nPz4" role="button" tabindex="0" aria-label="Play video: Climate impact across Africa">
                 <div class="fellows-video-frame-wrap">
                     <img
                         src="https://img.youtube.com/vi/VB568b4nPz4/hqdefault.jpg"
                         alt="LeadGreen Fellow in Action"
                         loading="lazy">
                     <div class="fellows-video-play-overlay">
-                        <div class="fellows-play-btn">
+                        <div class="fellows-play-btn" aria-hidden="true">
                             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
@@ -1942,7 +1953,7 @@
                 <div class="fellows-video-caption">
                     <p>LeadGreen Fellows turning grassroots climate knowledge into measurable community impact.</p>
                 </div>
-            </a>
+            </div>
         </div>
 
         <div class="fellows-video-cta">
@@ -2224,6 +2235,57 @@
                 });
             });
         }
+
+        // Fellows in Action Video Player (Inline playback without YouTube redirect)
+        (function() {
+            const videoCards = document.querySelectorAll('.fellows-video-card');
+            videoCards.forEach(card => {
+                const playVideo = () => {
+                    if (card.classList.contains('is-playing')) return;
+
+                    // Stop any other currently playing video card
+                    videoCards.forEach(other => {
+                        if (other !== card && other.classList.contains('is-playing')) {
+                            const otherWrap = other.querySelector('.fellows-video-frame-wrap');
+                            const otherId = other.getAttribute('data-video-id') || 'VB568b4nPz4';
+                            if (otherWrap) {
+                                otherWrap.innerHTML = `
+                                    <img src="https://img.youtube.com/vi/${otherId}/hqdefault.jpg" alt="LeadGreen Fellow in Action" loading="lazy">
+                                    <div class="fellows-video-play-overlay">
+                                        <div class="fellows-play-btn" aria-hidden="true">
+                                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"/></svg>
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                            other.classList.remove('is-playing');
+                        }
+                    });
+
+                    const videoId = card.getAttribute('data-video-id') || 'VB568b4nPz4';
+                    const frameWrap = card.querySelector('.fellows-video-frame-wrap');
+                    if (!frameWrap) return;
+
+                    const iframe = document.createElement('iframe');
+                    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1&modestbranding=1`;
+                    iframe.title = "LeadGreen Fellow in Action";
+                    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+                    iframe.allowFullscreen = true;
+
+                    frameWrap.innerHTML = '';
+                    frameWrap.appendChild(iframe);
+                    card.classList.add('is-playing');
+                };
+
+                card.addEventListener('click', playVideo);
+                card.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        playVideo();
+                    }
+                });
+            });
+        })();
     </script>
 </body>
 
