@@ -199,7 +199,6 @@
 
         /* Impact Numbers Showcase */
         .impact-showcase {
-            margin-bottom: 70px;
             text-align: center;
         }
 
@@ -239,62 +238,6 @@
             color: var(--ink-subtle);
         }
 
-        /* Cohorts Roadmap Section */
-        .cohorts-overview-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 44px 40px;
-            margin-bottom: 60px;
-        }
-
-        .cohorts-header-group {
-            margin-bottom: 32px;
-        }
-
-        .cohorts-list-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .cohort-item {
-            background: var(--surface-subtle);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-md);
-            padding: 22px 20px;
-        }
-
-        .cohort-item-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--ink);
-            margin-bottom: 6px;
-        }
-
-        .cohort-item-meta {
-            font-size: 13px;
-            color: var(--ink-subtle);
-            margin-bottom: 12px;
-        }
-
-        .cohort-status-pill {
-            display: inline-block;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            padding: 3px 10px;
-            border-radius: var(--radius-pill);
-            background: var(--brand-tint);
-            color: var(--brand-dark);
-        }
-
-        .cohort-status-pill.closed {
-            background: #EEEEEE;
-            color: #666666;
-        }
-
         /* Site Footer */
         .portal-site-footer {
             margin-top: auto;
@@ -322,10 +265,6 @@
             .impact-grid-cards {
                 grid-template-columns: repeat(2, 1fr);
             }
-
-            .cohorts-list-grid {
-                grid-template-columns: 1fr;
-            }
         }
 
         @media (max-width: 600px) {
@@ -337,7 +276,7 @@
                 padding: 36px 20px 60px;
             }
 
-            .story-intro-card, .pillar-row, .cohorts-overview-card {
+            .story-intro-card, .pillar-row {
                 padding: 28px 20px;
             }
 
@@ -355,7 +294,7 @@
                 padding: 24px 14px 44px;
             }
 
-            .story-intro-card, .pillar-row, .cohorts-overview-card {
+            .story-intro-card, .pillar-row {
                 padding: 20px 14px;
             }
 
@@ -493,53 +432,6 @@
                 </div>
             </div>
         </section>
-
-        <!-- Fellowship Cohort Overview -->
-        <section class="cohorts-overview-card" aria-label="Cohorts Roadmap">
-            <div class="cohorts-header-group">
-                <span class="story-intro-tag">Cohort Progressions</span>
-                <h2 style="font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--ink);">
-                    Fellowship Cohort Milestones
-                </h2>
-                <p style="font-size: 14.5px; color: var(--ink-muted); margin-top: 6px;">
-                    Our cohorts bring together environmental catalysts from North, South, East, and West Africa.
-                </p>
-            </div>
-
-            <div class="cohorts-list-grid">
-                <div class="cohort-item">
-                    <div class="cohort-item-title">Cohort 1 (Foundational)</div>
-                    <div class="cohort-item-meta">Inaugural climate leaders across West Africa</div>
-                    <span class="cohort-status-pill closed">Graduated Alumni</span>
-                </div>
-                <div class="cohort-item">
-                    <div class="cohort-item-title">Cohort 2 (Expansion)</div>
-                    <div class="cohort-item-meta">Clean energy & agricultural resilience track</div>
-                    <span class="cohort-status-pill closed">Graduated Alumni</span>
-                </div>
-                <div class="cohort-item">
-                    <div class="cohort-item-title">Cohort 3 (Pan-African)</div>
-                    <div class="cohort-item-meta">Cross-continental biodiversity projects</div>
-                    <span class="cohort-status-pill closed">Graduated Alumni</span>
-                </div>
-                <div class="cohort-item">
-                    <div class="cohort-item-title">Cohort 4 (Innovation)</div>
-                    <div class="cohort-item-meta">Green venture development & circular economy</div>
-                    <span class="cohort-status-pill closed">Graduated Alumni</span>
-                </div>
-                <div class="cohort-item">
-                    <div class="cohort-item-title">Cohort 5 (Current / 2024–2025)</div>
-                    <div class="cohort-item-meta">Active community missions & verification</div>
-                    <span class="cohort-status-pill">Active Certification</span>
-                </div>
-                <div class="cohort-item">
-                    <div class="cohort-item-title">Cohort 6 (Upcoming 2026)</div>
-                    <div class="cohort-item-meta">Applications opening soon for youth across Africa</div>
-                    <span class="cohort-status-pill" style="background: var(--amber-bg); color: var(--amber-ink);">Admissions Upcoming</span>
-                </div>
-            </div>
-        </section>
-
     </main>
 
     <!-- Footer -->

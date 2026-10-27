@@ -338,6 +338,172 @@
             }
         }
 
+        /* ── Fellows in Action Video Section ─────────────────── */
+        .fellows-video-section {
+            padding: 80px 5%;
+            background: #FAFCFB;
+            text-align: center;
+        }
+
+        .fellows-video-tag {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.8px;
+            color: #138A56;
+            margin-bottom: 14px;
+        }
+
+        .fellows-video-headline {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(28px, 3.5vw, 42px);
+            font-weight: 800;
+            color: #0E2519;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .fellows-video-desc {
+            font-size: 16px;
+            color: #555F59;
+            max-width: 600px;
+            margin: 0 auto 48px;
+            line-height: 1.65;
+        }
+
+        .fellows-video-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .fellows-video-card {
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .fellows-video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 36px rgba(19, 138, 86, 0.15);
+        }
+
+        .fellows-video-frame-wrap {
+            position: relative;
+            overflow: hidden;
+            background: #0E2519;
+            /* 9:16 aspect ratio for Shorts */
+            aspect-ratio: 9 / 16;
+        }
+
+        .fellows-video-frame-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.35s ease;
+        }
+
+        .fellows-video-card:hover .fellows-video-frame-wrap img {
+            transform: scale(1.04);
+        }
+
+        .fellows-video-play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.28);
+            transition: background 0.25s ease;
+        }
+
+        .fellows-video-card:hover .fellows-video-play-overlay {
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .fellows-play-btn {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: #FF0000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+            transition: transform 0.2s ease;
+        }
+
+        .fellows-video-card:hover .fellows-play-btn {
+            transform: scale(1.12);
+        }
+
+        .fellows-play-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: #fff;
+            margin-left: 4px;
+        }
+
+        .fellows-video-frame-wrap iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .fellows-video-caption {
+            padding: 16px 20px 20px;
+            text-align: left;
+        }
+
+        .fellows-video-caption p {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1B3A2A;
+            line-height: 1.45;
+            margin: 0;
+        }
+
+        .fellows-video-cta {
+            margin-top: 44px;
+        }
+
+        .fellows-video-cta a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #138A56;
+            color: #fff;
+            font-size: 14.5px;
+            font-weight: 700;
+            padding: 13px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .fellows-video-cta a:hover {
+            background: #0F6E44;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 640px) {
+            .fellows-video-grid {
+                grid-template-columns: 1fr;
+                max-width: 380px;
+            }
+        }
+
+
         /* Experience Section */
         .experience-section {
             background-color: #0c1824;
@@ -1563,6 +1729,64 @@
                 <div class="impact-number">2000</div>
                 <div class="impact-label">Lives Positively Impacted</div>
             </div>
+        </div>
+    </section>
+
+    <!-- Fellows in Action Video Section -->
+    <section class="fellows-video-section">
+        <span class="fellows-video-tag">Fellows in Action</span>
+        <h2 class="fellows-video-headline">See the Change Our Fellows Are Making</h2>
+        <p class="fellows-video-desc">
+            From planting trees to building community climate solutions — meet the young Africans driving real environmental action.
+        </p>
+
+        <div class="fellows-video-grid">
+            <!-- Video Card 1 -->
+            <a class="fellows-video-card" href="https://www.youtube.com/shorts/VB568b4nPz4" target="_blank" rel="noopener" style="text-decoration:none; display:block;">
+                <div class="fellows-video-frame-wrap">
+                    <img
+                        src="https://img.youtube.com/vi/VB568b4nPz4/hqdefault.jpg"
+                        alt="LeadGreen Fellow in Action"
+                        loading="lazy">
+                    <div class="fellows-video-play-overlay">
+                        <div class="fellows-play-btn">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="fellows-video-caption">
+                    <p>Meet a LeadGreen Fellow — taking environmental action in their community across Africa.</p>
+                </div>
+            </a>
+
+            <!-- Video Card 2 -->
+            <a class="fellows-video-card" href="https://www.youtube.com/shorts/VB568b4nPz4" target="_blank" rel="noopener" style="text-decoration:none; display:block;">
+                <div class="fellows-video-frame-wrap">
+                    <img
+                        src="https://img.youtube.com/vi/VB568b4nPz4/hqdefault.jpg"
+                        alt="LeadGreen Fellow in Action"
+                        loading="lazy">
+                    <div class="fellows-video-play-overlay">
+                        <div class="fellows-play-btn">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="fellows-video-caption">
+                    <p>LeadGreen Fellows turning grassroots climate knowledge into measurable community impact.</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="fellows-video-cta">
+            <a href="https://www.youtube.com/@leadgreenfellowship" target="_blank" rel="noopener">
+                <i class="fa-brands fa-youtube"></i>
+                Watch More on YouTube
+            </a>
         </div>
     </section>
 

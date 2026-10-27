@@ -1,0 +1,18 @@
+[debug] [2026-10-27T12:11:30.842Z] ----------------------------------------------------------------------
+[debug] [2026-10-27T12:11:30.853Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\OLUGBADE TAYO\AppData\Local\npm-cache\_npx\7750544ccf494d8b\node_modules\firebase-tools\lib\bin\firebase.js deploy --only hosting:fellowship
+[debug] [2026-10-27T12:11:30.854Z] CLI Version:   15.34.1
+[debug] [2026-10-27T12:11:30.855Z] Platform:      win32
+[debug] [2026-10-27T12:11:30.855Z] Node Version:  v22.15.0
+[debug] [2026-10-27T12:11:30.855Z] Detected Agent: antigravity
+[debug] [2026-10-27T12:11:30.855Z] Time:          Tue Oct 27 2026 13:11:30 GMT+0100 (West Africa Standard Time)
+[debug] [2026-10-27T12:11:30.855Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-10-27T12:11:30.903Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2026-10-27T12:12:25.026Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-10-27T12:12:25.027Z] > authorizing via signed-in user (tyolugbade@gmail.com)
+[debug] [2026-10-27T12:12:25.028Z] [iam] checking project leadgreen-fellowship for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-10-27T12:12:25.032Z] Checked if tokens are valid: true, expires at: 1793104957865
+[debug] [2026-10-27T12:12:25.033Z] Checked if tokens are valid: true, expires at: 1793104957865
+[debug] [2026-10-27T12:12:25.033Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/leadgreen-fellowship:testIamPermissions [none]
+[debug] [2026-10-27T12:12:25.034Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/leadgreen-fellowship:testIamPermissions  x-goog-user-project=leadgreen-fellowship
+[debug] [2026-10-27T12:12:25.034Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/leadgreen-fellowship:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
