@@ -36,7 +36,7 @@
     <meta name="twitter:description" content="LeadGreen Fellowship equips and connects Africa's next generation of climate leaders through structured fellowship missions and grassroots environmental action.">
     <meta name="twitter:image" content="https://leadgreenfellowship.com/og-image.png">
 
-    <!-- Schema.org Organization Structured Data for Google Search Logo & Knowledge Graph -->
+    <!-- Schema.org Organization Structured Data for Google Search Logo, Sitelinks & Knowledge Graph -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -67,7 +67,100 @@
           "name": "LeadGreen Fellowship",
           "publisher": {
             "@id": "https://leadgreenfellowship.com/#organization"
-          }
+          },
+          "hasPart": [
+            {
+              "@type": "WebPage",
+              "@id": "https://leadgreenfellowship.com/About.html",
+              "name": "About Us",
+              "url": "https://leadgreenfellowship.com/About.html",
+              "description": "Learn about the LeadGreen Fellowship: our founding story, vision, mission, and continental impact championing youth-led environmental action across Africa."
+            },
+            {
+              "@type": "WebPage",
+              "@id": "https://leadgreenfellowship.com/Fellowspage.html",
+              "name": "Meet Fellows & Alumni",
+              "url": "https://leadgreenfellowship.com/Fellowspage.html",
+              "description": "Discover verified African climate leaders, alumni, and fellows leading grassroots sustainability initiatives across Africa."
+            },
+            {
+              "@type": "WebPage",
+              "@id": "https://leadgreenfellowship.com/Apply.html",
+              "name": "Apply for Fellowship",
+              "url": "https://leadgreenfellowship.com/Apply.html",
+              "description": "Join the LeadGreen fellowship cohort. Gain climate leadership skills, dedicated mentorship, and project support."
+            },
+            {
+              "@type": "WebPage",
+              "@id": "https://leadgreenfellowship.com/CertificatePortal.html",
+              "name": "Certificate Portal",
+              "url": "https://leadgreenfellowship.com/CertificatePortal.html",
+              "description": "Official LeadGreen Fellowship Certificate verification and credential studio."
+            },
+            {
+              "@type": "WebPage",
+              "@id": "https://leadgreenfellowship.com/MissionSubmission.html",
+              "name": "Submit Mission",
+              "url": "https://leadgreenfellowship.com/MissionSubmission.html",
+              "description": "Submit monthly climate fellowship mission milestones and evidence."
+            },
+            {
+              "@type": "WebPage",
+              "@id": "https://leadgreenfellowship.com/ProjectSubmission.html",
+              "name": "Submit Project",
+              "url": "https://leadgreenfellowship.com/ProjectSubmission.html",
+              "description": "Submit your completed LeadGreen fellowship project with photos and impact data."
+            }
+          ]
+        },
+        {
+          "@type": "ItemList",
+          "@id": "https://leadgreenfellowship.com/#sitelinks",
+          "name": "Primary Navigation",
+          "itemListElement": [
+            {
+              "@type": "SiteNavigationElement",
+              "position": 1,
+              "name": "About Us",
+              "description": "Our founding story, vision, and continental impact championing youth-led climate action.",
+              "url": "https://leadgreenfellowship.com/About.html"
+            },
+            {
+              "@type": "SiteNavigationElement",
+              "position": 2,
+              "name": "Meet Fellows",
+              "description": "Directory of verified African climate leaders and changemakers across cohorts.",
+              "url": "https://leadgreenfellowship.com/Fellowspage.html"
+            },
+            {
+              "@type": "SiteNavigationElement",
+              "position": 3,
+              "name": "Apply Now",
+              "description": "Application portal for upcoming LeadGreen fellowship cohorts.",
+              "url": "https://leadgreenfellowship.com/Apply.html"
+            },
+            {
+              "@type": "SiteNavigationElement",
+              "position": 4,
+              "name": "Certificate Portal",
+              "description": "Verify credentials, lifetime serial numbers, and generate certificates.",
+              "url": "https://leadgreenfellowship.com/CertificatePortal.html"
+            },
+            {
+              "@type": "SiteNavigationElement",
+              "position": 5,
+              "name": "Submit Mission",
+              "description": "Fellow milestone and monthly mission submission portal.",
+              "url": "https://leadgreenfellowship.com/MissionSubmission.html"
+            },
+            {
+              "@type": "SiteNavigationElement",
+              "position": 6,
+              "name": "Submit Project",
+              "description": "Fellowship capstone project and evidence submission portal.",
+              "url": "https://leadgreenfellowship.com/ProjectSubmission.html"
+            }
+          ]
         }
       ]
     }
@@ -2620,8 +2713,6 @@
                     <a href="About.html"
                         style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
                         onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">About</a>
-                    <a href="#" style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Fellowship</a>
                     <a href="Fellowspage.html"
                         style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
                         onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Meet
@@ -2635,9 +2726,27 @@
                     <a href="#newsletter"
                         style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
                         onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Newsletter</a>
-                    <a href="#"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s; cursor: not-allowed; opacity: 0.6;"
-                        title="Applications are closed">Apply (Closed)</a>
+                </div>
+            </div>
+
+            <!-- Fellowship Portals Column -->
+            <div style="flex: 1;">
+                <h4
+                    style="font-size: 16px; font-weight: 700; color: #ffffff; margin-bottom: 25px; letter-spacing: 0.5px;">
+                    Fellowship Portals</h4>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <a href="CertificatePortal.html"
+                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Certificate Verification</a>
+                    <a href="MissionSubmission.html"
+                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Submit Mission</a>
+                    <a href="ProjectSubmission.html"
+                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Submit Project</a>
+                    <a href="Apply.html"
+                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
+                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Apply for Fellowship</a>
                 </div>
             </div>
 

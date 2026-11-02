@@ -8,3 +8,4 @@ User-agent: Googlebot-Image
 Allow: /
 
 Sitemap: https://leadgreenfellowship.com/sitemap.xml
+
