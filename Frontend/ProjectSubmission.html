@@ -15,7 +15,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Canvas Confetti -->
@@ -309,7 +309,8 @@
         }
 
         .field.error input,
-        .field.error textarea {
+        .field.error textarea,
+        .field.error select {
             border-color: var(--error);
         }
 
@@ -1159,7 +1160,6 @@
         window.verifyFellow = verifyFellow;
         window.goStep = goStep;
         window.submitMission = submitMission;
-        window.removePhoto = removePhoto;
         window.removeExistingPhoto = removeExistingPhoto;
 
         // ═══════════════════════════════════════════
@@ -1300,10 +1300,10 @@
             } catch (err) {
                 console.error('Error:', err);
                 showVerifyError('Something went wrong. Please check your connection and try again.');
+            } finally {
+                btn.innerHTML = 'Continue <i class="fa-solid fa-arrow-right"></i>';
+                btn.disabled = false;
             }
-
-            btn.innerHTML = 'Continue <i class="fa-solid fa-arrow-right"></i>';
-            btn.disabled = false;
         }
 
         function showVerifyError(msg) {

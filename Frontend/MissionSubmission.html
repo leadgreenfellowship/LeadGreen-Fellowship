@@ -311,7 +311,8 @@
         }
 
         .field.error input,
-        .field.error textarea {
+        .field.error textarea,
+        .field.error select {
             border-color: var(--error);
         }
 
@@ -693,22 +694,6 @@
         /* ── Hidden ── */
         .hidden {
             display: none !important;
-        }
-
-        /* ── Footer ── */
-        .site-footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 13px;
-            color: var(--text-light);
-            z-index: 1;
-            position: relative;
-        }
-
-        .site-footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
         }
 
         /* ── Responsive ── */
@@ -1177,7 +1162,6 @@
         window.verifyFellow = verifyFellow;
         window.goStep = goStep;
         window.submitMission = submitMission;
-        window.removePhoto = removePhoto;
         window.removeExistingPhoto = removeExistingPhoto;
 
         // ═══════════════════════════════════════════
@@ -1317,10 +1301,10 @@
             } catch (err) {
                 console.error('Error:', err);
                 showVerifyError('Something went wrong. Please check your connection and try again.');
+            } finally {
+                btn.innerHTML = 'Continue <i class="fa-solid fa-arrow-right"></i>';
+                btn.disabled = false;
             }
-
-            btn.innerHTML = 'Continue <i class="fa-solid fa-arrow-right"></i>';
-            btn.disabled = false;
         }
 
         function showVerifyError(msg) {
