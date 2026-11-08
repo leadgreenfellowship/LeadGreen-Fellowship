@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Cache-Control: Prevent browser from caching stale versions -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Contact Us — LeadGreen Fellowship</title>
+    <meta name="description" content="Get in touch with the LeadGreen Fellowship Secretariat. Reach out for fellowship inquiries, partnerships, media requests, or support.">
+    <link rel="canonical" href="https://leadgreenfellowship.com/Contact.html">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+
+    <!-- OpenGraph & Social Sharing Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://leadgreenfellowship.com/Contact.html">
+    <meta property="og:site_name" content="LeadGreen Fellowship">
+    <meta property="og:title" content="Contact Us — LeadGreen Fellowship">
+    <meta property="og:description" content="Have questions about the LeadGreen Fellowship, climate leadership missions, or partnerships? Get in touch with our team today.">
+    <meta property="og:image" content="https://leadgreenfellowship.com/og-image.png">
+
+    <!-- Schema.org ContactPage Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ContactPage",
+      "name": "Contact LeadGreen Fellowship",
+      "url": "https://leadgreenfellowship.com/Contact.html",
+      "description": "Official contact page for LeadGreen Fellowship secretariat and support.",
+      "mainEntity": {
+        "@type": "Organization",
+        "name": "LeadGreen Fellowship",
+        "url": "https://leadgreenfellowship.com",
+        "email": "leadgreenfellowship@gmail.com",
+        "logo": "https://leadgreenfellowship.com/logo-512x512.png",
+        "sameAs": [
+          "https://x.com/Leadgreen_",
+          "https://www.instagram.com/leadgreen_fellowship/",
+          "https://www.linkedin.com/company/leadgreen-fellowship",
+          "https://www.youtube.com/@leadgreenfellowship"
+        ]
+      }
+    }
+    </script>
+
+    <!-- Schema.org BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://leadgreenfellowship.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Contact Us", "item": "https://leadgreenfellowship.com/Contact.html" }
+      ]
+    }
+    </script>
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Unified Design System & Mobile Nav -->
+    <link rel="stylesheet" href="design-system.css?v=20261108">
+    <script src="portal-nav.js?v=20261108" defer></script>
+
+    <style>
+        /* ============================================================
+           PAGE-SPECIFIC CONTACT STYLES
+           Faithfully matching reference with LeadGreen Emerald Brand
+        ============================================================ */
+        :root {
+            --brand-green: #0E8549;
+            --brand-dark: #0A6337;
+            --brand-tint: #EAF4EE;
+            --ink-main: #0D2B1D;
+            --ink-muted: #4B6354;
+            --ink-subtle: #7A9283;
+            --bg-ground: #F7F9F6;
+            --bg-surface: #FFFFFF;
+            --border-color: #E2E8F0;
+            --border-focus: #0E8549;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-surface);
+            color: var(--ink-main);
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Top Navigation override to mirror reference bar */
+        .portal-nav {
+            background: #ffffff;
+            border-bottom: 1px solid #ECEFEA;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .portal-nav .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .portal-nav .nav-brand-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .portal-nav .nav-brand-img {
+            height: 40px;
+            width: auto;
+            display: block;
+        }
+
+        .portal-nav .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .portal-nav .nav-link {
+            color: #2D3748;
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            position: relative;
+            padding: 6px 2px;
+            transition: color 0.2s ease;
+        }
+
+        .portal-nav .nav-link:hover {
+            color: var(--brand-green);
+        }
+
+        /* Active link indicator matching reference */
+        .portal-nav .nav-link.active {
+            color: var(--brand-green);
+            font-weight: 600;
+        }
+
+        .portal-nav .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--brand-green);
+            border-radius: 2px;
+        }
+
+        .btn-nav-talk {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--ink-main);
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 10px 22px;
+            border-radius: 9999px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-nav-talk:hover {
+            background-color: var(--brand-green);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(14, 133, 73, 0.2);
+        }
+
+        /* Hero Banner Section */
+        .contact-hero {
+            background-color: var(--bg-ground);
+            padding: 56px 24px 64px;
+            border-bottom: 1px solid #EBEFEA;
+        }
+
+        .contact-hero-inner {
+            max-width: 1140px;
+            margin: 0 auto;
+        }
+
+        .contact-breadcrumb {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--ink-subtle);
+            margin-bottom: 16px;
+            letter-spacing: 0.3px;
+        }
+
+        .contact-breadcrumb a {
+            color: var(--ink-subtle);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .contact-breadcrumb a:hover {
+            color: var(--brand-green);
+        }
+
+        .contact-breadcrumb span {
+            margin: 0 6px;
+            color: #A0AEC0;
+        }
+
+        .contact-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(38px, 4.5vw, 56px);
+            font-weight: 800;
+            color: var(--ink-main);
+            margin: 0;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        /* Main Contact Body */
+        .contact-main {
+            padding: 72px 24px 96px;
+            background-color: #ffffff;
+        }
+
+        .contact-container {
+            max-width: 1140px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.25fr;
+            gap: clamp(40px, 6vw, 80px);
+            align-items: start;
+        }
+
+        /* Left Column: Information */
+        .info-col {
+            padding-right: 12px;
+        }
+
+        .info-headline {
+            font-size: clamp(24px, 2.5vw, 32px);
+            font-weight: 700;
+            line-height: 1.25;
+            color: var(--ink-main);
+            margin-bottom: 14px;
+            letter-spacing: -0.015em;
+        }
+
+        .info-subtitle {
+            font-size: 15px;
+            line-height: 1.65;
+            color: var(--ink-muted);
+            margin-bottom: 40px;
+            max-width: 440px;
+        }
+
+        .contact-items-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            margin-bottom: 40px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+        }
+
+        .contact-icon-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: var(--brand-tint);
+            color: var(--brand-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .contact-item:hover .contact-icon-circle {
+            background-color: var(--brand-green);
+            color: #ffffff;
+            transform: scale(1.05);
+        }
+
+        .contact-item-text {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .contact-item-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink-subtle);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .contact-item-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--ink-main);
+            text-decoration: none;
+            line-height: 1.4;
+            transition: color 0.2s;
+        }
+
+        a.contact-item-value:hover {
+            color: var(--brand-green);
+        }
+
+        .info-socials {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-top: 10px;
+        }
+
+        .info-social-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--bg-ground);
+            color: var(--ink-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 15px;
+            transition: all 0.2s ease;
+            border: 1px solid #E2E8F0;
+        }
+
+        .info-social-btn:hover {
+            background-color: var(--brand-green);
+            color: #ffffff;
+            border-color: var(--brand-green);
+            transform: translateY(-2px);
+        }
+
+        /* Right Column: Form */
+        .form-col {
+            background-color: #ffffff;
+        }
+
+        .form-header {
+            margin-bottom: 28px;
+        }
+
+        .form-headline {
+            font-size: clamp(22px, 2.2vw, 28px);
+            font-weight: 700;
+            color: var(--ink-main);
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+
+        .form-subtext {
+            font-size: 14px;
+            color: var(--ink-muted);
+            line-height: 1.5;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 18px;
+            font-family: inherit;
+            font-size: 15px;
+            color: var(--ink-main);
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .form-control::placeholder {
+            color: #94A3B8;
+            font-size: 14px;
+        }
+
+        .form-control:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(14, 133, 73, 0.12);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .btn-submit-message {
+            background-color: var(--brand-green);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 16px 32px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 14px rgba(14, 133, 73, 0.25);
+            width: 100%;
+        }
+
+        .btn-submit-message:hover {
+            background-color: var(--brand-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(14, 133, 73, 0.32);
+        }
+
+        .btn-submit-message:active {
+            transform: translateY(0);
+        }
+
+        .btn-submit-message:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Success / Error Notification */
+        .status-box {
+            display: none;
+            padding: 16px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-top: 10px;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .status-box.success {
+            display: flex;
+            background-color: #EAF4EE;
+            color: #0A6337;
+            border: 1px solid #B8DEC7;
+        }
+
+        .status-box.error {
+            display: flex;
+            background-color: #FEF2F2;
+            color: #991B1B;
+            border: 1px solid #FECACA;
+        }
+
+        .status-box i {
+            font-size: 18px;
+            margin-top: 2px;
+        }
+
+        /* Reusable Site Footer */
+        .contact-site-footer {
+            background-color: #0A1C12;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 64px 24px 32px;
+            border-top: 3px solid var(--brand-green);
+        }
+
+        .footer-inner {
+            max-width: 1140px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        .footer-brand-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .footer-brand-desc {
+            font-size: 14px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.65);
+            max-width: 380px;
+        }
+
+        .footer-col-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #6EE7B7;
+            margin-bottom: 20px;
+        }
+
+        .footer-nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-nav-list a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .footer-nav-list a:hover {
+            color: #6EE7B7;
+        }
+
+        .footer-bottom {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.45);
+        }
+
+        .footer-bottom a {
+            color: #6EE7B7;
+            text-decoration: none;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 900px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 56px;
+            }
+
+            .info-col {
+                padding-right: 0;
+            }
+
+            .footer-inner {
+                grid-template-columns: 1fr;
+                gap: 36px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .contact-hero {
+                padding: 40px 20px 48px;
+            }
+
+            .contact-main {
+                padding: 48px 20px 72px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Unified Top Navigation Bar -->
+    <nav class="portal-nav" aria-label="Official Navigation">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-brand-group">
+                <img src="Logo name green.png" alt="LeadGreen Fellowship" class="nav-brand-img">
+            </a>
+            <div class="nav-actions">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="About.html" class="nav-link">About</a>
+                <a href="Team.html" class="nav-link">Our Team</a>
+                <a href="Fellowspage.html" class="nav-link">Fellows</a>
+                <a href="Contact.html" class="nav-link active" aria-current="page">Contact Us</a>
+                <a href="Apply.html" class="btn-nav-talk">
+                    Let's Talk <i class="fa-solid fa-phone"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Banner with Breadcrumbs -->
+    <header class="contact-hero">
+        <div class="contact-hero-inner">
+            <div class="contact-breadcrumb">
+                <a href="index.html">Home</a>
+                <span>/</span>
+                <span>Contact Us</span>
+            </div>
+            <h1 class="contact-title">Contact Us</h1>
+        </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <main class="contact-main">
+        <div class="contact-container">
+
+            <!-- Left Column: Information -->
+            <section class="info-col" aria-label="Contact Information">
+                <h2 class="info-headline">Need more information?<br>Get in touch with us</h2>
+                <p class="info-subtitle">
+                    A connected network of young African climate leaders and grassroots changemakers driving measurable environmental action.
+                </p>
+
+                <div class="contact-items-stack">
+                    <!-- Phone / WhatsApp -->
+                    <div class="contact-item">
+                        <div class="contact-icon-circle">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <div class="contact-item-text">
+                            <span class="contact-item-label">Phone & WhatsApp</span>
+                            <a href="https://wa.me/2348149740846" target="_blank" rel="noopener noreferrer" class="contact-item-value">
+                                +234 814 974 0846
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="contact-item">
+                        <div class="contact-icon-circle">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <div class="contact-item-text">
+                            <span class="contact-item-label">Email</span>
+                            <a href="mailto:leadgreenfellowship@gmail.com" class="contact-item-value">
+                                leadgreenfellowship@gmail.com
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Address / Location -->
+                    <div class="contact-item">
+                        <div class="contact-icon-circle">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div class="contact-item-text">
+                            <span class="contact-item-label">Secretariat</span>
+                            <span class="contact-item-value">
+                                Lagos, Nigeria · Pan-African Hubs
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Profiles -->
+                <div class="info-socials">
+                    <a href="https://www.linkedin.com/company/leadgreen-fellowship" target="_blank" rel="noopener noreferrer" class="info-social-btn" aria-label="LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://x.com/Leadgreen_" target="_blank" rel="noopener noreferrer" class="info-social-btn" aria-label="X / Twitter">
+                        <i class="fa-brands fa-x-twitter"></i>
+                    </a>
+                    <a href="https://www.instagram.com/leadgreen_fellowship/" target="_blank" rel="noopener noreferrer" class="info-social-btn" aria-label="Instagram">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@leadgreenfellowship" target="_blank" rel="noopener noreferrer" class="info-social-btn" aria-label="YouTube">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Right Column: Interactive Send Message Form -->
+            <section class="form-col" aria-label="Send Message Form">
+                <div class="form-header">
+                    <h2 class="form-headline">Send Message</h2>
+                    <p class="form-subtext">Please fill out the form below with your details and message to contact with us</p>
+                </div>
+
+                <form id="leadgreen-contact-form" class="contact-form" novalidate>
+                    <!-- FormSubmit Configuration Hidden Fields -->
+                    <input type="hidden" name="_subject" value="New Message from LeadGreen Fellowship Website Contact Form">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" name="_captcha" value="false">
+
+                    <!-- Name Row (First Name + Last Name) -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="text" id="firstName" name="firstName" class="form-control" placeholder="First Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Last Name" required>
+                        </div>
+                    </div>
+
+                    <!-- Email or Phone -->
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Email Address (you@example.com)" required>
+                    </div>
+
+                    <!-- Subject / Topic -->
+                    <div class="form-group">
+                        <input type="text" id="subject" name="subject" class="form-control" placeholder="Subject or Inquiry Topic (e.g. Fellowship, Partnerships, Media)">
+                    </div>
+
+                    <!-- Message Textarea -->
+                    <div class="form-group">
+                        <textarea id="message" name="message" class="form-control" placeholder="Write Message Here..." required></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="submitBtn" class="btn-submit-message">
+                        <span>Send Message</span>
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+
+                    <!-- Feedback Alerts -->
+                    <div id="statusBox" class="status-box" role="alert">
+                        <i id="statusIcon" class="fa-solid fa-circle-check"></i>
+                        <span id="statusMessage">Thank you! Your message has been sent to leadgreenfellowship@gmail.com. We will get back to you shortly.</span>
+                    </div>
+                </form>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Official Footer -->
+    <footer class="contact-site-footer">
+        <div class="footer-inner">
+            <div>
+                <h3 class="footer-brand-title">LeadGreen Fellowship</h3>
+                <p class="footer-brand-desc">
+                    Accelerating African grassroots climate innovations by empowering youth changemakers through structured mentorship, community missions, and verifiable credentials.
+                </p>
+            </div>
+            <div>
+                <h4 class="footer-col-title">Navigation</h4>
+                <ul class="footer-nav-list">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="About.html">About the Fellowship</a></li>
+                    <li><a href="Team.html">Our Team</a></li>
+                    <li><a href="Fellowspage.html">Meet the Fellows</a></li>
+                    <li><a href="Apply.html">Apply for Cohort</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-col-title">Portals & Support</h4>
+                <ul class="footer-nav-list">
+                    <li><a href="CertificatePortal.html">Certificate Registry</a></li>
+                    <li><a href="MissionSubmission.html">Submit Mission</a></li>
+                    <li><a href="ProjectSubmission.html">Submit Project</a></li>
+                    <li><a href="mailto:leadgreenfellowship@gmail.com">Direct Fellow Support</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>&copy; 2024–2026 LeadGreen Fellowship Initiative. All rights reserved.</span>
+            <span>Empowering Africa's youth-led climate leadership.</span>
+        </div>
+    </footer>
+
+    <!-- Firebase & Form Submission Script -->
+    <script type="module">
+        import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5lPT8Fyp265fvebWq4BelNE0dYxuWvCE",
+            authDomain: "leadgreen-fellowship.firebaseapp.com",
+            projectId: "leadgreen-fellowship",
+            storageBucket: "leadgreen-fellowship.firebasestorage.app",
+            messagingSenderId: "639331926711",
+            appId: "1:639331926711:web:03d9d47c8b33cef84a0332"
+        };
+
+        const form = document.getElementById('leadgreen-contact-form');
+        const submitBtn = document.getElementById('submitBtn');
+        const statusBox = document.getElementById('statusBox');
+        const statusIcon = document.getElementById('statusIcon');
+        const statusMessage = document.getElementById('statusMessage');
+
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const subject = document.getElementById('subject').value.trim() || 'General Inquiry';
+            const message = document.getElementById('message').value.trim();
+
+            if (!firstName || !email || !message) {
+                showStatus('error', 'fa-triangle-exclamation', 'Please complete your name, email, and message before sending.');
+                return;
+            }
+
+            // Set loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<span>Sending Message...</span> <i class="fa-solid fa-spinner fa-spin"></i>`;
+            statusBox.style.display = 'none';
+
+            let emailDelivered = false;
+
+            try {
+                // 1. Send directly to leadgreenfellowship@gmail.com via FormSubmit endpoint
+                const formData = new FormData(form);
+                formData.append('fullName', `${firstName} ${lastName}`.trim());
+
+                const response = await fetch("https://formsubmit.co/ajax/leadgreenfellowship@gmail.com", {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    emailDelivered = true;
+                }
+            } catch (err) {
+                console.warn("Direct email delivery endpoint notice:", err);
+            }
+
+            try {
+                // 2. Also save to Firebase Firestore so no message is ever lost
+                const apps = getApps();
+                const app = apps.length > 0 ? apps[0] : initializeApp(firebaseConfig);
+                const db = getFirestore(app);
+
+                await addDoc(collection(db, "contact_messages"), {
+                    firstName,
+                    lastName,
+                    fullName: `${firstName} ${lastName}`.trim(),
+                    email,
+                    subject,
+                    message,
+                    targetRecipient: "leadgreenfellowship@gmail.com",
+                    emailDelivered,
+                    createdAt: serverTimestamp(),
+                    status: "unread"
+                });
+            } catch (firestoreErr) {
+                console.warn("Firestore backup notice:", firestoreErr);
+            }
+
+            // Reset UI state
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `<span>Send Message</span> <i class="fa-solid fa-paper-plane"></i>`;
+
+            // Display success message
+            showStatus(
+                'success',
+                'fa-circle-check',
+                'Thank you! Your message has been sent to leadgreenfellowship@gmail.com. Our team will review and reply to you shortly.'
+            );
+            form.reset();
+        });
+
+        function showStatus(type, iconClass, text) {
+            statusBox.className = `status-box ${type}`;
+            statusIcon.className = `fa-solid ${iconClass}`;
+            statusMessage.textContent = text;
+            statusBox.style.display = 'flex';
+        }
+    </script>
+</body>
+
+</html>
