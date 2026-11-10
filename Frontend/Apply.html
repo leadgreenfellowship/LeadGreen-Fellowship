@@ -1047,6 +1047,34 @@
                         </div>
                     </div>
 
+                    <!-- Headshot Photo Upload -->
+                    <div class="form-group" style="margin-bottom: 28px;">
+                        <label class="form-label">
+                            Headshot Photo <span class="req">*</span>
+                            <span class="subtext">Upload a clear front-facing portrait photograph for your fellowship dossier and directory</span>
+                        </label>
+                        <div class="headshot-dropzone" id="headshotDropzone" style="border: 2px dashed var(--border); border-radius: 14px; padding: 20px 24px; background: var(--surface-subtle); display: flex; align-items: center; gap: 20px; flex-wrap: wrap; transition: all 0.2s ease;">
+                            <div class="headshot-avatar-preview" style="width: 76px; height: 76px; border-radius: 50%; background: #EAEFEA; border: 2px solid #CBD5E1; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                                <i class="fa-solid fa-user" id="headshotDefaultIcon" style="font-size: 28px; color: #94A3B8;"></i>
+                                <img id="headshotPreviewImg" src="" alt="Headshot Preview" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                            </div>
+                            <div style="flex: 1; min-width: 220px;">
+                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                                    <button type="button" class="btn-action" style="padding: 8px 18px; font-size: 13px; background: #FFFFFF; border: 1.5px solid var(--border); color: var(--ink); border-radius: 8px; cursor: pointer;" onclick="document.getElementById('headshotFile').click();">
+                                        <i class="fa-solid fa-cloud-arrow-up" style="color: var(--brand);"></i>
+                                        <span>Choose Photo</span>
+                                    </button>
+                                    <button type="button" id="btnRemoveHeadshot" style="display: none; padding: 8px 12px; font-size: 12.5px; background: #FEF2F2; border: 1px solid #FECACA; color: #DC2626; border-radius: 8px; cursor: pointer;">
+                                        <i class="fa-solid fa-trash-can"></i> Remove
+                                    </button>
+                                </div>
+                                <span id="headshotFileName" style="font-size: 12.5px; font-weight: 600; color: var(--brand-dark); display: block; margin-bottom: 3px;"></span>
+                                <span style="font-size: 12px; color: var(--ink-subtle);">JPG, PNG or WEBP (max 5MB). High-resolution portrait, face clearly visible.</span>
+                                <input type="file" id="headshotFile" accept="image/png, image/jpeg, image/webp" style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- 9. Languages -->
                     <div class="form-group">
                         <label class="form-label" for="languages">
@@ -1897,6 +1925,114 @@
             });
         });
 
+        // Headshot Photo Upload Controller
+        const headshotFileInput = document.getElementById('headshotFile');
+        const headshotPreviewImg = document.getElementById('headshotPreviewImg');
+        const headshotDefaultIcon = document.getElementById('headshotDefaultIcon');
+        const headshotFileName = document.getElementById('headshotFileName');
+        const btnRemoveHeadshot = document.getElementById('btnRemoveHeadshot');
+        const headshotDropzone = document.getElementById('headshotDropzone');
+        let headshotDataUrl = "";
+
+        function handleHeadshotFile(file) {
+            if (!file) return;
+            const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+            if (!validTypes.includes(file.type)) {
+                alert("Please select a valid image file (JPG, PNG, or WEBP).");
+                return;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                alert("Image size exceeds 5MB. Please choose a smaller photo.");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const maxDim = 600;
+                    let width = img.width;
+                    let height = img.height;
+                    if (width > maxDim || height > maxDim) {
+                        if (width > height) {
+                            height = Math.round((height * maxDim) / width);
+                            width = maxDim;
+                        } else {
+                            width = Math.round((width * maxDim) / height);
+                            height = maxDim;
+                        }
+                    }
+
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    headshotDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+                    headshotPreviewImg.src = headshotDataUrl;
+                    headshotPreviewImg.style.display = 'block';
+                    headshotDefaultIcon.style.display = 'none';
+                    headshotFileName.textContent = `${file.name} (${Math.round(file.size / 1024)} KB)`;
+                    btnRemoveHeadshot.style.display = 'inline-flex';
+                    headshotDropzone.style.borderColor = 'var(--brand)';
+                    headshotDropzone.style.background = '#F0FDF4';
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        if (headshotFileInput) {
+            headshotFileInput.addEventListener('change', (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    handleHeadshotFile(e.target.files[0]);
+                }
+            });
+        }
+
+        if (btnRemoveHeadshot) {
+            btnRemoveHeadshot.addEventListener('click', () => {
+                headshotDataUrl = "";
+                if (headshotFileInput) headshotFileInput.value = "";
+                headshotPreviewImg.src = "";
+                headshotPreviewImg.style.display = "none";
+                headshotDefaultIcon.style.display = "block";
+                headshotFileName.textContent = "";
+                btnRemoveHeadshot.style.display = "none";
+                headshotDropzone.style.borderColor = "var(--border)";
+                headshotDropzone.style.background = "var(--surface-subtle)";
+            });
+        }
+
+        if (headshotDropzone) {
+            ['dragenter', 'dragover'].forEach(eventName => {
+                headshotDropzone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    headshotDropzone.style.borderColor = 'var(--brand)';
+                    headshotDropzone.style.background = '#ECFDF5';
+                });
+            });
+            ['dragleave', 'drop'].forEach(eventName => {
+                headshotDropzone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (!headshotDataUrl) {
+                        headshotDropzone.style.borderColor = 'var(--border)';
+                        headshotDropzone.style.background = 'var(--surface-subtle)';
+                    }
+                });
+            });
+            headshotDropzone.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                if (dt && dt.files && dt.files.length) {
+                    handleHeadshotFile(dt.files[0]);
+                }
+            });
+        }
+
         function updateUI() {
             // Update active section
             sections.forEach(sec => sec.classList.remove('active'));
@@ -2014,6 +2150,27 @@
                 document.getElementById('languages').value = "English, Yoruba";
                 document.getElementById('referralSource').value = "LinkedIn";
 
+                // Headshot demo avatar
+                const sampleCanvas = document.createElement('canvas');
+                sampleCanvas.width = 160;
+                sampleCanvas.height = 160;
+                const sCtx = sampleCanvas.getContext('2d');
+                sCtx.fillStyle = '#0E8549';
+                sCtx.fillRect(0, 0, 160, 160);
+                sCtx.fillStyle = '#FFFFFF';
+                sCtx.font = 'bold 64px Inter, sans-serif';
+                sCtx.textAlign = 'center';
+                sCtx.textBaseline = 'middle';
+                sCtx.fillText('OA', 80, 85);
+                headshotDataUrl = sampleCanvas.toDataURL('image/jpeg', 0.9);
+                headshotPreviewImg.src = headshotDataUrl;
+                headshotPreviewImg.style.display = 'block';
+                headshotDefaultIcon.style.display = 'none';
+                headshotFileName.textContent = 'sample-avatar-seun.jpg (38 KB)';
+                btnRemoveHeadshot.style.display = 'inline-flex';
+                headshotDropzone.style.borderColor = 'var(--brand)';
+                headshotDropzone.style.background = '#F0FDF4';
+
                 // Step 2
                 const studentRadio = document.querySelector('input[name="currentStatus"][value="Student"]');
                 if (studentRadio) studentRadio.checked = true;
@@ -2112,6 +2269,16 @@
                 }
             }
 
+            // Step 1 check: headshot required
+            if (stepNum === 1) {
+                if (!headshotDataUrl) {
+                    alert("Please upload your headshot portrait photograph before continuing.");
+                    headshotDropzone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    headshotDropzone.style.borderColor = '#DC2626';
+                    return false;
+                }
+            }
+
             // Step 2 check: at least 1 skill in Q14
             if (stepNum === 2) {
                 const selectedSkills = currentSection.querySelectorAll('input[name="skillsOffered"]:checked');
@@ -2191,7 +2358,11 @@
                     checklistNoGuarantee: document.getElementById('chkGuarantee').checked,
 
                     // Step 1: Personal
+                    firstName: (document.getElementById('fullName').value.trim().split(' ')[0]) || 'Applicant',
+                    lastName: (document.getElementById('fullName').value.trim().split(' ').slice(1).join(' ')) || '',
                     fullName: document.getElementById('fullName').value.trim(),
+                    headshotUrl: headshotDataUrl || '',
+                    hasHeadshot: !!headshotDataUrl,
                     email: document.getElementById('email').value.trim(),
                     whatsapp: document.getElementById('whatsapp').value.trim(),
                     country: document.getElementById('country').value.trim(),
