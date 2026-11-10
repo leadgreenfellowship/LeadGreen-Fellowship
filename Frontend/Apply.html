@@ -4,526 +4,1017 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Cache-Control: Prevent browser caching of closed state -->
+    <!-- Cache-Control: Prevent browser from caching stale versions -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Applications Closed — LeadGreen Fellowship</title>
-    <meta name="description" content="Applications for the LeadGreen Fellowship are currently closed. Learn more about upcoming cohorts, eligibility requirements, and environmental initiatives.">
+    <title>Apply for Fellowship — LeadGreen</title>
+    <meta name="description" content="Apply to join the LeadGreen Fellowship cohort. Accelerate your environmental leadership and drive measurable climate action locally.">
     <link rel="canonical" href="https://leadgreenfellowship.com/Apply.html">
 
-    <!-- Favicon -->
+    <!-- Favicon for Google Search & Browsers -->
     <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 
-    <!-- Fonts & Icons -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- OpenGraph & Social Sharing Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://leadgreenfellowship.com/Apply.html">
+    <meta property="og:site_name" content="LeadGreen Fellowship">
+    <meta property="og:title" content="Apply for Fellowship — LeadGreen">
+    <meta property="og:description" content="Apply to join the LeadGreen Fellowship cohort. Accelerate your environmental leadership and drive measurable climate action locally.">
+    <meta property="og:image" content="https://leadgreenfellowship.com/og-image.png">
 
-    <!-- Shared Design System -->
-    <link rel="stylesheet" href="design-system.css?v=20261108">
-    <script src="portal-nav.js?v=20261108" defer></script>
-
-    <style>
-        :root {
-            --brand: #0E8549;
-            --brand-dark: #0A6337;
-            --brand-light: #EAF4EE;
-            --ink: #0D2B1D;
-            --ink-muted: #3D5A49;
-            --ink-subtle: #6B8071;
-            --ground: #F6F8F5;
-            --surface: #FFFFFF;
-            --border: #E2E8E2;
-            --warning-bg: #FEF3C7;
-            --warning-text: #92400E;
-            --warning-border: #FCD34D;
+    <!-- Schema.org BreadcrumbList for Sitelinks Hierarchy -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://leadgreenfellowship.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Apply",
+          "item": "https://leadgreenfellowship.com/Apply.html"
         }
-
+      ]
+    }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="global.css?v=20261023">
+    <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--ground);
-            color: var(--ink);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--ground, #f3f6f4);
+            color: var(--ink, #111827);
             display: flex;
             flex-direction: column;
+            min-height: 100dvh;
+            position: relative;
+            overflow-x: hidden;
         }
 
-        /* Top Navigation */
-        .portal-nav {
-            background: #FFFFFF;
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+        .apply-wrapper {
+            max-width: 1000px;
+            width: 100%;
+            margin: -60px auto 50px;
+            padding: 0 20px;
+            flex: 1;
+            position: relative;
+            z-index: 10;
         }
 
-        .nav-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 14px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .nav-brand-group {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            text-decoration: none;
-        }
-
-        .nav-brand-img {
-            height: 38px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        .nav-tag {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            color: var(--ink-muted);
-            background: #EAEFEA;
-            padding: 4px 10px;
-            border-radius: 999px;
-        }
-
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .nav-link {
-            font-size: 13.5px;
-            font-weight: 600;
-            color: var(--ink-muted);
-            text-decoration: none;
-            transition: color 0.15s ease;
-        }
-
-        .nav-link:hover {
-            color: var(--brand);
-        }
-
-        /* Hero Banner */
-        .closed-hero {
-            background: linear-gradient(135deg, #092316 0%, #0E3E26 60%, #155E38 100%);
-            color: #FFFFFF;
-            padding: 72px 24px 96px;
-            text-align: center;
+        /* Simple Hero */
+        .dark-hero {
+            background-color: #0c1824;
+            color: #ffffff;
+            padding: 80px 0 140px 0;
             position: relative;
             overflow: hidden;
         }
 
-        .closed-hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 800px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(14, 133, 73, 0.35) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .hero-inner {
-            max-width: 760px;
+        .hero-content {
+            max-width: 1120px;
             margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .status-badge {
-            display: inline-flex;
+            padding: 0 40px 10px;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 8px;
-            background: rgba(254, 243, 199, 0.16);
-            border: 1px solid rgba(252, 211, 77, 0.4);
-            color: #FDE68A;
-            padding: 6px 16px;
-            border-radius: 999px;
-            font-size: 12.5px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            margin-bottom: 22px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
         }
 
         .hero-title {
-            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-            font-size: 42px;
+            font-size: 56px;
             font-weight: 800;
-            letter-spacing: -1px;
-            line-height: 1.15;
-            margin-bottom: 18px;
+            margin-bottom: 15px;
+            color: #ffffff;
+            letter-spacing: -2px;
+            line-height: 1.1;
         }
 
-        .hero-title span {
-            color: #4ADE80;
-        }
-
-        .hero-description {
-            font-size: 17px;
-            line-height: 1.65;
-            color: #D1E5DA;
-            font-weight: 400;
-            margin-bottom: 0;
-        }
-
-        /* Main Container */
-        .content-wrap {
-            max-width: 900px;
-            margin: -50px auto 60px;
-            padding: 0 20px;
-            position: relative;
-            z-index: 2;
-            flex: 1;
-        }
-
-        .closed-card {
-            background: var(--surface);
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            box-shadow: 0 16px 40px rgba(13, 43, 29, 0.08);
-            padding: 48px 44px;
-        }
-
-        .cohort-status-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            margin-bottom: 36px;
-        }
-
-        .status-stat-card {
-            background: var(--ground);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .stat-label {
-            font-size: 11.5px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            color: var(--ink-subtle);
-            margin-bottom: 6px;
-        }
-
-        .stat-value {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--ink);
-        }
-
-        .stat-value.highlight {
-            color: var(--brand);
-        }
-
-        /* Preparation Section */
-        .prep-header {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--ink);
-            margin-bottom: 8px;
-        }
-
-        .prep-sub {
-            font-size: 14px;
-            color: var(--ink-muted);
-            margin-bottom: 24px;
-        }
-
-        .prep-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-bottom: 36px;
-        }
-
-        .prep-item {
-            background: #FFFFFF;
-            border: 1.5px solid var(--border);
-            border-radius: 14px;
-            padding: 20px 22px;
+        .breadcrumb {
+            font-size: 16px;
+            color: #94a3b8;
             display: flex;
-            align-items: flex-start;
-            gap: 16px;
-            transition: transform 0.15s ease, border-color 0.15s ease;
+            justify-content: center;
+            gap: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
-        .prep-item:hover {
-            border-color: var(--brand);
-            transform: translateY(-2px);
+        .breadcrumb a {
+            color: #34d399;
+            text-decoration: none;
+            transition: color 0.2s;
         }
 
-        .prep-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
-            background: var(--brand-light);
-            color: var(--brand);
+        .breadcrumb a:hover {
+            color: #6ee7b7;
+        }
+
+        /* Form Card - Simplification */
+        .form-card {
+            background: #ffffff;
+            border: 1px solid #eaeaec;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        /* Modern Stepper */
+        .stepper {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 18px;
+            justify-content: space-between;
+            padding: 24px 40px;
+            background: #ffffff;
+            position: relative;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none;
+        }
+
+        .stepper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .stepper::before {
+            content: '';
+            position: absolute;
+            top: 42px;
+            left: 50px;
+            right: 50px;
+            height: 2px;
+            background: #e5e7eb;
+            z-index: 0;
+        }
+
+        .step-item {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 120px;
             flex-shrink: 0;
         }
 
-        .prep-text h4 {
-            font-size: 14.5px;
+        .step-lbl {
+            font-size: 12px;
             font-weight: 700;
-            color: var(--ink);
-            margin-bottom: 4px;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
         }
 
-        .prep-text p {
-            font-size: 12.5px;
-            color: var(--ink-subtle);
-            line-height: 1.5;
-        }
-
-        /* Actions row */
-        .actions-box {
+        .step-circle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 2px solid #e5e7eb;
+            color: #9ca3af;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+            position: relative;
+        }
+
+        .step-item.active .step-circle {
+            border-color: var(--brand, #0E8549);
+            background: var(--brand, #0E8549);
+            color: #ffffff;
+            transform: scale(1.15);
+        }
+
+        .step-item.active .step-lbl {
+            color: var(--brand, #0E8549);
+        }
+
+        .step-item.completed .step-circle {
+            background: var(--brand, #0E8549);
+            border-color: var(--brand, #0E8549);
+            color: #ffffff;
+        }
+
+        .step-item.completed .step-circle::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 14px;
+        }
+
+        .step-item.completed .step-circle text {
+            display: none;
+        }
+
+        /* hide number */
+        .step-item.completed .step-lbl {
+            color: var(--brand, #0E8549);
+        }
+
+        .step-separator {
+            display: none !important;
+        }
+
+        .form-content {
+            padding: 40px;
+        }
+
+        /* Transitions */
+        .step-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .step-section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .step-section h3 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #111827;
+            margin-bottom: 25px;
+            letter-spacing: -0.5px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
             flex-wrap: wrap;
-            padding-top: 24px;
-            border-top: 1px solid var(--border);
         }
 
-        .btn-main {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--brand);
-            color: #FFFFFF;
-            font-size: 14px;
+        .form-group {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
             font-weight: 700;
-            padding: 13px 26px;
-            border-radius: 10px;
-            text-decoration: none;
-            transition: background 0.15s ease, transform 0.15s ease;
+            color: #4b5563;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .btn-main:hover {
-            background: var(--brand-dark);
-            transform: translateY(-1px);
+        .form-label span {
+            color: #ef4444;
         }
 
-        .btn-secondary {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: #FFFFFF;
-            color: var(--ink);
-            font-size: 14px;
-            font-weight: 700;
-            padding: 13px 24px;
-            border-radius: 10px;
-            border: 1.5px solid var(--border);
-            text-decoration: none;
-            transition: all 0.15s ease;
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid #eaeaec;
+            border-radius: 12px;
+            font-size: 15px;
+            color: #1f2937;
+            background-color: #f9fafb;
+            font-family: inherit;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
         }
 
-        .btn-secondary:hover {
-            border-color: var(--brand);
-            color: var(--brand);
-            background: var(--brand-light);
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
         }
 
-        /* Site Footer */
-        .site-footer {
-            background: var(--surface);
-            padding: 36px 32px 28px;
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: #9ca3af;
+        }
+
+        .form-input:hover,
+        .form-select:hover,
+        .form-textarea:hover {
+            background-color: #ffffff;
+            border-color: rgba(14, 133, 73, 0.4);
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: 2px solid var(--brand, #0E8549);
+            outline-offset: 1px;
+            border-color: var(--brand, #0E8549);
+            background-color: #ffffff;
+        }
+
+        .file-upload-wrapper {
+            position: relative;
+            border: 2px dashed rgba(14, 133, 73, 0.4);
+            border-radius: 16px;
+            padding: 40px 20px;
             text-align: center;
-            font-size: 12.5px;
-            color: var(--ink-subtle);
-            line-height: 1.7;
-            border-top: 1px solid var(--border);
-            margin-top: auto;
+            background-color: #f9fafb;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+            cursor: pointer;
         }
 
-        @media (max-width: 768px) {
+        .file-upload-wrapper:hover {
+            border-color: var(--brand, #0E8549);
+            background-color: #f0fdf4;
+            transform: translateY(-2px);
+        }
+
+        .file-upload-wrapper i {
+            font-size: 40px;
+            color: var(--brand, #0E8549);
+            margin-bottom: 15px;
+            transition: transform 0.3s;
+        }
+
+        .file-upload-wrapper:hover i {
+            transform: scale(1.1);
+        }
+
+        .file-upload-wrapper p {
+            margin: 0;
+            font-size: 15px;
+            color: #4b5563;
+        }
+
+        .file-upload-wrapper p span {
+            color: var(--brand, #0E8549);
+            font-weight: 700;
+        }
+
+        .form-file {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-name-display {
+            font-size: 14px;
+            color: var(--brand, #0E8549);
+            margin-top: 15px;
+            font-weight: 700;
+            display: none;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid #d1d5db;
+            background-color: #ffffff;
+            color: #374151;
+        }
+
+        .btn:hover {
+            background-color: #f9fafb;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: var(--brand, #0E8549);
+            border: none;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: var(--brand-dark, #0A6337);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 30px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 15px;
+            color: #4b5563;
+            margin-bottom: 16px;
+            cursor: pointer;
+            line-height: 1.5;
+        }
+
+        .checkbox-label input {
+            flex-shrink: 0;
+            margin-top: 4px;
+            width: 18px;
+            height: 18px;
+            accent-color: #10b981;
+        }
+
+        .checkbox-label span b {
+            color: #ef4444;
+        }
+
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 38px;
+            }
+
+            .stepper {
+                padding: 15px 20px;
+            }
+
+            .apply-wrapper {
+                margin: -40px auto 50px;
+                padding: 0 10px;
+            }
+        }
+
+        @media (max-width: 576px) {
             .hero-title {
                 font-size: 30px;
+                letter-spacing: -0.5px;
             }
 
-            .closed-card {
-                padding: 32px 22px;
+            .form-content {
+                padding: 25px 20px;
             }
 
-            .cohort-status-grid {
-                grid-template-columns: 1fr;
+            .apply-wrapper {
+                margin: -30px auto 40px;
+                padding: 0 12px;
             }
 
-            .prep-grid {
-                grid-template-columns: 1fr;
+            .apply-closed-card {
+                padding: 36px 18px !important;
             }
 
-            .actions-box {
+            .apply-closed-card .btn-solid-primary,
+            .apply-closed-card .btn-outline-primary {
+                width: 100% !important;
+            }
+
+            .form-actions {
                 flex-direction: column;
-                width: 100%;
+                gap: 15px;
             }
 
-            .btn-main,
-            .btn-secondary {
+            .btn {
                 width: 100%;
-                justify-content: center;
+                margin: 0 !important;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .hero-title {
+                font-size: 24px;
+            }
+
+            .apply-closed-card {
+                padding: 24px 14px !important;
+            }
+
+            .apply-wrapper {
+                padding: 0 8px;
             }
         }
     </style>
+    <!-- Unified LeadGreen Design System -->
+    <link rel="stylesheet" href="design-system.css?v=20261023">
+    <script src="portal-nav.js?v=20261023" defer></script>
 </head>
 
 <body>
-    <!-- Top Navigation Bar -->
+    <!-- Unified Top Navigation Bar -->
     <nav class="portal-nav" aria-label="Official Navigation">
         <div class="nav-inner">
             <a href="index.html" class="nav-brand-group">
                 <img src="Logo name green.png" alt="LeadGreen Fellowship" class="nav-brand-img">
-                <span class="nav-tag">Admissions Portal</span>
+                <span class="nav-registry-tag">Admissions Portal</span>
             </a>
             <div class="nav-actions">
                 <a href="index.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Home</a>
                 <a href="About.html" class="nav-link">About</a>
-                <a href="Fellowspage.html" class="nav-link">Fellows</a>
-                <a href="contact.html" class="nav-link">Contact</a>
+                <a href="Fellowspage.html" class="nav-link">Meet Fellows</a>
             </div>
         </div>
     </nav>
 
-    <!-- Header Banner -->
-    <header class="closed-hero">
-        <div class="hero-inner">
-            <div class="status-badge">
-                <i class="fa-solid fa-lock"></i>
-                <span>Applications Closed</span>
+    <!-- Emerald Editorial Hero Title -->
+    <div style="background-color: var(--brand-dark, #0A6337); color: #ffffff; padding: 60px 24px 100px; text-align: center;">
+        <div style="max-width: 900px; margin: 0 auto;">
+            <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.12); color: #EAF4EE; padding: 5px 14px; border-radius: var(--radius-pill, 9999px); font-size: 12px; font-weight: 600; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.2);">
+                <i class="fa-solid fa-seedling"></i>
+                <span>Fellowship Cohort Admissions</span>
             </div>
-            <h1 class="hero-title">
-                LeadGreen Fellowship<br>
-                <span>Cohort V In Preparation</span>
+            <h1 style="font-family: var(--font-display, 'Playfair Display', Georgia, serif); font-size: clamp(32px, 4vw, 48px); font-weight: 700; color: #FFFFFF; line-height: 1.15; margin-bottom: 12px;">
+                Join the Network of African Climate Leaders
             </h1>
-            <p class="hero-description">
-                The admissions portal for Cohort V is not open yet. Selection criteria, dates, and application details are currently being finalized by the Secretariat.
+            <p style="font-size: 16.5px; color: #D1E5DA; max-width: 650px; margin: 0 auto; line-height: 1.6;">
+                Equipping young African changemakers with the skills, funding opportunities, and global networks to accelerate measurable environmental solutions.
             </p>
         </div>
-    </header>
+    </div>
 
-    <!-- Main Card -->
-    <main class="content-wrap">
-        <div class="closed-card">
-
-            <!-- Quick Status Metrics -->
-            <div class="cohort-status-grid">
-                <div class="status-stat-card">
-                    <div class="stat-label">Next Fellowship</div>
-                    <div class="stat-value highlight">Cohort V (2026)</div>
-                </div>
-                <div class="status-stat-card">
-                    <div class="stat-label">Admissions Status</div>
-                    <div class="stat-value">Closed / In Preparation</div>
-                </div>
-                <div class="status-stat-card">
-                    <div class="stat-label">Target Audience</div>
-                    <div class="stat-value">Young African Leaders</div>
-                </div>
+    <main class="apply-wrapper" data-ui="true">
+        <div
+            class="apply-closed-card"
+            style="padding: 64px 36px; text-align: center; background: #FFFFFF; border-radius: var(--radius-lg, 16px); border: 1px solid var(--border, #D8E2D7); margin-bottom: 40px;">
+            <div style="width: 72px; height: 72px; border-radius: 50%; background: var(--amber-bg, #FDF9F0); color: var(--amber-button, #C87808); display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 20px; border: 1px solid var(--amber-border, #F0D7A7);">
+                <i class="fa-solid fa-clock-rotate-left"></i>
             </div>
-
-            <!-- Preparation Checklist -->
-            <div>
-                <h2 class="prep-header">What You Can Prepare in Advance</h2>
-                <p class="prep-sub">When applications officially open, prospective fellows will be asked to complete an 8-stage profile. You can start assembling these materials now:</p>
-
-                <div class="prep-grid">
-                    <div class="prep-item">
-                        <div class="prep-icon">
-                            <i class="fa-solid fa-camera"></i>
-                        </div>
-                        <div class="prep-text">
-                            <h4>Headshot Portrait Photo</h4>
-                            <p>A recent, clear front-facing portrait photograph for your fellowship dossier and directory.</p>
-                        </div>
-                    </div>
-
-                    <div class="prep-item">
-                        <div class="prep-icon">
-                            <i class="fa-solid fa-graduation-cap"></i>
-                        </div>
-                        <div class="prep-text">
-                            <h4>Education & Skill Strengths</h4>
-                            <p>Your academic background, core competencies, and specific technical skills you bring to a team.</p>
-                        </div>
-                    </div>
-
-                    <div class="prep-item">
-                        <div class="prep-icon">
-                            <i class="fa-solid fa-leaf"></i>
-                        </div>
-                        <div class="prep-text">
-                            <h4>Environmental Impact Track Record</h4>
-                            <p>Past community initiatives, tree planting, waste management, or renewable advocacy you contributed to.</p>
-                        </div>
-                    </div>
-
-                    <div class="prep-item">
-                        <div class="prep-icon">
-                            <i class="fa-solid fa-people-group"></i>
-                        </div>
-                        <div class="prep-text">
-                            <h4>Mission & Team Commitment</h4>
-                            <p>Availability to participate in 6–8 hours/week of live peer learning and execute a cross-border mission.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Actions Row -->
-            <div class="actions-box">
-                <a href="index.html" class="btn-main">
+            <h2 style="font-family: var(--font-display, 'Playfair Display', Georgia, serif); font-size: 28px; font-weight: 700; color: var(--ink, #0D2B1D); margin-bottom: 12px;">Applications Currently Closed</h2>
+            <p
+                style="color: var(--ink-muted, #3F574A); font-size: 15.5px; margin-bottom: 28px; max-width: 540px; margin-left: auto; margin-right: auto; line-height: 1.65;">
+                Thank you for your interest in the LeadGreen Fellowship. The application cycle for the current cohort is now closed as our Academic Council evaluates submitted dossiers. Announcements for the upcoming cycle will be shared soon.
+            </p>
+            <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+                <a href="index.html" class="btn-solid-primary" style="display: inline-flex; width: auto; padding: 12px 28px; text-decoration: none;">
                     <i class="fa-solid fa-house"></i>
-                    <span>Return to Homepage</span>
+                    <span>Return to Home</span>
                 </a>
-                <a href="Fellowspage.html" class="btn-secondary">
+                <a href="Fellowspage.html" class="btn-outline-primary" style="display: inline-flex; width: auto; padding: 12px 28px; text-decoration: none;">
                     <i class="fa-solid fa-users"></i>
-                    <span>Meet Past Fellows</span>
-                </a>
-                <a href="contact.html" class="btn-secondary">
-                    <i class="fa-solid fa-envelope"></i>
-                    <span>Contact Secretariat</span>
+                    <span>Explore Fellow Directory</span>
                 </a>
             </div>
+        </div>
+        <div class="form-card" style="display: none;">
 
+            <div class="stepper" id="stepper-nav">
+                <!-- Javascript builds stepper -->
+            </div>
+
+            <div class="form-content">
+                <!-- Validate native HTML5 form features -->
+                <form id="applyForm" onsubmit="return false;">
+
+                    <!-- Step 1: Personal Info -->
+                    <div class="step-section active" data-step="1">
+                        <h3 style="margin-bottom: 20px; font-size: 18px; color: #111;">Personal Information</h3>
+                        <div class="form-row">
+                            <div class="form-group"><label class="form-label">First Name <span>*</span></label><input
+                                    type="text" class="form-input" id="firstName" name="firstName" required></div>
+                            <div class="form-group"><label class="form-label">Last Name <span>*</span></label><input
+                                    type="text" class="form-input" id="lastName" name="lastName" required></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label class="form-label">Email Address <span>*</span></label><input
+                                    type="email" class="form-input" id="email" name="email" required></div>
+                            <div class="form-group"><label class="form-label">WhatsApp Number(with country code)
+                                    <span>*</span></label><input type="tel" class="form-input" id="whatsapp"
+                                    name="whatsapp" required></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label class="form-label">Country <span>*</span></label><input
+                                    type="text" class="form-input" id="country" name="country" required></div>
+                            <div class="form-group"><label class="form-label">City <span>*</span></label><input
+                                    type="text" class="form-input" id="city" name="city" required></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label class="form-label">Age <span>*</span></label><input
+                                    type="number" class="form-input" id="age" name="age" min="16" max="99" required>
+                            </div>
+                            <div class="form-group"><label class="form-label">Gender <span>*</span></label>
+                                <select class="form-select" id="gender" name="gender" required>
+                                    <option value="">Select gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                    <option value="Prefer not to say">Prefer not to say</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Headshot Upload <span>*</span></label>
+                            <div class="file-upload-wrapper" id="headshot-dropzone">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <p><span>Click to upload</span> or drag and drop</p>
+                                <p style="font-size: 12px; color: #9CA3AF; margin-top: 5px;">SVG, PNG, JPG or GIF (max.
+                                    5MB)</p>
+                                <input type="file" id="headshot-upload" name="headshotUpload" class="form-file"
+                                    accept="image/*" required>
+                                <div class="file-name-display" id="file-name-display"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Background -->
+                    <div class="step-section" data-step="2">
+                        <h3 style="margin-bottom: 20px; font-size: 18px; color: #111;">Background</h3>
+                        <div class="form-group">
+                            <label class="form-label">Education / Profession <span>*</span></label>
+                            <input type="text" class="form-input" id="education" name="education"
+                                placeholder="E.g. BSc Environmental Science or Marketing Manager" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Climate/Social Impact Experience <span>*</span></label>
+                            <textarea class="form-textarea" id="impactExperience" name="impactExperience"
+                                placeholder="Detail any past volunteer work, climate action, or social impact projects..."
+                                required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Leadership Experience</label>
+                            <textarea class="form-textarea" id="leadershipExperience" name="leadershipExperience"
+                                placeholder="Describe any past leadership roles..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Motivation -->
+                    <div class="step-section" data-step="3">
+                        <h3 style="margin-bottom: 20px; font-size: 18px; color: #111;">Motivation</h3>
+                        <div class="form-group">
+                            <label class="form-label">Why LeadGreen? <span>*</span></label>
+                            <textarea class="form-textarea" id="whyLeadGreen" name="whyLeadGreen"
+                                placeholder="Why do you want to join this fellowship?" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">What environmental problem do you care about?
+                                <span>*</span></label>
+                            <textarea class="form-textarea" id="environmentalProblem" name="environmentalProblem"
+                                required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">What change do you want to see? <span>*</span></label>
+                            <textarea class="form-textarea" id="desiredChange" name="desiredChange" required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Action & Leadership -->
+                    <div class="step-section" data-step="4">
+                        <h3 style="margin-bottom: 20px; font-size: 18px; color: #111;">Action & Leadership</h3>
+                        <div class="form-group">
+                            <label class="form-label">Preferred Climate Area <span>*</span></label>
+                            <select class="form-select" id="climateArea" name="climateArea" required>
+                                <option value="">Select an area</option>
+                                <option value="Energy">Clean Energy</option>
+                                <option value="Waste">Waste Management</option>
+                                <option value="Advocacy">Policy & Advocacy</option>
+                                <option value="Education">Climate Education</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Proposed Project / Action <span>*</span></label>
+                            <textarea class="form-textarea" id="proposedProject" name="proposedProject"
+                                placeholder="What impact project do you want to build during this fellowship?"
+                                required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Leadership / Teamwork</label>
+                            <textarea class="form-textarea" id="leadershipStyle" name="leadershipStyle"
+                                placeholder="How do you collaborate with others?"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Interest in Team Lead/Co-Lead? <span>*</span></label>
+                            <select class="form-select" id="leadInterest" name="leadInterest" required>
+                                <option value="">Select option</option>
+                                <option value="Yes">Yes, I want to lead</option>
+                                <option value="No">No, I prefer being a team member</option>
+                                <option value="Maybe">Open to it depending on the project</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Commitment & Access -->
+                    <div class="step-section" data-step="5">
+                        <h3 style="margin-bottom: 20px; font-size: 18px; color: #111;">Commitment & Access</h3>
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="commitHours" name="commitHours" required>
+                                <span>I commit to dedicating 5-10 Weekly Hours to the fellowship. <b>*</b></span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="commitDuration" name="commitDuration" required>
+                                <span>I commit to staying involved for the full 4-month duration. <b>*</b></span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="commitTech" name="commitTech" required>
+                                <span>I have reliable internet and device access to attend virtual sessions.
+                                    <b>*</b></span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="commitPlatforms" name="commitPlatforms" required>
+                                <span>I am able to access virtual platforms (Zoom, Google Meet, Slack, etc).
+                                    <b>*</b></span>
+                            </label>
+                        </div>
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label class="form-label">Provide a brief overview of your general weekly availability
+                                <span>*</span></label>
+                            <input type="text" class="form-input" id="availabilityOverview" name="availabilityOverview"
+                                placeholder="e.g. Weekends only, Weekday evenings" required>
+                        </div>
+                    </div>
+
+                    <!-- Step 6: Final -->
+                    <div class="step-section" data-step="6">
+                        <h3 style="margin-bottom: 20px; font-size: 18px; color: #111;">Final Confirmation</h3>
+
+                        <div class="form-group"
+                            style="padding: 15px; background: #f0fdf4; border-radius: 8px; border: 1px solid #10b981; margin-bottom: 30px;">
+                            <label class="form-label" style="font-size: 14px; margin-bottom: 12px;">Certificate Issuance
+                                <span>*</span></label>
+                            <p style="font-size: 13px; color: #4b5563; margin-bottom: 15px; line-height: 1.5;">
+                                Participants who successfully complete the fellowship will be eligible to receive a
+                                digital certificate. A small fee may apply for certificate issuance. Would you be
+                                willing to pay a small fee to receive your certificate?</p>
+
+                            <div style="display: flex; gap: 30px;">
+                                <label class="checkbox-label" style="margin-bottom: 0;">
+                                    <input type="radio" name="certificateFee" value="Yes" required
+                                        style="border-radius: 50%;">
+                                    <span>Yes</span>
+                                </label>
+                                <label class="checkbox-label" style="margin-bottom: 0;">
+                                    <input type="radio" name="certificateFee" value="No" required
+                                        style="border-radius: 50%;">
+                                    <span>No</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">How did you hear about us? <span>*</span></label>
+                            <select class="form-select" id="referralSource" name="referralSource" required>
+                                <option value="">Select Option</option>
+                                <option value="LinkedIn">LinkedIn</option>
+                                <option value="Twitter/X">Twitter/X</option>
+                                <option value="Friend/Alumni">Friend / Alumni</option>
+                                <option value="Search">Search Engine</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group"
+                            style="margin-top:25px; padding:20px; background:#F9FAFB; border:1px solid #E5E7EB; border-radius:8px;">
+                            <label class="form-label">Applicant Declaration <span>*</span></label>
+                            <label class="checkbox-label" style="margin-bottom:0;">
+                                <input type="checkbox" id="declarationSigned" name="declarationSigned" required>
+                                <span>I confirm that all the information provided above is accurate and entirely my own.
+                                    I understand that any false information may lead to disqualification from the
+                                    LeadGreen Fellowship.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                </form>
+
+                <div id="success-screen" style="display:none; padding:60px 40px; text-align:center;">
+                    <i class="fa-solid fa-circle-check" style="font-size:64px; color:#0e8549; margin-bottom:20px;"></i>
+                    <h2 style="font-size:24px; font-weight:700; color:#111827; margin-bottom:10px;">Application
+                        Submitted!</h2>
+                    <p style="color:#6B7280; font-size:15px; margin-bottom:30px;">Thank you for applying. We will review
+                        your submission and contact you shortly.</p>
+                </div>
+
+                <div class="form-actions" id="actions-row">
+                    <button type="button" class="btn" id="btn-back" style="visibility:hidden;"><i
+                            class="fa-solid fa-arrow-left"></i> Back</button>
+                    <button type="button" class="btn btn-primary" id="btn-next" style="margin-left: auto;">Proceed to
+                        Step 2 <i class="fa-solid fa-arrow-right"></i></button>
+                    <button type="button" class="btn btn-primary" id="btn-submit"
+                        style="display:none; margin-left: auto;">Submit Application <i
+                            class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
         </div>
     </main>
 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5lPT8Fyp265fvebWq4BelNE0dYxuWvCE",
+            authDomain: "leadgreen-fellowship.firebaseapp.com",
+            projectId: "leadgreen-fellowship",
+            storageBucket: "leadgreen-fellowship.firebasestorage.app",
+            messagingSenderId: "639331926711",
+            appId: "1:639331926711:web:03d9d47c8b33cef84a0332"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const steps = ['Personal Info', 'Background', 'Motivation', 'Action', 'Commitment', 'Final'];
+        const totalSteps = steps.length;
+        let currentStep = 1;
+        let draftId = null;
+
+        const stepperNav = document.getElementById('stepper-nav');
+
+        // Dynamically build the responsive stepper
+        let stepperHTML = '';
+        steps.forEach((lbl, idx) => {
+            const num = idx + 1;
+            stepperHTML += `
+                <div class="step-item ${num === 1 ? 'active' : ''}" id="nav-item-${num}">
+                    <div class="step-circle"><text>${num}</text></div> <span class="step-lbl" style="white-space: nowrap;">${lbl}</span>
+                </div>
+            `;
+        });
+        stepperNav.innerHTML = stepperHTML;
+
+        const sections = document.querySelectorAll('.step-section');
+        const btnNext = document.getElementById('btn-next');
+        const btnPrev = document.getElementById('btn-back');
+        const btnSubmit = document.getElementById('btn-submit');
+
+        function updateUI() {
+            sections.forEach(sec => sec.classList.remove('active'));
+            document.querySelector(`.step-section[data-step="${currentStep}"]`).classList.add('active');
+
+            for (let i = 1; i <= totalSteps; i++) {
+                const item = document.getElementById(`nav-item-${i}`);
+                item.classList.remove('active', 'completed');
+
+                if (i < currentStep) {
+                    item.classList.add('completed');
+                } else if (i === currentStep) {
+                    item.classList.add('active');
+                }
+            }
+
+            btnPrev.style.visibility = currentStep === 1 ? 'hidden' : 'visible';
+
+            if (currentStep === totalSteps) {
+                btnNext.style.display = 'none';
+                btnSubmit.style.display = 'inline-flex';
+            } else {
+                btnNext.style.display = 'inline-flex';
+                btnNext.innerHTML = `Proceed to Step ${currentStep + 1} <i class="fa-solid fa-arrow-right"></i>`;
+                btnSubmit.style.display = 'none';
+            }
+        }
+
+        const fileInput = document.getElementById('headshot-upload');
+        const fileNameDisplay = document.getElementById('file-name-display');
+        const dropzone = document.getElementById('headshot-dropzone');
+
+        if (fileInput) {
+            fileInput.addEventListener('change', function () {
+                if (this.files && this.files.length > 0) {
+                    fileNameDisplay.textContent = 'Selected: ' + this.files[0].name;
+                    fileNameDisplay.style.display = 'block';
+                    dropzone.style.borderColor = '#0e8549';
+                    dropzone.style.backgroundColor = '#F0FDF4';
+                }
+            });
+        }
+
+        btnNext.addEventListener('click', () => {
+            const currentSection = document.querySelector(`.step-section[data-step="${currentStep}"]`);
+            const inputs = currentSection.querySelectorAll('input, select, textarea');
+            let allValid = true;
+            for (let input of inputs) {
+                if (!input.checkValidity()) {
+                    input.reportValidity();
+                    allValid = false;
+                    break;
+                }
+            }
+            if (allValid && currentStep < totalSteps) {
+                // Auto-capture abandoned draft when completing Step 1
+                if (currentStep === 1 && !draftId) {
+                    const userEmail = document.getElementById('email')?.value;
+                    if (userEmail) {
+                        addDoc(collection(db, "abandoned_applications"), {
+                            firstName: document.getElementById('firstName')?.value || '',
+                            lastName: document.getElementById('lastName')?.value || '',
+                            email: userEmail,
+                            abandonedAt: serverTimestamp()
+                        }).then(docRef => draftId = docRef.id).catch(e => console.log("Draft error: ", e));
+                    }
+                }
+                currentStep++;
+                updateUI();
+                window.scrollTo(0, 0);
+            }
+        });
+        btnPrev.addEventListener('click', () => {
+            if (currentStep > 1) { currentStep--; updateUI(); window.scrollTo(0, 0); }
+        });
+
+        btnSubmit.addEventListener('click', async () => {
+            const activeForm = document.getElementById('applyForm');
+            if (activeForm.checkValidity()) {
+                const originalText = btnSubmit.innerHTML;
+                btnSubmit.innerHTML = 'Submitting... <i class="fa-solid fa-spinner fa-spin"></i>';
+                btnSubmit.disabled = true;
+
+                try {
+                    const payload = {
+                        firstName: document.getElementById('firstName').value,
+                        lastName: document.getElementById('lastName').value,
+                        email: document.getElementById('email').value,
+                        whatsapp: document.getElementById('whatsapp').value,
+                        country: document.getElementById('country').value,
+                        city: document.getElementById('city').value,
+                        age: document.getElementById('age').value,
+                        gender: document.getElementById('gender').value,
+                        education: document.getElementById('education').value,
+                        impactExperience: document.getElementById('impactExperience').value,
+                        leadershipExperience: document.getElementById('leadershipExperience').value,
+                        whyLeadGreen: document.getElementById('whyLeadGreen').value,
+                        environmentalProblem: document.getElementById('environmentalProblem').value,
+                        desiredChange: document.getElementById('desiredChange').value,
+                        climateArea: document.getElementById('climateArea').value,
+                        proposedProject: document.getElementById('proposedProject').value,
+                        leadershipStyle: document.getElementById('leadershipStyle').value,
+                        leadInterest: document.getElementById('leadInterest').value,
+                        availabilityOverview: document.getElementById('availabilityOverview').value,
+                        referralSource: document.getElementById('referralSource').value,
+                        certificateFee: document.querySelector('input[name="certificateFee"]:checked') ? document.querySelector('input[name="certificateFee"]:checked').value : "",
+
+                        commitHours: document.getElementById('commitHours').checked,
+                        commitDuration: document.getElementById('commitDuration').checked,
+                        commitTech: document.getElementById('commitTech').checked,
+                        commitPlatforms: document.getElementById('commitPlatforms').checked,
+                        declarationSigned: document.getElementById('declarationSigned').checked,
+
+                        submittedAt: serverTimestamp(),
+                        applicationStatus: "pending"
+                    };
+
+                    await addDoc(collection(db, "applications"), payload);
+
+                    if (draftId) {
+                        try {
+                            await deleteDoc(doc(db, "abandoned_applications", draftId));
+                        } catch (e) { console.log(e); }
+                    }
+
+                    window.location.href = 'AppicationReceived.html';
+                } catch (e) {
+                    alert("Error submitting application: " + e.message);
+                    btnSubmit.innerHTML = originalText;
+                    btnSubmit.disabled = false;
+                }
+            } else {
+                activeForm.reportValidity();
+            }
+        });
+
+        // Mobile Navigation Toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const headerRight = document.getElementById('navMenu');
+
+        if (menuToggle && headerRight) {
+            menuToggle.addEventListener('click', () => {
+                headerRight.classList.toggle('active');
+                const icon = menuToggle.querySelector('i');
+                if (headerRight.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                } else {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
+    </script>
+
     <!-- Site Footer -->
-    <footer class="site-footer">
+    <footer style="margin-top: 60px; background: var(--surface, #FFFFFF); padding: 36px 32px 24px; text-align: center; font-size: 12.5px; color: var(--ink-subtle, #6D8275); line-height: 1.7;">
         <p>&copy; 2024–2026 LeadGreen Fellowship Initiative. Conferred by the Academic & Advisory Council.</p>
-        <p>Championing youth-led environmental leadership and community resilience across Africa. Inquiries? <a href="mailto:leadgreenfellowship@gmail.com" style="color: var(--brand); text-decoration: none; font-weight: 600;">Contact Secretariat</a></p>
+        <p>Championing youth-led environmental leadership and community resilience across Africa. Need support? <a href="mailto:support@leadgreenfellowship.com" style="color: var(--brand, #0E8549); text-decoration: none; font-weight: 600;">Contact Fellow Support</a></p>
     </footer>
 </body>
 
