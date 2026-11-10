@@ -7,5 +7,5 @@ Allow: /
 User-agent: Googlebot-Image
 Allow: /
 
-Sitemap: https://leadgreenfellowship.com/sitemap.xml
+Sitemap: https://www.leadgreenfellowship.com/sitemap.xml
 
