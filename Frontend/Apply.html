@@ -238,6 +238,16 @@
             transition: all 0.2s ease;
         }
 
+        .step-item:hover .step-circle {
+            border-color: var(--brand);
+            transform: scale(1.08);
+            box-shadow: 0 0 0 3px rgba(14, 133, 73, 0.15);
+        }
+
+        .step-item:hover .step-lbl {
+            color: var(--brand);
+        }
+
         .step-circle {
             width: 34px;
             height: 34px;
@@ -750,19 +760,27 @@
     <main class="apply-wrapper">
         <div class="form-card">
 
-            <!-- Mobile Progress Bar -->
+            <!-- Mobile Progress Bar with Quick Nav -->
             <div class="mobile-progress-bar">
                 <div class="mobile-progress-header">
                     <span id="mobile-step-title">Step 1 of 8: Personal Info</span>
-                    <span id="mobile-step-percent">12%</span>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <button type="button" id="mobile-prev" style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 6px; padding: 3px 10px; cursor: pointer; color: #334155; font-size: 11.5px; font-weight: 700;" title="Previous Step">
+                            <i class="fa-solid fa-chevron-left"></i> Prev
+                        </button>
+                        <span id="mobile-step-percent" style="font-weight: 700; min-width: 32px; text-align: center;">12%</span>
+                        <button type="button" id="mobile-next" style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 6px; padding: 3px 10px; cursor: pointer; color: #334155; font-size: 11.5px; font-weight: 700;" title="Next Step">
+                            Next <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="mobile-progress-track">
                     <div class="mobile-progress-fill" id="mobile-progress-fill"></div>
                 </div>
             </div>
 
-            <!-- Desktop Modern Stepper -->
-            <div class="stepper" id="stepper-nav">
+            <!-- Desktop Modern Stepper (Directly Clickable) -->
+            <div class="stepper" id="stepper-nav" title="Click any step to jump directly to it">
                 <div class="step-item active" data-step="1">
                     <div class="step-circle">1</div>
                     <span class="step-lbl">Personal</span>
@@ -794,6 +812,19 @@
                 <div class="step-item" data-step="8">
                     <div class="step-circle">8</div>
                     <span class="step-lbl">Consent</span>
+                </div>
+            </div>
+
+            <!-- Reviewer Quick Navigation Toolbar -->
+            <div style="display: flex; justify-content: space-between; align-items: center; background: #F8FAFC; border-bottom: 1px solid var(--border); padding: 10px 24px; font-size: 13px; color: var(--ink-muted); flex-wrap: wrap; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-compass" style="color: var(--brand); font-size: 15px;"></i>
+                    <span><strong>Preview Mode:</strong> Click any step number above or use <em>"Next Step (Skip Validation)"</em> below to inspect all 8 steps without filling fields.</span>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" id="btn-fill-demo" style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 8px; padding: 5px 12px; font-size: 12px; font-weight: 600; color: #1E293B; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;" onmouseover="this.style.borderColor='#0E8549'; this.style.color='#0E8549'" onmouseout="this.style.borderColor='#CBD5E1'; this.style.color='#1E293B'">
+                        <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--brand);"></i> Fill Sample Answers
+                    </button>
                 </div>
             </div>
 
@@ -1649,14 +1680,20 @@
                         <i class="fa-solid fa-arrow-left"></i>
                         <span>Back</span>
                     </button>
-                    <button type="button" class="btn-app btn-next" id="btn-next">
-                        <span>Save & Continue to Step 2</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                    <button type="button" class="btn-app btn-submit" id="btn-submit" style="display:none;">
-                        <span>Submit Cohort V Application</span>
-                        <i class="fa-solid fa-paper-plane"></i>
-                    </button>
+                    <div style="display: flex; gap: 12px; margin-left: auto; flex-wrap: wrap;">
+                        <button type="button" class="btn-app btn-skip" id="btn-skip" title="Preview next step without filling current fields" style="background: #F1F5F9; color: var(--brand-dark); border: 1.5px dashed var(--brand); font-weight: 600;">
+                            <span>Next Step (Skip Validation)</span>
+                            <i class="fa-solid fa-forward-step"></i>
+                        </button>
+                        <button type="button" class="btn-app btn-next" id="btn-next">
+                            <span>Save & Continue to Step 2</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                        <button type="button" class="btn-app btn-submit" id="btn-submit" style="display:none;">
+                            <span>Submit Cohort V Application</span>
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
                 </div>
 
             </div>
@@ -1704,6 +1741,10 @@
         const btnNext = document.getElementById('btn-next');
         const btnPrev = document.getElementById('btn-back');
         const btnSubmit = document.getElementById('btn-submit');
+        const btnSkip = document.getElementById('btn-skip');
+        const btnFillDemo = document.getElementById('btn-fill-demo');
+        const mobilePrev = document.getElementById('mobile-prev');
+        const mobileNext = document.getElementById('mobile-next');
         const mobileStepTitle = document.getElementById('mobile-step-title');
         const mobileStepPercent = document.getElementById('mobile-step-percent');
         const mobileProgressFill = document.getElementById('mobile-progress-fill');
@@ -1760,9 +1801,22 @@
             mobileStepPercent.textContent = `${percent}%`;
             mobileProgressFill.style.width = `${percent}%`;
 
-            // Buttons
+            // Back button
             btnPrev.style.visibility = currentStep === 1 ? 'hidden' : 'visible';
+            if (mobilePrev) mobilePrev.style.visibility = currentStep === 1 ? 'hidden' : 'visible';
 
+            // Skip button & Mobile Next
+            if (btnSkip) {
+                btnSkip.style.display = currentStep === totalSteps ? 'none' : 'inline-flex';
+                if (currentStep < totalSteps) {
+                    btnSkip.innerHTML = `<span>Skip to Step ${currentStep + 1}</span> <i class="fa-solid fa-forward-step"></i>`;
+                }
+            }
+            if (mobileNext) {
+                mobileNext.style.display = currentStep === totalSteps ? 'none' : 'inline-block';
+            }
+
+            // Next / Submit buttons
             if (currentStep === totalSteps) {
                 btnNext.style.display = 'none';
                 btnSubmit.style.display = 'inline-flex';
@@ -1773,11 +1827,11 @@
             }
         }
 
-        // Stepper click allows jumping back to previously completed steps
+        // Stepper click allows jumping directly to ANY step (forward or backward) for effortless review!
         stepperItems.forEach(item => {
             item.addEventListener('click', () => {
                 const targetStep = parseInt(item.getAttribute('data-step'), 10);
-                if (targetStep < currentStep) {
+                if (targetStep >= 1 && targetStep <= totalSteps) {
                     currentStep = targetStep;
                     updateUI();
                     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1785,7 +1839,126 @@
             });
         });
 
-        // Validate current section
+        // Skip to Next Step without filling fields
+        if (btnSkip) {
+            btnSkip.addEventListener('click', () => {
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    updateUI();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        }
+
+        // Mobile Prev & Next Buttons
+        if (mobilePrev) {
+            mobilePrev.addEventListener('click', () => {
+                if (currentStep > 1) {
+                    currentStep--;
+                    updateUI();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        }
+        if (mobileNext) {
+            mobileNext.addEventListener('click', () => {
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    updateUI();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        }
+
+        // Auto-Fill Sample Answers for quick review
+        if (btnFillDemo) {
+            btnFillDemo.addEventListener('click', () => {
+                // Checklist
+                document.getElementById('chkProgram').checked = true;
+                document.getElementById('chkAccurate').checked = true;
+                document.getElementById('chkMission').checked = true;
+                document.getElementById('chkGuarantee').checked = true;
+
+                // Step 1
+                document.getElementById('fullName').value = "Oluwaseun Adeleke";
+                document.getElementById('email').value = "seun.adeleke@example.com";
+                document.getElementById('whatsapp').value = "+234 814 974 0846";
+                document.getElementById('country').value = "Nigeria";
+                document.getElementById('city').value = "Lagos";
+                document.getElementById('age').value = 24;
+                document.getElementById('languages').value = "English, Yoruba";
+                document.getElementById('referralSource').value = "LinkedIn";
+
+                // Step 2
+                const studentRadio = document.querySelector('input[name="currentStatus"][value="Student"]');
+                if (studentRadio) studentRadio.checked = true;
+                document.getElementById('fieldOfStudy').value = "Environmental Management & Sustainability";
+                const sampleSkills = ["Research and data analysis", "Writing / storytelling / communication", "Community mobilisation"];
+                document.querySelectorAll('input[name="skillsOffered"]').forEach(cb => {
+                    cb.checked = sampleSkills.includes(cb.value);
+                });
+                skillOfferCounter.textContent = `${sampleSkills.length} / 5 selected`;
+                document.getElementById('skillToStrengthen').value = "Climate finance and grant writing";
+
+                // Step 3
+                const prevYes = document.querySelector('input[name="previousParticipation"][value="Yes"]');
+                if (prevYes) prevYes.checked = true;
+                document.getElementById('projectContribution').value = "Coordinated a campus recycling drive collecting over 1.2 tonnes of plastic waste and training 150 student volunteers.";
+                document.getElementById('organizedActivity').value = "Organized a community mangrove restoration tree planting day with 40 local youth volunteers.";
+                document.getElementById('actionPlan30Days').value = "1. Map local open dump sites\n2. Partner with 2 neighbourhood youth groups\n3. Launch a community cleanup & sorting station";
+                const sampleEnv = ["Waste management and circular economy", "Climate education and communication", "Biodiversity and conservation"];
+                document.querySelectorAll('input[name="environmentalInterests"]').forEach(cb => {
+                    cb.checked = sampleEnv.includes(cb.value);
+                });
+
+                // Step 4
+                document.getElementById('initiativeExample').value = "Noticed severe erosion near the community school and mobilized local materials to construct water runoff channels before rainfall season.";
+                const roleRadio = document.querySelector('input[name="teamRole"][value="Team leader / coordinator"]');
+                if (roleRadio) roleRadio.checked = true;
+                document.getElementById('peerContribution').value = "Field coordination methods, stakeholder engagement techniques, and data logging.";
+                const leadMission = document.querySelector('input[name="leadMissionInterest"][value="Yes"]');
+                if (leadMission) leadMission.checked = true;
+
+                // Step 5
+                document.getElementById('whyCohortV').value = "To connect with high-impact changemakers across Africa and structure community-led climate interventions with measurable metrics.";
+                document.getElementById('skillsToDevelop').value = "1. Impact measurement\n2. Policy advocacy\n3. Cross-border project collaboration";
+                document.getElementById('successCriteria').value = "Executing an impactful team mission with verified community benefits and publishing an impact report.";
+                document.getElementById('fiveYearVision').value = "Leading a Pan-African circular economy social enterprise creating green jobs for underserved youth.";
+
+                // Step 6
+                const hoursRadio = document.querySelector('input[name="weeklyHours"][value="6–8 hours"]');
+                if (hoursRadio) hoursRadio.checked = true;
+                const commitRadio = document.querySelector('input[name="commitFullDuration"][value="Yes"]');
+                if (commitRadio) commitRadio.checked = true;
+                const collabRadio = document.querySelector('input[name="crossBorderCollab"][value="Yes"]');
+                if (collabRadio) collabRadio.checked = true;
+                const missionRadio = document.querySelector('input[name="participateMission"][value="Yes"]');
+                if (missionRadio) missionRadio.checked = true;
+
+                // Step 7
+                const sampleCollab = ["Academic / scientific research", "Data collection", "Community mobilisation", "Waste management / circular economy"];
+                document.querySelectorAll('input[name="collabSkills"]').forEach(cb => {
+                    cb.checked = sampleCollab.includes(cb.value);
+                });
+                document.getElementById('strongestSkills').value = "1. Community mobilisation — Advanced\n2. Project management — Intermediate\n3. Environmental research — Intermediate";
+                document.getElementById('toolsAndMethods').value = "Excel, Google Forms, QGIS basics, Canva, Trello";
+                const crossDisc = document.querySelector('input[name="crossDisciplineWillingness"][value="Yes"]');
+                if (crossDisc) crossDisc.checked = true;
+                const sharedOut = document.querySelector('input[name="sharedOutputWillingness"][value="Yes"]');
+                if (sharedOut) sharedOut.checked = true;
+
+                // Step 8
+                document.getElementById('declarationConsent').checked = true;
+                const alumniYes = document.querySelector('input[name="alumniContactConsent"][value="Yes, I agree"]');
+                if (alumniYes) alumniYes.checked = true;
+                const pubYes = document.querySelector('input[name="publicDirectoryConsent"][value="Yes, I agree"]');
+                if (pubYes) pubYes.checked = true;
+
+                alert("Sample application answers populated! You can now navigate through all 8 steps freely.");
+            });
+        }
+
+        // Validate current section (used for actual submission)
         function validateStep(stepNum) {
             const currentSection = document.querySelector(`.step-section[data-step="${stepNum}"]`);
             if (!currentSection) return true;
