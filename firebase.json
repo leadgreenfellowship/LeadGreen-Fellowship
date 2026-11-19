@@ -14,15 +14,6 @@
                 "**/*Dev*",
                 "**/*draft*"
             ]
-        },
-        {
-            "target": "missions",
-            "public": "Frontend/MissionSubmission",
-            "ignore": [
-                "firebase.json",
-                "**/.*",
-                "**/node_modules/**"
-            ]
         }
     ]
 }

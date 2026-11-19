@@ -7,9 +7,6 @@
       "hosting": {
         "fellowship": [
           "leadgreen-fellowship"
-        ],
-        "missions": [
-          "leadgreen-missions"
         ]
       }
     }

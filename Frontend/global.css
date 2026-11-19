@@ -291,7 +291,8 @@ header {
         display: block;
         width: 100%;
         border-bottom: 1px solid #f0f0f0;
-        padding-bottom: 10px;
+        /* Comfortable 44px+ touch target on mobile */
+        padding: 13px 4px 13px 0;
     }
 
     .btn-apply-main {
@@ -420,17 +421,201 @@ html, body {
     overflow-x: hidden;
 }
 
+body.nav-locked {
+    overflow: hidden !important;
+    touch-action: none;
+}
+
 /* Global backdrop for mobile menu */
 .nav-backdrop-overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     z-index: 999;
+    opacity: 0;
+    transition: opacity 0.25s ease;
 }
 
 .nav-backdrop-overlay.active {
     display: block;
-}
+    opacity: 1;
+}
+
+/* ==========================================================================
+   Redesigned Unified Footer Styles (Fully Responsive)
+   ========================================================================== */
+.site-footer-redesign {
+    background-color: #0c1824;
+    color: #ffffff;
+    padding: 72px 5% 36px;
+    font-family: 'Inter', sans-serif;
+    border-top: 4px solid var(--primary-green, #0e8549);
+    position: relative;
+    z-index: 10;
+}
+
+.footer-inner-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 48px;
+}
+
+.footer-brand-col {
+    flex: 1 1 320px;
+    max-width: 480px;
+}
+
+.footer-brand-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: #6EE7B7;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.footer-brand-tagline {
+    font-size: 13px;
+    font-weight: 700;
+    color: #34D399;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    letter-spacing: 2px;
+}
+
+.footer-brand-desc {
+    color: #9CA3AF;
+    font-size: 15px;
+    line-height: 1.7;
+    max-width: 380px;
+}
+
+.footer-nav-col {
+    flex: 1 1 280px;
+    max-width: 420px;
+}
+
+.footer-nav-heading {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 22px;
+    letter-spacing: 0.5px;
+}
+
+.footer-nav-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px 20px;
+}
+
+.footer-nav-link {
+    color: #D1D5DB;
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.2s ease, transform 0.15s ease;
+    display: inline-block;
+    /* Comfortable touch target */
+    padding: 10px 0;
+    min-height: 44px;
+    box-sizing: border-box;
+}
+
+.footer-nav-link:hover {
+    color: #6EE7B7;
+    transform: translateX(2px);
+}
+
+.footer-bottom-bar {
+    max-width: 1200px;
+    margin: 50px auto 0;
+    padding-top: 28px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 18px;
+}
+
+.footer-copyright {
+    color: #9CA3AF;
+    font-size: 14px;
+}
+
+.footer-socials {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+}
+
+.footer-social-btn {
+    color: #9CA3AF;
+    font-size: 18px;
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: color 0.2s, background 0.2s, transform 0.2s;
+}
+
+.footer-social-btn:hover {
+    color: #6EE7B7;
+    background: rgba(110, 231, 183, 0.15);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .site-footer-redesign {
+        padding: 50px 20px 32px;
+    }
+
+    .footer-inner-wrap {
+        flex-direction: column;
+        gap: 36px;
+    }
+
+    .footer-brand-col,
+    .footer-nav-col {
+        max-width: 100%;
+        flex: 1 1 100%;
+    }
+
+    .footer-bottom-bar {
+        margin-top: 36px;
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+    }
+
+    .footer-socials {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 440px) {
+    .site-footer-redesign {
+        padding: 40px 16px 24px;
+    }
+
+    .footer-nav-links {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .footer-brand-title {
+        font-size: 22px;
+    }
+}
+

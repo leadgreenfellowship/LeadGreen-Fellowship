@@ -271,7 +271,8 @@
         .lang-btn {
             border: none;
             background: transparent;
-            padding: 6px 14px;
+            padding: 10px 14px;
+            min-height: 40px;
             font-size: 13px;
             font-weight: 600;
             color: var(--ink-muted);
@@ -667,7 +668,7 @@
 
         .cred-label {
             display: block;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.8px;
@@ -1057,8 +1058,8 @@
             .lang-btn {
                 flex: 1;
                 text-align: center;
-                padding: 5px 6px;
-                font-size: 11px;
+                padding: 10px 6px;
+                font-size: 12px;
             }
 
             .panel-card {
@@ -1554,15 +1555,9 @@
                 console.warn("Could not bind real-time onSnapshot listeners:", err);
             }
 
-            // Initial fetch to prime state immediately
-            try {
-                const layoutSnap = await getDoc(doc(db, "certificate_payments", "GLOBAL_LAYOUT"));
-                if (layoutSnap.exists()) {
-                    applyLayoutData(layoutSnap.data(), null);
-                }
-            } catch (e) {
-                console.warn("Initial GLOBAL_LAYOUT fetch error:", e);
-            }
+            // NOTE: Template + font preloading intentionally runs BEFORE any Firestore
+            // await below, so a slow/hanging Firestore request can never block the
+            // live certificate preview from rendering.
 
             // Preload The Seasons Light font arrayBuffer for official PDF export
             try {
@@ -1595,7 +1590,9 @@
                 const enSrc = window.appState.customTemplateEn || 'certificate_template_en.png';
                 const frSrc = window.appState.customTemplateFr || 'certificate_template.png';
                 Promise.all([
-                    loadImgOrPdf(enSrc).catch(() => loadImg('certificate_template_en.png').catch(() => null)),
+                    loadImgOrPdf(enSrc)
+                        .catch(() => loadImgOrPdf('certificate_template_en.pdf'))
+                        .catch(() => loadImg('certificate_template_en.png').catch(() => null)),
                     loadImgOrPdf(frSrc).catch(() => loadImg('certificate_template.png').catch(() => null))
                 ]).then(([enImg, frImg]) => {
                     if (enImg) window.appState.templateImageEn = enImg;
@@ -1605,6 +1602,15 @@
             } catch (err) {
                 console.error("Error preloading template assets:", err);
             }
+
+            // Prime admin layout state without blocking rendering on Firestore
+            getDoc(doc(db, "certificate_payments", "GLOBAL_LAYOUT"))
+                .then((layoutSnap) => {
+                    if (layoutSnap.exists()) {
+                        applyLayoutData(layoutSnap.data(), null);
+                    }
+                })
+                .catch((e) => console.warn("Initial GLOBAL_LAYOUT fetch error:", e));
         }
 
         preloadTemplates();
@@ -2131,12 +2137,17 @@
                 try {
                     template = await loadImgOrPdf(src);
                 } catch (e) {
-                    console.warn("Could not load preferred template, falling back to PNG:", e);
-                    const fallbackSrc = isEnglish ? 'certificate_template_en.png' : 'certificate_template.png';
+                    console.warn("Could not load preferred template, falling back to defaults:", e);
                     try {
-                        template = await loadImg(fallbackSrc);
+                        template = isEnglish
+                            ? await loadImgOrPdf('certificate_template_en.pdf')
+                            : await loadImg('certificate_template.png');
                     } catch (err2) {
-                        template = null;
+                        try {
+                            template = await loadImg(isEnglish ? 'certificate_template_en.png' : 'certificate_template.png');
+                        } catch (err3) {
+                            template = null;
+                        }
                     }
                 }
                 if (isEnglish) state.templateImageEn = template;

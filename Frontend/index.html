@@ -102,13 +102,6 @@
             },
             {
               "@type": "WebPage",
-              "@id": "https://leadgreenfellowship.com/MissionSubmission.html",
-              "name": "Submit Mission",
-              "url": "https://leadgreenfellowship.com/MissionSubmission.html",
-              "description": "Submit monthly climate fellowship mission milestones and evidence."
-            },
-            {
-              "@type": "WebPage",
               "@id": "https://leadgreenfellowship.com/ProjectSubmission.html",
               "name": "Submit Project",
               "url": "https://leadgreenfellowship.com/ProjectSubmission.html",
@@ -152,13 +145,6 @@
             {
               "@type": "SiteNavigationElement",
               "position": 5,
-              "name": "Submit Mission",
-              "description": "Fellow milestone and monthly mission submission portal.",
-              "url": "https://leadgreenfellowship.com/MissionSubmission.html"
-            },
-            {
-              "@type": "SiteNavigationElement",
-              "position": 6,
               "name": "Submit Project",
               "description": "Fellowship capstone project and evidence submission portal.",
               "url": "https://leadgreenfellowship.com/ProjectSubmission.html"
@@ -183,7 +169,7 @@
             position: relative;
             width: 100%;
             height: 740px;
-            background-image: url('Young2.png');
+            background-image: url('Young2-hero.jpg');
             background-size: cover;
             background-position: center 20%;
             display: flex;
@@ -254,27 +240,34 @@
 
         @media (max-width: 576px) {
             .hero {
-                height: 640px;
+                min-height: 520px;
+                height: auto;
                 background-position: 60% 15%;
+                padding-top: 60px;
             }
 
             .hero-card {
                 width: 100%;
-                /* Full width on mobile */
-                padding: 35px 25px;
+                padding: 32px 20px;
                 background: linear-gradient(135deg, var(--primary-green) 0%, rgba(19, 138, 86, 0.95) 100%);
                 box-shadow: 0 -10px 20px rgba(0, 0, 0, 0.1);
             }
 
             .hero-headline {
-                font-size: 32px;
+                font-size: clamp(26px, 7.5vw, 34px);
                 letter-spacing: -0.5px;
-                line-height: 1.25;
+                line-height: 1.22;
             }
 
             .hero-tags {
                 font-size: 11px;
                 gap: 10px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .hero-card {
+                padding: 24px 16px;
             }
         }
 
@@ -379,6 +372,28 @@
 
             .info-stat {
                 font-size: 28px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .info-section {
+                padding: 44px 5%;
+            }
+
+            .info-headline {
+                font-size: 27px;
+                line-height: 1.25;
+                margin-bottom: 20px;
+            }
+
+            .info-right {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .info-stat {
+                font-size: 21px;
+                line-height: 1.4;
             }
         }
 
@@ -493,6 +508,15 @@
         }
 
         @media (max-width: 540px) {
+            .impact-section {
+                padding: 48px 5% 52px;
+            }
+
+            .impact-desc {
+                font-size: 14.5px;
+                margin-bottom: 30px;
+            }
+
             .impact-grid {
                 grid-template-columns: 1fr;
                 gap: 16px;
@@ -500,11 +524,15 @@
             }
 
             .impact-card {
-                padding: 32px 20px 28px;
+                padding: 26px 18px 22px;
             }
 
             .impact-headline {
-                font-size: 30px;
+                font-size: 28px;
+            }
+
+            .impact-number {
+                font-size: 34px;
             }
         }
 
@@ -678,9 +706,32 @@
         }
 
         @media (max-width: 640px) {
+            .fellows-video-section {
+                padding: 48px 5%;
+            }
+
+            .fellows-video-headline {
+                font-size: clamp(24px, 6vw, 30px);
+            }
+
+            .fellows-video-desc {
+                font-size: 14.5px;
+                margin-bottom: 28px;
+            }
+
             .fellows-video-grid {
                 grid-template-columns: 1fr;
                 max-width: 380px;
+            }
+
+            .fellows-play-btn {
+                width: 52px;
+                height: 52px;
+            }
+
+            .fellows-play-btn svg {
+                width: 20px;
+                height: 20px;
             }
         }
 
@@ -789,13 +840,33 @@
         }
 
         @media (max-width: 576px) {
+            .experience-section {
+                padding: 50px 5%;
+                margin: 24px 0;
+            }
+
             .experience-headline {
-                font-size: 34px;
+                font-size: clamp(26px, 7vw, 32px);
+                letter-spacing: -0.5px;
+            }
+
+            .experience-desc {
+                font-size: 15px;
+                margin-bottom: 32px;
             }
 
             .experience-card {
-                padding: 35px 25px;
-                border-radius: 16px;
+                padding: 26px 18px;
+                border-radius: 14px;
+            }
+
+            .experience-card-title {
+                font-size: 19px;
+                margin-bottom: 12px;
+            }
+
+            .experience-card-text {
+                font-size: 14.5px;
             }
         }
 
@@ -943,9 +1014,13 @@
 
         /* Responsive Testimonial */
         @media (max-width: 900px) {
+            .testimonial-section {
+                padding: 50px 5%;
+            }
+
             .testimo-container {
                 flex-direction: column;
-                gap: 30px;
+                gap: 24px;
                 align-items: stretch;
             }
 
@@ -955,8 +1030,9 @@
             }
 
             .testimo-image {
-                height: 450px;
+                height: 280px;
                 width: 100%;
+                border-radius: 10px;
             }
 
             .testimo-quote-block {
@@ -967,13 +1043,47 @@
 
             .quote-icon {
                 display: none;
-                /* Remove quote icon totally on mobile */
             }
 
             .quote-text {
-                font-size: 21px;
-                /* Improved body sizing to standards */
-                line-height: 1.5;
+                font-size: 20px;
+                line-height: 1.45;
+            }
+
+            .testimo-body {
+                font-size: 15px;
+                margin-bottom: 24px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .testimonial-section {
+                padding: 40px 5%;
+            }
+
+            .testimo-image {
+                height: 220px;
+            }
+
+            .quote-text {
+                font-size: 17.5px;
+            }
+
+            .testimo-cta {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn-apply-now-large,
+            .link-more-stories {
+                width: 100%;
+                text-align: center;
+                box-sizing: border-box;
+            }
+
+            .slideshow-prev,
+            .slideshow-next {
+                display: none !important;
             }
         }
 
@@ -1239,28 +1349,22 @@
             box-shadow: 0 6px 20px rgba(19, 138, 86, 0.5);
         }
 
-        @media (max-width: 900px) {
+        @media (max-width: 992px) {
             .cohorts-container {
                 flex-direction: column;
                 text-align: center;
-                gap: 50px;
+                gap: 40px;
             }
 
             .cohorts-text-col {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                text-align: center;
             }
 
-            .cohort-card:hover {
-                transform: translateX(0);
-                transform: translateY(-5px);
-            }
-        }
-
-        @media (max-width: 576px) {
-            .cohorts-headline {
-                font-size: 34px;
+            .cohorts-subheadline {
+                margin: 0 auto 30px auto;
             }
 
             .cohort-list {
@@ -1270,16 +1374,52 @@
             .cohort-card {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 20px;
-                padding: 35px 25px;
-                border-radius: 16px;
+                gap: 18px;
+                padding: 26px 22px;
+                text-align: left;
+            }
+
+            .cohort-card:hover {
+                transform: translateY(-4px);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .cohorts-section {
+                padding: 48px 5%;
+            }
+
+            .cohorts-headline {
+                font-size: clamp(26px, 7vw, 34px);
+                letter-spacing: -0.5px;
+            }
+
+            .cohort-card {
+                padding: 22px 18px;
+                border-radius: 14px;
                 box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            }
+
+            .cohort-title {
+                font-size: 19px;
+            }
+
+            .cohort-dates {
+                font-size: 14.5px;
+            }
+
+            .btn-cohorts-apply {
+                width: 100%;
+                text-align: center;
+                padding: 15px 24px;
+                font-size: 14px;
+                box-sizing: border-box;
             }
 
             .btn-cohort-open {
                 width: 100%;
-                padding: 16px;
-                font-size: 15px;
+                padding: 14px;
+                font-size: 14px;
             }
         }
 
@@ -1395,12 +1535,32 @@
         }
 
         @media (max-width: 576px) {
+            .who-section {
+                padding: 48px 5%;
+            }
+
             .who-headline {
-                font-size: 32px;
+                font-size: clamp(26px, 7vw, 32px);
+                letter-spacing: -0.5px;
+            }
+
+            .who-body {
+                font-size: 15.5px;
+                margin-bottom: 28px;
+            }
+
+            .faq-accordion {
+                margin-top: 28px;
             }
 
             .faq-question {
-                font-size: 17px;
+                font-size: 16.5px;
+                padding: 18px 0;
+            }
+
+            .faq-answer p {
+                font-size: 14.5px;
+                padding-bottom: 20px;
             }
         }
 
@@ -1773,32 +1933,7 @@
             background-color: #138A56;
         }
 
-        @media (max-width: 992px) {
-            .cohorts-container {
-                flex-direction: column;
-                gap: 40px;
-                text-align: center;
-            }
-
-            .cohorts-text-col {
-                text-align: center;
-            }
-
-            .cohorts-subheadline {
-                margin: 0 auto 30px auto;
-            }
-
-            .cohort-list {
-                width: 100%;
-            }
-
-            .cohort-card {
-                flex-direction: column;
-                gap: 20px;
-                padding: 30px 20px;
-                text-align: center;
-            }
-        }
+        /* Consolidated cohorts media rules moved above */
 
         /* ── Newsletter Section (Exact Match to Design) ── */
         .newsletter-section {
@@ -1949,6 +2084,8 @@
             font-weight: 600;
             transition: opacity 0.2s ease;
             cursor: pointer;
+            display: inline-block;
+            padding: 6px 0;
         }
 
         .nl-privacy-link:hover {
@@ -2158,19 +2295,36 @@
             }
         }
 
-        @media (max-width: 560px) {
+        @media (max-width: 680px) {
+            .newsletter-section {
+                padding: 48px 5%;
+            }
+
             .newsletter-field-row {
                 grid-template-columns: 1fr;
-                gap: 16px;
-                margin-bottom: 16px;
+                gap: 14px;
+                margin-bottom: 14px;
             }
 
             .newsletter-headline {
-                font-size: 27px;
+                font-size: clamp(24px, 6.5vw, 28px);
+            }
+
+            .newsletter-field input[type="text"],
+            .newsletter-field input[type="email"] {
+                font-size: 16px; /* Prevents auto-zoom on iOS */
+                height: 48px;
             }
 
             .nl-submit-btn {
                 width: 100%;
+                height: 48px;
+                font-size: 15.5px;
+            }
+
+            .nl-modal-card {
+                padding: 24px 18px;
+                max-width: 92vw;
             }
         }
     </style>
@@ -2347,7 +2501,7 @@
                 <div class="testimo-container">
                     <div class="testimo-left">
                         <div class="testimo-image"
-                            style="background-image: url('Okoya.jpeg'); background-position: top center;">
+                            style="background-image: url('Okoya-opt.jpg'); background-position: top center;">
                         </div>
                         <div class="testimo-caption">
                             <div class="testimo-name">Alimot Okoya</div>
@@ -2381,7 +2535,7 @@
                 <div class="testimo-container">
                     <div class="testimo-left">
                         <div class="testimo-image"
-                            style="background-image: url('samuel.jpg'); background-position: top center;">
+                            style="background-image: url('samuel-opt.jpg'); background-position: top center;">
                         </div>
                         <div class="testimo-caption">
                             <div class="testimo-name">Samuel Oluwaseun Akinyemi</div>
@@ -2418,7 +2572,7 @@
                 <div class="testimo-container">
                     <div class="testimo-left">
                         <div class="testimo-image"
-                            style="background-image: url('Markson.png'); background-position: top center;">
+                            style="background-image: url('Markson-opt.jpg'); background-position: top center;">
                         </div>
                         <div class="testimo-caption">
                             <div class="testimo-name">Julius Markson</div>
@@ -2712,87 +2866,43 @@
         </div>
     </div>
 
-    <!-- Footer Section (Redesigned Edition) -->
-    <footer
-        style="background-color: #0c1824; color: #ffffff; padding: 80px 5% 40px; font-family: 'Inter', sans-serif; border-top: 4px solid var(--primary-green);">
-        <div
-            style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 60px;">
+    <!-- Footer Section (Responsive Unified Edition) -->
+    <footer class="site-footer-redesign">
+        <div class="footer-inner-wrap">
             <!-- Brand Column -->
-            <div style="flex: 1; min-width: 280px; max-width: 480px;">
-                <h2
-                    style="font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 800; color: #6EE7B7; margin-bottom: 12px; letter-spacing: 1px;">
-                    LEADGREEN</h2>
-                <h4
-                    style="font-size: 13px; font-weight: 700; color: #34D399; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 2px;">
-                    Learn. Act. Measure. Lead.</h4>
-                <p style="color: #9CA3AF; font-size: 15px; line-height: 1.7; max-width: 380px;">
+            <div class="footer-brand-col">
+                <h2 class="footer-brand-title">LEADGREEN</h2>
+                <h4 class="footer-brand-tagline">Learn. Act. Measure. Lead.</h4>
+                <p class="footer-brand-desc">
                     Building a network of young African changemakers taking measurable action for a greener Africa.
                 </p>
             </div>
 
             <!-- Links Column -->
-            <div style="flex: 1; min-width: 260px; max-width: 420px;">
-                <h4
-                    style="font-size: 16px; font-weight: 700; color: #ffffff; margin-bottom: 25px; letter-spacing: 0.5px;">
-                    Navigation</h4>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <a href="index.html"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Home</a>
-                    <a href="About.html"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">About</a>
-                    <a href="Fellowspage.html"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Meet
-                        Fellows</a>
-                    <a href="Contact.html"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Contact</a>
-                    <a href="index.html#impact"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Impact</a>
-                    <a href="index.html#faq"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">FAQ</a>
-                    <a href="#newsletter"
-                        style="color: #D1D5DB; text-decoration: none; font-size: 15px; transition: 0.2s;"
-                        onmouseover="this.style.color='#6EE7B7'" onmouseout="this.style.color='#D1D5DB'">Newsletter</a>
+            <div class="footer-nav-col">
+                <h4 class="footer-nav-heading">Navigation</h4>
+                <div class="footer-nav-links">
+                    <a href="index.html" class="footer-nav-link">Home</a>
+                    <a href="About.html" class="footer-nav-link">About</a>
+                    <a href="Fellowspage.html" class="footer-nav-link">Meet Fellows</a>
+                    <a href="Contact.html" class="footer-nav-link">Contact</a>
+                    <a href="index.html#impact" class="footer-nav-link">Impact</a>
+                    <a href="index.html#faq" class="footer-nav-link">FAQ</a>
+                    <a href="#newsletter" class="footer-nav-link">Newsletter</a>
                 </div>
             </div>
-
         </div>
 
         <!-- Base Copyright Row -->
-        <div
-            style="max-width: 1200px; margin: 60px auto 0; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
-            <div style="color: #9CA3AF; font-size: 14px;">
+        <div class="footer-bottom-bar">
+            <div class="footer-copyright">
                 &copy; 2026 LeadGreen. All rights reserved.
             </div>
-            <div class="social-icons" style="display: flex; gap: 18px; align-items: center;">
-                <a href="https://x.com/Leadgreen_" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)"
-                    style="color: #9CA3AF; font-size: 18px; transition: color 0.2s, transform 0.2s; display: inline-flex; align-items: center; justify-content: center;"
-                    onmouseover="this.style.color='#6EE7B7'; this.style.transform='translateY(-2px)'"
-                    onmouseout="this.style.color='#9CA3AF'; this.style.transform='translateY(0)'"><i
-                        class="fa-brands fa-x-twitter"></i></a>
-                <a href="https://www.instagram.com/leadgreen_fellowship/" target="_blank" rel="noopener noreferrer"
-                    aria-label="Instagram"
-                    style="color: #9CA3AF; font-size: 18px; transition: color 0.2s, transform 0.2s; display: inline-flex; align-items: center; justify-content: center;"
-                    onmouseover="this.style.color='#6EE7B7'; this.style.transform='translateY(-2px)'"
-                    onmouseout="this.style.color='#9CA3AF'; this.style.transform='translateY(0)'"><i
-                        class="fa-brands fa-instagram"></i></a>
-                <a href="https://www.linkedin.com/company/leadgreen-fellowship" target="_blank"
-                    rel="noopener noreferrer" aria-label="LinkedIn"
-                    style="color: #9CA3AF; font-size: 18px; transition: color 0.2s, transform 0.2s; display: inline-flex; align-items: center; justify-content: center;"
-                    onmouseover="this.style.color='#6EE7B7'; this.style.transform='translateY(-2px)'"
-                    onmouseout="this.style.color='#9CA3AF'; this.style.transform='translateY(0)'"><i
-                        class="fa-brands fa-linkedin-in"></i></a>
-                <a href="https://www.youtube.com/@leadgreenfellowship" target="_blank" rel="noopener noreferrer"
-                    aria-label="YouTube"
-                    style="color: #9CA3AF; font-size: 18px; transition: color 0.2s, transform 0.2s; display: inline-flex; align-items: center; justify-content: center;"
-                    onmouseover="this.style.color='#6EE7B7'; this.style.transform='translateY(-2px)'"
-                    onmouseout="this.style.color='#9CA3AF'; this.style.transform='translateY(0)'"><i
-                        class="fa-brands fa-youtube"></i></a>
+            <div class="footer-socials">
+                <a href="https://x.com/Leadgreen_" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" class="footer-social-btn"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="https://www.instagram.com/leadgreen_fellowship/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="footer-social-btn"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/company/leadgreen-fellowship" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="footer-social-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="https://www.youtube.com/@leadgreenfellowship" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="footer-social-btn"><i class="fa-brands fa-youtube"></i></a>
             </div>
         </div>
     </footer>
@@ -2869,6 +2979,7 @@
             function openNav() {
                 headerRight.classList.add('active');
                 backdrop.classList.add('active');
+                document.body.classList.add('nav-locked');
                 const icon = menuToggle.querySelector('i');
                 if (icon) {
                     icon.classList.remove('fa-bars');
@@ -2879,12 +2990,19 @@
             function closeNav() {
                 headerRight.classList.remove('active');
                 backdrop.classList.remove('active');
+                document.body.classList.remove('nav-locked');
                 const icon = menuToggle.querySelector('i');
                 if (icon) {
                     icon.classList.remove('fa-xmark');
                     icon.classList.add('fa-bars');
                 }
             }
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && headerRight.classList.contains('active')) {
+                    closeNav();
+                }
+            });
 
             menuToggle.addEventListener('click', () => {
                 if (headerRight.classList.contains('active')) {
