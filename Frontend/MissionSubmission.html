@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -8,7 +8,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>LeadGreen — Submit Your Mission</title>
+    <title>LeadGreen â€” Submit Your Mission</title>
     <meta name="description"
         content="Submit your LeadGreen fellowship mission project. Share your impact story with photos, plans, and evidence.">
     <link rel="canonical" href="https://leadgreenfellowship.com/MissionSubmission.html">
@@ -24,7 +24,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://leadgreenfellowship.com/MissionSubmission.html">
     <meta property="og:site_name" content="LeadGreen Fellowship">
-    <meta property="og:title" content="Submit Mission — LeadGreen Fellowship">
+    <meta property="og:title" content="Submit Mission â€” LeadGreen Fellowship">
     <meta property="og:description" content="Submit your LeadGreen fellowship mission project. Share your impact story with photos, plans, and evidence.">
     <meta property="og:image" content="https://leadgreenfellowship.com/og-image.png">
 
@@ -62,6 +62,29 @@
     <!-- Unified LeadGreen Design System -->
     <link rel="stylesheet" href="design-system.css?v=20261023">
     <script src="portal-nav.js?v=20261023" defer></script>
+
+    <!-- Early global delegators to prevent ReferenceError before async module loads -->
+    <script>
+        window._pendingVerify = false;
+        function verifyFellow() {
+            if (typeof window._verifyFellow === 'function') {
+                window._verifyFellow();
+            } else {
+                window._pendingVerify = true;
+                const btn = document.getElementById('verifyBtn');
+                if (btn) {
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Initializingâ€¦';
+                }
+            }
+        }
+        function goStep(s) {
+            if (typeof window._goStep === 'function') window._goStep(s);
+        }
+        function submitMission() {
+            if (typeof window._submitMission === 'function') window._submitMission();
+        }
+    </script>
 
 
     <style>
@@ -106,7 +129,7 @@
             flex-direction: column;
         }
 
-        /* ── Portal Hero Banner ── */
+        /* â”€â”€ Portal Hero Banner â”€â”€ */
         .portal-hero {
             background-color: var(--primary-dark, #0A6337);
             color: #ffffff;
@@ -158,7 +181,7 @@
             margin: 0 auto;
         }
 
-        /* ── Main Container ── */
+        /* â”€â”€ Main Container â”€â”€ */
         .main-container {
             flex: 1;
             display: flex;
@@ -173,7 +196,7 @@
             max-width: 820px;
         }
 
-        /* ── Stepper ── */
+        /* â”€â”€ Stepper â”€â”€ */
         .stepper-bar {
             display: flex;
             align-items: center;
@@ -246,7 +269,7 @@
             background: var(--primary);
         }
 
-        /* ── Card ── */
+        /* â”€â”€ Card â”€â”€ */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -281,7 +304,7 @@
             line-height: 1.5;
         }
 
-        /* ── Form Fields ── */
+        /* â”€â”€ Form Fields â”€â”€ */
         .field {
             margin-bottom: 28px;
         }
@@ -365,7 +388,7 @@
             display: block;
         }
 
-        /* ── Photo Upload ── */
+        /* â”€â”€ Photo Upload â”€â”€ */
         .upload-zone {
             border: 2px dashed var(--input-border);
             border-radius: var(--radius);
@@ -443,7 +466,7 @@
             background: var(--error);
         }
 
-        /* ── Buttons ── */
+        /* â”€â”€ Buttons â”€â”€ */
         .actions {
             display: flex;
             justify-content: space-between;
@@ -504,7 +527,7 @@
             font-size: 16px;
         }
 
-        /* ── Alert Box ── */
+        /* â”€â”€ Alert Box â”€â”€ */
         .alert {
             padding: 14px 18px;
             border-radius: var(--radius);
@@ -545,7 +568,7 @@
             border: 1px solid #A7F3D0;
         }
 
-        /* ── Verify Step ── */
+        /* â”€â”€ Verify Step â”€â”€ */
         .verify-card {
             text-align: center;
             padding: 60px 48px;
@@ -601,7 +624,7 @@
             border-color: var(--primary);
         }
 
-        /* ── Success Page ── */
+        /* â”€â”€ Success Page â”€â”€ */
         .success-card {
             text-align: center;
             padding: 60px 48px;
@@ -663,7 +686,7 @@
             margin-bottom: 30px;
         }
 
-        /* ── Toast ── */
+        /* â”€â”€ Toast â”€â”€ */
         .toast {
             position: fixed;
             bottom: 24px;
@@ -693,7 +716,7 @@
             background: var(--error);
         }
 
-        /* ── Loading spinner inline ── */
+        /* â”€â”€ Loading spinner inline â”€â”€ */
         .spin-inline {
             display: inline-block;
             width: 18px;
@@ -710,7 +733,7 @@
             }
         }
 
-        /* ── Progress Bar ── */
+        /* â”€â”€ Progress Bar â”€â”€ */
         .upload-progress {
             width: 100%;
             background: var(--border);
@@ -729,12 +752,12 @@
             transition: width 0.3s;
         }
 
-        /* ── Hidden ── */
+        /* â”€â”€ Hidden â”€â”€ */
         .hidden {
             display: none !important;
         }
 
-        /* ── Responsive ── */
+        /* â”€â”€ Responsive â”€â”€ */
         @media (max-width: 820px) {
             .portal-hero {
                 padding: 40px 20px 35px;
@@ -770,7 +793,7 @@
             }
 
             .step-name {
-                font-size: 10px;
+                font-size: 11px;
             }
 
             .step-dot {
@@ -849,7 +872,7 @@
         </div>
     </nav>
 
-    <!-- ── Hero Banner ── -->
+    <!-- â”€â”€ Hero Banner â”€â”€ -->
     <section class="portal-hero">
         <div class="portal-hero-content">
             <div class="portal-hero-tag">
@@ -861,11 +884,11 @@
         </div>
     </section>
 
-    <!-- ── Main ── -->
+    <!-- â”€â”€ Main â”€â”€ -->
     <div class="main-container">
         <div class="form-shell" data-ui="true">
 
-            <!-- ═══════ STEP 0 – Fellow Info ═══════ -->
+            <!-- â•â•â•â•â•â•â• STEP 0 â€“ Fellow Info â•â•â•â•â•â•â• -->
             <div id="step0" class="card verify-card">
                 <div class="verify-icon"><i class="fa-solid fa-seedling"></i></div>
                 <h2>Welcome, Fellow!</h2>
@@ -887,7 +910,7 @@
                 </button>
             </div>
 
-            <!-- ═══════ STEP 1-3 Content (hidden until verified) ═══════ -->
+            <!-- â•â•â•â•â•â•â• STEP 1-3 Content (hidden until verified) â•â•â•â•â•â•â• -->
             <div id="formArea" class="hidden">
 
                 <!-- Revision Feedback Alert Banner -->
@@ -928,7 +951,7 @@
                     </div>
                 </div>
 
-                <!-- ═══ STEP 1 — Mission Details ═══ -->
+                <!-- â•â•â• STEP 1 â€” Mission Details â•â•â• -->
                 <div id="step1" class="card">
                     <h2 class="card-title">Mission Details</h2>
                     <p class="card-subtitle">Tell us about your climate action mission. What did you set out to
@@ -944,7 +967,7 @@
                     <div class="field">
                         <label for="climateArea">Climate Focus Area <span class="req">*</span></label>
                         <select id="climateArea">
-                            <option value="">Select an area…</option>
+                            <option value="">Select an areaâ€¦</option>
                             <option value="Waste Management">Waste Management</option>
                             <option value="Reforestation">Reforestation & Tree Planting</option>
                             <option value="Water Conservation">Water Conservation</option>
@@ -961,7 +984,7 @@
                     <div class="field">
                         <label for="missionDescription">Mission Description <span class="req">*</span></label>
                         <textarea id="missionDescription"
-                            placeholder="Describe the overview of your mission — what it is, why it matters, and what you hoped to achieve…"
+                            placeholder="Describe the overview of your mission â€” what it is, why it matters, and what you hoped to achieveâ€¦"
                             maxlength="1000"></textarea>
                         <div class="char-ct"><span id="descCount">0</span> / 1000</div>
                         <span class="error-msg">Please provide a description (at least 50 characters)</span>
@@ -989,7 +1012,7 @@
 
                     <div class="field">
                         <label for="missionImpact">Who did you impact? <span class="req">*</span></label>
-                        <textarea id="missionImpact" placeholder="Identify the people or community you impacted…"
+                        <textarea id="missionImpact" placeholder="Identify the people or community you impactedâ€¦"
                             maxlength="500" style="min-height:80px;"></textarea>
                         <span class="error-msg">Please describe who you impacted</span>
                     </div>
@@ -1001,7 +1024,7 @@
                     </div>
                 </div>
 
-                <!-- ═══ STEP 2 — Mission Plan ═══ -->
+                <!-- â•â•â• STEP 2 â€” Mission Plan â•â•â• -->
                 <div id="step2" class="card hidden">
                     <h2 class="card-title">Mission Plan</h2>
                     <p class="card-subtitle">Share the details of how you executed your mission.</p>
@@ -1009,25 +1032,13 @@
                     <div class="field">
                         <label for="activities">Activities Carried Out <span class="req">*</span></label>
                         <textarea id="activities"
-                            placeholder="List the activities you carried out…&#10;• Activity 1&#10;• Activity 2&#10;• Activity 3"
+                            placeholder="List the activities you carried outâ€¦&#10;â€¢ Activity 1&#10;â€¢ Activity 2&#10;â€¢ Activity 3"
                             maxlength="1000"></textarea>
                         <div class="char-ct"><span id="actCount">0</span> / 1000</div>
                         <span class="error-msg">Please list your activities</span>
                     </div>
 
-                    <div class="field">
-                        <label for="resources">Resources & Materials Used</label>
-                        <textarea id="resources" placeholder="What materials, tools, or resources did you use?"
-                            maxlength="600" style="min-height:80px;"></textarea>
-                    </div>
 
-                    <div class="field">
-                        <label for="successMetrics">How do you measure success? <span class="req">*</span></label>
-                        <textarea id="successMetrics"
-                            placeholder="e.g. Amount of waste collected (50kg), number of participants (30 people)…"
-                            maxlength="600" style="min-height:80px;"></textarea>
-                        <span class="error-msg">Please describe how you measured success</span>
-                    </div>
 
                     <div class="field-row">
                         <div class="field">
@@ -1048,7 +1059,7 @@
                     </div>
                 </div>
 
-                <!-- ═══ STEP 3 — Upload Evidence ═══ -->
+                <!-- â•â•â• STEP 3 â€” Upload Evidence â•â•â• -->
                 <div id="step3" class="card hidden">
                     <h2 class="card-title">Upload Evidence</h2>
                     <p class="card-subtitle">Add photos and videos that prove the implementation of your mission.</p>
@@ -1059,7 +1070,7 @@
                             onclick="document.getElementById('photoInput').click()">
                             <i class="fa-solid fa-cloud-arrow-up"></i>
                             <div class="uz-title">Click to upload photos</div>
-                            <div class="uz-hint">JPG, PNG, or WebP — Max 5 MB each — Up to 8 photos</div>
+                            <div class="uz-hint">JPG, PNG, or WebP â€” Max 5 MB each â€” Up to 8 photos</div>
                         </div>
                         <input type="file" id="photoInput" accept="image/*" multiple class="hidden">
                         <div class="photo-previews" id="photoPreviews"></div>
@@ -1078,7 +1089,7 @@
 
                     <div class="field">
                         <label for="additionalNotes">Additional Notes (Optional)</label>
-                        <textarea id="additionalNotes" placeholder="Any extra context you want to share with reviewers…"
+                        <textarea id="additionalNotes" placeholder="Any extra context you want to share with reviewersâ€¦"
                             maxlength="500" style="min-height:80px;"></textarea>
                     </div>
 
@@ -1098,14 +1109,14 @@
                 </div>
             </div>
 
-            <!-- ═══════ SUCCESS ═══════ -->
+            <!-- â•â•â•â•â•â•â• SUCCESS â•â•â•â•â•â•â• -->
             <div id="successCard" class="card success-card hidden">
                 <div class="success-check"><i class="fa-solid fa-check"></i></div>
                 <h2 id="successTitle">Mission Submitted!</h2>
                 <p id="successDesc">Your mission has been successfully submitted for review. Our admin team will review
                     your submission
                     and get back to you soon.</p>
-                <div class="success-ref" id="successRef">REF: —</div>
+                <div class="success-ref" id="successRef">REF: â€”</div>
                 <p style="font-size:13px; color:var(--text-light);">You can close this page. We'll reach out via your
                     registered email address.</p>
                 <button class="btn btn-outline" onclick="location.reload()" style="margin-top:20px;">
@@ -1113,7 +1124,7 @@
                 </button>
             </div>
 
-            <!-- ═══════ UNDER REVIEW STATUS CARD ═══════ -->
+            <!-- â•â•â•â•â•â•â• UNDER REVIEW STATUS CARD â•â•â•â•â•â•â• -->
             <div id="inReviewCard" class="card verify-card hidden">
                 <div class="verify-icon" style="background:var(--warning-bg, #FDF9F0); color:var(--warning, #C87808); border: 1px solid var(--border);">
                     <i class="fa-solid fa-hourglass-half"></i>
@@ -1121,9 +1132,9 @@
                 <h2>Mission Under Review</h2>
                 <p id="inReviewDesc">You already have a mission submission under review. Our administrative team is
                     currently evaluating your submission.</p>
-                <div class="success-ref" id="inReviewRef" style="background:var(--warning-bg, #FDF9F0); color:var(--warning, #C87808);">REF: —</div>
+                <div class="success-ref" id="inReviewRef" style="background:var(--warning-bg, #FDF9F0); color:var(--warning, #C87808);">REF: â€”</div>
                 <div style="margin-top:20px; font-size:13px; color:var(--text-light); line-height:1.6;">
-                    Submitted: <strong id="inReviewDate" style="color:var(--text);">—</strong><br>
+                    Submitted: <strong id="inReviewDate" style="color:var(--text);">â€”</strong><br>
                     If revisions are requested, you will be able to update your mission directly on this portal.
                 </div>
                 <button class="btn btn-outline" onclick="location.reload()" style="margin-top:26px;">
@@ -1131,7 +1142,7 @@
                 </button>
             </div>
 
-            <!-- ═══════ APPROVED STATUS CARD ═══════ -->
+            <!-- â•â•â•â•â•â•â• APPROVED STATUS CARD â•â•â•â•â•â•â• -->
             <div id="approvedCard" class="card success-card hidden">
                 <div class="success-check" style="background:var(--primary, #0E8549);">
                     <i class="fa-solid fa-award"></i>
@@ -1139,7 +1150,7 @@
                 <h2 style="color:var(--primary, #0E8549);">Mission Approved</h2>
                 <p id="approvedDesc">Congratulations! Your climate action mission has been reviewed and officially
                     approved by the LeadGreen Fellowship Committee.</p>
-                <div class="success-ref" id="approvedRef" style="background:var(--primary-light, #EAF4EE); color:var(--primary-dark, #0A6337);">REF: —</div>
+                <div class="success-ref" id="approvedRef" style="background:var(--primary-light, #EAF4EE); color:var(--primary-dark, #0A6337);">REF: â€”</div>
                 <p style="font-size:14px; color:var(--text-muted); margin-top:16px;">
                     You have satisfied your fellowship mission requirements. Thank you for your leadership in climate
                     action!
@@ -1152,19 +1163,19 @@
         </div>
     </div>
 
-    <!-- ── Unified Official Footer ── -->
+    <!-- â”€â”€ Unified Official Footer â”€â”€ -->
     <footer style="margin-top: auto; background: var(--bg-card, #FFFFFF); padding: 36px 32px 24px; text-align: center; font-size: 12.5px; color: var(--text-light, #6D8275); line-height: 1.7;">
-        <p>&copy; 2024–2026 LeadGreen Fellowship Initiative. Conferred by the Academic & Advisory Council.</p>
+        <p>&copy; 2024â€“2026 LeadGreen Fellowship Initiative. Conferred by the Academic & Advisory Council.</p>
         <p>Championing youth-led environmental leadership and community resilience across Africa. Need support? <a href="mailto:support@leadgreenfellowship.com" style="color: var(--primary, #0E8549); text-decoration: none; font-weight: 600;">Contact Fellow Support</a></p>
     </footer>
 
-    <!-- ── Toast ── -->
+    <!-- â”€â”€ Toast â”€â”€ -->
     <div class="toast" id="toast">
         <i class="fa-solid fa-check-circle"></i>
         <span id="toastText"></span>
     </div>
 
-    <!-- ── Firebase SDK ── -->
+    <!-- â”€â”€ Firebase SDK â”€â”€ -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import {
@@ -1174,7 +1185,7 @@
             getStorage, ref, uploadBytesResumable, getDownloadURL
         } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-        // ── Firebase Config (aligned with LeadGreen project) ──
+        // â”€â”€ Firebase Config (aligned with LeadGreen project) â”€â”€
         const firebaseConfig = {
             apiKey: "AIzaSyA5lPT8Fyp265fvebWq4BelNE0dYxuWvCE",
             authDomain: "leadgreen-fellowship.firebaseapp.com",
@@ -1188,7 +1199,7 @@
         const db = getFirestore(app);
         const storage = getStorage(app);
 
-        // ── STATE ──
+        // â”€â”€ STATE â”€â”€
         let currentStep = 0;
         let fellowData = null;        // from alumni lookup
         let existingMission = null;   // previous mission doc if exists
@@ -1196,15 +1207,23 @@
         let photoFiles = [];          // new File objects
         let isSubmitting = false;
 
-        // ── Expose functions globally ──
+        // â”€â”€ Expose functions globally â”€â”€
         window.verifyFellow = verifyFellow;
+        window._verifyFellow = verifyFellow;
         window.goStep = goStep;
+        window._goStep = goStep;
         window.submitMission = submitMission;
+        window._submitMission = submitMission;
         window.removeExistingPhoto = removeExistingPhoto;
 
-        // ═══════════════════════════════════════════
-        // STEP 0 — Collect Fellow Info (Open Access)
-        // ═══════════════════════════════════════════
+        if (window._pendingVerify) {
+            window._pendingVerify = false;
+            verifyFellow();
+        }
+
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        // STEP 0 â€” Collect Fellow Info (Open Access)
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         async function verifyFellow() {
             const name = document.getElementById('verifyName').value.trim();
             const email = document.getElementById('verifyEmail').value.trim().toLowerCase();
@@ -1223,7 +1242,7 @@
                 return;
             }
 
-            btn.innerHTML = '<span class="spin-inline"></span> Loading…';
+            btn.innerHTML = '<span class="spin-inline"></span> Loadingâ€¦';
             btn.disabled = true;
 
             try {
@@ -1302,8 +1321,6 @@
                         document.getElementById('missionImpact').value = existingMission.impactTarget || existingMission.target || '';
                         document.getElementById('activities').value = existingMission.activities || '';
                         document.getElementById('actCount').textContent = (document.getElementById('activities').value || '').length;
-                        document.getElementById('resources').value = existingMission.resources || '';
-                        document.getElementById('successMetrics').value = existingMission.successMetrics || existingMission.metrics || '';
                         document.getElementById('beneficiaries').value = existingMission.beneficiaries || '';
                         document.getElementById('teamSize').value = existingMission.teamSize || '';
                         document.getElementById('videoLink').value = existingMission.videoLink || (Array.isArray(existingMission.videos) && existingMission.videos[0]) || '';
@@ -1351,9 +1368,9 @@
             el.classList.remove('hidden');
         }
 
-        // ═══════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         // Navigation
-        // ═══════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         function goStep(step) {
             // Validate current step before moving forward
             if (step > currentStep) {
@@ -1395,9 +1412,9 @@
             });
         }
 
-        // ═══════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         // Validation
-        // ═══════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         function validateStep(step) {
             clearErrors();
             let valid = true;
@@ -1414,7 +1431,6 @@
 
             if (step === 2) {
                 if (!val('activities')) valid = false;
-                if (!val('successMetrics')) valid = false;
             }
 
             if (step === 3) {
@@ -1451,9 +1467,9 @@
             document.getElementById('photoError').style.display = 'none';
         }
 
-        // ═══════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         // Photo Upload Handling
-        // ═══════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         document.getElementById('photoInput').addEventListener('change', (e) => {
             const files = Array.from(e.target.files);
             const maxFiles = 8;
@@ -1541,9 +1557,9 @@
             renderPhotoPreviews();
         };
 
-        // ═══════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         // Upload Photos to Firebase Storage
-        // ═══════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         async function uploadPhotos(missionId) {
             const uploadedURLs = [];
             if (photoFiles.length === 0) return uploadedURLs;
@@ -1582,9 +1598,9 @@
             return uploadedURLs;
         }
 
-        // ═══════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         // Submit Mission
-        // ═══════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         async function submitMission() {
             if (isSubmitting) return;
 
@@ -1593,7 +1609,7 @@
 
             isSubmitting = true;
             const btn = document.getElementById('submitBtn');
-            btn.innerHTML = '<span class="spin-inline"></span> Submitting…';
+            btn.innerHTML = '<span class="spin-inline"></span> Submittingâ€¦';
             btn.disabled = true;
 
             try {
@@ -1617,8 +1633,6 @@
                 const goalVal = document.getElementById('missionGoal').value.trim();
                 const impactVal = document.getElementById('missionImpact').value.trim();
                 const actVal = document.getElementById('activities').value.trim();
-                const resVal = document.getElementById('resources').value.trim();
-                const metVal = document.getElementById('successMetrics').value.trim();
                 const benVal = parseInt(document.getElementById('beneficiaries').value) || 0;
                 const teamVal = parseInt(document.getElementById('teamSize').value) || 0;
                 const notesVal = document.getElementById('additionalNotes').value.trim();
@@ -1632,7 +1646,7 @@
                     email: email,
                     cohort: cohortVal,
 
-                    // Step 1 — Details (Dual Schema Compatibility)
+                    // Step 1 â€” Details (Dual Schema Compatibility)
                     missionTitle: titleVal,
                     title: titleVal,
                     climateArea: climateVal,
@@ -1650,15 +1664,13 @@
                     expectedOutcomes: impactVal,
                     outcomes: impactVal,
 
-                    // Step 2 — Plan
+                    // Step 2 â€” Plan
                     activities: actVal,
-                    resources: resVal,
-                    successMetrics: metVal,
                     metrics: metVal,
                     beneficiaries: benVal,
                     teamSize: teamVal,
 
-                    // Step 3 — Evidence (Dual Schema Compatibility)
+                    // Step 3 â€” Evidence (Dual Schema Compatibility)
                     photoURLs: finalPhotoURLs,
                     photos: finalPhotoURLs,
                     videoLink: vLink,
@@ -1725,9 +1737,9 @@
             }
         }
 
-        // ═══════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         // Character counters
-        // ═══════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         document.getElementById('missionDescription').addEventListener('input', (e) => {
             document.getElementById('descCount').textContent = e.target.value.length;
         });
@@ -1736,9 +1748,9 @@
             document.getElementById('actCount').textContent = e.target.value.length;
         });
 
-        // ═══════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         // Enter key on verify input
-        // ═══════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         document.getElementById('verifyEmail').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') verifyFellow();
         });
@@ -1746,9 +1758,9 @@
             if (e.key === 'Enter') document.getElementById('verifyEmail').focus();
         });
 
-        // ═══════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         // Helpers
-        // ═══════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         function getInitials(name) {
             return (name || '').split(' ').map(w => w[0] || '').slice(0, 2).join('').toUpperCase() || '?';
         }
