@@ -1179,9 +1179,6 @@
         import {
             getFirestore, collection, query, where, getDocs, addDoc, doc, getDoc, updateDoc, serverTimestamp
         } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-        import {
-            getStorage, ref, uploadBytesResumable, getDownloadURL
-        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
         // ── Firebase Config (aligned with LeadGreen project) ──
         const firebaseConfig = {
@@ -1195,7 +1192,11 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const storage = getStorage(app);
+
+        // ── Cloudinary Config (Unsigned Upload Preset for Project Evidence Photos) ──
+        const CLOUDINARY_CLOUD_NAME = "evtfcuco";
+        const CLOUDINARY_UPLOAD_PRESET = "leadgreen_projects";
+        const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
         // ── STATE ──
         let currentStep = 0;
@@ -1555,7 +1556,7 @@
         };
 
         // ═══════════════════════════════════════════
-        // Upload Photos to Firebase Storage
+        // Upload Photos to Cloudinary (Unsigned Preset)
         // ═══════════════════════════════════════════
         async function uploadPhotos(missionId) {
             const uploadedURLs = [];
@@ -1563,32 +1564,60 @@
 
             const progressEl = document.getElementById('uploadProgress');
             const barEl = document.getElementById('uploadBar');
+            barEl.style.width = '0%';
             progressEl.style.display = 'block';
 
             for (let i = 0; i < photoFiles.length; i++) {
                 const file = photoFiles[i];
-                const storageRef = ref(storage, `missions/${missionId}/photos/${Date.now()}_${file.name}`);
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+                formData.append('folder', `leadgreen/projects/${missionId}`);
 
-                await new Promise((resolve, reject) => {
-                    const uploadTask = uploadBytesResumable(storageRef, file);
+                const url = await new Promise((resolve, reject) => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', CLOUDINARY_UPLOAD_URL, true);
+                    xhr.timeout = 45000;
 
-                    uploadTask.on('state_changed',
-                        (snapshot) => {
-                            const fileProgress = (snapshot.bytesTransferred / snapshot.totalBytes);
+                    xhr.upload.onprogress = (e) => {
+                        if (e.lengthComputable && e.total > 0) {
+                            const fileProgress = e.loaded / e.total;
                             const overallProgress = ((i + fileProgress) / photoFiles.length) * 100;
-                            barEl.style.width = overallProgress + '%';
-                        },
-                        (error) => {
-                            console.error('Upload error:', error);
-                            reject(error);
-                        },
-                        async () => {
-                            const url = await getDownloadURL(uploadTask.snapshot.ref);
-                            uploadedURLs.push(url);
-                            resolve();
+                            barEl.style.width = overallProgress.toFixed(1) + '%';
                         }
-                    );
+                    };
+
+                    xhr.onload = () => {
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            try {
+                                const res = JSON.parse(xhr.responseText);
+                                if (res.secure_url) {
+                                    resolve(res.secure_url);
+                                } else {
+                                    reject(new Error('Upload succeeded but no image URL was returned.'));
+                                }
+                            } catch (parseErr) {
+                                reject(new Error('Invalid response from image server.'));
+                            }
+                        } else {
+                            let errMsg = `Photo upload failed (HTTP ${xhr.status}).`;
+                            try {
+                                const errRes = JSON.parse(xhr.responseText);
+                                if (errRes.error && errRes.error.message) {
+                                    errMsg = errRes.error.message;
+                                }
+                            } catch (_) {}
+                            reject(new Error(errMsg));
+                        }
+                    };
+
+                    xhr.onerror = () => reject(new Error('Network error while uploading photo. Please check your internet connection.'));
+                    xhr.ontimeout = () => reject(new Error('Photo upload timed out. Please try again on a stronger connection.'));
+                    xhr.send(formData);
                 });
+
+                uploadedURLs.push(url);
+                barEl.style.width = (((i + 1) / photoFiles.length) * 100).toFixed(1) + '%';
             }
 
             barEl.style.width = '100%';
@@ -1730,7 +1759,11 @@
 
             } catch (err) {
                 console.error('Submit error:', err);
-                showToast('Failed to submit. Please check your connection and try again.', true);
+                const progressEl = document.getElementById('uploadProgress');
+                const barEl = document.getElementById('uploadBar');
+                if (progressEl) progressEl.style.display = 'none';
+                if (barEl) barEl.style.width = '0%';
+                showToast(err && err.message ? err.message : 'Failed to submit. Please check your connection and try again.', true);
                 btn.innerHTML = existingMission ? '<i class="fa-solid fa-paper-plane"></i> Submit Revised Project' : '<i class="fa-solid fa-paper-plane"></i> Submit Project';
                 btn.disabled = false;
                 isSubmitting = false;
