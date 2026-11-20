@@ -162,7 +162,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800;900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="global.css?v=20261023">
+    <link rel="stylesheet" href="global.css?v=20261120">
     <style>
         /* Hero Section */
         .hero {
@@ -514,17 +514,26 @@
 
             .impact-desc {
                 font-size: 14.5px;
-                margin-bottom: 30px;
+                margin-bottom: 28px;
             }
 
             .impact-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
-                max-width: 360px;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+                max-width: 100%;
             }
 
             .impact-card {
-                padding: 26px 18px 22px;
+                padding: 22px 12px 20px;
+                border-radius: 14px;
+            }
+
+            .impact-icon-wrapper {
+                margin-bottom: 12px;
+            }
+
+            .impact-icon-wrapper i {
+                font-size: 24px;
             }
 
             .impact-headline {
@@ -532,7 +541,12 @@
             }
 
             .impact-number {
-                font-size: 34px;
+                font-size: 28px;
+                margin-bottom: 6px;
+            }
+
+            .impact-label {
+                font-size: 13px;
             }
         }
 
@@ -898,7 +912,7 @@
             height: 500px;
             border-radius: 12px;
             background-size: cover;
-            background-position: center;
+            background-position: center 20%;
             margin-bottom: 20px;
         }
 
@@ -1024,15 +1038,25 @@
                 align-items: stretch;
             }
 
-            .testimo-left,
+            .testimo-left {
+                width: 100%;
+                align-items: center;
+                text-align: center;
+            }
+
             .testimo-right {
                 width: 100%;
             }
 
             .testimo-image {
-                height: 280px;
                 width: 100%;
-                border-radius: 10px;
+                max-width: 360px;
+                height: auto;
+                aspect-ratio: 4 / 4.2;
+                background-position: center 20%;
+                border-radius: 12px;
+                margin-left: auto;
+                margin-right: auto;
             }
 
             .testimo-quote-block {
@@ -1062,7 +1086,9 @@
             }
 
             .testimo-image {
-                height: 220px;
+                max-width: 300px;
+                aspect-ratio: 1 / 1;
+                height: auto;
             }
 
             .quote-text {

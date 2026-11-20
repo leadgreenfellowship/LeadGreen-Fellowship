@@ -11,8 +11,8 @@
         const navActions = portalNav.querySelector('.nav-actions');
         if (!navInner || !navActions) return;
 
-        // Count navigation links
-        const navLinks = navActions.querySelectorAll('.nav-link, .btn-action-primary, .btn-action-outline, .btn-solid-primary');
+        // Count navigation links (cover all portal nav link/button variants)
+        const navLinks = navActions.querySelectorAll('a[href], .nav-link, .nav-btn-studio, .btn-action-primary, .btn-action-outline, .btn-solid-primary');
         
         // If there are 2 or fewer simple links and no special classes, mobile can display them as compact pills
         // But if there are 3+ links, we definitely need the mobile hamburger drawer.
