@@ -598,6 +598,27 @@
             color: var(--brand);
         }
 
+        .post-pay-notice {
+            margin-top: 18px;
+            padding: 13px 15px;
+            background: var(--surface-subtle);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--ink-muted);
+            line-height: 1.5;
+        }
+
+        .post-pay-notice i {
+            color: var(--brand);
+            font-size: 15px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
         /* ========================================================
            4. PORTAL FOOTER (Matches CertificatePayment.html)
            ======================================================== */
@@ -923,6 +944,12 @@
                             <i class="fa-solid fa-lock"></i>
                             <span>Secured via Coachli &bull; 256-bit Encryption</span>
                         </div>
+
+                        <!-- Post-Payment Email Notice -->
+                        <div class="post-pay-notice">
+                            <i class="fa-solid fa-envelope-open-text" aria-hidden="true"></i>
+                            <span id="postPayNoticeText">After you make payment, you will receive an email to join containing what to do next.</span>
+                        </div>
                     </form>
                 </div>
             </aside>
@@ -968,6 +995,7 @@
                 btn: 'Proceed to Payment',
                 connecting: 'Connecting to Secure Checkout...',
                 security: 'Secured via Coachli • 256-bit Encryption',
+                postPayNotice: 'After you make payment, you will receive an email to join containing what to do next.',
                 errMissing: 'Please enter your full name, a valid email address, and select your preferred language.',
                 errNoLink: 'The English Coachli payment link is being added. Please check back shortly or email support@leadgreenfellowship.com.'
             },
@@ -982,6 +1010,7 @@
                 btn: 'Procéder au paiement',
                 connecting: 'Connexion sécurisée à Coachli...',
                 security: 'Paiement sécurisé via Coachli • Cryptage 256 bits',
+                postPayNotice: 'Après votre paiement, vous recevrez un e-mail pour rejoindre le programme contenant les prochaines étapes.',
                 errMissing: 'Veuillez saisir votre nom complet, une adresse e-mail valide et choisir votre langue.',
                 errNoLink: 'Le lien de paiement Coachli en français est en cours d’ajout. Réessayez bientôt ou écrivez à support@leadgreenfellowship.com.'
             }
@@ -1006,6 +1035,7 @@
             document.getElementById('feeSub').textContent = t.feeSub;
             submitBtnText.textContent = t.btn;
             document.querySelector('#securityNote span').textContent = t.security;
+            document.getElementById('postPayNoticeText').textContent = t.postPayNotice;
             hideFeedback();
         }
 

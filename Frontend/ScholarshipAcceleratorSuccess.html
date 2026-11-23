@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Cache-Control: Prevent browser from caching stale versions -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Thank You — Study Abroad Scholarship Accelerator Programme | LeadGreen Fellowship</title>
+    <meta name="description"
+        content="Payment confirmed for the LeadGreen Fellowship Study Abroad Scholarship Accelerator Programme. You will receive an email with instructions on how to join and what to do next.">
+    <link rel="canonical" href="https://www.leadgreenfellowship.com/ScholarshipAcceleratorSuccess.html">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+
+    <!-- Google Fonts: Playfair Display & Inter (LeadGreen Portal Standard) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Canvas Confetti Celebration -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
+
+    <!-- Unified LeadGreen Design System & Navigation Controller -->
+    <link rel="stylesheet" href="design-system.css?v=20261023">
+    <script src="portal-nav.js?v=20261120" defer></script>
+
+    <style>
+        :root {
+            --ground: #F6F8F5;
+            --surface: #FFFFFF;
+            --surface-subtle: #EDF3EC;
+            --ink: #0D2B1D;
+            --ink-muted: #385043;
+            --ink-subtle: #687E71;
+            --brand: #0E8549;
+            --brand-dark: #085931;
+            --brand-tint: #E8F5ED;
+            --amber-tint: #FDF7EC;
+            --amber-border: #F0D7A7;
+            --amber-ink: #8A5308;
+            --border: #D8E2D7;
+            --border-light: #E7EEE6;
+            --font-display: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --radius-pill: 9999px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--ground);
+            color: var(--ink);
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: clip;
+        }
+
+        /* ========================================================
+           1. TOP NAVIGATION (Matches CertificateSuccess & Accelerator)
+           ======================================================== */
+        .portal-nav {
+            background: var(--surface);
+            padding: 16px 32px;
+            position: sticky;
+            top: 0;
+            z-index: 60;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-inner {
+            max-width: 1240px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-brand-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .nav-brand-img {
+            height: 38px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .nav-badge-tag {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--brand-dark);
+            background: var(--brand-tint);
+            padding: 5px 14px;
+            border-radius: var(--radius-pill);
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .nav-badge-tag i {
+            color: var(--brand);
+            font-size: 11px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .nav-link {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--ink-muted);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.15s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--brand);
+        }
+
+        .lang-switch-group {
+            display: inline-flex;
+            align-items: center;
+            background: var(--surface-subtle);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            padding: 3px;
+            gap: 2px;
+        }
+
+        .lang-btn {
+            border: none;
+            background: transparent;
+            color: var(--ink-muted);
+            font-family: var(--font-sans);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+
+        .lang-btn.active {
+            background: var(--brand);
+            color: #FFFFFF;
+        }
+
+        /* ========================================================
+           2. MAIN CONFIRMATION WORKSPACE
+           ======================================================== */
+        .success-page-shell {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 48px 24px 72px;
+            width: 100%;
+        }
+
+        .confirmation-container {
+            max-width: 660px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .confirmation-hero-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 44px 36px 38px;
+            text-align: center;
+            position: relative;
+        }
+
+        .celebration-emblem-wrap {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 22px;
+        }
+
+        .celebration-emblem {
+            width: 82px;
+            height: 82px;
+            background: var(--brand-tint);
+            color: var(--brand);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 36px;
+            margin: 0 auto;
+            animation: emblemPop 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .emblem-ring-glow {
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            border: 2px dashed rgba(14, 133, 73, 0.35);
+            animation: spinSlow 24s linear infinite;
+        }
+
+        @keyframes emblemPop {
+            0% { transform: scale(0.85); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes spinSlow {
+            to { transform: rotate(360deg); }
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--brand-tint);
+            color: var(--brand-dark);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 6px 16px;
+            border-radius: var(--radius-pill);
+            margin-bottom: 16px;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(26px, 4vw, 36px);
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.22;
+            letter-spacing: -0.015em;
+            margin-bottom: 12px;
+        }
+
+        .hero-desc {
+            font-size: 15.5px;
+            color: var(--ink-muted);
+            line-height: 1.65;
+            max-width: 540px;
+            margin: 0 auto 26px;
+        }
+
+        /* Prominent Next-Steps Email Notice */
+        .email-next-card {
+            background: var(--brand-tint);
+            border: 1.5px solid #B7DFC8;
+            border-radius: var(--radius-md);
+            padding: 20px 22px;
+            text-align: left;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .email-next-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            background: var(--brand);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .email-next-body h2 {
+            font-family: var(--font-display);
+            font-size: 19px;
+            font-weight: 700;
+            color: var(--brand-dark);
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+
+        .email-next-body p {
+            font-size: 14.5px;
+            color: var(--ink);
+            line-height: 1.6;
+        }
+
+        .email-spam-tip {
+            margin-top: 8px;
+            font-size: 13px;
+            color: var(--ink-muted);
+        }
+
+        /* Registration Summary Slip (Matches CertificateSuccess.html) */
+        .verification-ledger-card {
+            background: var(--surface-subtle);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 20px 22px;
+            text-align: left;
+            margin-bottom: 26px;
+        }
+
+        .ledger-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .ledger-title-badge {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--brand-dark);
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .ledger-live-status {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--brand);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--surface);
+            padding: 4px 10px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border-light);
+        }
+
+        .live-pulse-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--brand);
+        }
+
+        .ledger-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px 18px;
+        }
+
+        .ledger-item {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .ledger-label {
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--ink-subtle);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ledger-val {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--ink);
+            word-break: break-word;
+        }
+
+        .ledger-val-highlight {
+            color: var(--brand-dark);
+        }
+
+        /* Action Buttons */
+        .actions-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-primary-home {
+            width: 100%;
+            min-height: 50px;
+            padding: 14px 22px;
+            background: var(--brand);
+            color: #FFFFFF;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius-sm);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            transition: background 0.15s ease, transform 0.1s ease;
+        }
+
+        .btn-primary-home:hover {
+            background: var(--brand-dark);
+            transform: translateY(-1px);
+        }
+
+        .support-note {
+            font-size: 13px;
+            color: var(--ink-muted);
+            padding-top: 4px;
+        }
+
+        .support-note a {
+            color: var(--brand-dark);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .support-note a:hover {
+            color: var(--brand);
+            text-decoration: underline;
+        }
+
+        /* ========================================================
+           3. PORTAL FOOTER (Matches ScholarshipAccelerator.html)
+           ======================================================== */
+        .portal-site-footer {
+            margin-top: auto;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 28px 24px;
+        }
+
+        .footer-inner {
+            max-width: 1240px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--ink-subtle);
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 8px 20px;
+        }
+
+        .footer-link {
+            color: var(--ink-muted);
+            text-decoration: none;
+            transition: color 0.15s ease;
+            display: inline-block;
+            padding: 10px 0;
+            min-height: 44px;
+            box-sizing: border-box;
+        }
+
+        .footer-link:hover {
+            color: var(--brand);
+        }
+
+        /* ========================================================
+           4. RESPONSIVE BREAKPOINTS
+           ======================================================== */
+        @media (max-width: 768px) {
+            .footer-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .portal-nav {
+                padding: 14px 16px;
+            }
+
+            .nav-badge-tag {
+                display: none;
+            }
+
+            .nav-brand-img {
+                height: 34px;
+            }
+
+            .success-page-shell {
+                padding: 28px 16px 52px;
+            }
+
+            .confirmation-hero-card {
+                padding: 32px 20px 28px;
+            }
+
+            .celebration-emblem {
+                width: 68px;
+                height: 68px;
+                font-size: 28px;
+            }
+
+            .email-next-card {
+                flex-direction: column;
+                gap: 12px;
+                padding: 18px 16px;
+            }
+
+            .ledger-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .verification-ledger-card {
+                padding: 18px 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1. Top Navigation Bar -->
+    <nav class="portal-nav" aria-label="Official Portal Navigation">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-brand-group">
+                <img src="Logo name green.png" alt="LeadGreen Fellowship" class="nav-brand-img"
+                    onerror="this.src='../Logo name green.png'">
+                <span class="nav-badge-tag">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>Scholarship Accelerator</span>
+                </span>
+            </a>
+            <div class="nav-actions">
+                <div class="lang-switch-group" role="group" aria-label="Language Selector">
+                    <button type="button" class="lang-btn active" id="btnLangEN" onclick="setPageLanguage('EN')">EN</button>
+                    <button type="button" class="lang-btn" id="btnLangFR" onclick="setPageLanguage('FR')">FR</button>
+                </div>
+                <a href="index.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Home</a>
+                <a href="About.html" class="nav-link">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 2. Main Thank You Confirmation Workspace -->
+    <main class="success-page-shell">
+        <div class="confirmation-container">
+
+            <section class="confirmation-hero-card" data-ui aria-label="Payment Confirmation">
+
+                <!-- Celebration Emblem -->
+                <div class="celebration-emblem-wrap" aria-hidden="true">
+                    <div class="celebration-emblem">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <div class="emblem-ring-glow"></div>
+                </div>
+
+                <!-- Status Pill -->
+                <div>
+                    <span class="status-pill">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span id="statusPillText">Payment Confirmed</span>
+                    </span>
+                </div>
+
+                <!-- Main Thank You Headline -->
+                <h1 class="hero-title" id="greetingHeader">Thank You for Your Payment!</h1>
+                <p class="hero-desc" id="thankYouDesc">
+                    Your registration for the <strong>Study Abroad Scholarship Accelerator Programme</strong> by LeadGreen Fellowship has been confirmed.
+                </p>
+
+                <!-- Prominent Next-Steps Email Box -->
+                <div class="email-next-card">
+                    <div class="email-next-icon" aria-hidden="true">
+                        <i class="fa-solid fa-envelope-open-text"></i>
+                    </div>
+                    <div class="email-next-body">
+                        <h2 id="emailBoxTitle">What Happens Next?</h2>
+                        <p id="emailBoxText">
+                            You will receive an email to join the programme containing full instructions on what to do next.
+                        </p>
+                        <p class="email-spam-tip" id="emailSpamTip">
+                            Please keep an eye on your inbox (and check your spam or promotions folder just in case).
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Registration Summary Slip -->
+                <div class="verification-ledger-card">
+                    <div class="ledger-top-row">
+                        <span class="ledger-title-badge">
+                            <i class="fa-solid fa-receipt"></i>
+                            <span id="ledgerHeading">Registration Summary</span>
+                        </span>
+                        <span class="ledger-live-status">
+                            <span class="live-pulse-dot"></span>
+                            <span id="ledgerStatus">Payment Received</span>
+                        </span>
+                    </div>
+
+                    <div class="ledger-grid">
+                        <div class="ledger-item">
+                            <span class="ledger-label" id="lblProgramme">Programme</span>
+                            <span class="ledger-val ledger-val-highlight" id="valProgramme">Study Abroad Scholarship Accelerator Programme</span>
+                        </div>
+                        <div class="ledger-item">
+                            <span class="ledger-label" id="lblAttendee">Participant</span>
+                            <span class="ledger-val" id="valAttendee">Confirmed Participant</span>
+                        </div>
+                        <div class="ledger-item">
+                            <span class="ledger-label" id="lblEmail">Email Address</span>
+                            <span class="ledger-val" id="valEmail">Sent to your checkout email</span>
+                        </div>
+                        <div class="ledger-item">
+                            <span class="ledger-label" id="lblLanguage">Language Track</span>
+                            <span class="ledger-val" id="valLanguage">English</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Primary Action & Support -->
+                <div class="actions-stack">
+                    <a href="index.html" class="btn-primary-home" id="homeCta">
+                        <i class="fa-solid fa-house"></i>
+                        <span id="homeCtaText">Return to LeadGreen Home</span>
+                    </a>
+                    <p class="support-note" id="supportNote">
+                        Didn&rsquo;t receive your email or have questions? <a href="mailto:support@leadgreenfellowship.com">Contact Fellow Support</a>
+                    </p>
+                </div>
+
+            </section>
+
+        </div>
+    </main>
+
+    <!-- 3. Portal Footer -->
+    <footer class="portal-site-footer">
+        <div class="footer-inner">
+            <p>&copy; 2026 LeadGreen Fellowship. Championing Africa&rsquo;s next generation of changemakers.</p>
+            <div class="footer-links">
+                <a href="index.html" class="footer-link">Home</a>
+                <a href="About.html" class="footer-link">About Us</a>
+                <a href="Cohort.html" class="footer-link">Cohort</a>
+                <a href="Fellowspage.html" class="footer-link">Meet Fellows</a>
+                <a href="mailto:support@leadgreenfellowship.com" class="footer-link">Contact Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 4. Bilingual Confirmation & Saved Detail Hydration -->
+    <script>
+        const COPY = {
+            EN: {
+                pill: 'Payment Confirmed',
+                titleDefault: 'Thank You for Your Payment!',
+                titleNamed: (firstName) => `Thank You, ${firstName}!`,
+                desc: 'Your registration for the <strong>Study Abroad Scholarship Accelerator Programme</strong> by LeadGreen Fellowship has been confirmed.',
+                emailTitle: 'What Happens Next?',
+                emailText: 'You will receive an email to join the programme containing full instructions on what to do next.',
+                emailTip: 'Please keep an eye on your inbox (and check your spam or promotions folder just in case).',
+                ledgerHeading: 'Registration Summary',
+                ledgerStatus: 'Payment Received',
+                lblProgramme: 'Programme',
+                valProgramme: 'Study Abroad Scholarship Accelerator Programme',
+                lblAttendee: 'Participant',
+                defaultAttendee: 'Confirmed Participant',
+                lblEmail: 'Email Address',
+                defaultEmail: 'Sent to your checkout email',
+                lblLanguage: 'Language Track',
+                valLanguage: 'English',
+                homeCta: 'Return to LeadGreen Home',
+                supportHtml: 'Didn&rsquo;t receive your email or have questions? <a href="mailto:support@leadgreenfellowship.com">Contact Fellow Support</a>'
+            },
+            FR: {
+                pill: 'Paiement Confirmé',
+                titleDefault: 'Merci pour votre paiement !',
+                titleNamed: (firstName) => `Merci, ${firstName} !`,
+                desc: 'Votre inscription au <strong>Study Abroad Scholarship Accelerator Programme</strong> de LeadGreen Fellowship est confirmée.',
+                emailTitle: 'Quelle est la prochaine étape ?',
+                emailText: 'Vous recevrez un e-mail pour rejoindre le programme contenant toutes les instructions sur la suite à faire.',
+                emailTip: 'Veuillez vérifier votre boîte de réception (ainsi que vos dossiers spam ou promotions au cas où).',
+                ledgerHeading: 'Récapitulatif d’inscription',
+                ledgerStatus: 'Paiement reçu',
+                lblProgramme: 'Programme',
+                valProgramme: 'Study Abroad Scholarship Accelerator Programme',
+                lblAttendee: 'Participant',
+                defaultAttendee: 'Participant confirmé',
+                lblEmail: 'Adresse e-mail',
+                defaultEmail: 'Envoyé à votre adresse e-mail de paiement',
+                lblLanguage: 'Langue choisie',
+                valLanguage: 'Français (French)',
+                homeCta: 'Retour à l’accueil LeadGreen',
+                supportHtml: 'Vous n’avez pas reçu votre e-mail ou avez une question ? <a href="mailto:support@leadgreenfellowship.com">Contacter le support</a>'
+            }
+        };
+
+        let currentName = '';
+        let currentEmail = '';
+
+        function renderLanguage(lang) {
+            const code = lang === 'FR' ? 'FR' : 'EN';
+            const t = COPY[code];
+
+            document.documentElement.lang = code === 'FR' ? 'fr' : 'en';
+            document.getElementById('btnLangEN').classList.toggle('active', code === 'EN');
+            document.getElementById('btnLangFR').classList.toggle('active', code === 'FR');
+
+            const firstName = currentName ? currentName.trim().split(/\s+/)[0] : '';
+            document.getElementById('statusPillText').textContent = t.pill;
+            document.getElementById('greetingHeader').textContent = firstName ? t.titleNamed(firstName) : t.titleDefault;
+            document.getElementById('thankYouDesc').innerHTML = t.desc;
+            document.getElementById('emailBoxTitle').textContent = t.emailTitle;
+            document.getElementById('emailBoxText').textContent = t.emailText;
+            document.getElementById('emailSpamTip').textContent = t.emailTip;
+            document.getElementById('ledgerHeading').textContent = t.ledgerHeading;
+            document.getElementById('ledgerStatus').textContent = t.ledgerStatus;
+            document.getElementById('lblProgramme').textContent = t.lblProgramme;
+            document.getElementById('valProgramme').textContent = t.valProgramme;
+            document.getElementById('lblAttendee').textContent = t.lblAttendee;
+            document.getElementById('valAttendee').textContent = currentName || t.defaultAttendee;
+            document.getElementById('lblEmail').textContent = t.lblEmail;
+            document.getElementById('valEmail').textContent = currentEmail || t.defaultEmail;
+            document.getElementById('lblLanguage').textContent = t.lblLanguage;
+            document.getElementById('valLanguage').textContent = t.valLanguage;
+            document.getElementById('homeCtaText').textContent = t.homeCta;
+            document.getElementById('supportNote').innerHTML = t.supportHtml;
+        }
+
+        window.setPageLanguage = function (lang) {
+            try {
+                localStorage.setItem('leadgreen_accelerator_lang', lang);
+            } catch (_) {}
+            renderLanguage(lang);
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            currentName = (params.get('name') || localStorage.getItem('leadgreen_accelerator_name') || '').trim();
+            currentEmail = (params.get('email') || localStorage.getItem('leadgreen_fellow_email') || '').trim();
+            const detectedLang = (params.get('lang') || localStorage.getItem('leadgreen_accelerator_lang') || 'EN').toUpperCase();
+
+            renderLanguage(detectedLang === 'FR' ? 'FR' : 'EN');
+
+            setTimeout(() => {
+                try {
+                    if (typeof confetti === 'function') {
+                        confetti({
+                            particleCount: 70,
+                            spread: 65,
+                            origin: { y: 0.52 },
+                            colors: ['#0E8549', '#085931', '#6EE7B7', '#C87808', '#E8F5ED']
+                        });
+                    }
+                } catch (_) {}
+            }, 250);
+        });
+    </script>
+
+</body>
+
+</html>
