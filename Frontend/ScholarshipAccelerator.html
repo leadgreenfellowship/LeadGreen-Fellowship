@@ -40,7 +40,7 @@
         rel="stylesheet">
 
     <!-- Unified LeadGreen Design System & Navigation Controller -->
-    <link rel="stylesheet" href="design-system.css?v=20261023">
+    <link rel="stylesheet" href="design-system.css?v=20261123">
     <script src="portal-nav.js?v=20261120" defer></script>
 
     <style>
@@ -77,6 +77,7 @@
 
         html {
             scroll-behavior: smooth;
+            overflow-x: clip;
         }
 
         body {
@@ -350,6 +351,7 @@
             color: var(--ink);
             letter-spacing: -0.015em;
             line-height: 1.28;
+            overflow-wrap: break-word;
         }
 
         .section-divider {
@@ -446,6 +448,7 @@
         .checkout-panel-column {
             position: sticky;
             top: 96px;
+            scroll-margin-top: 84px;
         }
 
         .checkout-card {
@@ -706,57 +709,180 @@
         }
 
         /* ========================================================
-           5. RESPONSIVE BREAKPOINTS
+           5. MOBILE STICKY REGISTER BAR & RESPONSIVE BREAKPOINTS
            ======================================================== */
+        .mobile-sticky-cta {
+            display: none;
+        }
+
         @media (max-width: 992px) {
             .workspace-grid {
                 grid-template-columns: 1fr;
-                gap: 28px;
+                gap: 24px;
             }
 
             .checkout-panel-column {
                 position: static;
+                scroll-margin-top: 76px;
             }
 
             .portal-hero {
-                padding: 48px 20px 68px;
+                padding: 42px 20px 60px;
             }
 
             .workspace-shell {
-                margin: -24px auto 60px;
+                margin: -24px auto 48px;
                 padding: 0 16px;
             }
 
             .benefits-panel,
             .checkout-card {
-                padding: 28px 20px;
+                padding: 28px 22px;
             }
 
             .footer-inner {
                 flex-direction: column;
                 text-align: center;
             }
+
+            .portal-site-footer {
+                padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+            }
+
+            .mobile-sticky-cta {
+                position: fixed;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 55;
+                background: rgba(255, 255, 255, 0.97);
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+                border-top: 1px solid var(--border);
+                box-shadow: 0 -6px 20px rgba(13, 43, 29, 0.08);
+                padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                transition: transform 0.25s ease, opacity 0.25s ease;
+            }
+
+            .mobile-sticky-cta.is-hidden {
+                transform: translateY(110%);
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            .mobile-cta-price {
+                display: flex;
+                flex-direction: column;
+                line-height: 1.2;
+            }
+
+            .mobile-cta-label {
+                font-size: 11px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                color: var(--ink-subtle);
+            }
+
+            .mobile-cta-amount {
+                font-family: var(--font-display);
+                font-size: 20px;
+                font-weight: 700;
+                color: var(--brand-dark);
+                white-space: nowrap;
+            }
+
+            .mobile-cta-btn {
+                min-height: 44px;
+                padding: 11px 18px;
+                background: var(--brand);
+                color: #FFFFFF;
+                border-radius: var(--radius-sm);
+                font-size: 14px;
+                font-weight: 700;
+                text-decoration: none;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            .mobile-cta-btn:active {
+                background: var(--brand-dark);
+            }
         }
 
         @media (max-width: 640px) {
             .portal-nav {
-                padding: 14px 16px;
+                padding: 12px 14px;
+            }
+
+            .nav-inner {
+                gap: 10px;
             }
 
             .nav-registry-tag {
                 display: none;
             }
 
+            .portal-hero {
+                padding: 34px 16px 50px;
+            }
+
+            .portal-hero-tag {
+                font-size: 10.5px;
+                letter-spacing: 0.7px;
+                padding: 5px 12px;
+                margin-bottom: 14px;
+                max-width: 100%;
+            }
+
             .portal-hero-title {
-                font-size: 28px;
+                font-size: clamp(24px, 7vw, 30px);
+                line-height: 1.18;
+                margin-bottom: 10px;
             }
 
             .portal-hero-desc {
-                font-size: 15px;
+                font-size: 14.5px;
+                line-height: 1.5;
+            }
+
+            .workspace-shell {
+                margin: -22px auto 40px;
+                padding: 0 12px;
+            }
+
+            .benefits-panel,
+            .checkout-card {
+                padding: 24px 18px;
+                border-radius: 14px;
+                gap: 22px;
+            }
+
+            .story-text,
+            .question-highlight,
+            .learn-item,
+            .expert-callout {
+                font-size: 14.5px;
+            }
+
+            .question-highlight {
+                padding: 14px 16px;
+            }
+
+            .question-highlight em {
+                font-size: 15.5px;
             }
 
             .panel-title {
-                font-size: 21px;
+                font-size: 20px;
             }
 
             .attend-grid {
@@ -764,22 +890,106 @@
                 gap: 10px;
             }
 
+            .attend-item {
+                padding: 14px 15px;
+                font-size: 14px;
+            }
+
+            .learn-list {
+                gap: 13px;
+            }
+
             .learn-item {
                 align-items: flex-start;
                 gap: 12px;
             }
 
+            .learn-icon-wrap {
+                width: 32px;
+                height: 32px;
+                font-size: 13px;
+            }
+
             .expert-callout {
-                padding: 16px;
+                padding: 15px 16px;
+                gap: 12px;
+            }
+
+            .checkout-heading {
+                font-size: 21px;
             }
 
             .fee-ledger-box {
-                flex-wrap: wrap;
-                gap: 8px;
+                padding: 14px 16px;
+                margin: 18px 0;
+                gap: 10px;
             }
 
             .fee-amount {
                 font-size: 22px;
+                white-space: nowrap;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .portal-nav {
+                padding: 10px 10px;
+            }
+
+            .nav-inner {
+                gap: 8px;
+            }
+
+            .lang-switch-icon {
+                margin: 0 3px 0 5px;
+                font-size: 11px;
+            }
+
+            .lang-btn {
+                padding: 5px 8px;
+                font-size: 11.5px;
+            }
+
+            .portal-hero {
+                padding: 26px 12px 44px;
+            }
+
+            .portal-hero-tag {
+                font-size: 10px;
+                letter-spacing: 0.5px;
+                padding: 4px 10px;
+                gap: 6px;
+            }
+
+            .benefits-panel,
+            .checkout-card {
+                padding: 20px 14px;
+            }
+
+            .panel-title {
+                font-size: 18.5px;
+            }
+
+            .fee-ledger-box {
+                flex-wrap: wrap;
+                padding: 12px 14px;
+            }
+
+            .fee-amount {
+                font-size: 20px;
+            }
+
+            .mobile-sticky-cta {
+                padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+            }
+
+            .mobile-cta-amount {
+                font-size: 18px;
+            }
+
+            .mobile-cta-btn {
+                padding: 10px 14px;
+                font-size: 13.5px;
             }
         }
     </style>
@@ -1006,7 +1216,19 @@
         </div>
     </main>
 
-    <!-- 4. Portal Footer (Matches CertificatePayment.html) -->
+    <!-- 4. Mobile Sticky Registration Bar (Auto-hides when Checkout Card is in view) -->
+    <div class="mobile-sticky-cta" id="mobileStickyCta" aria-label="Quick Registration">
+        <div class="mobile-cta-price">
+            <span class="mobile-cta-label" id="mobileCtaLabel">Programme Fee</span>
+            <span class="mobile-cta-amount" id="mobileCtaAmount">$3.99 USD</span>
+        </div>
+        <a href="#register" class="mobile-cta-btn" id="mobileCtaBtn">
+            <span id="mobileCtaBtnText">Register Now</span>
+            <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <!-- 5. Portal Footer (Matches CertificatePayment.html) -->
     <footer class="portal-site-footer">
         <div class="footer-inner">
             <p id="footerCopy">&copy; 2026 LeadGreen Fellowship. Championing Africa&rsquo;s next generation of changemakers.</p>
@@ -1076,6 +1298,7 @@
                 langDefault: '-- Select Language --',
                 feeLabel: 'Programme Fee',
                 feeSub: 'One-Time Registration',
+                mobileCtaBtn: 'Register Now',
                 btn: 'Proceed to Pay $3.99',
                 connecting: 'Connecting to Secure Checkout...',
                 security: 'Secured via Coachli \u2022 256-bit Encryption',
@@ -1133,6 +1356,7 @@
                 langDefault: '-- Choisir la langue --',
                 feeLabel: 'Frais d\u2019inscription',
                 feeSub: 'Inscription unique',
+                mobileCtaBtn: 'S\u2019inscrire',
                 btn: 'Proc\u00e9der au paiement \u2014 $3.99',
                 connecting: 'Connexion s\u00e9curis\u00e9e \u00e0 Coachli...',
                 security: 'Paiement s\u00e9curis\u00e9 via Coachli \u2022 Cryptage 256 bits',
@@ -1214,6 +1438,10 @@
             document.getElementById('langDefaultOpt').textContent = t.langDefault;
             document.getElementById('feeLabel').textContent = t.feeLabel;
             document.getElementById('feeSub').textContent = t.feeSub;
+            const mobLabel = document.getElementById('mobileCtaLabel');
+            const mobBtn = document.getElementById('mobileCtaBtnText');
+            if (mobLabel) mobLabel.textContent = t.feeLabel;
+            if (mobBtn) mobBtn.textContent = t.mobileCtaBtn;
             submitBtnText.textContent = t.btn;
             document.querySelector('#securityNote span').textContent = t.security;
             document.getElementById('postPayNoticeText').textContent = t.postPayNotice;
@@ -1256,7 +1484,21 @@
         window.addEventListener('DOMContentLoaded', () => {
             if (PROGRAM_CONFIG.sessionFeeText) {
                 document.getElementById('feeAmount').textContent = PROGRAM_CONFIG.sessionFeeText;
+                const mobAmount = document.getElementById('mobileCtaAmount');
+                if (mobAmount) mobAmount.textContent = PROGRAM_CONFIG.sessionFeeText;
                 document.getElementById('feeBox').classList.add('visible');
+            }
+
+            // Hide sticky mobile bar once the checkout form itself is visible
+            const registerSection = document.getElementById('register');
+            const stickyBar = document.getElementById('mobileStickyCta');
+            if (registerSection && stickyBar && 'IntersectionObserver' in window) {
+                const obs = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        stickyBar.classList.toggle('is-hidden', entry.isIntersecting);
+                    });
+                }, { threshold: 0.15 });
+                obs.observe(registerSection);
             }
 
             const params = new URLSearchParams(window.location.search);

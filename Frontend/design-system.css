@@ -573,6 +573,11 @@ body.portal-nav-locked {
     overflow: hidden !important;
 }
 
+/* Keep sticky nav & its slide-out drawer above the backdrop when open */
+body.portal-nav-locked .portal-nav {
+    z-index: 1000 !important;
+}
+
 .nav-drawer-header {
     display: none;
 }
@@ -615,13 +620,17 @@ body.portal-nav-locked {
         align-items: stretch;
         gap: 8px;
         box-shadow: -10px 0 35px rgba(13, 43, 29, 0.18);
-        transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 999;
+        transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s ease;
+        z-index: 1001;
         overflow-y: auto;
+        visibility: hidden;
+        pointer-events: none;
     }
 
     .portal-nav .nav-actions.portal-nav-open {
         right: 0;
+        visibility: visible;
+        pointer-events: auto;
     }
 
     /* Drawer Header */
