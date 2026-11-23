@@ -117,6 +117,7 @@
             align-items: center;
             gap: 14px;
             text-decoration: none;
+            margin-right: auto;
         }
 
         .nav-brand-img {
@@ -158,6 +159,47 @@
 
         .nav-link:hover {
             color: var(--brand);
+        }
+
+        /* Bilingual EN / FR Switcher (Always visible on desktop & mobile) */
+        .lang-switch-group {
+            display: inline-flex;
+            align-items: center;
+            background: var(--surface-subtle);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            padding: 3px 4px;
+            gap: 2px;
+            flex-shrink: 0;
+        }
+
+        .lang-switch-icon {
+            color: var(--brand-dark);
+            font-size: 12px;
+            margin: 0 5px 0 7px;
+        }
+
+        .lang-btn {
+            border: none;
+            background: transparent;
+            color: var(--ink-muted);
+            font-family: var(--font-sans);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 5px 11px;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: background 0.15s ease, color 0.15s ease;
+            line-height: 1.2;
+        }
+
+        .lang-btn:hover {
+            color: var(--brand-dark);
+        }
+
+        .lang-btn.active {
+            background: var(--brand);
+            color: #FFFFFF;
         }
 
         /* ========================================================
@@ -752,13 +794,19 @@
                 <img src="Logo name green.png" alt="LeadGreen Fellowship" class="nav-brand-img"
                     onerror="this.src='../Logo name green.png'">
                 <span class="nav-registry-tag">
-                    <i class="fa-solid fa-graduation-cap"></i> Scholarship Accelerator
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span id="navTagText">Scholarship Accelerator</span>
                 </span>
             </a>
             <div class="nav-actions">
-                <a href="index.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Home</a>
-                <a href="About.html" class="nav-link">About</a>
-                <a href="Fellowspage.html" class="nav-link">Meet Fellows</a>
+                <a href="index.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> <span id="navHome">Home</span></a>
+                <a href="About.html" class="nav-link" id="navAbout">About</a>
+                <a href="Fellowspage.html" class="nav-link" id="navFellows">Meet Fellows</a>
+            </div>
+            <div class="lang-switch-group" role="group" aria-label="Language Translation">
+                <i class="fa-solid fa-globe lang-switch-icon" aria-hidden="true"></i>
+                <button type="button" class="lang-btn active" id="btnLangEN" onclick="setPageLanguage('EN', true)" aria-pressed="true">EN</button>
+                <button type="button" class="lang-btn" id="btnLangFR" onclick="setPageLanguage('FR', true)" aria-pressed="false">FR</button>
             </div>
         </div>
     </nav>
@@ -767,12 +815,13 @@
     <header class="portal-hero">
         <div class="portal-hero-content">
             <span class="portal-hero-tag">
-                <i class="fa-solid fa-earth-africa"></i> LeadGreen Fellowship Presents
+                <i class="fa-solid fa-earth-africa"></i>
+                <span id="heroTagText">LeadGreen Fellowship Presents</span>
             </span>
-            <h1 class="portal-hero-title">
+            <h1 class="portal-hero-title" id="heroTitle">
                 Study Abroad <span>Scholarship Accelerator Programme</span>
             </h1>
-            <p class="portal-hero-desc">
+            <p class="portal-hero-desc" id="heroDesc">
                 Your dream of studying abroad doesn&rsquo;t have to remain a dream!
             </p>
         </div>
@@ -787,22 +836,22 @@
 
                 <!-- Opening Story & Programme Introduction -->
                 <section class="story-block">
-                    <p class="story-text">
+                    <p class="story-text" id="introLead">
                         Are you hoping to pursue a fully funded scholarship but don&rsquo;t know where to start? Have
                         you come across scholarship opportunities but struggled with the application process?
                     </p>
 
                     <div class="question-highlight">
-                        Or perhaps you keep asking yourself: <em>What does it actually take to win a scholarship?</em>
-                        <span class="answers-line">It&rsquo;s time to get answers!</span>
+                        <span id="questionLine">Or perhaps you keep asking yourself: <em>What does it actually take to win a scholarship?</em></span>
+                        <span class="answers-line" id="answersLine">It&rsquo;s time to get answers!</span>
                     </div>
 
                     <div class="panel-header-wrap" style="margin-top: 6px;">
-                        <span class="panel-badge">LeadGreen Fellowship Presents</span>
-                        <h2 class="panel-title">STUDY ABROAD SCHOLARSHIP ACCELERATOR PROGRAMME.</h2>
+                        <span class="panel-badge" id="presentsBadge">LeadGreen Fellowship Presents</span>
+                        <h2 class="panel-title" id="programmeHeading">STUDY ABROAD SCHOLARSHIP ACCELERATOR PROGRAMME.</h2>
                     </div>
 
-                    <p class="story-text">
+                    <p class="story-text" id="programmeDesc">
                         An exclusive learning experience designed to equip aspiring scholars with the knowledge,
                         strategies and practical guidance needed to navigate the scholarship application journey.
                     </p>
@@ -813,37 +862,37 @@
                 <!-- Here's what you'll learn -->
                 <section>
                     <div class="panel-header-wrap">
-                        <h2 class="panel-title">Here&rsquo;s what you&rsquo;ll learn:</h2>
+                        <h2 class="panel-title" id="learnHeading">Here&rsquo;s what you&rsquo;ll learn:</h2>
                     </div>
 
                     <ul class="learn-list">
                         <li class="learn-item">
                             <span class="learn-icon-wrap" aria-hidden="true"><i class="fa-solid fa-check"></i></span>
-                            <span>How to find fully funded scholarship opportunities around the world.</span>
+                            <span id="learn1">How to find fully funded scholarship opportunities around the world.</span>
                         </li>
                         <li class="learn-item">
                             <span class="learn-icon-wrap" aria-hidden="true"><i class="fa-solid fa-check"></i></span>
-                            <span>How to prepare competitive scholarship applications.</span>
+                            <span id="learn2">How to prepare competitive scholarship applications.</span>
                         </li>
                         <li class="learn-item">
                             <span class="learn-icon-wrap" aria-hidden="true"><i class="fa-solid fa-check"></i></span>
-                            <span>How to write compelling Statements of Purpose (SOPs) and personal statements.</span>
+                            <span id="learn3">How to write compelling Statements of Purpose (SOPs) and personal statements.</span>
                         </li>
                         <li class="learn-item">
                             <span class="learn-icon-wrap" aria-hidden="true"><i class="fa-solid fa-check"></i></span>
-                            <span>How to build a strong academic and professional CV.</span>
+                            <span id="learn4">How to build a strong academic and professional CV.</span>
                         </li>
                         <li class="learn-item">
                             <span class="learn-icon-wrap" aria-hidden="true"><i class="fa-solid fa-check"></i></span>
-                            <span>How to secure impactful recommendation letters.</span>
+                            <span id="learn5">How to secure impactful recommendation letters.</span>
                         </li>
                         <li class="learn-item">
                             <span class="learn-icon-wrap" aria-hidden="true"><i class="fa-solid fa-check"></i></span>
-                            <span>How to prepare for scholarship interviews.</span>
+                            <span id="learn6">How to prepare for scholarship interviews.</span>
                         </li>
                         <li class="learn-item">
                             <span class="learn-icon-wrap" aria-hidden="true"><i class="fa-solid fa-check"></i></span>
-                            <span>Common scholarship application mistakes and how to avoid them.</span>
+                            <span id="learn7">Common scholarship application mistakes and how to avoid them.</span>
                         </li>
                     </ul>
                 </section>
@@ -851,7 +900,7 @@
                 <!-- Experienced Scholarship Expert Highlight -->
                 <div class="expert-callout">
                     <i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i>
-                    <p>
+                    <p id="expertNote">
                         Learn directly from an experienced scholarship expert who will share practical insights, lessons
                         and strategies to help you land a scholarship.
                     </p>
@@ -862,25 +911,25 @@
                 <!-- Who Should Attend? -->
                 <section>
                     <div class="panel-header-wrap">
-                        <h2 class="panel-title">WHO SHOULD ATTEND?</h2>
+                        <h2 class="panel-title" id="attendHeading">WHO SHOULD ATTEND?</h2>
                     </div>
 
                     <ul class="attend-grid">
                         <li class="attend-item">
                             <i class="fa-solid fa-user-graduate" aria-hidden="true"></i>
-                            <span>Undergraduate and postgraduate students.</span>
+                            <span id="attend1">Undergraduate and postgraduate students.</span>
                         </li>
                         <li class="attend-item">
                             <i class="fa-solid fa-globe" aria-hidden="true"></i>
-                            <span>Recent graduates seeking international opportunities.</span>
+                            <span id="attend2">Recent graduates seeking international opportunities.</span>
                         </li>
                         <li class="attend-item">
                             <i class="fa-solid fa-briefcase" aria-hidden="true"></i>
-                            <span>Young professionals interested in furthering their education.</span>
+                            <span id="attend3">Young professionals interested in furthering their education.</span>
                         </li>
                         <li class="attend-item">
                             <i class="fa-solid fa-award" aria-hidden="true"></i>
-                            <span>Anyone aspiring to secure a fully funded scholarship.</span>
+                            <span id="attend4">Anyone aspiring to secure a fully funded scholarship.</span>
                         </li>
                     </ul>
                 </section>
@@ -916,7 +965,7 @@
                             <label for="languageSelect" class="input-label" id="lblLang">Preferred Language / Langue
                                 Préférée</label>
                             <select id="languageSelect" class="input-control" required>
-                                <option value="">-- Select Language --</option>
+                                <option value="" id="langDefaultOpt">-- Select Language --</option>
                                 <option value="EN">English</option>
                                 <option value="FR">Français (French)</option>
                             </select>
@@ -960,22 +1009,21 @@
     <!-- 4. Portal Footer (Matches CertificatePayment.html) -->
     <footer class="portal-site-footer">
         <div class="footer-inner">
-            <p>&copy; 2026 LeadGreen Fellowship. Championing Africa&rsquo;s next generation of changemakers.</p>
+            <p id="footerCopy">&copy; 2026 LeadGreen Fellowship. Championing Africa&rsquo;s next generation of changemakers.</p>
             <div class="footer-links">
-                <a href="index.html" class="footer-link">Home</a>
-                <a href="About.html" class="footer-link">About Us</a>
-                <a href="Cohort.html" class="footer-link">Cohort</a>
-                <a href="Fellowspage.html" class="footer-link">Meet Fellows</a>
-                <a href="mailto:support@leadgreenfellowship.com" class="footer-link">Contact Support</a>
+                <a href="index.html" class="footer-link" id="footerHome">Home</a>
+                <a href="About.html" class="footer-link" id="footerAbout">About Us</a>
+                <a href="Cohort.html" class="footer-link" id="footerCohort">Cohort</a>
+                <a href="Fellowspage.html" class="footer-link" id="footerFellows">Meet Fellows</a>
+                <a href="mailto:support@leadgreenfellowship.com" class="footer-link" id="footerSupport">Contact Support</a>
             </div>
         </div>
     </footer>
 
-    <!-- 5. Client Logic & Bilingual Coachli Payment Routing -->
+    <!-- 5. Client Logic & Full Bilingual EN/FR Translation + Coachli Routing -->
     <script>
         /* -----------------------------------------------------------------
            COACHLI PAYMENT CONFIGURATION
-           Paste your English & French Coachli URLs below (and optional fee)
            ----------------------------------------------------------------- */
         const PROGRAM_CONFIG = {
             coachliEnglishUrl: 'https://www.coachli.co/leadgreenfellow/cart?buyNow=1',
@@ -983,36 +1031,120 @@
             sessionFeeText: '$3.99 USD'
         };
 
-        const CHECKOUT_COPY = {
+        const PAGE_TRANSLATIONS = {
             EN: {
+                docTitle: 'Study Abroad Scholarship Accelerator Programme — LeadGreen Fellowship',
+                navTag: 'Scholarship Accelerator',
+                navHome: 'Home',
+                navAbout: 'About',
+                navFellows: 'Meet Fellows',
+                heroTag: 'LeadGreen Fellowship Presents',
+                heroTitleHtml: 'Study Abroad <span>Scholarship Accelerator Programme</span>',
+                heroDesc: 'Your dream of studying abroad doesn\u2019t have to remain a dream!',
+                introLead: 'Are you hoping to pursue a fully funded scholarship but don\u2019t know where to start? Have you come across scholarship opportunities but struggled with the application process?',
+                questionHtml: 'Or perhaps you keep asking yourself: <em>What does it actually take to win a scholarship?</em>',
+                answersLine: 'It\u2019s time to get answers!',
+                presentsBadge: 'LeadGreen Fellowship Presents',
+                programmeHeading: 'STUDY ABROAD SCHOLARSHIP ACCELERATOR PROGRAMME.',
+                programmeDesc: 'An exclusive learning experience designed to equip aspiring scholars with the knowledge, strategies and practical guidance needed to navigate the scholarship application journey.',
+                learnHeading: 'Here\u2019s what you\u2019ll learn:',
+                learn: [
+                    'How to find fully funded scholarship opportunities around the world.',
+                    'How to prepare competitive scholarship applications.',
+                    'How to write compelling Statements of Purpose (SOPs) and personal statements.',
+                    'How to build a strong academic and professional CV.',
+                    'How to secure impactful recommendation letters.',
+                    'How to prepare for scholarship interviews.',
+                    'Common scholarship application mistakes and how to avoid them.'
+                ],
+                expertNote: 'Learn directly from an experienced scholarship expert who will share practical insights, lessons and strategies to help you land a scholarship.',
+                attendHeading: 'WHO SHOULD ATTEND?',
+                attend: [
+                    'Undergraduate and postgraduate students.',
+                    'Recent graduates seeking international opportunities.',
+                    'Young professionals interested in furthering their education.',
+                    'Anyone aspiring to secure a fully funded scholarship.'
+                ],
                 tag: 'Official Registration',
                 title: 'Study Abroad Scholarship Accelerator',
                 desc: 'Enter your details and select your preferred language to proceed securely to Coachli checkout.',
                 lblName: 'Full Name',
+                phName: 'e.g. Amina Diallo',
                 lblEmail: 'Email Address',
+                phEmail: 'e.g. amina@example.com',
+                lblLang: 'Preferred Language / Langue Pr\u00e9f\u00e9r\u00e9e',
+                langDefault: '-- Select Language --',
                 feeLabel: 'Programme Fee',
                 feeSub: 'One-Time Registration',
                 btn: 'Proceed to Pay $3.99',
                 connecting: 'Connecting to Secure Checkout...',
-                security: 'Secured via Coachli • 256-bit Encryption',
+                security: 'Secured via Coachli \u2022 256-bit Encryption',
                 postPayNotice: 'After you make payment, you will receive an email to join containing what to do next.',
                 errMissing: 'Please enter your full name, a valid email address, and select your preferred language.',
-                errNoLink: 'The English Coachli payment link is being added. Please check back shortly or email support@leadgreenfellowship.com.'
+                errNoLink: 'The English Coachli payment link is being added. Please check back shortly or email support@leadgreenfellowship.com.',
+                footerCopy: '\u00a9 2026 LeadGreen Fellowship. Championing Africa\u2019s next generation of changemakers.',
+                footerHome: 'Home',
+                footerAbout: 'About Us',
+                footerCohort: 'Cohort',
+                footerFellows: 'Meet Fellows',
+                footerSupport: 'Contact Support'
             },
             FR: {
+                docTitle: 'Programme Acc\u00e9l\u00e9rateur de Bourses d\u2019\u00c9tudes \u00e0 l\u2019\u00c9tranger \u2014 LeadGreen Fellowship',
+                navTag: 'Acc\u00e9l\u00e9rateur de Bourses',
+                navHome: 'Accueil',
+                navAbout: '\u00c0 propos',
+                navFellows: 'Nos Fellows',
+                heroTag: 'LeadGreen Fellowship pr\u00e9sente',
+                heroTitleHtml: 'Programme Acc\u00e9l\u00e9rateur de <span>Bourses d\u2019\u00c9tudes \u00e0 l\u2019\u00c9tranger</span>',
+                heroDesc: 'Votre r\u00eave d\u2019\u00e9tudier \u00e0 l\u2019\u00e9tranger n\u2019a pas \u00e0 rester un r\u00eave !',
+                introLead: 'Vous souhaitez d\u00e9crocher une bourse enti\u00e8rement financ\u00e9e, mais vous ne savez pas par o\u00f9 commencer ? Vous avez d\u00e9j\u00e0 d\u00e9couvert des opportunit\u00e9s de bourses, mais vous avez eu du mal avec le processus de candidature ?',
+                questionHtml: 'Ou peut-\u00eatre continuez-vous de vous demander : <em>Que faut-il vraiment pour remporter une bourse d\u2019\u00e9tudes ?</em>',
+                answersLine: 'Il est temps d\u2019obtenir des r\u00e9ponses !',
+                presentsBadge: 'LeadGreen Fellowship pr\u00e9sente',
+                programmeHeading: 'PROGRAMME ACC\u00c9L\u00c9RATEUR DE BOURSES D\u2019\u00c9TUDES \u00c0 L\u2019\u00c9TRANGER.',
+                programmeDesc: 'Une exp\u00e9rience d\u2019apprentissage exclusive con\u00e7ue pour doter les futurs boursiers des connaissances, strat\u00e9gies et conseils pratiques n\u00e9cessaires pour r\u00e9ussir leur parcours de candidature aux bourses.',
+                learnHeading: 'Voici ce que vous apprendrez :',
+                learn: [
+                    'Comment trouver des opportunit\u00e9s de bourses enti\u00e8rement financ\u00e9es \u00e0 travers le monde.',
+                    'Comment pr\u00e9parer des dossiers de candidature comp\u00e9titifs.',
+                    'Comment r\u00e9diger des lettres de motivation (SOP) et d\u00e9clarations personnelles convaincantes.',
+                    'Comment construire un CV acad\u00e9mique et professionnel solide.',
+                    'Comment obtenir des lettres de recommandation percutantes.',
+                    'Comment vous pr\u00e9parer aux entretiens de bourses d\u2019\u00e9tudes.',
+                    'Les erreurs courantes lors des candidatures aux bourses et comment les \u00e9viter.'
+                ],
+                expertNote: 'Apprenez directement aupr\u00e8s d\u2019un expert exp\u00e9riment\u00e9 en bourses d\u2019\u00e9tudes qui partagera des conseils pratiques, des le\u00e7ons et des strat\u00e9gies pour vous aider \u00e0 d\u00e9crocher une bourse.',
+                attendHeading: 'QUI DEVRAIT PARTICIPER ?',
+                attend: [
+                    '\u00c9tudiants de premier cycle (Licence) et de cycles sup\u00e9rieurs (Master, Doctorat).',
+                    'Jeunes dipl\u00f4m\u00e9s \u00e0 la recherche d\u2019opportunit\u00e9s internationales.',
+                    'Jeunes professionnels souhaitant poursuivre leurs \u00e9tudes.',
+                    'Toute personne aspirant \u00e0 obtenir une bourse d\u2019\u00e9tudes enti\u00e8rement financ\u00e9e.'
+                ],
                 tag: 'Inscription Officielle',
-                title: 'Accélérateur de Bourses d’Études',
-                desc: 'Renseignez vos informations et choisissez votre langue pour accéder au paiement sécurisé Coachli.',
+                title: 'Acc\u00e9l\u00e9rateur de Bourses d\u2019\u00c9tudes',
+                desc: 'Renseignez vos informations et choisissez votre langue pour acc\u00e9der au paiement s\u00e9curis\u00e9 Coachli.',
                 lblName: 'Nom complet',
+                phName: 'ex. Amina Diallo',
                 lblEmail: 'Adresse e-mail',
-                feeLabel: 'Frais d’inscription',
+                phEmail: 'ex. amina@exemple.com',
+                lblLang: 'Langue pr\u00e9f\u00e9r\u00e9e / Preferred Language',
+                langDefault: '-- Choisir la langue --',
+                feeLabel: 'Frais d\u2019inscription',
                 feeSub: 'Inscription unique',
-                btn: 'Procéder au paiement — $3.99',
-                connecting: 'Connexion sécurisée à Coachli...',
-                security: 'Paiement sécurisé via Coachli • Cryptage 256 bits',
-                postPayNotice: 'Après votre paiement, vous recevrez un e-mail pour rejoindre le programme contenant les prochaines étapes.',
+                btn: 'Proc\u00e9der au paiement \u2014 $3.99',
+                connecting: 'Connexion s\u00e9curis\u00e9e \u00e0 Coachli...',
+                security: 'Paiement s\u00e9curis\u00e9 via Coachli \u2022 Cryptage 256 bits',
+                postPayNotice: 'Apr\u00e8s votre paiement, vous recevrez un e-mail pour rejoindre le programme contenant les prochaines \u00e9tapes.',
                 errMissing: 'Veuillez saisir votre nom complet, une adresse e-mail valide et choisir votre langue.',
-                errNoLink: 'Le lien de paiement Coachli en français est en cours d’ajout. Réessayez bientôt ou écrivez à support@leadgreenfellowship.com.'
+                errNoLink: 'Le lien de paiement Coachli en fran\u00e7ais est en cours d\u2019ajout. R\u00e9essayez bient\u00f4t ou \u00e9crivez \u00e0 support@leadgreenfellowship.com.',
+                footerCopy: '\u00a9 2026 LeadGreen Fellowship. Former la prochaine g\u00e9n\u00e9ration d\u2019acteurs du changement en Afrique.',
+                footerHome: 'Accueil',
+                footerAbout: '\u00c0 propos',
+                footerCohort: 'Cohorte',
+                footerFellows: 'Nos Fellows',
+                footerSupport: 'Contacter le support'
             }
         };
 
@@ -1023,21 +1155,85 @@
         const submitBtn = document.getElementById('submitBtn');
         const submitBtnText = document.getElementById('submitBtnText');
         const submitBtnIcon = document.getElementById('submitBtnIcon');
+        let activeLang = 'EN';
 
-        function updateCheckoutLanguage(lang) {
-            const t = CHECKOUT_COPY[lang === 'FR' ? 'FR' : 'EN'];
+        window.setPageLanguage = function (lang, syncSelect) {
+            const code = lang === 'FR' ? 'FR' : 'EN';
+            activeLang = code;
+            const t = PAGE_TRANSLATIONS[code];
+
+            document.documentElement.lang = code === 'FR' ? 'fr' : 'en';
+            document.title = t.docTitle;
+
+            const btnEN = document.getElementById('btnLangEN');
+            const btnFR = document.getElementById('btnLangFR');
+            if (btnEN && btnFR) {
+                btnEN.classList.toggle('active', code === 'EN');
+                btnFR.classList.toggle('active', code === 'FR');
+                btnEN.setAttribute('aria-pressed', String(code === 'EN'));
+                btnFR.setAttribute('aria-pressed', String(code === 'FR'));
+            }
+
+            // Navigation & Hero
+            document.getElementById('navTagText').textContent = t.navTag;
+            document.getElementById('navHome').textContent = t.navHome;
+            document.getElementById('navAbout').textContent = t.navAbout;
+            document.getElementById('navFellows').textContent = t.navFellows;
+            document.getElementById('heroTagText').textContent = t.heroTag;
+            document.getElementById('heroTitle').innerHTML = t.heroTitleHtml;
+            document.getElementById('heroDesc').textContent = t.heroDesc;
+
+            // Main Programme Copy
+            document.getElementById('introLead').textContent = t.introLead;
+            document.getElementById('questionLine').innerHTML = t.questionHtml;
+            document.getElementById('answersLine').textContent = t.answersLine;
+            document.getElementById('presentsBadge').textContent = t.presentsBadge;
+            document.getElementById('programmeHeading').textContent = t.programmeHeading;
+            document.getElementById('programmeDesc').textContent = t.programmeDesc;
+            document.getElementById('learnHeading').textContent = t.learnHeading;
+            t.learn.forEach((text, i) => {
+                const el = document.getElementById('learn' + (i + 1));
+                if (el) el.textContent = text;
+            });
+            document.getElementById('expertNote').textContent = t.expertNote;
+            document.getElementById('attendHeading').textContent = t.attendHeading;
+            t.attend.forEach((text, i) => {
+                const el = document.getElementById('attend' + (i + 1));
+                if (el) el.textContent = text;
+            });
+
+            // Checkout Card
             document.getElementById('checkoutTag').textContent = t.tag;
             document.getElementById('checkoutTitle').textContent = t.title;
             document.getElementById('checkoutDesc').textContent = t.desc;
             document.getElementById('lblName').textContent = t.lblName;
+            nameInput.placeholder = t.phName;
             document.getElementById('lblEmail').textContent = t.lblEmail;
+            emailInput.placeholder = t.phEmail;
+            document.getElementById('lblLang').textContent = t.lblLang;
+            document.getElementById('langDefaultOpt').textContent = t.langDefault;
             document.getElementById('feeLabel').textContent = t.feeLabel;
             document.getElementById('feeSub').textContent = t.feeSub;
             submitBtnText.textContent = t.btn;
             document.querySelector('#securityNote span').textContent = t.security;
             document.getElementById('postPayNoticeText').textContent = t.postPayNotice;
+
+            // Footer
+            document.getElementById('footerCopy').textContent = t.footerCopy;
+            document.getElementById('footerHome').textContent = t.footerHome;
+            document.getElementById('footerAbout').textContent = t.footerAbout;
+            document.getElementById('footerCohort').textContent = t.footerCohort;
+            document.getElementById('footerFellows').textContent = t.footerFellows;
+            document.getElementById('footerSupport').textContent = t.footerSupport;
+
+            if (syncSelect) {
+                langSelect.value = code;
+            }
+            try {
+                localStorage.setItem('leadgreen_accelerator_lang', code);
+            } catch (_) {}
             hideFeedback();
-        }
+        };
 
         function showFeedback(msg, type) {
             feedbackBox.textContent = msg;
@@ -1049,7 +1245,11 @@
             feedbackBox.textContent = '';
         }
 
-        langSelect.addEventListener('change', () => updateCheckoutLanguage(langSelect.value));
+        langSelect.addEventListener('change', () => {
+            if (langSelect.value === 'EN' || langSelect.value === 'FR') {
+                setPageLanguage(langSelect.value, false);
+            }
+        });
         nameInput.addEventListener('input', hideFeedback);
         emailInput.addEventListener('input', hideFeedback);
 
@@ -1063,12 +1263,15 @@
             const savedName = params.get('name') || localStorage.getItem('leadgreen_accelerator_name') || '';
             const savedEmail = params.get('email') || localStorage.getItem('leadgreen_fellow_email') || '';
             const paramLang = (params.get('lang') || '').toUpperCase();
+            const storedLang = (localStorage.getItem('leadgreen_accelerator_lang') || '').toUpperCase();
 
             if (savedName) nameInput.value = savedName;
             if (savedEmail) emailInput.value = savedEmail;
+
             if (paramLang === 'EN' || paramLang === 'FR') {
-                langSelect.value = paramLang;
-                updateCheckoutLanguage(paramLang);
+                setPageLanguage(paramLang, true);
+            } else if (storedLang === 'FR') {
+                setPageLanguage('FR', true);
             }
         });
 
@@ -1078,7 +1281,7 @@
             const fullName = nameInput.value.trim();
             const email = emailInput.value.trim();
             const lang = langSelect.value;
-            const t = CHECKOUT_COPY[lang === 'FR' ? 'FR' : 'EN'];
+            const t = PAGE_TRANSLATIONS[(lang || activeLang) === 'FR' ? 'FR' : 'EN'];
             const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
             if (!fullName || !validEmail || !lang) {

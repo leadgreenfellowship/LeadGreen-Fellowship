@@ -110,6 +110,7 @@
             align-items: center;
             gap: 14px;
             text-decoration: none;
+            margin-right: auto;
         }
 
         .nav-brand-img {
@@ -163,8 +164,15 @@
             background: var(--surface-subtle);
             border: 1px solid var(--border);
             border-radius: var(--radius-pill);
-            padding: 3px;
+            padding: 3px 4px;
             gap: 2px;
+            flex-shrink: 0;
+        }
+
+        .lang-switch-icon {
+            color: var(--brand-dark);
+            font-size: 12px;
+            margin: 0 5px 0 7px;
         }
 
         .lang-btn {
@@ -573,12 +581,13 @@
                 </span>
             </a>
             <div class="nav-actions">
-                <div class="lang-switch-group" role="group" aria-label="Language Selector">
-                    <button type="button" class="lang-btn active" id="btnLangEN" onclick="setPageLanguage('EN')">EN</button>
-                    <button type="button" class="lang-btn" id="btnLangFR" onclick="setPageLanguage('FR')">FR</button>
-                </div>
                 <a href="index.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Home</a>
                 <a href="About.html" class="nav-link">About</a>
+            </div>
+            <div class="lang-switch-group" role="group" aria-label="Language Translation">
+                <i class="fa-solid fa-globe lang-switch-icon" aria-hidden="true"></i>
+                <button type="button" class="lang-btn active" id="btnLangEN" onclick="setPageLanguage('EN')">EN</button>
+                <button type="button" class="lang-btn" id="btnLangFR" onclick="setPageLanguage('FR')">FR</button>
             </div>
         </div>
     </nav>
