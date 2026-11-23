@@ -922,20 +922,20 @@
                             </select>
                         </div>
 
-                        <!-- Optional Fee Display (auto-shows when sessionFeeText is set in PROGRAM_CONFIG) -->
-                        <div class="fee-ledger-box" id="feeBox">
+                        <!-- Programme Fee Ledger (Matches CertificatePayment.html) -->
+                        <div class="fee-ledger-box visible" id="feeBox">
                             <div class="fee-label-group">
                                 <span class="fee-title" id="feeLabel">Programme Fee</span>
                                 <span class="fee-sub" id="feeSub">One-Time Registration</span>
                             </div>
-                            <span class="fee-amount" id="feeAmount"></span>
+                            <span class="fee-amount" id="feeAmount">$3.99 USD</span>
                         </div>
 
                         <div class="feedback-box" id="feedbackBox" role="alert"></div>
 
                         <!-- Primary Submit CTA -->
                         <button type="submit" class="btn-submit-payment" id="submitBtn">
-                            <span id="submitBtnText">Proceed to Payment</span>
+                            <span id="submitBtnText">Proceed to Pay $3.99</span>
                             <i class="fa-solid fa-arrow-right" id="submitBtnIcon"></i>
                         </button>
 
@@ -980,7 +980,7 @@
         const PROGRAM_CONFIG = {
             coachliEnglishUrl: '', // e.g. 'https://coachli.co/leadgreenfellow/...'
             coachliFrenchUrl: '',  // e.g. 'https://coachli.co/leadgreenfellow/...'
-            sessionFeeText: ''     // Optional: e.g. '₦20,000 / $20'
+            sessionFeeText: '$3.99 USD'
         };
 
         const CHECKOUT_COPY = {
@@ -992,7 +992,7 @@
                 lblEmail: 'Email Address',
                 feeLabel: 'Programme Fee',
                 feeSub: 'One-Time Registration',
-                btn: 'Proceed to Payment',
+                btn: 'Proceed to Pay $3.99',
                 connecting: 'Connecting to Secure Checkout...',
                 security: 'Secured via Coachli • 256-bit Encryption',
                 postPayNotice: 'After you make payment, you will receive an email to join containing what to do next.',
@@ -1007,7 +1007,7 @@
                 lblEmail: 'Adresse e-mail',
                 feeLabel: 'Frais d’inscription',
                 feeSub: 'Inscription unique',
-                btn: 'Procéder au paiement',
+                btn: 'Procéder au paiement — $3.99',
                 connecting: 'Connexion sécurisée à Coachli...',
                 security: 'Paiement sécurisé via Coachli • Cryptage 256 bits',
                 postPayNotice: 'Après votre paiement, vous recevrez un e-mail pour rejoindre le programme contenant les prochaines étapes.',
