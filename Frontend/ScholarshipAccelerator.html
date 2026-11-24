@@ -26,7 +26,7 @@
     <meta property="og:site_name" content="LeadGreen Fellowship">
     <meta property="og:title" content="Study Abroad Scholarship Accelerator Programme — LeadGreen Fellowship">
     <meta property="og:description"
-        content="Your dream of studying abroad doesn't have to remain a dream! Register for the Study Abroad Scholarship Accelerator Programme via Coachli.">
+        content="Your dream of studying abroad doesn't have to remain a dream! Register for the Study Abroad Scholarship Accelerator Programme.">
     <meta property="og:image" content="https://www.leadgreenfellowship.com/og-image.png">
 
     <!-- Font Awesome Icons -->
@@ -1146,16 +1146,16 @@
 
             </article>
 
-            <!-- RIGHT COLUMN: Sticky Coachli Checkout Card -->
+            <!-- RIGHT COLUMN: Sticky Checkout Card -->
             <aside class="checkout-panel-column" id="register">
                 <div class="checkout-card" data-ui>
                     <span class="checkout-tag-pill" id="checkoutTag">Official Registration</span>
                     <h2 class="checkout-heading" id="checkoutTitle">Study Abroad Scholarship Accelerator</h2>
                     <p class="checkout-subtext" id="checkoutDesc">
-                        Enter your details and select your preferred language to proceed securely to Coachli checkout.
+                        Enter your details and select your preferred language to proceed securely to Selar checkout.
                     </p>
 
-                    <form onsubmit="handleCoachliCheckout(event)" novalidate>
+                    <form onsubmit="handleCheckout(event)" novalidate>
                         <!-- Full Name -->
                         <div class="input-group">
                             <label for="attendeeName" class="input-label" id="lblName">Full Name</label>
@@ -1201,7 +1201,7 @@
                         <!-- Security Notice -->
                         <div class="payment-security-note" id="securityNote">
                             <i class="fa-solid fa-lock"></i>
-                            <span>Secured via Coachli &bull; 256-bit Encryption</span>
+                            <span>Secured via Selar &bull; 256-bit Encryption</span>
                         </div>
 
                         <!-- Post-Payment Email Notice -->
@@ -1242,14 +1242,14 @@
         </div>
     </footer>
 
-    <!-- 5. Client Logic & Full Bilingual EN/FR Translation + Coachli Routing -->
+    <!-- 5. Client Logic & Full Bilingual EN/FR Translation + Selar Routing -->
     <script>
         /* -----------------------------------------------------------------
-           COACHLI PAYMENT CONFIGURATION
+           SELAR PAYMENT CONFIGURATION
            ----------------------------------------------------------------- */
         const PROGRAM_CONFIG = {
-            coachliEnglishUrl: 'https://www.coachli.co/leadgreenfellow/cart?buyNow=1',
-            coachliFrenchUrl: 'https://www.coachli.co/leadgreenfellow/cart?buyNow=1',
+            englishCheckoutUrl: 'https://selar.com/y718gl1970',
+            frenchCheckoutUrl: 'https://selar.com/v5im5dz6f5',
             sessionFeeText: '$3.99 USD'
         };
 
@@ -1289,7 +1289,7 @@
                 ],
                 tag: 'Official Registration',
                 title: 'Study Abroad Scholarship Accelerator',
-                desc: 'Enter your details and select your preferred language to proceed securely to Coachli checkout.',
+                desc: 'Enter your details and select your preferred language to proceed securely to Selar checkout.',
                 lblName: 'Full Name',
                 phName: 'e.g. Amina Diallo',
                 lblEmail: 'Email Address',
@@ -1301,10 +1301,10 @@
                 mobileCtaBtn: 'Register Now',
                 btn: 'Proceed to Pay $3.99',
                 connecting: 'Connecting to Secure Checkout...',
-                security: 'Secured via Coachli \u2022 256-bit Encryption',
+                security: 'Secured via Selar \u2022 256-bit Encryption',
                 postPayNotice: 'After you make payment, you will receive an email to join containing what to do next.',
                 errMissing: 'Please enter your full name, a valid email address, and select your preferred language.',
-                errNoLink: 'The English Coachli payment link is being added. Please check back shortly or email support@leadgreenfellowship.com.',
+                errNoLink: 'The English payment link is temporarily unavailable. Please try again shortly or email support@leadgreenfellowship.com.',
                 footerCopy: '\u00a9 2026 LeadGreen Fellowship. Championing Africa\u2019s next generation of changemakers.',
                 footerHome: 'Home',
                 footerAbout: 'About Us',
@@ -1347,7 +1347,7 @@
                 ],
                 tag: 'Inscription Officielle',
                 title: 'Acc\u00e9l\u00e9rateur de Bourses d\u2019\u00c9tudes',
-                desc: 'Renseignez vos informations et choisissez votre langue pour acc\u00e9der au paiement s\u00e9curis\u00e9 Coachli.',
+                desc: 'Renseignez vos informations et choisissez votre langue pour acc\u00e9der au paiement s\u00e9curis\u00e9 Selar.',
                 lblName: 'Nom complet',
                 phName: 'ex. Amina Diallo',
                 lblEmail: 'Adresse e-mail',
@@ -1358,11 +1358,11 @@
                 feeSub: 'Inscription unique',
                 mobileCtaBtn: 'S\u2019inscrire',
                 btn: 'Proc\u00e9der au paiement \u2014 $3.99',
-                connecting: 'Connexion s\u00e9curis\u00e9e \u00e0 Coachli...',
-                security: 'Paiement s\u00e9curis\u00e9 via Coachli \u2022 Cryptage 256 bits',
+                connecting: 'Connexion s\u00e9curis\u00e9e \u00e0 Selar...',
+                security: 'Paiement s\u00e9curis\u00e9 via Selar \u2022 Cryptage 256 bits',
                 postPayNotice: 'Apr\u00e8s votre paiement, vous recevrez un e-mail pour rejoindre le programme contenant les prochaines \u00e9tapes.',
                 errMissing: 'Veuillez saisir votre nom complet, une adresse e-mail valide et choisir votre langue.',
-                errNoLink: 'Le lien de paiement Coachli en fran\u00e7ais est en cours d\u2019ajout. R\u00e9essayez bient\u00f4t ou \u00e9crivez \u00e0 support@leadgreenfellowship.com.',
+                errNoLink: 'Le lien de paiement en fran\u00e7ais est temporairement indisponible. R\u00e9essayez bient\u00f4t ou \u00e9crivez \u00e0 support@leadgreenfellowship.com.',
                 footerCopy: '\u00a9 2026 LeadGreen Fellowship. Former la prochaine g\u00e9n\u00e9ration d\u2019acteurs du changement en Afrique.',
                 footerHome: 'Accueil',
                 footerAbout: '\u00c0 propos',
@@ -1517,7 +1517,7 @@
             }
         });
 
-        window.handleCoachliCheckout = function (e) {
+        window.handleCheckout = function (e) {
             e.preventDefault();
 
             const fullName = nameInput.value.trim();
@@ -1541,8 +1541,8 @@
             } catch (_) {}
 
             const targetUrl = lang === 'FR'
-                ? PROGRAM_CONFIG.coachliFrenchUrl.trim()
-                : PROGRAM_CONFIG.coachliEnglishUrl.trim();
+                ? PROGRAM_CONFIG.frenchCheckoutUrl.trim()
+                : PROGRAM_CONFIG.englishCheckoutUrl.trim();
 
             if (!targetUrl) {
                 showFeedback(t.errNoLink, 'info');
