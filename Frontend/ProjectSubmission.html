@@ -60,8 +60,8 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
     <!-- Unified LeadGreen Design System -->
-    <link rel="stylesheet" href="design-system.css?v=20261023">
-    <script src="portal-nav.js?v=20261023" defer></script>
+    <link rel="stylesheet" href="design-system.css?v=20261123">
+    <script src="portal-nav.js?v=20261120" defer></script>
 
     <!-- Early global delegators to prevent ReferenceError before async module loads -->
     <script>
@@ -116,6 +116,10 @@
             box-sizing: border-box;
         }
 
+        html {
+            overflow-x: clip;
+        }
+
         body {
             font-family: var(--font-sans, 'Inter', sans-serif);
             background: var(--bg);
@@ -123,6 +127,7 @@
             min-height: 100dvh;
             display: flex;
             flex-direction: column;
+            overflow-x: clip;
         }
 
         /* ── Portal Hero Banner ── */
@@ -339,6 +344,12 @@
             border-color: var(--primary);
             outline: 2px solid var(--primary);
             outline-offset: 1px;
+        }
+
+        .field input[type="date"] {
+            min-height: 50px;
+            -webkit-appearance: none;
+            appearance: none;
         }
 
         .field textarea {
@@ -734,8 +745,8 @@
             width: 100%;
             background: var(--border);
             border-radius: 20px;
-            height: 6px;
-            margin-top: 12px;
+            height: 8px;
+            margin-top: 14px;
             overflow: hidden;
             display: none;
         }
@@ -745,7 +756,20 @@
             background: var(--primary);
             border-radius: 20px;
             width: 0%;
-            transition: width 0.3s;
+            transition: width 0.25s ease;
+        }
+
+        .upload-status-text {
+            display: none;
+            margin-top: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .step-inline-alert {
+            margin-top: 16px;
+            margin-bottom: 0;
         }
 
         /* ── Hidden ── */
@@ -808,6 +832,14 @@
 
             input, select, textarea {
                 font-size: 16px !important; /* Prevents auto-zoom on iOS */
+            }
+
+            .toast {
+                left: 16px;
+                right: 16px;
+                bottom: 16px;
+                width: auto;
+                max-width: none;
             }
 
             .site-header {
@@ -982,7 +1014,7 @@
                         <textarea id="missionDescription"
                             placeholder="Describe the overview of your project — what it is, why it matters, and what you hoped to achieve…"
                             maxlength="1000"></textarea>
-                        <div class="char-ct"><span id="descCount">0</span> / 1000</div>
+                        <div class="char-ct"><span id="descCount">0</span> / 1000 <span id="descMinHint" style="color:var(--text-light);">(minimum 50 characters)</span></div>
                         <span class="error-msg">Please provide a description (at least 50 characters)</span>
                     </div>
 
@@ -1013,9 +1045,14 @@
                         <span class="error-msg">Please describe who you impacted</span>
                     </div>
 
+                    <div id="step1Alert" class="alert alert-error step-inline-alert hidden" role="alert">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span id="step1AlertText"></span>
+                    </div>
+
                     <div class="actions">
                         <div></div>
-                        <button class="btn btn-primary" onclick="goStep(2)">Next: Plan <i
+                        <button type="button" class="btn btn-primary" onclick="goStep(2)">Next: Plan <i
                                 class="fa-solid fa-arrow-right"></i></button>
                     </div>
                 </div>
@@ -1047,10 +1084,15 @@
                         </div>
                     </div>
 
+                    <div id="step2Alert" class="alert alert-error step-inline-alert hidden" role="alert">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span id="step2AlertText"></span>
+                    </div>
+
                     <div class="actions">
-                        <button class="btn btn-outline" onclick="goStep(1)"><i class="fa-solid fa-arrow-left"></i>
+                        <button type="button" class="btn btn-outline" onclick="goStep(1)"><i class="fa-solid fa-arrow-left"></i>
                             Back</button>
-                        <button class="btn btn-primary" onclick="goStep(3)">Next: Evidence <i
+                        <button type="button" class="btn btn-primary" onclick="goStep(3)">Next: Evidence <i
                                 class="fa-solid fa-arrow-right"></i></button>
                     </div>
                 </div>
@@ -1065,14 +1107,15 @@
                         <div class="upload-zone" id="uploadZone"
                             onclick="document.getElementById('photoInput').click()">
                             <i class="fa-solid fa-cloud-arrow-up"></i>
-                            <div class="uz-title">Click to upload photos</div>
-                            <div class="uz-hint">JPG, PNG, or WebP — Max 5 MB each — Up to 8 photos</div>
+                            <div class="uz-title">Tap or click to upload photos</div>
+                            <div class="uz-hint">JPG, PNG, WebP, or iPhone photos — Large photos are auto-optimized — Up to 8 photos</div>
                         </div>
-                        <input type="file" id="photoInput" accept="image/*" multiple class="hidden">
+                        <input type="file" id="photoInput" accept="image/*,.heic,.heif,.jpg,.jpeg,.png,.webp" multiple class="hidden">
                         <div class="photo-previews" id="photoPreviews"></div>
                         <div class="upload-progress" id="uploadProgress">
                             <div class="bar" id="uploadBar"></div>
                         </div>
+                        <div class="upload-status-text" id="uploadStatusText" aria-live="polite"></div>
                         <span class="error-msg" id="photoError" style="display:none;">Please upload at least 1
                             photo</span>
                     </div>
@@ -1095,10 +1138,15 @@
                             notified when a decision is made.</span>
                     </div>
 
+                    <div id="step3Alert" class="alert alert-error step-inline-alert hidden" role="alert">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span id="step3AlertText"></span>
+                    </div>
+
                     <div class="actions">
-                        <button class="btn btn-outline" onclick="goStep(2)"><i class="fa-solid fa-arrow-left"></i>
+                        <button type="button" class="btn btn-outline" onclick="goStep(2)"><i class="fa-solid fa-arrow-left"></i>
                             Back</button>
-                        <button class="btn btn-primary btn-lg" id="submitBtn" onclick="submitMission()">
+                        <button type="button" class="btn btn-primary btn-lg" id="submitBtn" onclick="submitMission()">
                             <i class="fa-solid fa-paper-plane"></i> Submit Project
                         </button>
                     </div>
@@ -1175,7 +1223,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import {
-            getFirestore, collection, query, where, getDocs, addDoc, doc, getDoc, updateDoc, serverTimestamp
+            initializeFirestore, getFirestore, collection, query, where, getDocs, addDoc, doc, updateDoc, serverTimestamp
         } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         // ── Firebase Config (aligned with LeadGreen project) ──
@@ -1189,20 +1237,38 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        // Auto-detect long-polling prevents Firestore hangs/offline errors on mobile carriers & restricted proxies
+        let db;
+        try {
+            db = initializeFirestore(app, { experimentalAutoDetectLongPolling: true });
+        } catch (_) {
+            db = getFirestore(app);
+        }
 
         // ── Cloudinary Config (Unsigned Upload Preset for Project Evidence Photos) ──
         const CLOUDINARY_CLOUD_NAME = "evtfcuco";
         const CLOUDINARY_UPLOAD_PRESET = "leadgreen_projects";
         const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
+        const MAX_PHOTOS = 8;
+        const MAX_RAW_PHOTO_BYTES = 25 * 1024 * 1024;       // Accept modern smartphone photos up to 25 MB
+        const MAX_UNCOMPRESSED_FALLBACK = 9.5 * 1024 * 1024; // Cloudinary unsigned 10 MB limit for raw fallback
+        const TARGET_MAX_DIMENSION = 1600;                   // Resize large camera photos cleanly for fast mobile uploads
+        const IMAGE_EXT_REGEX = /\.(jpe?g|png|webp|gif|bmp|heic|heif|avif)$/i;
 
         // ── STATE ──
         let currentStep = 0;
         let fellowData = null;
         let existingMission = null;   // previous project/mission doc if exists
-        let existingPhotos = [];      // saved photos from previous submission
-        let photoFiles = [];          // new File objects
+        let existingPhotos = [];      // saved photo URLs from previous submission
+        let photoEntries = [];        // { file, previewUrl, uploadedUrl, name, sizeBytes }
+        let isCompressingPhotos = false;
         let isSubmitting = false;
+
+        const DRAFT_FIELDS = [
+            'missionTitle', 'climateArea', 'missionDescription', 'missionLocation',
+            'missionDate', 'missionGoal', 'missionImpact', 'activities',
+            'beneficiaries', 'teamSize', 'videoLink', 'additionalNotes'
+        ];
 
         // ── Expose functions globally ──
         window.verifyFellow = verifyFellow;
@@ -1216,6 +1282,90 @@
         if (window._pendingVerify) {
             window._pendingVerify = false;
             verifyFellow();
+        }
+
+        // ═══════════════════════════════════════════
+        // Local Draft Auto-Save (Protects Mobile Users From Tab Reloads)
+        // ═══════════════════════════════════════════
+        function getDraftKey() {
+            const em = (fellowData && fellowData.email) ? fellowData.email.toLowerCase() : '';
+            return em ? `leadgreen_project_draft_${em}` : '';
+        }
+
+        function saveDraft() {
+            const key = getDraftKey();
+            if (!key || existingMission) return;
+            try {
+                const payload = {};
+                DRAFT_FIELDS.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) payload[id] = el.value;
+                });
+                localStorage.setItem(key, JSON.stringify(payload));
+            } catch (_) {}
+        }
+
+        function restoreDraft() {
+            const key = getDraftKey();
+            if (!key || existingMission) return;
+            try {
+                const raw = localStorage.getItem(key);
+                if (!raw) return;
+                const data = JSON.parse(raw);
+                let restoredAny = false;
+                DRAFT_FIELDS.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el && typeof data[id] === 'string' && data[id] && !el.value) {
+                        el.value = data[id];
+                        restoredAny = true;
+                    }
+                });
+                updateCharCounters();
+                if (restoredAny) {
+                    showToast('Restored your saved draft progress.');
+                }
+            } catch (_) {}
+        }
+
+        function clearDraft() {
+            const key = getDraftKey();
+            if (!key) return;
+            try { localStorage.removeItem(key); } catch (_) {}
+        }
+
+        function setStepAlert(step, msg) {
+            const box = document.getElementById(`step${step}Alert`);
+            const text = document.getElementById(`step${step}AlertText`);
+            if (!box || !text) return;
+            if (msg) {
+                text.textContent = msg;
+                box.classList.remove('hidden');
+            } else {
+                text.textContent = '';
+                box.classList.add('hidden');
+            }
+        }
+
+        function setUploadStatus(msg) {
+            const el = document.getElementById('uploadStatusText');
+            if (!el) return;
+            if (msg) {
+                el.textContent = msg;
+                el.style.display = 'block';
+            } else {
+                el.textContent = '';
+                el.style.display = 'none';
+            }
+        }
+
+        function formatBytes(bytes) {
+            if (!bytes || bytes < 1024) return `${bytes || 0} B`;
+            if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
+            return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+        }
+
+        function sleep(ms) {
+            return new Promise(r => setTimeout(r, ms));
         }
 
         // ═══════════════════════════════════════════
@@ -1234,7 +1384,7 @@
                 return;
             }
 
-            if (!email || !email.includes('@')) {
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
                 showVerifyError('Please enter a valid email address.');
                 return;
             }
@@ -1258,17 +1408,24 @@
                 document.getElementById('headerName').textContent = name;
                 document.getElementById('headerAvatar').textContent = getInitials(name);
 
-                // Check existing project submissions for this email
+                // Check existing project submissions for this email (with resilient retry)
                 const missionsRef = collection(db, "missions");
-                const mq = query(missionsRef, where("fellowEmail", "==", email));
-                let msnap = await getDocs(mq);
-
-                if (msnap.empty) {
-                    const mq2 = query(missionsRef, where("email", "==", email));
-                    msnap = await getDocs(mq2);
+                let msnap = null;
+                try {
+                    const mq = query(missionsRef, where("fellowEmail", "==", email));
+                    msnap = await getDocs(mq);
+                    if (msnap.empty) {
+                        const mq2 = query(missionsRef, where("email", "==", email));
+                        msnap = await getDocs(mq2);
+                    }
+                } catch (queryErr) {
+                    console.warn('Initial lookup retry:', queryErr);
+                    await sleep(1200);
+                    const mq = query(missionsRef, where("fellowEmail", "==", email));
+                    msnap = await getDocs(mq);
                 }
 
-                if (!msnap.empty) {
+                if (msnap && !msnap.empty) {
                     // Find the most recent submission
                     const missionsList = msnap.docs.map(d => ({ id: d.id, ...d.data() }));
                     missionsList.sort((a, b) => {
@@ -1312,17 +1469,16 @@
                         document.getElementById('missionTitle').value = existingMission.projectTitle || existingMission.missionTitle || existingMission.title || '';
                         document.getElementById('climateArea').value = existingMission.climateArea || existingMission.actionArea || '';
                         document.getElementById('missionDescription').value = existingMission.projectDescription || existingMission.missionDescription || existingMission.description || '';
-                        document.getElementById('descCount').textContent = (document.getElementById('missionDescription').value || '').length;
                         document.getElementById('missionLocation').value = existingMission.location || existingMission.targetLocation || '';
                         document.getElementById('missionDate').value = existingMission.projectDate || existingMission.missionDate || existingMission.startDate || '';
                         document.getElementById('missionGoal').value = existingMission.projectGoal || existingMission.mainGoal || existingMission.goal || '';
                         document.getElementById('missionImpact').value = existingMission.impactTarget || existingMission.target || '';
                         document.getElementById('activities').value = existingMission.activities || '';
-                        document.getElementById('actCount').textContent = (document.getElementById('activities').value || '').length;
                         document.getElementById('beneficiaries').value = existingMission.beneficiaries || '';
                         document.getElementById('teamSize').value = existingMission.teamSize || '';
                         document.getElementById('videoLink').value = existingMission.videoLink || (Array.isArray(existingMission.videos) && existingMission.videos[0]) || '';
                         document.getElementById('additionalNotes').value = existingMission.additionalNotes || '';
+                        updateCharCounters();
 
                         // Pre-load existing photos
                         const rawPhotos = [
@@ -1343,6 +1499,8 @@
 
                         renderPhotoPreviews();
                     }
+                } else {
+                    restoreDraft();
                 }
 
                 // Proceed to Step 1
@@ -1352,8 +1510,8 @@
                 updateStepper();
 
             } catch (err) {
-                console.error('Error:', err);
-                showVerifyError('Something went wrong. Please check your connection and try again.');
+                console.error('Verify error:', err);
+                showVerifyError('Unable to reach the submission server right now. Please check your internet connection (or disable VPN/data saver) and try again.');
             } finally {
                 btn.innerHTML = 'Continue <i class="fa-solid fa-arrow-right"></i>';
                 btn.disabled = false;
@@ -1373,7 +1531,8 @@
             if (step > currentStep) {
                 if (!validateStep(currentStep)) return;
             }
-
+            hideToast();
+            saveDraft();
             currentStep = step;
 
             document.getElementById('step1').classList.toggle('hidden', step !== 1);
@@ -1409,85 +1568,239 @@
         }
 
         // ═══════════════════════════════════════════
-        // Validation
+        // Validation (With Exact Field List + Scroll-To-First-Error)
         // ═══════════════════════════════════════════
         function validateStep(step) {
             clearErrors();
-            let valid = true;
+            const missing = [];
+            let firstInvalidEl = null;
+
+            function failField(id, label) {
+                const el = document.getElementById(id);
+                if (el) {
+                    markError(id);
+                    if (!firstInvalidEl) firstInvalidEl = el;
+                }
+                missing.push(label);
+            }
 
             if (step === 1) {
-                if (!val('missionTitle')) valid = false;
-                if (!document.getElementById('climateArea').value) { markError('climateArea'); valid = false; }
-                if ((document.getElementById('missionDescription').value || '').length < 50) { markError('missionDescription'); valid = false; }
-                if (!val('missionLocation')) valid = false;
-                if (!val('missionDate')) valid = false;
-                if (!val('missionGoal')) valid = false;
-                if (!val('missionImpact')) valid = false;
+                if (!valText('missionTitle')) failField('missionTitle', 'Project Title');
+                if (!document.getElementById('climateArea').value) failField('climateArea', 'Climate Focus Area');
+                const descLen = (document.getElementById('missionDescription').value || '').trim().length;
+                if (descLen < 50) failField('missionDescription', `Project Description (needs at least 50 characters, currently ${descLen})`);
+                if (!valText('missionLocation')) failField('missionLocation', 'Location');
+                if (!valText('missionDate')) failField('missionDate', 'Date Carried Out');
+                if (!valText('missionGoal')) failField('missionGoal', 'Main Goal');
+                if (!valText('missionImpact')) failField('missionImpact', 'Who did you impact?');
             }
 
             if (step === 2) {
-                if (!val('activities')) valid = false;
+                if (!valText('activities')) failField('activities', 'Activities Carried Out');
             }
 
             if (step === 3) {
-                const totalPhotos = existingPhotos.length + photoFiles.length;
+                if (isCompressingPhotos) {
+                    const msg = 'Please wait a moment while your photos finish optimizing…';
+                    setStepAlert(3, msg);
+                    showToast(msg, true);
+                    return false;
+                }
+                const totalPhotos = existingPhotos.length + photoEntries.length;
                 if (totalPhotos === 0) {
                     document.getElementById('photoError').style.display = 'block';
-                    valid = false;
+                    firstInvalidEl = document.getElementById('uploadZone');
+                    missing.push('At least 1 Project Photo');
                 }
             }
 
-            if (!valid) {
-                showToast('Please fill in all required fields', true);
-            }
-
-            return valid;
-        }
-
-        function val(id) {
-            const el = document.getElementById(id);
-            if (!el.value || !el.value.trim()) {
-                markError(id);
+            if (missing.length > 0) {
+                const msg = 'Please complete: ' + missing.join(', ') + '.';
+                setStepAlert(step, msg);
+                showToast(msg, true);
+                if (firstInvalidEl) {
+                    firstInvalidEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    if (typeof firstInvalidEl.focus === 'function') {
+                        setTimeout(() => firstInvalidEl.focus({ preventScroll: true }), 250);
+                    }
+                }
                 return false;
             }
+
             return true;
+        }
+
+        function valText(id) {
+            const el = document.getElementById(id);
+            return Boolean(el && el.value && el.value.trim());
         }
 
         function markError(id) {
             const el = document.getElementById(id);
-            el.closest('.field').classList.add('error');
+            if (el && el.closest('.field')) {
+                el.closest('.field').classList.add('error');
+            }
         }
 
         function clearErrors() {
             document.querySelectorAll('.field.error').forEach(el => el.classList.remove('error'));
             document.getElementById('photoError').style.display = 'none';
+            setStepAlert(1, '');
+            setStepAlert(2, '');
+            setStepAlert(3, '');
         }
 
         // ═══════════════════════════════════════════
-        // Photo Upload Handling
+        // Smart Photo Handling + Automatic Client-Side Compression
         // ═══════════════════════════════════════════
-        document.getElementById('photoInput').addEventListener('change', (e) => {
-            const files = Array.from(e.target.files);
-            const maxFiles = 8;
-            const maxSize = 5 * 1024 * 1024; // 5 MB
+        function isImageFile(file) {
+            if (!file) return false;
+            if (file.type && file.type.startsWith('image/')) return true;
+            return IMAGE_EXT_REGEX.test(file.name || '');
+        }
 
-            files.forEach(file => {
-                if (existingPhotos.length + photoFiles.length >= maxFiles) {
-                    showToast(`Maximum ${maxFiles} photos allowed`, true);
-                    return;
-                }
-                if (file.size > maxSize) {
-                    showToast(`${file.name} is too large (max 5 MB)`, true);
-                    return;
-                }
-                if (!file.type.startsWith('image/')) {
-                    showToast(`${file.name} is not an image file`, true);
-                    return;
-                }
-                photoFiles.push(file);
-            });
+        async function compressImageFile(file) {
+            // Skip tiny GIFs or already-small standard JPEGs/PNGs under 850 KB
+            const lowerName = (file.name || '').toLowerCase();
+            if (file.type === 'image/gif' || lowerName.endsWith('.gif')) {
+                return file;
+            }
+            if (file.size <= 850 * 1024 && (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/webp')) {
+                return file;
+            }
 
-            renderPhotoPreviews();
+            try {
+                let source = null;
+                let width = 0;
+                let height = 0;
+                let cleanup = () => {};
+
+                if (typeof createImageBitmap === 'function') {
+                    try {
+                        source = await createImageBitmap(file);
+                        width = source.width;
+                        height = source.height;
+                        cleanup = () => { try { source.close(); } catch (_) {} };
+                    } catch (_) {
+                        source = null;
+                    }
+                }
+
+                if (!source) {
+                    const objUrl = URL.createObjectURL(file);
+                    cleanup = () => URL.revokeObjectURL(objUrl);
+                    source = await new Promise((resolve, reject) => {
+                        const img = new Image();
+                        img.onload = () => resolve(img);
+                        img.onerror = () => reject(new Error('Image decode unavailable'));
+                        img.src = objUrl;
+                    });
+                    width = source.naturalWidth || source.width;
+                    height = source.naturalHeight || source.height;
+                }
+
+                if (!width || !height) {
+                    cleanup();
+                    return file;
+                }
+
+                let targetW = width;
+                let targetH = height;
+                if (Math.max(width, height) > TARGET_MAX_DIMENSION) {
+                    const scale = TARGET_MAX_DIMENSION / Math.max(width, height);
+                    targetW = Math.max(1, Math.round(width * scale));
+                    targetH = Math.max(1, Math.round(height * scale));
+                }
+
+                const canvas = document.createElement('canvas');
+                canvas.width = targetW;
+                canvas.height = targetH;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0, 0, targetW, targetH);
+                ctx.drawImage(source, 0, 0, targetW, targetH);
+                cleanup();
+
+                const toBlob = (quality) => new Promise(res => canvas.toBlob(res, 'image/jpeg', quality));
+                let blob = await toBlob(0.82);
+                if (blob && blob.size > 1.6 * 1024 * 1024) {
+                    blob = await toBlob(0.68);
+                }
+
+                if (!blob) return file;
+                // Keep original if compression somehow made a small file larger
+                if (blob.size >= file.size && file.size <= MAX_UNCOMPRESSED_FALLBACK) {
+                    return file;
+                }
+
+                const safeBase = (file.name || 'photo').replace(/\.[^.]+$/, '');
+                return new File([blob], `${safeBase}.jpg`, { type: 'image/jpeg', lastModified: Date.now() });
+            } catch (decodeErr) {
+                // Non-canvas-decodable format (e.g. raw HEIC on Chrome/Android) — Cloudinary accepts up to 10 MB directly
+                console.warn('Client compression skipped, using original file:', decodeErr);
+                return file;
+            }
+        }
+
+        async function handleSelectedFiles(fileList) {
+            const incoming = Array.from(fileList || []);
+            if (incoming.length === 0) return;
+
+            setStepAlert(3, '');
+            document.getElementById('photoError').style.display = 'none';
+            isCompressingPhotos = true;
+            setUploadStatus(`Optimizing ${incoming.length} photo${incoming.length > 1 ? 's' : ''} for fast upload…`);
+
+            const issues = [];
+            try {
+                for (let idx = 0; idx < incoming.length; idx++) {
+                    const rawFile = incoming[idx];
+
+                    if (existingPhotos.length + photoEntries.length >= MAX_PHOTOS) {
+                        issues.push(`Maximum ${MAX_PHOTOS} photos allowed.`);
+                        break;
+                    }
+                    if (!isImageFile(rawFile)) {
+                        issues.push(`${rawFile.name} is not a supported image file.`);
+                        continue;
+                    }
+                    if (rawFile.size > MAX_RAW_PHOTO_BYTES) {
+                        issues.push(`${rawFile.name} is larger than 25 MB. Please choose a smaller photo.`);
+                        continue;
+                    }
+
+                    setUploadStatus(`Optimizing photo ${idx + 1} of ${incoming.length}…`);
+                    const processedFile = await compressImageFile(rawFile);
+
+                    if (processedFile.size > MAX_UNCOMPRESSED_FALLBACK) {
+                        issues.push(`${rawFile.name} (${formatBytes(processedFile.size)}) could not be compressed below 9.5 MB. Please convert or take a screenshot of it.`);
+                        continue;
+                    }
+
+                    const previewUrl = URL.createObjectURL(processedFile);
+                    photoEntries.push({
+                        file: processedFile,
+                        previewUrl,
+                        uploadedUrl: null,
+                        name: processedFile.name,
+                        sizeBytes: processedFile.size
+                    });
+                }
+            } finally {
+                isCompressingPhotos = false;
+                setUploadStatus('');
+                renderPhotoPreviews();
+            }
+
+            if (issues.length > 0) {
+                const msg = issues.join(' ');
+                setStepAlert(3, msg);
+                showToast(msg, true);
+            }
+        }
+
+        document.getElementById('photoInput').addEventListener('change', async (e) => {
+            await handleSelectedFiles(e.target.files);
             e.target.value = '';
         });
 
@@ -1495,17 +1808,11 @@
         const uploadZone = document.getElementById('uploadZone');
         uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.style.borderColor = 'var(--primary)'; uploadZone.style.background = 'var(--primary-light)'; });
         uploadZone.addEventListener('dragleave', () => { uploadZone.style.borderColor = ''; uploadZone.style.background = ''; });
-        uploadZone.addEventListener('drop', (e) => {
+        uploadZone.addEventListener('drop', async (e) => {
             e.preventDefault();
             uploadZone.style.borderColor = '';
             uploadZone.style.background = '';
-            const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
-            files.forEach(file => {
-                if (existingPhotos.length + photoFiles.length < 8 && file.size <= 5 * 1024 * 1024) {
-                    photoFiles.push(file);
-                }
-            });
-            renderPhotoPreviews();
+            await handleSelectedFiles(e.dataTransfer.files);
         });
 
         function renderPhotoPreviews() {
@@ -1516,30 +1823,26 @@
             existingPhotos.forEach((url, idx) => {
                 const div = document.createElement('div');
                 div.className = 'photo-thumb';
-                div.style.position = 'relative';
                 div.innerHTML = `
                     <img src="${url}" alt="Saved Photo ${idx + 1}">
-                    <span style="position:absolute; bottom:6px; left:6px; background:rgba(0,0,0,0.65); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:600;">Saved</span>
-                    <button class="remove-photo" onclick="removeExistingPhoto(${idx})" title="Remove saved photo"><i class="fa-solid fa-xmark"></i></button>
+                    <span style="position:absolute; bottom:6px; left:6px; background:rgba(0,0,0,0.68); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:600;">Saved</span>
+                    <button type="button" class="remove-photo" onclick="removeExistingPhoto(${idx})" title="Remove saved photo"><i class="fa-solid fa-xmark"></i></button>
                 `;
                 container.appendChild(div);
             });
 
-            // Render newly selected photo files
-            photoFiles.forEach((file, idx) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const div = document.createElement('div');
-                    div.className = 'photo-thumb';
-                    div.style.position = 'relative';
-                    div.innerHTML = `
-                        <img src="${e.target.result}" alt="New Photo ${idx + 1}">
-                        <span style="position:absolute; bottom:6px; left:6px; background:rgba(5,150,105,0.85); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:600;">New</span>
-                        <button class="remove-photo" onclick="removePhoto(${idx})" title="Remove"><i class="fa-solid fa-xmark"></i></button>
-                    `;
-                    container.appendChild(div);
-                };
-                reader.readAsDataURL(file);
+            // Render newly selected photo entries (using lightweight object URLs — no RAM crash!)
+            photoEntries.forEach((entry, idx) => {
+                const div = document.createElement('div');
+                div.className = 'photo-thumb';
+                const badgeText = entry.uploadedUrl ? 'Uploaded' : formatBytes(entry.sizeBytes);
+                const badgeBg = entry.uploadedUrl ? 'rgba(14,133,73,0.9)' : 'rgba(13,43,29,0.75)';
+                div.innerHTML = `
+                    <img src="${entry.previewUrl}" alt="Photo ${idx + 1}" onerror="this.style.display='none'">
+                    <span style="position:absolute; bottom:6px; left:6px; background:${badgeBg}; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:600;">${badgeText}</span>
+                    <button type="button" class="remove-photo" onclick="removePhoto(${idx})" title="Remove photo"><i class="fa-solid fa-xmark"></i></button>
+                `;
+                container.appendChild(div);
             });
         }
 
@@ -1549,73 +1852,113 @@
         }
 
         window.removePhoto = function (idx) {
-            photoFiles.splice(idx, 1);
+            const removed = photoEntries.splice(idx, 1)[0];
+            if (removed && removed.previewUrl) {
+                try { URL.revokeObjectURL(removed.previewUrl); } catch (_) {}
+            }
             renderPhotoPreviews();
         };
 
         // ═══════════════════════════════════════════
-        // Upload Photos to Cloudinary (Unsigned Preset)
+        // Upload Photos to Cloudinary (With Retries, 90s Timeout & URL Caching)
         // ═══════════════════════════════════════════
+        function uploadPhotoOnce(file, missionId, onProgress) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+            formData.append('folder', `leadgreen/projects/${missionId}`);
+
+            return new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', CLOUDINARY_UPLOAD_URL, true);
+                xhr.timeout = 90000; // 90s per compressed photo for slower 3G/4G connections
+
+                xhr.upload.onprogress = (e) => {
+                    if (e.lengthComputable && e.total > 0) {
+                        onProgress(e.loaded / e.total);
+                    }
+                };
+
+                xhr.onload = () => {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        try {
+                            const res = JSON.parse(xhr.responseText);
+                            if (res.secure_url) {
+                                resolve(res.secure_url);
+                            } else {
+                                reject({ message: 'Upload completed but no image URL was returned.', retryable: true });
+                            }
+                        } catch (_) {
+                            reject({ message: 'Unexpected response from photo server.', retryable: true });
+                        }
+                    } else {
+                        let errMsg = `Photo upload failed (HTTP ${xhr.status}).`;
+                        try {
+                            const errRes = JSON.parse(xhr.responseText);
+                            if (errRes.error && errRes.error.message) {
+                                errMsg = errRes.error.message;
+                            }
+                        } catch (_) {}
+                        const retryable = xhr.status >= 500 || xhr.status === 429 || xhr.status === 408;
+                        reject({ message: errMsg, retryable });
+                    }
+                };
+
+                xhr.onerror = () => reject({ message: 'Network interruption while uploading photo.', retryable: true });
+                xhr.ontimeout = () => reject({ message: 'Photo upload timed out on your connection.', retryable: true });
+                xhr.send(formData);
+            });
+        }
+
         async function uploadPhotos(missionId) {
             const uploadedURLs = [];
-            if (photoFiles.length === 0) return uploadedURLs;
+            if (photoEntries.length === 0) return uploadedURLs;
 
             const progressEl = document.getElementById('uploadProgress');
             const barEl = document.getElementById('uploadBar');
             barEl.style.width = '0%';
             progressEl.style.display = 'block';
 
-            for (let i = 0; i < photoFiles.length; i++) {
-                const file = photoFiles[i];
-                const formData = new FormData();
-                formData.append('file', file);
-                formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-                formData.append('folder', `leadgreen/projects/${missionId}`);
+            for (let i = 0; i < photoEntries.length; i++) {
+                const entry = photoEntries[i];
 
-                const url = await new Promise((resolve, reject) => {
-                    const xhr = new XMLHttpRequest();
-                    xhr.open('POST', CLOUDINARY_UPLOAD_URL, true);
-                    xhr.timeout = 45000;
+                // Reuse already-uploaded URL if user retried after a momentary drop
+                if (entry.uploadedUrl) {
+                    uploadedURLs.push(entry.uploadedUrl);
+                    barEl.style.width = (((i + 1) / photoEntries.length) * 100).toFixed(1) + '%';
+                    continue;
+                }
 
-                    xhr.upload.onprogress = (e) => {
-                        if (e.lengthComputable && e.total > 0) {
-                            const fileProgress = e.loaded / e.total;
-                            const overallProgress = ((i + fileProgress) / photoFiles.length) * 100;
-                            barEl.style.width = overallProgress.toFixed(1) + '%';
+                let url = null;
+                let lastErr = null;
+                const maxAttempts = 3;
+
+                for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+                    try {
+                        setUploadStatus(
+                            attempt === 1
+                                ? `Uploading photo ${i + 1} of ${photoEntries.length}…`
+                                : `Retrying photo ${i + 1} of ${photoEntries.length} (attempt ${attempt}/${maxAttempts})…`
+                        );
+                        url = await uploadPhotoOnce(entry.file, missionId, (fraction) => {
+                            const overall = ((i + fraction) / photoEntries.length) * 100;
+                            barEl.style.width = overall.toFixed(1) + '%';
+                            setUploadStatus(`Uploading photo ${i + 1} of ${photoEntries.length} (${Math.round(fraction * 100)}%)…`);
+                        });
+                        break;
+                    } catch (err) {
+                        lastErr = err;
+                        if (!err.retryable || attempt === maxAttempts) {
+                            throw new Error(`Photo ${i + 1} (${entry.name}): ${err.message || 'Upload failed'}. Tap "Submit Project" to retry without losing your progress.`);
                         }
-                    };
+                        await sleep(attempt * 1500);
+                    }
+                }
 
-                    xhr.onload = () => {
-                        if (xhr.status >= 200 && xhr.status < 300) {
-                            try {
-                                const res = JSON.parse(xhr.responseText);
-                                if (res.secure_url) {
-                                    resolve(res.secure_url);
-                                } else {
-                                    reject(new Error('Upload succeeded but no image URL was returned.'));
-                                }
-                            } catch (parseErr) {
-                                reject(new Error('Invalid response from image server.'));
-                            }
-                        } else {
-                            let errMsg = `Photo upload failed (HTTP ${xhr.status}).`;
-                            try {
-                                const errRes = JSON.parse(xhr.responseText);
-                                if (errRes.error && errRes.error.message) {
-                                    errMsg = errRes.error.message;
-                                }
-                            } catch (_) {}
-                            reject(new Error(errMsg));
-                        }
-                    };
-
-                    xhr.onerror = () => reject(new Error('Network error while uploading photo. Please check your internet connection.'));
-                    xhr.ontimeout = () => reject(new Error('Photo upload timed out. Please try again on a stronger connection.'));
-                    xhr.send(formData);
-                });
-
+                entry.uploadedUrl = url;
                 uploadedURLs.push(url);
-                barEl.style.width = (((i + 1) / photoFiles.length) * 100).toFixed(1) + '%';
+                renderPhotoPreviews();
+                barEl.style.width = (((i + 1) / photoEntries.length) * 100).toFixed(1) + '%';
             }
 
             barEl.style.width = '100%';
@@ -1628,10 +1971,16 @@
         async function submitMission() {
             if (isSubmitting) return;
 
-            // Final validation
+            // Final validation across Step 3 (and verify earlier steps weren't cleared)
             if (!validateStep(3)) return;
 
+            if (!fellowData || !fellowData.email) {
+                setStepAlert(3, 'Your session expired. Please refresh and enter your name and email again.');
+                return;
+            }
+
             isSubmitting = true;
+            setStepAlert(3, '');
             const btn = document.getElementById('submitBtn');
             btn.innerHTML = '<span class="spin-inline"></span> Submitting…';
             btn.disabled = true;
@@ -1639,12 +1988,18 @@
             try {
                 const targetRefId = existingMission ? (existingMission.referenceId || existingMission.id) : ('prj_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6));
 
-                // Upload new photos (if any)
+                // Upload new photos (reuses already-uploaded URLs on retry)
                 const newURLs = await uploadPhotos(targetRefId);
                 const finalPhotoURLs = [...existingPhotos, ...newURLs];
 
+                if (finalPhotoURLs.length === 0) {
+                    throw new Error('At least one photo must be uploaded before submitting.');
+                }
+
+                setUploadStatus('Saving your project submission…');
+
                 // Prepare values
-                const email = fellowData.email || fellowData.applicationEmail || '';
+                const email = (fellowData.email || fellowData.applicationEmail || '').trim().toLowerCase();
                 const vLink = document.getElementById('videoLink').value.trim();
                 const fellowName = fellowData.name || fellowData.fullName || fellowData.firstName || 'Unknown';
                 const cohortVal = fellowData.cohort || fellowData.Cohort || 'Cohort 4';
@@ -1710,23 +2065,43 @@
                     adminNotes: existingMission ? (existingMission.adminNote || existingMission.adminNotes || '') : '',
                 };
 
-                if (existingMission) {
-                    // Update existing submission in-place
-                    missionData.resubmittedAt = serverTimestamp();
-                    missionData.updatedAt = serverTimestamp();
-                    missionData.revisionResolved = true;
-                    if (existingMission.revisionFeedback) {
-                        const prevFeedback = existingMission.revisionFeedback;
-                        const prevHist = Array.isArray(existingMission.revisionHistory)
-                            ? [...existingMission.revisionHistory]
-                            : (existingMission.revisionHistory ? [existingMission.revisionHistory] : []);
-                        if (!prevHist.includes(prevFeedback)) {
-                            prevHist.push(prevFeedback);
+                const saveToFirestore = async () => {
+                    if (existingMission) {
+                        missionData.resubmittedAt = serverTimestamp();
+                        missionData.updatedAt = serverTimestamp();
+                        missionData.revisionResolved = true;
+                        if (existingMission.revisionFeedback) {
+                            const prevFeedback = existingMission.revisionFeedback;
+                            const prevHist = Array.isArray(existingMission.revisionHistory)
+                                ? [...existingMission.revisionHistory]
+                                : (existingMission.revisionHistory ? [existingMission.revisionHistory] : []);
+                            if (!prevHist.includes(prevFeedback)) {
+                                prevHist.push(prevFeedback);
+                            }
+                            missionData.revisionHistory = prevHist;
                         }
-                        missionData.revisionHistory = prevHist;
+                        await updateDoc(doc(db, "missions", existingMission.id), missionData);
+                    } else {
+                        missionData.submittedAt = serverTimestamp();
+                        missionData.createdAt = serverTimestamp();
+                        missionData.referenceId = targetRefId;
+                        await addDoc(collection(db, "missions"), missionData);
                     }
-                    await updateDoc(doc(db, "missions", existingMission.id), missionData);
+                };
 
+                // Retry Firestore write once on transient mobile connection drop
+                try {
+                    await saveToFirestore();
+                } catch (fsErr) {
+                    console.warn('Firestore write retry:', fsErr);
+                    await sleep(1500);
+                    await saveToFirestore();
+                }
+
+                clearDraft();
+                setUploadStatus('');
+
+                if (existingMission) {
                     document.getElementById('formArea').classList.add('hidden');
                     document.getElementById('successTitle').textContent = 'Revision Resubmitted!';
                     document.getElementById('successDesc').textContent = 'Your updated project submission has been received and sent back to the review queue.';
@@ -1735,25 +2110,18 @@
                     if (typeof confetti === 'function') {
                         confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
                     }
-
                     showToast('Revised project submitted successfully!');
                 } else {
-                    // New project submission
-                    missionData.submittedAt = serverTimestamp();
-                    missionData.createdAt = serverTimestamp();
-                    missionData.referenceId = targetRefId;
-
-                    await addDoc(collection(db, "missions"), missionData);
-
                     document.getElementById('formArea').classList.add('hidden');
                     document.getElementById('successRef').textContent = 'REF: ' + targetRefId.toUpperCase();
                     document.getElementById('successCard').classList.remove('hidden');
                     if (typeof confetti === 'function') {
                         confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
                     }
-
                     showToast('Project submitted successfully!');
                 }
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
 
             } catch (err) {
                 console.error('Submit error:', err);
@@ -1761,7 +2129,10 @@
                 const barEl = document.getElementById('uploadBar');
                 if (progressEl) progressEl.style.display = 'none';
                 if (barEl) barEl.style.width = '0%';
-                showToast(err && err.message ? err.message : 'Failed to submit. Please check your connection and try again.', true);
+                setUploadStatus('');
+                const errText = (err && err.message) ? err.message : 'Failed to submit. Please check your internet connection and tap Submit Project again.';
+                setStepAlert(3, errText);
+                showToast(errText, true);
                 btn.innerHTML = existingMission ? '<i class="fa-solid fa-paper-plane"></i> Submit Revised Project' : '<i class="fa-solid fa-paper-plane"></i> Submit Project';
                 btn.disabled = false;
                 isSubmitting = false;
@@ -1769,14 +2140,41 @@
         }
 
         // ═══════════════════════════════════════════
-        // Character counters
+        // Live Character Counters, Error Clearing & Draft Auto-Save
         // ═══════════════════════════════════════════
-        document.getElementById('missionDescription').addEventListener('input', (e) => {
-            document.getElementById('descCount').textContent = e.target.value.length;
-        });
+        function updateCharCounters() {
+            const descVal = (document.getElementById('missionDescription').value || '').trim();
+            const descCount = document.getElementById('descCount');
+            const descMinHint = document.getElementById('descMinHint');
+            if (descCount) descCount.textContent = (document.getElementById('missionDescription').value || '').length;
+            if (descMinHint) {
+                if (descVal.length >= 50) {
+                    descMinHint.textContent = '(meets 50-char minimum)';
+                    descMinHint.style.color = 'var(--primary)';
+                } else {
+                    descMinHint.textContent = `(${50 - descVal.length} more characters needed)`;
+                    descMinHint.style.color = 'var(--text-light)';
+                }
+            }
+            const actCount = document.getElementById('actCount');
+            if (actCount) actCount.textContent = (document.getElementById('activities').value || '').length;
+        }
 
-        document.getElementById('activities').addEventListener('input', (e) => {
-            document.getElementById('actCount').textContent = e.target.value.length;
+        DRAFT_FIELDS.forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const onEdit = () => {
+                const fieldWrap = el.closest('.field');
+                if (fieldWrap && fieldWrap.classList.contains('error')) {
+                    fieldWrap.classList.remove('error');
+                }
+                if (id === 'missionDescription' || id === 'activities') {
+                    updateCharCounters();
+                }
+                saveDraft();
+            };
+            el.addEventListener('input', onEdit);
+            el.addEventListener('change', onEdit);
         });
 
         // ═══════════════════════════════════════════
@@ -1796,6 +2194,12 @@
             return (name || '').split(' ').map(w => w[0] || '').slice(0, 2).join('').toUpperCase() || '?';
         }
 
+        let toastTimer = null;
+        function hideToast() {
+            if (toastTimer) clearTimeout(toastTimer);
+            const toast = document.getElementById('toast');
+            if (toast) toast.classList.remove('show');
+        }
         function showToast(msg, isError = false) {
             const toast = document.getElementById('toast');
             const text = document.getElementById('toastText');
@@ -1803,24 +2207,8 @@
             toast.classList.toggle('toast-error', isError);
             toast.querySelector('i').className = isError ? 'fa-solid fa-circle-exclamation' : 'fa-solid fa-check-circle';
             toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 4000);
-        }
-
-        // Mobile Nav Toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const headerNav = document.getElementById('headerNav');
-        if (menuToggle && headerNav) {
-            menuToggle.addEventListener('click', () => {
-                headerNav.classList.toggle('active');
-                const icon = menuToggle.querySelector('i');
-                if (headerNav.classList.contains('active')) {
-                    icon.classList.remove('fa-bars');
-                    icon.classList.add('fa-xmark');
-                } else {
-                    icon.classList.remove('fa-xmark');
-                    icon.classList.add('fa-bars');
-                }
-            });
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('show'), isError ? 6000 : 4000);
         }
     </script>
 
